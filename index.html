@@ -257,48 +257,92 @@
             color: #e0e0e0;
         }
 
+        /* Collapsible Exercise */
+        .exercise-collapsible {
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 8px;
+        }
+
+        .exercise-toggle-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 4px;
+        }
+
+        .exercise-chevron {
+            font-size: 12px;
+            color: #999;
+            width: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Compact Set Display */
+        .set-boxes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        .set-box {
+            position: relative;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+        }
+
+        .set-box-content {
+            padding-right: 16px;
+        }
+
+        .set-box-delete {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            padding: 2px 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .set-box-delete:active {
+            color: white;
+        }
+
+        /* Set list for expanded view */
         .set-list {
+            margin-top: 8px;
             margin-bottom: 12px;
         }
 
-        .set-item {
+        .set-item-expanded {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid #333;
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 8px;
-            font-size: 14px;
-            color: #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .set-item:active {
+        .set-item-expanded:active {
             background: rgba(67, 97, 238, 0.1);
             border-color: #4361ee;
-        }
-
-        .set-text {
-            flex: 1;
-        }
-
-        .set-delete-btn {
-            background: none;
-            border: none;
-            color: #ff6b6b;
-            font-size: 18px;
-            padding: 4px 8px;
-            cursor: pointer;
-            margin-left: 8px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .set-item:active .set-delete-btn {
-            opacity: 1;
         }
 
         /* Buttons */
@@ -350,6 +394,44 @@
 
         .btn-add-set:active {
             background: rgba(67, 97, 238, 0.2);
+        }
+
+        /* Side-by-side buttons */
+        .button-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .button-grid .btn {
+            padding: 10px 8px;
+            font-size: 13px;
+            margin-bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            color: #999;
+        }
+
+        .button-grid .btn.active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        .button-grid .btn:active {
+            opacity: 0.8;
         }
 
         /* Search Input */
@@ -448,7 +530,7 @@
         /* Weight Picker Grid */
         .weight-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 8px;
             margin-bottom: 16px;
         }
@@ -476,7 +558,7 @@
         }
 
         .weight-btn.special {
-            grid-column: span 2;
+            grid-column: span 2.5;
         }
 
         /* Stepper */
@@ -811,10 +893,68 @@
             color: white;
         }
 
+        /* Your Weights Section */
+        .your-weights-container {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(67, 97, 238, 0.05);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: 8px;
+        }
+
+        .your-weights-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .your-weights-btn {
+            background: rgba(67, 97, 238, 0.3);
+            border: 1px solid rgba(67, 97, 238, 0.5);
+            color: #4361ee;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .your-weights-btn:active {
+            background: rgba(67, 97, 238, 0.5);
+        }
+
+        /* Banded Colors Grid */
+        .banded-colors-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .banded-color-btn {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .banded-red { background: #e74c3c; }
+        .banded-black { background: #2c3e50; }
+        .banded-purple { background: #9b59b6; }
+        .banded-green { background: #27ae60; }
+        .banded-blue { background: #3498db; }
+        .banded-orange { background: #e67e22; }
+        .banded-yellow { background: #f39c12; }
+
         /* Responsive */
         @media (max-width: 480px) {
             .weight-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
             }
 
             .rep-grid {
@@ -878,7 +1018,6 @@
                 request.onupgradeneeded = (e) => {
                     const database = e.target.result;
 
-                    // Exercises store
                     if (!database.objectStoreNames.contains('exercises')) {
                         const exercisesStore = database.createObjectStore('exercises', { keyPath: 'id' });
                         exercisesStore.createIndex('by-lastUsed', 'lastUsed', { unique: false });
@@ -886,7 +1025,6 @@
                         exercisesStore.createIndex('by-name', 'name', { unique: false });
                     }
 
-                    // Sets store
                     if (!database.objectStoreNames.contains('sets')) {
                         const setsStore = database.createObjectStore('sets', { keyPath: 'id' });
                         setsStore.createIndex('by-date', 'date', { unique: false });
@@ -895,12 +1033,10 @@
                         setsStore.createIndex('by-date-exerciseOrder-setOrder', ['date', 'exerciseOrder', 'setOrder'], { unique: false });
                     }
 
-                    // Day notes store
                     if (!database.objectStoreNames.contains('dayNotes')) {
                         database.createObjectStore('dayNotes', { keyPath: 'date' });
                     }
 
-                    // Templates store
                     if (!database.objectStoreNames.contains('templates')) {
                         database.createObjectStore('templates', { keyPath: 'dayOfWeek' });
                     }
@@ -908,12 +1044,10 @@
             });
         };
 
-        // UUID generation
         const generateId = (prefix) => {
             return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         };
 
-        // Database operations
         const dbOps = {
             exercises: {
                 add: (exercise) => {
@@ -1107,7 +1241,6 @@
 
         // ============ UTILITY FUNCTIONS ============
 
-        // Parse YYYY-MM-DD as local date (avoids UTC timezone shift on iOS Safari)
         const parseLocalDate = (dateStr) => {
             const [y, m, d] = dateStr.split('-').map(Number);
             return new Date(y, m - 1, d);
@@ -1169,6 +1302,35 @@
             return display;
         };
 
+        const getSetBoxColor = (setOrder) => {
+            const colors = ['#4361ee', '#7209b7', '#f72585', '#4cc9f0', '#06d6a0', '#ffd166'];
+            return colors[(setOrder - 1) % colors.length];
+        };
+
+        const formatSetBox = (set, previousSet) => {
+            let box = '';
+
+            if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType) {
+                if (set.weight !== null) {
+                    box += `${set.weight}£ `;
+                } else if (set.weightType === 'bodyweight') {
+                    box += 'BW ';
+                } else if (set.weightType === 'banded') {
+                    box += 'B ';
+                }
+            }
+
+            if (set.reps !== null) {
+                box += `${set.reps}r`;
+            } else if (set.duration !== null) {
+                const mins = Math.floor(set.duration / 60);
+                const secs = set.duration % 60;
+                box += `${mins}:${String(secs).padStart(2, '0')}`;
+            }
+
+            return box.trim();
+        };
+
         // ============ MODALS ============
 
         const ExercisePickerModal = ({ onSelect, onCreateNew, selectedDate }) => {
@@ -1201,7 +1363,7 @@
             }, [exercises, search, category]);
 
             const recent = filtered.slice(0, 10);
-            const categories = ['all', 'push', 'pull', 'legs', 'core', 'cardio'];
+            const categories = ['all', 'push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'sauna', 'other'];
 
             return (
                 <div className="modal-overlay" onClick={() => onSelect(null)}>
@@ -1217,7 +1379,6 @@
                                 placeholder="🔍 Search exercises..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                autoFocus
                             />
 
                             {recent.length > 0 && (
@@ -1317,29 +1478,35 @@
 
                             <div className="form-group">
                                 <label className="form-label">Category</label>
-                                <select
-                                    className="form-select"
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
-                                >
-                                    <option value="push">Push</option>
-                                    <option value="pull">Pull</option>
-                                    <option value="legs">Legs</option>
-                                    <option value="core">Core</option>
-                                    <option value="cardio">Cardio</option>
-                                </select>
+                                <div className="button-grid">
+                                    {['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'sauna', 'other'].map(cat => (
+                                        <button
+                                            key={cat}
+                                            className={`btn ${category === cat ? 'active' : ''}`}
+                                            onClick={() => setCategory(cat)}
+                                        >
+                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="form-group">
                                 <label className="form-label">Exercise Type</label>
-                                <select
-                                    className="form-select"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                >
-                                    <option value="reps">Reps</option>
-                                    <option value="timed">Timed (seconds)</option>
-                                </select>
+                                <div className="button-row">
+                                    <button
+                                        className={`btn ${type === 'reps' ? '' : 'btn-secondary'}`}
+                                        onClick={() => setType('reps')}
+                                    >
+                                        Reps
+                                    </button>
+                                    <button
+                                        className={`btn ${type === 'timed' ? '' : 'btn-secondary'}`}
+                                        onClick={() => setType('timed')}
+                                    >
+                                        Timed
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -1394,13 +1561,14 @@
             );
         };
 
-        const WeightPickerModal = ({ exercise, lastSession, onSelectWeight, selectedDate, previousWeight }) => {
+        const WeightPickerModal = ({ exercise, lastSession, onSelectWeight, selectedDate, previousWeight, setNumber }) => {
             const [weight, setWeight] = useState(previousWeight || 45);
             const [weightType, setWeightType] = useState('lbs');
+            const [showBandedColors, setShowBandedColors] = useState(false);
+            const [bandedCustomName, setBandedCustomName] = useState('');
 
-            const commonWeights = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 145, 155, 165, 175, 185, 195, 205, 215, 225];
+            const commonWeights = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
 
-            // Get unique weights from history
             const getYourWeights = () => {
                 const allSets = lastSession ? lastSession.sets : [];
                 const weights = new Map();
@@ -1416,30 +1584,24 @@
             };
 
             const yourWeights = getYourWeights();
-            const lastWeights = lastSession ? lastSession.sets.slice(0, 3).map(s => s.weight).filter(Boolean) : [];
 
             return (
                 <div className="modal-overlay" onClick={() => onSelectWeight(null)}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <div>
-                                <h2>{exercise.name} — Set 1</h2>
-                                {lastWeights.length > 0 && (
-                                    <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
-                                        Last: {lastWeights.join(', ')}
-                                    </div>
-                                )}
+                                <h2>{exercise.name} — Set {setNumber || 1}</h2>
                             </div>
                         </div>
                         <div className="modal-content">
                             {yourWeights.length > 0 && (
-                                <div className="exercise-picker-section">
+                                <div className="your-weights-container">
                                     <div className="section-title">Your Weights</div>
-                                    <div className="weight-grid" style={{ gridTemplateColumns: `repeat(${yourWeights.length}, 1fr)` }}>
+                                    <div className="your-weights-row">
                                         {yourWeights.map(w => (
                                             <button
                                                 key={w}
-                                                className="weight-btn"
+                                                className="your-weights-btn"
                                                 onClick={() => onSelectWeight({ weight: w, weightType: 'lbs' })}
                                             >
                                                 {w}
@@ -1449,39 +1611,7 @@
                                 </div>
                             )}
 
-                            <div className="exercise-picker-section">
-                                <div className="section-title">Common</div>
-                                <div className="weight-grid">
-                                    {commonWeights.map(w => (
-                                        <button
-                                            key={w}
-                                            className="weight-btn"
-                                            onClick={() => onSelectWeight({ weight: w, weightType: 'lbs' })}
-                                        >
-                                            {w}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div style={{ marginBottom: '16px' }}>
-                                <div className="weight-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                                    <button
-                                        className="weight-btn special"
-                                        onClick={() => onSelectWeight({ weight: null, weightType: 'bodyweight' })}
-                                    >
-                                        BW
-                                    </button>
-                                    <button
-                                        className="weight-btn special"
-                                        onClick={() => onSelectWeight({ weight: null, weightType: 'banded' })}
-                                    >
-                                        Banded
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div>
+                            <div className="form-group">
                                 <label className="form-label">Manual Entry</label>
                                 <div className="stepper-container">
                                     <button
@@ -1503,12 +1633,67 @@
                                         +5
                                     </button>
                                 </div>
+                                <div style={{ fontSize: '12px', color: '#999', textAlign: 'center', marginTop: '-8px', marginBottom: '16px' }}>lbs</div>
+                            </div>
+
+                            <div className="button-row">
                                 <button
-                                    className="btn"
-                                    onClick={() => onSelectWeight({ weight, weightType: 'lbs' })}
+                                    className={`btn ${weightType === 'bodyweight' ? '' : 'btn-secondary'}`}
+                                    onClick={() => { setWeightType('bodyweight'); setShowBandedColors(false); }}
                                 >
-                                    Select {weight} lbs
+                                    BW
                                 </button>
+                                <button
+                                    className={`btn ${weightType === 'banded' ? '' : 'btn-secondary'}`}
+                                    onClick={() => { setWeightType('banded'); setShowBandedColors(!showBandedColors); }}
+                                >
+                                    Banded
+                                </button>
+                            </div>
+
+                            {showBandedColors && (
+                                <div className="exercise-picker-section">
+                                    <div className="banded-colors-grid">
+                                        <button className="banded-color-btn banded-red" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Red' }); }}>Red</button>
+                                        <button className="banded-color-btn banded-black" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Black' }); }}>Black</button>
+                                        <button className="banded-color-btn banded-purple" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Purple' }); }}>Purple</button>
+                                        <button className="banded-color-btn banded-green" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Green' }); }}>Green</button>
+                                        <button className="banded-color-btn banded-blue" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Blue' }); }}>Blue</button>
+                                        <button className="banded-color-btn banded-orange" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Orange' }); }}>Orange</button>
+                                        <button className="banded-color-btn banded-yellow" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Yellow' }); }}>Yellow</button>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        placeholder="Custom band name"
+                                        value={bandedCustomName}
+                                        onChange={(e) => setBandedCustomName(e.target.value)}
+                                        style={{ marginBottom: '16px' }}
+                                    />
+                                    {bandedCustomName && (
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: bandedCustomName }); }}
+                                        >
+                                            Use {bandedCustomName}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="exercise-picker-section">
+                                <div className="section-title">Common Weights</div>
+                                <div className="weight-grid">
+                                    {commonWeights.map(w => (
+                                        <button
+                                            key={w}
+                                            className="weight-btn"
+                                            onClick={() => onSelectWeight({ weight: w, weightType: 'lbs' })}
+                                        >
+                                            {w}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1623,7 +1808,7 @@
                             )}
 
                             <div style={{ textAlign: 'center', margin: '20px 0', fontSize: '12px', color: '#666' }}>
-                                — OR ENTER MANUALLY —
+                                — OR SELECT —
                             </div>
 
                             <div className="duration-grid">
@@ -1638,22 +1823,6 @@
                                 ))}
                             </div>
                         </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const ExerciseMenuModal = ({ exercise, onClose, onDelete, onEditNote, onViewHistory }) => {
-            return (
-                <div className="context-menu" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                    <div className="context-menu-item" onClick={() => { onViewHistory(); onClose(); }}>
-                        View History
-                    </div>
-                    <div className="context-menu-item" onClick={() => { onEditNote(); onClose(); }}>
-                        Edit Note
-                    </div>
-                    <div className="context-menu-item danger" onClick={() => { onDelete(); onClose(); }}>
-                        Delete Exercise
                     </div>
                 </div>
             );
@@ -1733,10 +1902,14 @@
                                 history.map((session, idx) => (
                                     <div key={idx}>
                                         <div className="history-date">{formatDateShort(session.date)}</div>
-                                        <div className="history-sets">
+                                        <div className="set-boxes-container">
                                             {session.sets.map((s, sidx) => (
-                                                <div key={sidx}>
-                                                    {formatSetDisplay(s)}{sidx < session.sets.length - 1 ? ' · ' : ''}
+                                                <div
+                                                    key={sidx}
+                                                    className="set-box"
+                                                    style={{ backgroundColor: getSetBoxColor(s.setOrder) }}
+                                                >
+                                                    {formatSetBox(s, session.sets[sidx - 1])}
                                                 </div>
                                             ))}
                                         </div>
@@ -1750,16 +1923,16 @@
         };
 
         const SettingsModal = ({ onClose }) => {
-            const [activeTab, setActiveTab] = useState('template');
-            const [templates, setTemplates] = useState({});
+            const [activeTab, setActiveTab] = useState('weekly');
             const [weeklyLabels, setWeeklyLabels] = useState({
                 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
             });
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const templateOptions = ['', 'Push', 'Pull', 'Legs', 'Core', 'Cardio', 'Mobility', 'Stretch', 'Rest', 'Custom'];
 
             useEffect(() => {
-                if (activeTab === 'template') {
+                if (activeTab === 'weekly') {
                     const loadTemplates = async () => {
                         const temps = await dbOps.templates.getAll();
                         const labels = { 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '' };
@@ -1791,13 +1964,14 @@
                     };
                 });
 
-                let csv = 'Date,Exercise,Set,Weight,WeightType,Reps,Duration\n';
+                let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n';
                 allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder)
                     .forEach(set => {
+                        const ex = allExercises.find(e => e.id === set.exerciseId) || {};
                         const weightStr = set.weight !== null ? set.weight : '';
                         const repsStr = set.reps !== null ? set.reps : '';
                         const durationStr = set.duration !== null ? set.duration : '';
-                        csv += `${set.date},${set.exerciseName},${set.setOrder},${weightStr},${set.weightType},${repsStr},${durationStr}\n`;
+                        csv += `${set.date},${set.exerciseName},${ex.category || ''},${ex.type || ''},${set.setOrder},${weightStr},${set.weightType},${repsStr},${durationStr},\n`;
                     });
 
                 const blob = new Blob([csv], { type: 'text/csv' });
@@ -1822,12 +1996,20 @@
                     const text = await file.text();
                     const lines = text.split('\n').slice(1).filter(l => l.trim());
 
-                    // Parse and import
                     for (const line of lines) {
-                        const [date, exerciseName, setNum, weight, weightType, reps, duration] = line.split(',');
+                        const parts = line.split(',');
+                        const date = parts[0];
+                        const exerciseName = parts[1];
+                        const category = parts[2] || 'push';
+                        const type = parts[3] || 'reps';
+                        const setNum = parts[4];
+                        const weight = parts[5];
+                        const weightType = parts[6] || 'lbs';
+                        const reps = parts[7];
+                        const duration = parts[8];
+
                         if (!date) continue;
 
-                        // Check if exercise exists, if not create it
                         let exercise = null;
                         const allEx = await dbOps.exercises.getAll();
                         exercise = allEx.find(e => e.name === exerciseName);
@@ -1836,8 +2018,8 @@
                             exercise = {
                                 id: generateId('ex'),
                                 name: exerciseName,
-                                category: 'push',
-                                type: reps ? 'reps' : 'timed',
+                                category,
+                                type,
                                 note: '',
                                 lastUsed: date,
                                 createdAt: Date.now(),
@@ -1845,9 +2027,9 @@
                             await dbOps.exercises.add(exercise);
                         }
 
-                        // Get next order numbers
                         const daySets = await dbOps.sets.getByDate(date);
-                        const exerciseOrderNum = Math.max(...daySets.filter(s => s.exerciseId === exercise.id).map(s => s.exerciseOrder), 0) + 1 || (Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1);
+                        const existingForExercise = daySets.filter(s => s.exerciseId === exercise.id);
+                        const exerciseOrderNum = existingForExercise.length > 0 ? existingForExercise[0].exerciseOrder : Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
                         const setOrderNum = parseInt(setNum) || 1;
 
                         const set = {
@@ -1858,7 +2040,7 @@
                             exerciseOrder: exerciseOrderNum,
                             setOrder: setOrderNum,
                             weight: weight ? parseInt(weight) : null,
-                            weightType: weightType || 'lbs',
+                            weightType,
                             reps: reps ? parseInt(reps) : null,
                             duration: duration ? parseInt(duration) : null,
                             createdAt: Date.now(),
@@ -1882,10 +2064,10 @@
                         <div className="modal-content">
                             <div className="category-tabs">
                                 <button
-                                    className={`category-tab ${activeTab === 'template' ? 'active' : ''}`}
-                                    onClick={() => setActiveTab('template')}
+                                    className={`category-tab ${activeTab === 'weekly' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('weekly')}
                                 >
-                                    Template
+                                    Weekly View
                                 </button>
                                 <button
                                     className={`category-tab ${activeTab === 'data' ? 'active' : ''}`}
@@ -1895,21 +2077,33 @@
                                 </button>
                             </div>
 
-                            {activeTab === 'template' && (
+                            {activeTab === 'weekly' && (
                                 <>
                                     {dayNames.map((day, idx) => (
                                         <div key={idx} className="form-group">
                                             <label className="form-label">{day}</label>
-                                            <input
-                                                type="text"
-                                                className="form-input"
-                                                placeholder="E.g., Push Day"
+                                            <select
+                                                className="form-select"
                                                 value={weeklyLabels[idx]}
                                                 onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
-                                            />
+                                            >
+                                                {templateOptions.map(opt => (
+                                                    <option key={opt} value={opt}>{opt || 'Unset'}</option>
+                                                ))}
+                                            </select>
+                                            {weeklyLabels[idx] === 'Custom' && (
+                                                <input
+                                                    type="text"
+                                                    className="form-input"
+                                                    placeholder="Enter custom label"
+                                                    value={weeklyLabels[idx] || ''}
+                                                    onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
+                                                    style={{ marginTop: '8px' }}
+                                                />
+                                            )}
                                         </div>
                                     ))}
-                                    <button className="btn" onClick={handleSaveTemplate}>Save Template</button>
+                                    <button className="btn" onClick={handleSaveTemplate}>Save Weekly View</button>
                                 </>
                             )}
 
@@ -1953,8 +2147,10 @@
             const [previousWeight, setPreviousWeight] = useState(null);
             const [loggedSetCount, setLoggedSetCount] = useState(0);
             const [confirmation, setConfirmation] = useState(null);
+            const [expandedExercise, setExpandedExercise] = useState(null);
+            const [selectedSetForEdit, setSelectedSetForEdit] = useState(null);
+            const [setNumber, setSetNumber] = useState(1);
 
-            // Load day data
             const loadDayData = useCallback(async () => {
                 const sets = await dbOps.sets.getByDate(currentDate);
                 setDaySets(sets);
@@ -1989,14 +2185,12 @@
             };
 
             const handleLogSet = async () => {
+                const daySets = await dbOps.sets.getByDate(currentDate);
+                const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
+                setSetNumber(exerciseSets.length + 1);
                 setModal('weightPicker');
 
-                // Get previous weight for pre-highlighting
-                const lastSets = await dbOps.sets.getByDate(currentDate);
-                const lastSetForExercise = lastSets
-                    .filter(s => s.exerciseId === selectedExercise.id)
-                    .sort((a, b) => b.setOrder - a.setOrder)[0];
-
+                const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
                 setPreviousWeight(lastSetForExercise?.weight || null);
             };
 
@@ -2021,7 +2215,6 @@
                     return;
                 }
 
-                // Get exercise order
                 const daySets = await dbOps.sets.getByDate(currentDate);
                 let exerciseOrder = 1;
                 const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
@@ -2049,7 +2242,6 @@
 
                 await dbOps.sets.add(set);
 
-                // Update lastUsed
                 selectedExercise.lastUsed = currentDate;
                 await dbOps.exercises.update(selectedExercise);
 
@@ -2068,7 +2260,6 @@
                     return;
                 }
 
-                // Get exercise order
                 const daySets = await dbOps.sets.getByDate(currentDate);
                 let exerciseOrder = 1;
                 const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
@@ -2096,7 +2287,6 @@
 
                 await dbOps.sets.add(set);
 
-                // Update lastUsed
                 selectedExercise.lastUsed = currentDate;
                 await dbOps.exercises.update(selectedExercise);
 
@@ -2115,6 +2305,7 @@
             };
 
             const handleEditSet = async (set) => {
+                setSelectedSetForEdit(set);
                 setSelectedExercise(await dbOps.exercises.get(set.exerciseId));
                 setSelectedWeight({
                     weight: set.weight,
@@ -2130,11 +2321,11 @@
 
             const handleDeleteExercise = (exercise) => {
                 setConfirmation({
-                    title: `Delete ${exercise.name}?`,
-                    message: `Remove ${exercise.name} and all its sets from today?`,
+                    title: `Delete ${exercise.exerciseName}?`,
+                    message: `Remove ${exercise.exerciseName} and all its sets from today?`,
                     onConfirm: async () => {
                         const daySets = await dbOps.sets.getByDate(currentDate);
-                        const toDelete = daySets.filter(s => s.exerciseId === exercise.id);
+                        const toDelete = daySets.filter(s => s.exerciseId === exercise.exerciseId);
                         for (const set of toDelete) {
                             await dbOps.sets.delete(set.id);
                         }
@@ -2149,15 +2340,26 @@
                 if (action === 'delete') {
                     handleDeleteExercise(exercise);
                 } else if (action === 'editNote') {
-                    setSelectedExercise(exercise);
-                    setModal('editNote');
+                    setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps', note: '' } : null);
+                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                        setSelectedExercise(ex);
+                        setModal('editNote');
+                    });
                 } else if (action === 'viewHistory') {
-                    setSelectedExercise(exercise);
-                    setModal('history');
+                    setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
+                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                        setSelectedExercise(ex);
+                        setModal('history');
+                    });
+                } else if (action === 'rename') {
+                    setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
+                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                        setSelectedExercise(ex);
+                        setModal('rename');
+                    });
                 }
             };
 
-            // Group sets by exercise
             const groupedExercises = {};
             daySets.forEach(set => {
                 if (!groupedExercises[set.exerciseId]) {
@@ -2175,6 +2377,52 @@
                 const bOrder = b.sets[0]?.exerciseOrder || 0;
                 return aOrder - bOrder;
             });
+
+            const RenameModal = ({ exercise, onSave, onCancel }) => {
+                const [newName, setNewName] = useState(exercise.name);
+
+                const handleSave = async () => {
+                    if (!newName.trim()) return;
+
+                    exercise.name = newName.trim();
+                    await dbOps.exercises.update(exercise);
+
+                    const allSets = await dbOps.sets.getByExerciseId(exercise.id);
+                    for (const set of allSets) {
+                        set.exerciseName = newName.trim();
+                        await dbOps.sets.update(set);
+                    }
+
+                    onSave();
+                };
+
+                return (
+                    <div className="modal-overlay" onClick={onCancel}>
+                        <div className="modal" onClick={(e) => e.stopPropagation()}>
+                            <div className="modal-header">
+                                <h2>Rename Exercise</h2>
+                                <button className="close-btn" onClick={onCancel}>✕</button>
+                            </div>
+                            <div className="modal-content">
+                                <div className="form-group">
+                                    <label className="form-label">Exercise Name</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        value={newName}
+                                        onChange={(e) => setNewName(e.target.value)}
+                                        autoFocus
+                                    />
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                                <button className="btn" onClick={handleSave}>Save</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
 
             return (
                 <div className="app-container">
@@ -2203,46 +2451,93 @@
                                     )}
                                 </div>
                             ) : (
-                                exercises.map((exercise) => (
-                                    <div key={exercise.exerciseId} className="exercise-group">
-                                        <div className="exercise-header">
-                                            <div className="exercise-name">{exercise.exerciseName}</div>
-                                            <button
-                                                className="exercise-menu-btn"
-                                                onClick={() => setModal(`menu-${exercise.exerciseId}`)}
+                                exercises.map((exercise) => {
+                                    const isExpanded = expandedExercise === exercise.exerciseId;
+                                    return (
+                                        <div key={exercise.exerciseId} className="exercise-group">
+                                            <div
+                                                className="exercise-collapsible"
+                                                onClick={() => setExpandedExercise(isExpanded ? null : exercise.exerciseId)}
                                             >
-                                                ···
-                                            </button>
-                                        </div>
-                                        <div className="set-list">
-                                            {exercise.sets.map((set) => (
-                                                <div key={set.id} className="set-item">
-                                                    <div className="set-text" onClick={() => handleEditSet(set)}>
-                                                        {formatSetDisplay(set)}
+                                                <div className="exercise-toggle-header">
+                                                    <div className="exercise-chevron">{isExpanded ? '▾' : '▸'}</div>
+                                                    <div className="exercise-name">{exercise.exerciseName}</div>
+                                                </div>
+                                                <div className="set-boxes-container">
+                                                    {exercise.sets.map((set, idx) => (
+                                                        <div
+                                                            key={set.id}
+                                                            className="set-box"
+                                                            style={{ backgroundColor: getSetBoxColor(set.setOrder) }}
+                                                        >
+                                                            <div className="set-box-content">
+                                                                {formatSetBox(set, exercise.sets[idx - 1])}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {isExpanded && (
+                                                <div style={{ marginTop: '12px' }}>
+                                                    <div className="set-list">
+                                                        {exercise.sets.map((set, idx) => (
+                                                            <div
+                                                                key={set.id}
+                                                                className="set-item-expanded"
+                                                                onClick={() => handleEditSet(set)}
+                                                                style={{ position: 'relative' }}
+                                                            >
+                                                                <div style={{ paddingRight: '20px' }}>
+                                                                    {formatSetDisplay(set)}
+                                                                </div>
+                                                                <button
+                                                                    className="set-box-delete"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleDeleteSet(set.id);
+                                                                    }}
+                                                                >
+                                                                    ✕
+                                                                </button>
+                                                            </div>
+                                                        ))}
                                                     </div>
+
                                                     <button
-                                                        className="set-delete-btn"
-                                                        onClick={() => handleDeleteSet(set.id)}
+                                                        className="btn btn-add-set"
+                                                        onClick={() => {
+                                                            setSelectedExercise({ id: exercise.exerciseId, name: exercise.exerciseName, type: exercise.sets[0]?.type || 'reps' });
+                                                            setPreviousWeight(exercise.sets[exercise.sets.length - 1]?.weight || null);
+                                                            setSetNumber(exercise.sets.length + 1);
+                                                            setModal('weightPicker');
+                                                        }}
                                                     >
-                                                        ✕
+                                                        + Add Set
+                                                    </button>
+
+                                                    <button
+                                                        className="exercise-menu-btn"
+                                                        onClick={() => setModal(`menu-${exercise.exerciseId}`)}
+                                                        style={{ width: '100%', marginTop: '8px' }}
+                                                    >
+                                                        ⋯ Menu
                                                     </button>
                                                 </div>
-                                            ))}
+                                            )}
+
+                                            {!isExpanded && (
+                                                <button
+                                                    className="exercise-menu-btn"
+                                                    onClick={() => setModal(`menu-${exercise.exerciseId}`)}
+                                                    style={{ position: 'absolute', right: '16px', top: '0' }}
+                                                >
+                                                    ···
+                                                </button>
+                                            )}
                                         </div>
-                                        <button
-                                            className="btn btn-add-set"
-                                            onClick={() => {
-                                                setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
-                                                if (exercise.sets[0]) {
-                                                    setPreviousWeight(exercise.sets[exercise.sets.length - 1]?.weight || null);
-                                                    setModal('weightPicker');
-                                                }
-                                            }}
-                                        >
-                                            + Add Set
-                                        </button>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
 
                             <button className="btn" onClick={() => setModal('exercisePicker')}>
@@ -2287,6 +2582,7 @@
                             onSelectWeight={handleWeightSelected}
                             selectedDate={currentDate}
                             previousWeight={previousWeight}
+                            setNumber={setNumber}
                         />
                     )}
 
@@ -2327,6 +2623,21 @@
                         />
                     )}
 
+                    {modal === 'rename' && selectedExercise && (
+                        <RenameModal
+                            exercise={selectedExercise}
+                            onSave={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                                loadDayData();
+                            }}
+                            onCancel={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                            }}
+                        />
+                    )}
+
                     {modal === 'history' && selectedExercise && (
                         <HistoryModal
                             exercise={selectedExercise}
@@ -2337,7 +2648,7 @@
                         />
                     )}
 
-                    {modal?.startsWith('menu-') && selectedExercise === null && (
+                    {modal?.startsWith('menu-') && (
                         (() => {
                             const exerciseId = modal.replace('menu-', '');
                             const exercise = exercises.find(e => e.exerciseId === exerciseId);
@@ -2348,29 +2659,35 @@
                                             <div
                                                 className="context-menu-item"
                                                 onClick={() => {
-                                                    setSelectedExercise({ id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' });
-                                                    setModal('history');
+                                                    handleMenuClick(exercise, 'viewHistory');
+                                                    setModal(null);
                                                 }}
                                             >
                                                 View History
                                             </div>
                                             <div
                                                 className="context-menu-item"
-                                                onClick={async () => {
-                                                    const ex = await dbOps.exercises.get(exercise.exerciseId);
-                                                    setSelectedExercise(ex);
-                                                    setModal('editNote');
+                                                onClick={() => {
+                                                    handleMenuClick(exercise, 'editNote');
+                                                    setModal(null);
                                                 }}
                                             >
                                                 Edit Note
                                             </div>
                                             <div
+                                                className="context-menu-item"
+                                                onClick={() => {
+                                                    handleMenuClick(exercise, 'rename');
+                                                    setModal(null);
+                                                }}
+                                            >
+                                                Rename
+                                            </div>
+                                            <div
                                                 className="context-menu-item danger"
                                                 onClick={() => {
-                                                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
-                                                        handleDeleteExercise(ex);
-                                                        setModal(null);
-                                                    });
+                                                    handleMenuClick(exercise, 'delete');
+                                                    setModal(null);
                                                 }}
                                             >
                                                 Delete Exercise
