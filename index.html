@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fitness Tracker">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Fitness Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Modals & Overlays */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a2e;
+            border-top: 1px solid #333;
+            max-height: 100%;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 16px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #242437;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 24px;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .close-btn:active {
+            opacity: 0.7;
+        }
+
+        /* Main Container */
+        .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: #242437;
+            border-bottom: 1px solid #333;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: #4361ee;
+            font-size: 20px;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .settings-btn:active {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        /* Day Navigation */
+        .day-nav {
+            background: #242437;
+            border-bottom: 1px solid #333;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .nav-arrow {
+            background: none;
+            border: none;
+            color: #4361ee;
+            font-size: 20px;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .nav-arrow:active {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .day-display {
+            text-align: center;
+            flex: 1;
+        }
+
+        .day-date {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        .day-label {
+            font-size: 12px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content-padding {
+            padding: 16px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: #666;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Exercise List */
+        .exercise-group {
+            margin-bottom: 20px;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+
+        .exercise-name {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #e0e0e0;
+        }
+
+        .exercise-menu-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 16px;
+            padding: 4px 8px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exercise-menu-btn:active {
+            color: #e0e0e0;
+        }
+
+        .set-list {
+            margin-bottom: 12px;
+        }
+
+        .set-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .set-item:active {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: #4361ee;
+        }
+
+        .set-text {
+            flex: 1;
+        }
+
+        .set-delete-btn {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 18px;
+            padding: 4px 8px;
+            cursor: pointer;
+            margin-left: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .set-item:active .set-delete-btn {
+            opacity: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .btn:active {
+            background: #3449d6;
+        }
+
+        .btn-secondary {
+            background: rgba(67, 97, 238, 0.2);
+            color: #4361ee;
+            border: 1px solid rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-secondary:active {
+            background: rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+        }
+
+        .btn-danger:active {
+            background: #ff5252;
+        }
+
+        .btn-add-set {
+            background: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            margin-bottom: 16px;
+        }
+
+        .btn-add-set:active {
+            background: rgba(67, 97, 238, 0.2);
+        }
+
+        /* Search Input */
+        .search-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            margin-bottom: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            color: #999;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .category-tab.active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        .category-tab:active {
+            opacity: 0.8;
+        }
+
+        /* Exercise Picker List */
+        .exercise-picker-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .exercise-picker-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .exercise-picker-item:active {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: #4361ee;
+        }
+
+        .exercise-picker-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .exercise-picker-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* Weight Picker Grid */
+        .weight-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .weight-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .weight-btn:active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        .weight-btn.special {
+            grid-column: span 2;
+        }
+
+        /* Stepper */
+        .stepper-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+
+        .stepper-btn {
+            background: rgba(67, 97, 238, 0.2);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            color: #4361ee;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stepper-btn:active {
+            background: rgba(67, 97, 238, 0.3);
+        }
+
+        .stepper-input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Rep Picker Grid */
+        .rep-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .rep-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rep-btn:active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        /* Timer */
+        .timer-display {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .timer-value {
+            font-size: 48px;
+            font-weight: 300;
+            color: #4361ee;
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum" 1;
+        }
+
+        /* Duration Grid */
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .duration-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .duration-btn:active {
+            background: #4361ee;
+            border-color: #4361ee;
+            color: white;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4361ee;
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e0e0e0' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #4361ee;
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        /* Modal Content */
+        .modal-content {
+            padding: 16px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-footer {
+            padding: 16px;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 8px;
+            background: #242437;
+        }
+
+        .modal-footer .btn {
+            margin-bottom: 0;
+        }
+
+        .modal-footer .btn:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Last Time Reference */
+        .last-time-section {
+            background: rgba(67, 97, 238, 0.05);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .last-time-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .last-time-set {
+            font-size: 14px;
+            color: #e0e0e0;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .last-time-set:last-child {
+            border-bottom: none;
+        }
+
+        /* Exercise History */
+        .history-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+
+        .history-sets {
+            font-size: 13px;
+            color: #999;
+            padding: 4px 0;
+        }
+
+        /* Menu Context */
+        .context-menu {
+            position: absolute;
+            background: #242437;
+            border: 1px solid #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            min-width: 160px;
+        }
+
+        .context-menu-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            font-size: 14px;
+            color: #e0e0e0;
+            transition: all 0.2s ease;
+        }
+
+        .context-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .context-menu-item:active {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .context-menu-item.danger {
+            color: #ff6b6b;
+        }
+
+        /* Confirmation Dialog */
+        .confirmation-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #242437;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            z-index: 300;
+            max-width: 90%;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .confirmation-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #e0e0e0;
+        }
+
+        .confirmation-message {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .confirmation-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .confirmation-buttons .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            color: #e0e0e0;
+        }
+
+        .confirmation-buttons .btn-confirm {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .weight-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .rep-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .duration-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Scrollbar Styling */
+        .content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
+        }
+
+        /* Safe Areas for notch */
+        @supports (padding: max(0px)) {
+            .top-nav {
+                padding-top: max(12px, env(safe-area-inset-top));
+                padding-bottom: 12px;
+                padding-left: max(16px, env(safe-area-inset-left));
+                padding-right: max(16px, env(safe-area-inset-right));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback } = React;
+
+        // ============ DATABASE ============
+
+        let db = null;
+
+        const initDB = () => {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('FitnessTracker', 1);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (e) => {
+                    const database = e.target.result;
+
+                    // Exercises store
+                    if (!database.objectStoreNames.contains('exercises')) {
+                        const exercisesStore = database.createObjectStore('exercises', { keyPath: 'id' });
+                        exercisesStore.createIndex('by-lastUsed', 'lastUsed', { unique: false });
+                        exercisesStore.createIndex('by-category', 'category', { unique: false });
+                        exercisesStore.createIndex('by-name', 'name', { unique: false });
+                    }
+
+                    // Sets store
+                    if (!database.objectStoreNames.contains('sets')) {
+                        const setsStore = database.createObjectStore('sets', { keyPath: 'id' });
+                        setsStore.createIndex('by-date', 'date', { unique: false });
+                        setsStore.createIndex('by-exerciseId', 'exerciseId', { unique: false });
+                        setsStore.createIndex('by-exerciseId-date', ['exerciseId', 'date'], { unique: false });
+                        setsStore.createIndex('by-date-exerciseOrder-setOrder', ['date', 'exerciseOrder', 'setOrder'], { unique: false });
+                    }
+
+                    // Day notes store
+                    if (!database.objectStoreNames.contains('dayNotes')) {
+                        database.createObjectStore('dayNotes', { keyPath: 'date' });
+                    }
+
+                    // Templates store
+                    if (!database.objectStoreNames.contains('templates')) {
+                        database.createObjectStore('templates', { keyPath: 'dayOfWeek' });
+                    }
+                };
+            });
+        };
+
+        // UUID generation
+        const generateId = (prefix) => {
+            return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        };
+
+        // Database operations
+        const dbOps = {
+            exercises: {
+                add: (exercise) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readwrite');
+                        const store = tx.objectStore('exercises');
+                        const req = store.add(exercise);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                update: (exercise) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readwrite');
+                        const store = tx.objectStore('exercises');
+                        const req = store.put(exercise);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                get: (id) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readonly');
+                        const store = tx.objectStore('exercises');
+                        const req = store.get(id);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                getAll: () => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readonly');
+                        const store = tx.objectStore('exercises');
+                        const req = store.getAll();
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                getByLastUsed: () => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readonly');
+                        const index = tx.objectStore('exercises').index('by-lastUsed');
+                        const req = index.getAll();
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '')));
+                    });
+                },
+                getByCategory: (category) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readonly');
+                        const index = tx.objectStore('exercises').index('by-category');
+                        const req = index.getAll(category);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                delete: (id) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readwrite');
+                        const store = tx.objectStore('exercises');
+                        const req = store.delete(id);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve();
+                    });
+                },
+            },
+            sets: {
+                add: (set) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readwrite');
+                        const store = tx.objectStore('sets');
+                        const req = store.add(set);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                update: (set) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readwrite');
+                        const store = tx.objectStore('sets');
+                        const req = store.put(set);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                delete: (id) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readwrite');
+                        const store = tx.objectStore('sets');
+                        const req = store.delete(id);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve();
+                    });
+                },
+                getByDate: (date) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readonly');
+                        const index = tx.objectStore('sets').index('by-date');
+                        const req = index.getAll(date);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result.sort((a, b) => (a.exerciseOrder - b.exerciseOrder) || (a.setOrder - b.setOrder)));
+                    });
+                },
+                getByExerciseId: (exerciseId) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readonly');
+                        const index = tx.objectStore('sets').index('by-exerciseId');
+                        const req = index.getAll(exerciseId);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
+                    });
+                },
+                getLastSession: (exerciseId) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sets', 'readonly');
+                        const index = tx.objectStore('sets').index('by-exerciseId');
+                        const req = index.getAll(exerciseId);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => {
+                            const sets = req.result.sort((a, b) => b.date.localeCompare(a.date));
+                            if (sets.length === 0) {
+                                resolve(null);
+                            } else {
+                                const lastDate = sets[0].date;
+                                const lastSets = sets.filter(s => s.date === lastDate);
+                                resolve({ date: lastDate, sets: lastSets });
+                            }
+                        };
+                    });
+                },
+            },
+            dayNotes: {
+                get: (date) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('dayNotes', 'readonly');
+                        const store = tx.objectStore('dayNotes');
+                        const req = store.get(date);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                set: (date, note) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('dayNotes', 'readwrite');
+                        const store = tx.objectStore('dayNotes');
+                        const req = store.put({ date, note });
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve();
+                    });
+                },
+                delete: (date) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('dayNotes', 'readwrite');
+                        const store = tx.objectStore('dayNotes');
+                        const req = store.delete(date);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve();
+                    });
+                },
+            },
+            templates: {
+                get: (dayOfWeek) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('templates', 'readonly');
+                        const store = tx.objectStore('templates');
+                        const req = store.get(dayOfWeek);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                set: (dayOfWeek, label) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('templates', 'readwrite');
+                        const store = tx.objectStore('templates');
+                        const req = store.put({ dayOfWeek, label });
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve();
+                    });
+                },
+                getAll: () => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('templates', 'readonly');
+                        const store = tx.objectStore('templates');
+                        const req = store.getAll();
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+            },
+        };
+
+        // ============ UTILITY FUNCTIONS ============
+
+        // Parse YYYY-MM-DD as local date (avoids UTC timezone shift on iOS Safari)
+        const parseLocalDate = (dateStr) => {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        };
+
+        const formatDate = (date) => {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const d = typeof date === 'string' ? parseLocalDate(date) : date;
+            const dayName = days[d.getDay()];
+            const month = months[d.getMonth()];
+            const day = d.getDate();
+
+            return `${dayName}, ${month} ${day}`;
+        };
+
+        const formatDateShort = (date) => {
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const d = typeof date === 'string' ? parseLocalDate(date) : date;
+            const month = months[d.getMonth()];
+            const day = d.getDate();
+            return `${month} ${day}`;
+        };
+
+        const getDateString = (date) => {
+            const d = typeof date === 'string' ? parseLocalDate(date) : date;
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        };
+
+        const getTodayString = () => {
+            return getDateString(new Date());
+        };
+
+        const addDays = (dateStr, days) => {
+            const d = typeof dateStr === 'string' ? parseLocalDate(dateStr) : new Date(dateStr);
+            d.setDate(d.getDate() + days);
+            return getDateString(d);
+        };
+
+        const formatSetDisplay = (set) => {
+            let display = `Set ${set.setOrder}: `;
+            if (set.weight !== null) {
+                display += `${set.weight} ${set.weightType === 'bodyweight' ? 'BW' : set.weightType}`;
+            } else if (set.weightType === 'bodyweight') {
+                display += 'BW';
+            } else if (set.weightType === 'banded') {
+                display += 'Banded';
+            }
+
+            if (set.reps !== null) {
+                display += ` × ${set.reps}`;
+            } else if (set.duration !== null) {
+                const mins = Math.floor(set.duration / 60);
+                const secs = set.duration % 60;
+                display += ` · ${mins}:${String(secs).padStart(2, '0')}`;
+            }
+
+            return display;
+        };
+
+        // ============ MODALS ============
+
+        const ExercisePickerModal = ({ onSelect, onCreateNew, selectedDate }) => {
+            const [search, setSearch] = useState('');
+            const [category, setCategory] = useState('all');
+            const [exercises, setExercises] = useState([]);
+            const [filtered, setFiltered] = useState([]);
+
+            useEffect(() => {
+                const loadExercises = async () => {
+                    const all = await dbOps.exercises.getByLastUsed();
+                    setExercises(all || []);
+                };
+                loadExercises();
+            }, []);
+
+            useEffect(() => {
+                let result = exercises;
+
+                if (category !== 'all') {
+                    result = result.filter(e => e.category === category);
+                }
+
+                if (search.trim()) {
+                    const q = search.toLowerCase();
+                    result = result.filter(e => e.name.toLowerCase().includes(q));
+                }
+
+                setFiltered(result);
+            }, [exercises, search, category]);
+
+            const recent = filtered.slice(0, 10);
+            const categories = ['all', 'push', 'pull', 'legs', 'core', 'cardio'];
+
+            return (
+                <div className="modal-overlay" onClick={() => onSelect(null)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Add Exercise</h2>
+                            <button className="close-btn" onClick={() => onSelect(null)}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <input
+                                type="text"
+                                className="search-input"
+                                placeholder="🔍 Search exercises..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                autoFocus
+                            />
+
+                            {recent.length > 0 && (
+                                <div className="exercise-picker-section">
+                                    <div className="section-title">Recent</div>
+                                    {recent.map(ex => (
+                                        <div
+                                            key={ex.id}
+                                            className="exercise-picker-item"
+                                            onClick={() => onSelect(ex)}
+                                        >
+                                            <div className="exercise-picker-name">{ex.name}</div>
+                                            <div className="exercise-picker-meta">
+                                                Last: {ex.lastUsed ? formatDateShort(ex.lastUsed) : 'Never'}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div>
+                                <div className="category-tabs">
+                                    {categories.map(cat => (
+                                        <button
+                                            key={cat}
+                                            className={`category-tab ${category === cat ? 'active' : ''}`}
+                                            onClick={() => setCategory(cat)}
+                                        >
+                                            {cat === 'all' ? 'All' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {search === '' && category === 'all' && recent.length === 0 && (
+                                <div style={{ textAlign: 'center', color: '#666', marginTop: 20, marginBottom: 20 }}>
+                                    No exercises yet. Create one below!
+                                </div>
+                            )}
+
+                            {search !== '' && filtered.length === 0 && (
+                                <div style={{ textAlign: 'center', color: '#666', marginTop: 20, marginBottom: 20 }}>
+                                    No exercises found
+                                </div>
+                            )}
+
+                            <button className="btn btn-secondary" onClick={onCreateNew} style={{ marginTop: 20 }}>
+                                + Create New Exercise
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CreateExerciseModal = ({ onSave, onCancel }) => {
+            const [name, setName] = useState('');
+            const [category, setCategory] = useState('push');
+            const [type, setType] = useState('reps');
+
+            const handleSave = async () => {
+                if (!name.trim()) return;
+
+                const exercise = {
+                    id: generateId('ex'),
+                    name: name.trim(),
+                    category,
+                    type,
+                    note: '',
+                    lastUsed: getTodayString(),
+                    createdAt: Date.now(),
+                };
+
+                await dbOps.exercises.add(exercise);
+                onSave(exercise);
+            };
+
+            return (
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>New Exercise</h2>
+                            <button className="close-btn" onClick={onCancel}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <div className="form-group">
+                                <label className="form-label">Exercise Name</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="E.g., Bench Press"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Category</label>
+                                <select
+                                    className="form-select"
+                                    value={category}
+                                    onChange={(e) => setCategory(e.target.value)}
+                                >
+                                    <option value="push">Push</option>
+                                    <option value="pull">Pull</option>
+                                    <option value="legs">Legs</option>
+                                    <option value="core">Core</option>
+                                    <option value="cardio">Cardio</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="form-label">Exercise Type</label>
+                                <select
+                                    className="form-select"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                >
+                                    <option value="reps">Reps</option>
+                                    <option value="timed">Timed (seconds)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                            <button className="btn" onClick={handleSave}>Create</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const LastTimeModal = ({ exercise, onLogSet, onSkip, lastSession }) => {
+            return (
+                <div className="modal-overlay" onClick={onSkip}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>{exercise.name}</h2>
+                            <button className="close-btn" onClick={onSkip}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            {lastSession ? (
+                                <>
+                                    <div className="last-time-section">
+                                        <div className="last-time-label">Last Session — {formatDateShort(lastSession.date)}</div>
+                                        {lastSession.sets.map((set, idx) => (
+                                            <div key={idx} className="last-time-set">
+                                                {formatSetDisplay(set)}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="last-time-section">
+                                    <div className="last-time-label">First Time</div>
+                                    <div className="last-time-set">No previous data</div>
+                                </div>
+                            )}
+
+                            {exercise.note && (
+                                <div className="last-time-section">
+                                    <div className="last-time-label">Form Cue</div>
+                                    <div className="last-time-set">{exercise.note}</div>
+                                </div>
+                            )}
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" onClick={onSkip}>Cancel</button>
+                            <button className="btn" onClick={onLogSet}>Log a Set →</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const WeightPickerModal = ({ exercise, lastSession, onSelectWeight, selectedDate, previousWeight }) => {
+            const [weight, setWeight] = useState(previousWeight || 45);
+            const [weightType, setWeightType] = useState('lbs');
+
+            const commonWeights = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 145, 155, 165, 175, 185, 195, 205, 215, 225];
+
+            // Get unique weights from history
+            const getYourWeights = () => {
+                const allSets = lastSession ? lastSession.sets : [];
+                const weights = new Map();
+                allSets.forEach(s => {
+                    if (s.weight && s.weightType === 'lbs') {
+                        weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
+                    }
+                });
+                return Array.from(weights.entries())
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(w => w[0]);
+            };
+
+            const yourWeights = getYourWeights();
+            const lastWeights = lastSession ? lastSession.sets.slice(0, 3).map(s => s.weight).filter(Boolean) : [];
+
+            return (
+                <div className="modal-overlay" onClick={() => onSelectWeight(null)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div>
+                                <h2>{exercise.name} — Set 1</h2>
+                                {lastWeights.length > 0 && (
+                                    <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                                        Last: {lastWeights.join(', ')}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="modal-content">
+                            {yourWeights.length > 0 && (
+                                <div className="exercise-picker-section">
+                                    <div className="section-title">Your Weights</div>
+                                    <div className="weight-grid" style={{ gridTemplateColumns: `repeat(${yourWeights.length}, 1fr)` }}>
+                                        {yourWeights.map(w => (
+                                            <button
+                                                key={w}
+                                                className="weight-btn"
+                                                onClick={() => onSelectWeight({ weight: w, weightType: 'lbs' })}
+                                            >
+                                                {w}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="exercise-picker-section">
+                                <div className="section-title">Common</div>
+                                <div className="weight-grid">
+                                    {commonWeights.map(w => (
+                                        <button
+                                            key={w}
+                                            className="weight-btn"
+                                            onClick={() => onSelectWeight({ weight: w, weightType: 'lbs' })}
+                                        >
+                                            {w}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div style={{ marginBottom: '16px' }}>
+                                <div className="weight-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                                    <button
+                                        className="weight-btn special"
+                                        onClick={() => onSelectWeight({ weight: null, weightType: 'bodyweight' })}
+                                    >
+                                        BW
+                                    </button>
+                                    <button
+                                        className="weight-btn special"
+                                        onClick={() => onSelectWeight({ weight: null, weightType: 'banded' })}
+                                    >
+                                        Banded
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="form-label">Manual Entry</label>
+                                <div className="stepper-container">
+                                    <button
+                                        className="stepper-btn"
+                                        onClick={() => setWeight(Math.max(0, weight - 5))}
+                                    >
+                                        −5
+                                    </button>
+                                    <input
+                                        type="number"
+                                        className="stepper-input"
+                                        value={weight}
+                                        onChange={(e) => setWeight(parseInt(e.target.value) || 0)}
+                                    />
+                                    <button
+                                        className="stepper-btn"
+                                        onClick={() => setWeight(weight + 5)}
+                                    >
+                                        +5
+                                    </button>
+                                </div>
+                                <button
+                                    className="btn"
+                                    onClick={() => onSelectWeight({ weight, weightType: 'lbs' })}
+                                >
+                                    Select {weight} lbs
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const RepPickerModal = ({ exercise, weight, weightType, onSelectReps }) => {
+            const reps = Array.from({ length: 20 }, (_, i) => i + 1);
+
+            const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? 'Banded' : `${weight} ${weightType}`;
+
+            return (
+                <div className="modal-overlay" onClick={() => onSelectReps(null)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div>
+                                <h2>{exercise.name} — Set 1</h2>
+                                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                                    Weight: {displayWeight}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-content">
+                            <div className="rep-grid">
+                                {reps.map(r => (
+                                    <button
+                                        key={r}
+                                        className="rep-btn"
+                                        onClick={() => onSelectReps(r)}
+                                    >
+                                        {r}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const TimedDurationModal = ({ exercise, weight, weightType, onSelectDuration }) => {
+            const [time, setTime] = useState(0);
+            const [isRunning, setIsRunning] = useState(false);
+            const intervalRef = useRef(null);
+
+            useEffect(() => {
+                if (isRunning) {
+                    intervalRef.current = setInterval(() => {
+                        setTime(t => t + 1);
+                    }, 1000);
+                } else {
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current);
+                    }
+                }
+
+                return () => {
+                    if (intervalRef.current) {
+                        clearInterval(intervalRef.current);
+                    }
+                };
+            }, [isRunning]);
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${String(secs).padStart(2, '0')}`;
+            };
+
+            const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? 'Banded' : `${weight} ${weightType}`;
+
+            const quickDurations = [30, 60, 90, 120, 150, 180, 240, 300];
+
+            return (
+                <div className="modal-overlay" onClick={() => onSelectDuration(null)}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div>
+                                <h2>{exercise.name} — Set 1</h2>
+                                <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
+                                    Weight: {displayWeight}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-content">
+                            <div className="timer-display">
+                                <div className="timer-value">{formatTime(time)}</div>
+                            </div>
+
+                            <button
+                                className={isRunning ? 'btn btn-danger' : 'btn'}
+                                onClick={() => {
+                                    if (isRunning) {
+                                        setIsRunning(false);
+                                    } else {
+                                        setIsRunning(true);
+                                    }
+                                }}
+                            >
+                                {isRunning ? 'STOP' : 'START'}
+                            </button>
+
+                            {time > 0 && (
+                                <button
+                                    className="btn"
+                                    onClick={() => onSelectDuration(time)}
+                                    style={{ marginTop: '8px' }}
+                                >
+                                    Save {formatTime(time)}
+                                </button>
+                            )}
+
+                            <div style={{ textAlign: 'center', margin: '20px 0', fontSize: '12px', color: '#666' }}>
+                                — OR ENTER MANUALLY —
+                            </div>
+
+                            <div className="duration-grid">
+                                {quickDurations.map(d => (
+                                    <button
+                                        key={d}
+                                        className="duration-btn"
+                                        onClick={() => onSelectDuration(d)}
+                                    >
+                                        {Math.floor(d / 60)}:{String(d % 60).padStart(2, '0')}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ExerciseMenuModal = ({ exercise, onClose, onDelete, onEditNote, onViewHistory }) => {
+            return (
+                <div className="context-menu" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                    <div className="context-menu-item" onClick={() => { onViewHistory(); onClose(); }}>
+                        View History
+                    </div>
+                    <div className="context-menu-item" onClick={() => { onEditNote(); onClose(); }}>
+                        Edit Note
+                    </div>
+                    <div className="context-menu-item danger" onClick={() => { onDelete(); onClose(); }}>
+                        Delete Exercise
+                    </div>
+                </div>
+            );
+        };
+
+        const EditNoteModal = ({ exercise, onSave, onCancel }) => {
+            const [note, setNote] = useState(exercise.note || '');
+
+            const handleSave = async () => {
+                exercise.note = note;
+                await dbOps.exercises.update(exercise);
+                onSave();
+            };
+
+            return (
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Edit Note</h2>
+                            <button className="close-btn" onClick={onCancel}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <div className="form-group">
+                                <label className="form-label">Form Cue for {exercise.name}</label>
+                                <textarea
+                                    className="form-input"
+                                    placeholder="E.g., Keep elbows at 45 degrees"
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    autoFocus
+                                    style={{ minHeight: '100px', fontFamily: 'inherit' }}
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                            <button className="btn" onClick={handleSave}>Save</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const HistoryModal = ({ exercise, onClose }) => {
+            const [history, setHistory] = useState([]);
+
+            useEffect(() => {
+                const loadHistory = async () => {
+                    const sets = await dbOps.sets.getByExerciseId(exercise.id);
+                    const grouped = {};
+                    sets.forEach(set => {
+                        if (!grouped[set.date]) {
+                            grouped[set.date] = [];
+                        }
+                        grouped[set.date].push(set);
+                    });
+
+                    const dates = Object.keys(grouped).sort().reverse();
+                    setHistory(dates.map(date => ({ date, sets: grouped[date] })));
+                };
+                loadHistory();
+            }, [exercise]);
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>{exercise.name} History</h2>
+                            <button className="close-btn" onClick={onClose}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            {history.length === 0 ? (
+                                <div style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
+                                    No history yet
+                                </div>
+                            ) : (
+                                history.map((session, idx) => (
+                                    <div key={idx}>
+                                        <div className="history-date">{formatDateShort(session.date)}</div>
+                                        <div className="history-sets">
+                                            {session.sets.map((s, sidx) => (
+                                                <div key={sidx}>
+                                                    {formatSetDisplay(s)}{sidx < session.sets.length - 1 ? ' · ' : ''}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const SettingsModal = ({ onClose }) => {
+            const [activeTab, setActiveTab] = useState('template');
+            const [templates, setTemplates] = useState({});
+            const [weeklyLabels, setWeeklyLabels] = useState({
+                0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
+            });
+
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            useEffect(() => {
+                if (activeTab === 'template') {
+                    const loadTemplates = async () => {
+                        const temps = await dbOps.templates.getAll();
+                        const labels = { 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '' };
+                        temps.forEach(t => {
+                            labels[t.dayOfWeek] = t.label || '';
+                        });
+                        setWeeklyLabels(labels);
+                    };
+                    loadTemplates();
+                }
+            }, [activeTab]);
+
+            const handleSaveTemplate = async () => {
+                for (let i = 0; i < 7; i++) {
+                    await dbOps.templates.set(i, weeklyLabels[i]);
+                }
+                onClose();
+            };
+
+            const handleExport = async () => {
+                const allExercises = await dbOps.exercises.getAll();
+                const allSets = [];
+                const tx = db.transaction('sets', 'readonly');
+                await new Promise((resolve) => {
+                    const req = tx.objectStore('sets').getAll();
+                    req.onsuccess = () => {
+                        allSets.push(...req.result);
+                        resolve();
+                    };
+                });
+
+                let csv = 'Date,Exercise,Set,Weight,WeightType,Reps,Duration\n';
+                allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder)
+                    .forEach(set => {
+                        const weightStr = set.weight !== null ? set.weight : '';
+                        const repsStr = set.reps !== null ? set.reps : '';
+                        const durationStr = set.duration !== null ? set.duration : '';
+                        csv += `${set.date},${set.exerciseName},${set.setOrder},${weightStr},${set.weightType},${repsStr},${durationStr}\n`;
+                    });
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `fitness-export-${getTodayString()}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            const handleImport = async () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.csv';
+                input.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const text = await file.text();
+                    const lines = text.split('\n').slice(1).filter(l => l.trim());
+
+                    // Parse and import
+                    for (const line of lines) {
+                        const [date, exerciseName, setNum, weight, weightType, reps, duration] = line.split(',');
+                        if (!date) continue;
+
+                        // Check if exercise exists, if not create it
+                        let exercise = null;
+                        const allEx = await dbOps.exercises.getAll();
+                        exercise = allEx.find(e => e.name === exerciseName);
+
+                        if (!exercise) {
+                            exercise = {
+                                id: generateId('ex'),
+                                name: exerciseName,
+                                category: 'push',
+                                type: reps ? 'reps' : 'timed',
+                                note: '',
+                                lastUsed: date,
+                                createdAt: Date.now(),
+                            };
+                            await dbOps.exercises.add(exercise);
+                        }
+
+                        // Get next order numbers
+                        const daySets = await dbOps.sets.getByDate(date);
+                        const exerciseOrderNum = Math.max(...daySets.filter(s => s.exerciseId === exercise.id).map(s => s.exerciseOrder), 0) + 1 || (Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1);
+                        const setOrderNum = parseInt(setNum) || 1;
+
+                        const set = {
+                            id: generateId('set'),
+                            date,
+                            exerciseId: exercise.id,
+                            exerciseName: exercise.name,
+                            exerciseOrder: exerciseOrderNum,
+                            setOrder: setOrderNum,
+                            weight: weight ? parseInt(weight) : null,
+                            weightType: weightType || 'lbs',
+                            reps: reps ? parseInt(reps) : null,
+                            duration: duration ? parseInt(duration) : null,
+                            createdAt: Date.now(),
+                        };
+
+                        await dbOps.sets.add(set);
+                    }
+
+                    onClose();
+                };
+                input.click();
+            };
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Settings</h2>
+                            <button className="close-btn" onClick={onClose}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <div className="category-tabs">
+                                <button
+                                    className={`category-tab ${activeTab === 'template' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('template')}
+                                >
+                                    Template
+                                </button>
+                                <button
+                                    className={`category-tab ${activeTab === 'data' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('data')}
+                                >
+                                    Data
+                                </button>
+                            </div>
+
+                            {activeTab === 'template' && (
+                                <>
+                                    {dayNames.map((day, idx) => (
+                                        <div key={idx} className="form-group">
+                                            <label className="form-label">{day}</label>
+                                            <input
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="E.g., Push Day"
+                                                value={weeklyLabels[idx]}
+                                                onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
+                                            />
+                                        </div>
+                                    ))}
+                                    <button className="btn" onClick={handleSaveTemplate}>Save Template</button>
+                                </>
+                            )}
+
+                            {activeTab === 'data' && (
+                                <>
+                                    <button className="btn" onClick={handleExport}>Export Data to CSV</button>
+                                    <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }}>Import Data from CSV</button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ConfirmationDialog = ({ title, message, onConfirm, onCancel }) => {
+            return (
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="confirmation-dialog" onClick={(e) => e.stopPropagation()}>
+                        <div className="confirmation-title">{title}</div>
+                        <div className="confirmation-message">{message}</div>
+                        <div className="confirmation-buttons">
+                            <button className="btn-cancel" onClick={onCancel}>Cancel</button>
+                            <button className="btn-confirm" onClick={onConfirm}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // ============ MAIN APP ============
+
+        function App() {
+            const [currentDate, setCurrentDate] = useState(getTodayString());
+            const [daySets, setDaySets] = useState([]);
+            const [dayLabel, setDayLabel] = useState('');
+            const [modal, setModal] = useState(null);
+            const [selectedExercise, setSelectedExercise] = useState(null);
+            const [lastSession, setLastSession] = useState(null);
+            const [selectedWeight, setSelectedWeight] = useState(null);
+            const [previousWeight, setPreviousWeight] = useState(null);
+            const [loggedSetCount, setLoggedSetCount] = useState(0);
+            const [confirmation, setConfirmation] = useState(null);
+
+            // Load day data
+            const loadDayData = useCallback(async () => {
+                const sets = await dbOps.sets.getByDate(currentDate);
+                setDaySets(sets);
+
+                const d = parseLocalDate(currentDate);
+                const dayOfWeek = d.getDay();
+                const template = await dbOps.templates.get(dayOfWeek);
+                setDayLabel(template?.label || '');
+            }, [currentDate]);
+
+            useEffect(() => {
+                initDB().then(() => loadDayData());
+            }, [currentDate, loadDayData]);
+
+            const handleExerciseSelect = async (exercise) => {
+                if (!exercise) {
+                    setModal(null);
+                    return;
+                }
+
+                setSelectedExercise(exercise);
+                const last = await dbOps.sets.getLastSession(exercise.id);
+                setLastSession(last);
+                setModal('lastTime');
+            };
+
+            const handleCreateExercise = async (exercise) => {
+                setSelectedExercise(exercise);
+                const last = await dbOps.sets.getLastSession(exercise.id);
+                setLastSession(last);
+                setModal('lastTime');
+            };
+
+            const handleLogSet = async () => {
+                setModal('weightPicker');
+
+                // Get previous weight for pre-highlighting
+                const lastSets = await dbOps.sets.getByDate(currentDate);
+                const lastSetForExercise = lastSets
+                    .filter(s => s.exerciseId === selectedExercise.id)
+                    .sort((a, b) => b.setOrder - a.setOrder)[0];
+
+                setPreviousWeight(lastSetForExercise?.weight || null);
+            };
+
+            const handleWeightSelected = async (weightData) => {
+                if (!weightData) {
+                    setModal('lastTime');
+                    return;
+                }
+
+                setSelectedWeight(weightData);
+
+                if (selectedExercise.type === 'timed') {
+                    setModal('timedDuration');
+                } else {
+                    setModal('repPicker');
+                }
+            };
+
+            const handleRepsSelected = async (reps) => {
+                if (reps === null) {
+                    setModal('weightPicker');
+                    return;
+                }
+
+                // Get exercise order
+                const daySets = await dbOps.sets.getByDate(currentDate);
+                let exerciseOrder = 1;
+                const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
+                if (existingExercise.length === 0) {
+                    exerciseOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
+                } else {
+                    exerciseOrder = existingExercise[0].exerciseOrder;
+                }
+
+                const setOrder = existingExercise.length + 1;
+
+                const set = {
+                    id: generateId('set'),
+                    date: currentDate,
+                    exerciseId: selectedExercise.id,
+                    exerciseName: selectedExercise.name,
+                    exerciseOrder,
+                    setOrder,
+                    weight: selectedWeight.weight,
+                    weightType: selectedWeight.weightType,
+                    reps,
+                    duration: null,
+                    createdAt: Date.now(),
+                };
+
+                await dbOps.sets.add(set);
+
+                // Update lastUsed
+                selectedExercise.lastUsed = currentDate;
+                await dbOps.exercises.update(selectedExercise);
+
+                setLoggedSetCount(loggedSetCount + 1);
+                setModal(null);
+                setSelectedExercise(null);
+                setSelectedWeight(null);
+                setPreviousWeight(null);
+
+                await loadDayData();
+            };
+
+            const handleDurationSelected = async (duration) => {
+                if (duration === null) {
+                    setModal('timedDuration');
+                    return;
+                }
+
+                // Get exercise order
+                const daySets = await dbOps.sets.getByDate(currentDate);
+                let exerciseOrder = 1;
+                const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
+                if (existingExercise.length === 0) {
+                    exerciseOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
+                } else {
+                    exerciseOrder = existingExercise[0].exerciseOrder;
+                }
+
+                const setOrder = existingExercise.length + 1;
+
+                const set = {
+                    id: generateId('set'),
+                    date: currentDate,
+                    exerciseId: selectedExercise.id,
+                    exerciseName: selectedExercise.name,
+                    exerciseOrder,
+                    setOrder,
+                    weight: selectedWeight.weight || null,
+                    weightType: selectedWeight.weightType,
+                    reps: null,
+                    duration,
+                    createdAt: Date.now(),
+                };
+
+                await dbOps.sets.add(set);
+
+                // Update lastUsed
+                selectedExercise.lastUsed = currentDate;
+                await dbOps.exercises.update(selectedExercise);
+
+                setLoggedSetCount(loggedSetCount + 1);
+                setModal(null);
+                setSelectedExercise(null);
+                setSelectedWeight(null);
+                setPreviousWeight(null);
+
+                await loadDayData();
+            };
+
+            const handleDeleteSet = async (setId) => {
+                await dbOps.sets.delete(setId);
+                await loadDayData();
+            };
+
+            const handleEditSet = async (set) => {
+                setSelectedExercise(await dbOps.exercises.get(set.exerciseId));
+                setSelectedWeight({
+                    weight: set.weight,
+                    weightType: set.weightType,
+                });
+
+                if (set.reps) {
+                    setModal('repPicker');
+                } else {
+                    setModal('timedDuration');
+                }
+            };
+
+            const handleDeleteExercise = (exercise) => {
+                setConfirmation({
+                    title: `Delete ${exercise.name}?`,
+                    message: `Remove ${exercise.name} and all its sets from today?`,
+                    onConfirm: async () => {
+                        const daySets = await dbOps.sets.getByDate(currentDate);
+                        const toDelete = daySets.filter(s => s.exerciseId === exercise.id);
+                        for (const set of toDelete) {
+                            await dbOps.sets.delete(set.id);
+                        }
+                        setConfirmation(null);
+                        await loadDayData();
+                    },
+                    onCancel: () => setConfirmation(null),
+                });
+            };
+
+            const handleMenuClick = (exercise, action) => {
+                if (action === 'delete') {
+                    handleDeleteExercise(exercise);
+                } else if (action === 'editNote') {
+                    setSelectedExercise(exercise);
+                    setModal('editNote');
+                } else if (action === 'viewHistory') {
+                    setSelectedExercise(exercise);
+                    setModal('history');
+                }
+            };
+
+            // Group sets by exercise
+            const groupedExercises = {};
+            daySets.forEach(set => {
+                if (!groupedExercises[set.exerciseId]) {
+                    groupedExercises[set.exerciseId] = {
+                        exerciseId: set.exerciseId,
+                        exerciseName: set.exerciseName,
+                        sets: [],
+                    };
+                }
+                groupedExercises[set.exerciseId].sets.push(set);
+            });
+
+            const exercises = Object.values(groupedExercises).sort((a, b) => {
+                const aOrder = a.sets[0]?.exerciseOrder || 0;
+                const bOrder = b.sets[0]?.exerciseOrder || 0;
+                return aOrder - bOrder;
+            });
+
+            return (
+                <div className="app-container">
+                    <div className="top-nav">
+                        <div className="nav-title">Fitness Tracker</div>
+                        <button className="settings-btn" onClick={() => setModal('settings')}>⚙️</button>
+                    </div>
+
+                    <div className="day-nav">
+                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, -1))}>◀</button>
+                        <div className="day-display">
+                            <div className="day-date">{formatDate(currentDate)}</div>
+                            {dayLabel && <div className="day-label">{dayLabel}</div>}
+                        </div>
+                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, 1))}>▶</button>
+                    </div>
+
+                    <div className="content">
+                        <div className="content-padding">
+                            {exercises.length === 0 ? (
+                                <div className="empty-state">
+                                    {currentDate === getTodayString() ? (
+                                        <>No exercises logged yet today.</>
+                                    ) : (
+                                        <>No exercises on this day.</>
+                                    )}
+                                </div>
+                            ) : (
+                                exercises.map((exercise) => (
+                                    <div key={exercise.exerciseId} className="exercise-group">
+                                        <div className="exercise-header">
+                                            <div className="exercise-name">{exercise.exerciseName}</div>
+                                            <button
+                                                className="exercise-menu-btn"
+                                                onClick={() => setModal(`menu-${exercise.exerciseId}`)}
+                                            >
+                                                ···
+                                            </button>
+                                        </div>
+                                        <div className="set-list">
+                                            {exercise.sets.map((set) => (
+                                                <div key={set.id} className="set-item">
+                                                    <div className="set-text" onClick={() => handleEditSet(set)}>
+                                                        {formatSetDisplay(set)}
+                                                    </div>
+                                                    <button
+                                                        className="set-delete-btn"
+                                                        onClick={() => handleDeleteSet(set.id)}
+                                                    >
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <button
+                                            className="btn btn-add-set"
+                                            onClick={() => {
+                                                setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
+                                                if (exercise.sets[0]) {
+                                                    setPreviousWeight(exercise.sets[exercise.sets.length - 1]?.weight || null);
+                                                    setModal('weightPicker');
+                                                }
+                                            }}
+                                        >
+                                            + Add Set
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+
+                            <button className="btn" onClick={() => setModal('exercisePicker')}>
+                                + Add Exercise
+                            </button>
+                        </div>
+                    </div>
+
+                    {modal === 'exercisePicker' && (
+                        <ExercisePickerModal
+                            onSelect={handleExerciseSelect}
+                            onCreateNew={() => {
+                                setModal('createExercise');
+                            }}
+                            selectedDate={currentDate}
+                        />
+                    )}
+
+                    {modal === 'createExercise' && (
+                        <CreateExerciseModal
+                            onSave={handleCreateExercise}
+                            onCancel={() => setModal('exercisePicker')}
+                        />
+                    )}
+
+                    {modal === 'lastTime' && selectedExercise && (
+                        <LastTimeModal
+                            exercise={selectedExercise}
+                            onLogSet={handleLogSet}
+                            onSkip={() => {
+                                setModal('exercisePicker');
+                                setSelectedExercise(null);
+                            }}
+                            lastSession={lastSession}
+                        />
+                    )}
+
+                    {modal === 'weightPicker' && selectedExercise && (
+                        <WeightPickerModal
+                            exercise={selectedExercise}
+                            lastSession={lastSession}
+                            onSelectWeight={handleWeightSelected}
+                            selectedDate={currentDate}
+                            previousWeight={previousWeight}
+                        />
+                    )}
+
+                    {modal === 'repPicker' && selectedExercise && selectedWeight && (
+                        <RepPickerModal
+                            exercise={selectedExercise}
+                            weight={selectedWeight.weight}
+                            weightType={selectedWeight.weightType}
+                            onSelectReps={handleRepsSelected}
+                        />
+                    )}
+
+                    {modal === 'timedDuration' && selectedExercise && selectedWeight && (
+                        <TimedDurationModal
+                            exercise={selectedExercise}
+                            weight={selectedWeight.weight}
+                            weightType={selectedWeight.weightType}
+                            onSelectDuration={handleDurationSelected}
+                        />
+                    )}
+
+                    {modal === 'settings' && (
+                        <SettingsModal onClose={() => setModal(null)} />
+                    )}
+
+                    {modal === 'editNote' && selectedExercise && (
+                        <EditNoteModal
+                            exercise={selectedExercise}
+                            onSave={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                                loadDayData();
+                            }}
+                            onCancel={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                            }}
+                        />
+                    )}
+
+                    {modal === 'history' && selectedExercise && (
+                        <HistoryModal
+                            exercise={selectedExercise}
+                            onClose={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                            }}
+                        />
+                    )}
+
+                    {modal?.startsWith('menu-') && selectedExercise === null && (
+                        (() => {
+                            const exerciseId = modal.replace('menu-', '');
+                            const exercise = exercises.find(e => e.exerciseId === exerciseId);
+                            if (exercise) {
+                                return (
+                                    <div className="modal-overlay" onClick={() => setModal(null)}>
+                                        <div className="context-menu" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px' }}>
+                                            <div
+                                                className="context-menu-item"
+                                                onClick={() => {
+                                                    setSelectedExercise({ id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' });
+                                                    setModal('history');
+                                                }}
+                                            >
+                                                View History
+                                            </div>
+                                            <div
+                                                className="context-menu-item"
+                                                onClick={async () => {
+                                                    const ex = await dbOps.exercises.get(exercise.exerciseId);
+                                                    setSelectedExercise(ex);
+                                                    setModal('editNote');
+                                                }}
+                                            >
+                                                Edit Note
+                                            </div>
+                                            <div
+                                                className="context-menu-item danger"
+                                                onClick={() => {
+                                                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                                                        handleDeleteExercise(ex);
+                                                        setModal(null);
+                                                    });
+                                                }}
+                                            >
+                                                Delete Exercise
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        })()
+                    )}
+
+                    {confirmation && (
+                        <ConfirmationDialog
+                            title={confirmation.title}
+                            message={confirmation.message}
+                            onConfirm={confirmation.onConfirm}
+                            onCancel={confirmation.onCancel}
+                        />
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
