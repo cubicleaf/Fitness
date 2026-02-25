@@ -222,7 +222,8 @@
 
         /* Exercise List */
         .exercise-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
+            position: relative;
         }
 
         .exercise-header {
@@ -1507,14 +1508,14 @@
                 <div className="modal-overlay" onClick={() => onSelect(null)}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>Add Exercise</h2>
+                            <h2>Add Activity</h2>
                             <button className="close-btn" onClick={() => onSelect(null)}>✕</button>
                         </div>
                         <div className="modal-content">
                             <input
                                 type="text"
                                 className="search-input"
-                                placeholder="🔍 Search exercises..."
+                                placeholder="🔍 Search activities..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -1542,7 +1543,7 @@
 
                             {filtered.length > 0 ? (
                                 <div className="exercise-picker-section">
-                                    <div className="section-title">{category === 'all' ? 'All Exercises' : category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                                    <div className="section-title">{category === 'all' ? 'All Activities' : category.charAt(0).toUpperCase() + category.slice(1)}</div>
                                     {filtered.map(ex => (
                                         <div
                                             key={ex.id}
@@ -1559,12 +1560,12 @@
                                 </div>
                             ) : (
                                 <div style={{ textAlign: 'center', color: '#666', marginTop: 20, marginBottom: 20 }}>
-                                    {search ? 'No exercises found' : 'No exercises yet. Create one below!'}
+                                    {search ? 'No activities found' : 'No activities yet. Create one below!'}
                                 </div>
                             )}
 
                             <button className="btn btn-secondary" onClick={onCreateNew} style={{ marginTop: 20 }}>
-                                + Create New Exercise
+                                + Create New Activity
                             </button>
                         </div>
                     </div>
@@ -1598,7 +1599,7 @@
                 <div className="modal-overlay" onClick={onCancel}>
                     <div className="modal" style={{ maxHeight: '100vh' }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>New Exercise</h2>
+                            <h2>New Activity</h2>
                             <button className="close-btn" onClick={onCancel}>✕</button>
                         </div>
                         <div className="modal-content">
@@ -1607,7 +1608,7 @@
                                 onClick={handleSave}
                                 style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '20px' }}
                             >
-                                Create Exercise
+                                Create Activity
                             </button>
 
                             <div className="form-group">
@@ -1626,7 +1627,7 @@
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Exercise Name</label>
+                                <label className="form-label">Activity Name</label>
                                 <input
                                     type="text"
                                     className="form-input"
@@ -1689,73 +1690,31 @@
             );
         };
 
-        const LastTimeModal = ({ exercise, onLogSet, onSkip, lastSession }) => {
-            return (
-                <div className="modal-overlay" onClick={onSkip}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
-                            <h2>{exercise.name}</h2>
-                            <button className="close-btn" onClick={onSkip}>✕</button>
-                        </div>
-                        <div className="modal-content">
-                            {lastSession ? (
-                                <>
-                                    <div className="last-time-section">
-                                        <div className="last-time-label">Last Session — {formatDateShort(lastSession.date)}</div>
-                                        {lastSession.sets.map((set, idx) => (
-                                            <div key={idx} className="last-time-set">
-                                                {formatSetDisplay(set)}
-                                            </div>
-                                        ))}
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="last-time-section">
-                                    <div className="last-time-label">First Time</div>
-                                    <div className="last-time-set">No previous data</div>
-                                </div>
-                            )}
-
-                            {exercise.note && (
-                                <div className="last-time-section">
-                                    <div className="last-time-label">Form Cue</div>
-                                    <div className="last-time-set">{exercise.note}</div>
-                                </div>
-                            )}
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-secondary" onClick={onSkip}>Cancel</button>
-                            <button className="btn" onClick={onLogSet}>Log a Set →</button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const WeightPickerModal = ({ exercise, lastSession, onSelectWeight, selectedDate, previousWeight, setNumber }) => {
+        const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWeight, setNumber }) => {
             const [weight, setWeight] = useState(previousWeight || 45);
             const [weightType, setWeightType] = useState('lbs');
             const [showBandedColors, setShowBandedColors] = useState(false);
             const [selectedBandColor, setSelectedBandColor] = useState(null);
             const [bandedCustomName, setBandedCustomName] = useState('');
+            const [yourWeights, setYourWeights] = useState([]);
 
             const commonWeights = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
 
-            const getYourWeights = () => {
-                const allSets = lastSession ? lastSession.sets : [];
-                const weights = new Map();
-                allSets.forEach(s => {
-                    if (s.weight && s.weightType === 'lbs') {
-                        weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
+            useEffect(() => {
+                const loadWeights = async () => {
+                    const lastSession = await dbOps.sets.getLastSession(exercise.id);
+                    if (lastSession) {
+                        const weights = new Map();
+                        lastSession.sets.forEach(s => {
+                            if (s.weight && s.weightType === 'lbs') {
+                                weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
+                            }
+                        });
+                        setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
                     }
-                });
-                return Array.from(weights.entries())
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5)
-                    .map(w => w[0]);
-            };
-
-            const yourWeights = getYourWeights();
+                };
+                loadWeights();
+            }, [exercise]);
 
             return (
                 <div className="modal-overlay" onClick={() => onSelectWeight(null)}>
@@ -2145,7 +2104,7 @@
             );
         };
 
-        const HistoryModal = ({ exercise, onClose }) => {
+        const HistoryModal = ({ exercise, onClose, onLogSet }) => {
             const [history, setHistory] = useState([]);
             const [sessionNotes, setSessionNotes] = useState({});
 
@@ -2175,13 +2134,23 @@
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>{exercise.name} History</h2>
+                            <h2>{exercise.name}{onLogSet ? '' : ' History'}</h2>
                             <button className="close-btn" onClick={onClose}>✕</button>
                         </div>
                         <div className="modal-content">
+                            {onLogSet && (
+                                <button className="btn" onClick={onLogSet} style={{ marginBottom: '16px' }}>
+                                    Log a Set →
+                                </button>
+                            )}
+                            {exercise.note && (
+                                <div style={{ marginBottom: '12px', padding: '8px 12px', background: 'rgba(139, 58, 98, 0.08)', borderRadius: '8px', fontSize: '13px', color: '#c77da0' }}>
+                                    <strong>Form Cue:</strong> {exercise.note}
+                                </div>
+                            )}
                             {history.length === 0 ? (
                                 <div style={{ textAlign: 'center', color: '#666', marginTop: 20 }}>
-                                    No history yet
+                                    {onLogSet ? 'First time — no history yet' : 'No history yet'}
                                 </div>
                             ) : (
                                 history.map((session, idx) => {
@@ -2269,6 +2238,21 @@
                     };
                 });
 
+                // Load all session notes for export
+                const allSessionNotes = [];
+                const snTx = db.transaction('sessionNotes', 'readonly');
+                await new Promise((resolve) => {
+                    const req = snTx.objectStore('sessionNotes').getAll();
+                    req.onsuccess = () => {
+                        allSessionNotes.push(...req.result);
+                        resolve();
+                    };
+                });
+                const noteMap = {};
+                allSessionNotes.forEach(sn => {
+                    noteMap[`${sn.exerciseId}_${sn.date}`] = sn;
+                });
+
                 let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n';
                 allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder)
                     .forEach(set => {
@@ -2276,8 +2260,23 @@
                         const weightStr = set.weight !== null ? set.weight : '';
                         const repsStr = set.reps !== null ? set.reps : '';
                         const durationStr = set.duration !== null ? set.duration : '';
-                        const noteStr = set.bandedColor || '';
-                        csv += `${set.date},${set.exerciseName},${ex.category || ''},${ex.type || ''},${set.setOrder},${weightStr},${set.weightType},${repsStr},${durationStr},${noteStr}\n`;
+                        let noteStr = '';
+                        if (set.weightType === 'banded' && set.bandedColor) {
+                            noteStr = set.bandedColor;
+                        } else if (set.setOrder === 1) {
+                            // Include session notes on set 1 for round-trip fidelity
+                            const sn = noteMap[`${set.exerciseId}_${set.date}`];
+                            if (sn) {
+                                const parts = [];
+                                if (sn.tags) sn.tags.forEach(t => parts.push(t));
+                                if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
+                                if (sn.freeText) parts.push(`General:${sn.freeText}`);
+                                noteStr = parts.join('|');
+                            }
+                        }
+                        // Quote note field if it contains commas
+                        const noteField = noteStr.includes(',') ? `"${noteStr.replace(/"/g, '""')}"` : noteStr;
+                        csv += `${set.date},${set.exerciseName},${ex.category || ''},${ex.type || ''},${set.setOrder},${weightStr},${set.weightType},${repsStr},${durationStr},${noteField}\n`;
                     });
 
                 const blob = new Blob([csv], { type: 'text/csv' });
@@ -2433,7 +2432,7 @@
                     }
 
                     // PHASE 3: Write exercises to DB (batch transaction)
-                    setImportStatus('Writing exercises...');
+                    setImportStatus('Writing activities...');
                     const exercisesToWrite = Array.from(exerciseMap.values());
                     await new Promise((resolve, reject) => {
                         const tx = db.transaction('exercises', 'readwrite');
@@ -2507,7 +2506,7 @@
                         });
                     }
 
-                    setImportStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} exercises.`);
+                    setImportStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} activities.`);
 
                     // Wait briefly for UI to show success, then reload
                     await new Promise(r => setTimeout(r, 1000));
@@ -2713,7 +2712,6 @@
             const [dayLabel, setDayLabel] = useState('');
             const [modal, setModal] = useState(null);
             const [selectedExercise, setSelectedExercise] = useState(null);
-            const [lastSession, setLastSession] = useState(null);
             const [selectedWeight, setSelectedWeight] = useState(null);
             const [previousWeight, setPreviousWeight] = useState(null);
             const [loggedSetCount, setLoggedSetCount] = useState(0);
@@ -2722,6 +2720,31 @@
             const [selectedSetForEdit, setSelectedSetForEdit] = useState(null);
             const [setNumber, setSetNumber] = useState(1);
             const [categories, setCategories] = useState(['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'other']);
+            const touchRef = useRef(null);
+            const contentRef = useRef(null);
+
+            const handleTouchStart = useCallback((e) => {
+                if (modal) return; // Don't swipe when a modal is open
+                const touch = e.touches[0];
+                touchRef.current = { startX: touch.clientX, startY: touch.clientY, startTime: Date.now() };
+            }, [modal]);
+
+            const handleTouchEnd = useCallback((e) => {
+                if (!touchRef.current || modal) return;
+                const touch = e.changedTouches[0];
+                const dx = touch.clientX - touchRef.current.startX;
+                const dy = touch.clientY - touchRef.current.startY;
+                const dt = Date.now() - touchRef.current.startTime;
+                touchRef.current = null;
+                // Require: horizontal distance > 60px, mostly horizontal (2:1 ratio), under 400ms
+                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 2 && dt < 400) {
+                    if (dx > 0) {
+                        setCurrentDate(prev => addDays(prev, -1)); // swipe right = previous day
+                    } else {
+                        setCurrentDate(prev => addDays(prev, 1)); // swipe left = next day
+                    }
+                }
+            }, [modal]);
 
             const loadDayData = useCallback(async () => {
                 const sets = await dbOps.sets.getByDate(currentDate);
@@ -2748,16 +2771,12 @@
                 }
 
                 setSelectedExercise(exercise);
-                const last = await dbOps.sets.getLastSession(exercise.id);
-                setLastSession(last);
-                setModal('lastTime');
+                setModal('activityHistory');
             };
 
             const handleCreateExercise = async (exercise) => {
                 setSelectedExercise(exercise);
-                const last = await dbOps.sets.getLastSession(exercise.id);
-                setLastSession(last);
-                setModal('lastTime');
+                setModal('activityHistory');
             };
 
             const handleLogSet = async () => {
@@ -2772,7 +2791,10 @@
 
             const handleWeightSelected = async (weightData) => {
                 if (!weightData) {
-                    setModal('lastTime');
+                    setModal(null);
+                    setSelectedExercise(null);
+                    setSelectedWeight(null);
+                    setPreviousWeight(null);
                     return;
                 }
 
@@ -2787,7 +2809,10 @@
 
             const handleRepsSelected = async (reps) => {
                 if (reps === null) {
-                    setModal('weightPicker');
+                    setModal(null);
+                    setSelectedExercise(null);
+                    setSelectedWeight(null);
+                    setPreviousWeight(null);
                     return;
                 }
 
@@ -2832,7 +2857,10 @@
 
             const handleDurationSelected = async (duration) => {
                 if (duration === null) {
-                    setModal('timedDuration');
+                    setModal(null);
+                    setSelectedExercise(null);
+                    setSelectedWeight(null);
+                    setPreviousWeight(null);
                     return;
                 }
 
@@ -2899,6 +2927,7 @@
                 setConfirmation({
                     title: `Delete ${exercise.exerciseName}?`,
                     message: `Remove ${exercise.exerciseName} and all its sets from today?`,
+
                     onConfirm: async () => {
                         const daySets = await dbOps.sets.getByDate(currentDate);
                         const toDelete = daySets.filter(s => s.exerciseId === exercise.exerciseId);
@@ -2982,12 +3011,12 @@
                     <div className="modal-overlay" onClick={onCancel}>
                         <div className="modal" onClick={(e) => e.stopPropagation()}>
                             <div className="modal-header">
-                                <h2>Rename Exercise</h2>
+                                <h2>Rename Activity</h2>
                                 <button className="close-btn" onClick={onCancel}>✕</button>
                             </div>
                             <div className="modal-content">
                                 <div className="form-group">
-                                    <label className="form-label">Exercise Name</label>
+                                    <label className="form-label">Activity Name</label>
                                     <input
                                         type="text"
                                         className="form-input"
@@ -3022,14 +3051,14 @@
                         <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, 1))}>▶</button>
                     </div>
 
-                    <div className="content">
+                    <div className="content" ref={contentRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                         <div className="content-padding">
                             {exercises.length === 0 ? (
                                 <div className="empty-state">
                                     {currentDate === getTodayString() ? (
-                                        <>No exercises logged yet today.</>
+                                        <>No activities logged yet today.</>
                                     ) : (
-                                        <>No exercises on this day.</>
+                                        <>No activities on this day.</>
                                     )}
                                 </div>
                             ) : (
@@ -3073,10 +3102,10 @@
                                             </div>
 
                                             {isExpanded && (
-                                                <div style={{ marginTop: '8px' }}>
-                                                    
+                                                <div style={{ display: 'flex', gap: '8px', marginTop: '6px', alignItems: 'center' }}>
                                                     <button
                                                         className="btn btn-add-set"
+                                                        style={{ flex: 1, marginBottom: 0 }}
                                                         onClick={() => {
                                                             setSelectedExercise({ id: exercise.exerciseId, name: exercise.exerciseName, type: exercise.sets[0]?.type || 'reps' });
                                                             setPreviousWeight(exercise.sets[exercise.sets.length - 1]?.weight || null);
@@ -3088,10 +3117,10 @@
                                                     </button>
                                                     <button
                                                         className="exercise-menu-btn"
-                                                        onClick={() => setModal(`menu-${exercise.exerciseId}`)}
-                                                        style={{ width: '100%', marginTop: '8px' }}
+                                                        onClick={(e) => { e.stopPropagation(); setModal(`menu-${exercise.exerciseId}`); }}
+                                                        style={{ width: 'auto', padding: '4px 12px', fontSize: '14px', color: '#999' }}
                                                     >
-                                                        ⋯ Menu
+                                                        ⋯
                                                     </button>
                                                 </div>
                                             )}
@@ -3111,7 +3140,7 @@
                             )}
 
                             <button className="btn" onClick={() => setModal('exercisePicker')}>
-                                + Add Exercise
+                                + Add Activity
                             </button>
                         </div>
                     </div>
@@ -3136,22 +3165,20 @@
                         />
                     )}
 
-                    {modal === 'lastTime' && selectedExercise && (
-                        <LastTimeModal
+                    {modal === 'activityHistory' && selectedExercise && (
+                        <HistoryModal
                             exercise={selectedExercise}
                             onLogSet={handleLogSet}
-                            onSkip={() => {
-                                setModal('exercisePicker');
+                            onClose={() => {
+                                setModal(null);
                                 setSelectedExercise(null);
                             }}
-                            lastSession={lastSession}
                         />
                     )}
 
                     {modal === 'weightPicker' && selectedExercise && (
                         <WeightPickerModal
                             exercise={selectedExercise}
-                            lastSession={lastSession}
                             onSelectWeight={handleWeightSelected}
                             selectedDate={currentDate}
                             previousWeight={previousWeight}
@@ -3292,7 +3319,7 @@
                                                     setModal(null);
                                                 }}
                                             >
-                                                Delete Exercise
+                                                Delete Activity
                                             </div>
                                         </div>
                                     </div>
