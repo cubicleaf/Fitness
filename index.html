@@ -284,25 +284,44 @@
         .set-boxes-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-            margin-top: 4px;
+            gap: 4px;
+            padding: 4px 0;
         }
 
         .set-box {
-            position: relative;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
             display: inline-flex;
             align-items: center;
-            min-height: 28px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+            white-space: nowrap;
         }
 
         .set-box-content {
-            padding-right: 16px;
+            padding-right: 0;
+        }
+
+        .set-box-delete-inline {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255, 50, 50, 0.8);
+            border: none;
+            color: white;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
         }
 
         .set-box-delete {
@@ -1303,7 +1322,14 @@
         };
 
         const getSetBoxColor = (setOrder) => {
-            const colors = ['#4361ee', '#7209b7', '#f72585', '#4cc9f0', '#06d6a0', '#ffd166'];
+            const colors = [
+                'rgba(67, 97, 238, 0.3)',    // muted blue
+                'rgba(114, 9, 183, 0.3)',     // muted purple
+                'rgba(247, 37, 133, 0.3)',    // muted pink
+                'rgba(76, 201, 240, 0.3)',    // muted cyan
+                'rgba(6, 214, 160, 0.3)',     // muted green
+                'rgba(255, 209, 102, 0.3)',   // muted gold
+            ];
             return colors[(setOrder - 1) % colors.length];
         };
 
@@ -1311,7 +1337,7 @@
             let box = '';
 
             if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType) {
-                if (set.weight !== null) {
+                if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
                     box += `${set.weight}£ `;
                 } else if (set.weightType === 'bodyweight') {
                     box += 'BW ';
@@ -1639,7 +1665,7 @@
                             <div className="button-row">
                                 <button
                                     className={`btn ${weightType === 'bodyweight' ? '' : 'btn-secondary'}`}
-                                    onClick={() => { setWeightType('bodyweight'); setShowBandedColors(false); }}
+                                    onClick={() => { onSelectWeight({ weight: null, weightType: 'bodyweight' }); }}
                                 >
                                     BW
                                 </button>
@@ -2039,10 +2065,10 @@
                             exerciseName: exercise.name,
                             exerciseOrder: exerciseOrderNum,
                             setOrder: setOrderNum,
-                            weight: weight ? parseInt(weight) : null,
+                            weight: (weight && weight.trim() !== '') ? parseFloat(weight) : null,
                             weightType,
-                            reps: reps ? parseInt(reps) : null,
-                            duration: duration ? parseInt(duration) : null,
+                            reps: (reps && reps.trim() !== '') ? parseInt(reps) : null,
+                            duration: (duration && duration.trim() !== '') ? parseInt(duration) : null,
                             createdAt: Date.now(),
                         };
 
@@ -2469,30 +2495,14 @@
                                                             key={set.id}
                                                             className="set-box"
                                                             style={{ backgroundColor: getSetBoxColor(set.setOrder) }}
+                                                            onClick={() => isExpanded && handleEditSet(set)}
                                                         >
                                                             <div className="set-box-content">
                                                                 {formatSetBox(set, exercise.sets[idx - 1])}
                                                             </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {isExpanded && (
-                                                <div style={{ marginTop: '12px' }}>
-                                                    <div className="set-list">
-                                                        {exercise.sets.map((set, idx) => (
-                                                            <div
-                                                                key={set.id}
-                                                                className="set-item-expanded"
-                                                                onClick={() => handleEditSet(set)}
-                                                                style={{ position: 'relative' }}
-                                                            >
-                                                                <div style={{ paddingRight: '20px' }}>
-                                                                    {formatSetDisplay(set)}
-                                                                </div>
+                                                            {isExpanded && (
                                                                 <button
-                                                                    className="set-box-delete"
+                                                                    className="set-box-delete-inline"
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
                                                                         handleDeleteSet(set.id);
@@ -2500,10 +2510,14 @@
                                                                 >
                                                                     ✕
                                                                 </button>
-                                                            </div>
-                                                        ))}
-                                                    </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
 
+                                            {isExpanded && (
+                                                <div style={{ marginTop: '8px' }}>
                                                     <button
                                                         className="btn btn-add-set"
                                                         onClick={() => {
@@ -2515,7 +2529,6 @@
                                                     >
                                                         + Add Set
                                                     </button>
-
                                                     <button
                                                         className="exercise-menu-btn"
                                                         onClick={() => setModal(`menu-${exercise.exerciseId}`)}
