@@ -2719,7 +2719,6 @@
             const handleMenuClick = (exercise, action) => {
                 if (action === 'delete') {
                     handleDeleteExercise(exercise);
-                } );
                 } else if (action === 'sessionNote') {
                     setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
                     dbOps.exercises.get(exercise.exerciseId).then(ex => {
