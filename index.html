@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Fitness Tracker">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#1a0a0a">
     <title>Fitness Tracker</title>
     <style>
         * {
@@ -22,7 +22,7 @@
             width: 100%;
             height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            background: #1a1a2e;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #1a0a0a 40%, #2d0a0a 70%, #3d1111 100%);
             color: #e0e0e0;
             overflow: hidden;
         }
@@ -56,7 +56,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #1a1a2e;
+            background: #1e0e14;
             border-top: 1px solid #333;
             max-height: 100%;
             overflow-y: auto;
@@ -77,7 +77,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #242437;
+            background: #241218;
         }
 
         .modal-header h2 {
@@ -312,7 +312,7 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: rgba(255, 50, 50, 0.8);
+            background: rgba(255, 50, 50, 0.35);
             border: none;
             color: white;
             font-size: 10px;
@@ -969,6 +969,7 @@
         .banded-blue { background: #3498db; }
         .banded-orange { background: #e67e22; }
         .banded-yellow { background: #f39c12; }
+        .banded-gray { background: #7f8c8d; }
 
         /* Responsive */
         @media (max-width: 480px) {
@@ -1026,7 +1027,7 @@
 
         const initDB = () => {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('FitnessTracker', 1);
+                const request = indexedDB.open('FitnessTracker', 2);
 
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
@@ -1058,6 +1059,13 @@
 
                     if (!database.objectStoreNames.contains('templates')) {
                         database.createObjectStore('templates', { keyPath: 'dayOfWeek' });
+                    }
+
+                    if (!database.objectStoreNames.contains('sessionNotes')) {
+                        const sessionNotesStore = database.createObjectStore('sessionNotes', { keyPath: 'id' });
+                        sessionNotesStore.createIndex('by-exerciseId', 'exerciseId', { unique: false });
+                        sessionNotesStore.createIndex('by-date', 'date', { unique: false });
+                        sessionNotesStore.createIndex('by-exerciseId-date', ['exerciseId', 'date'], { unique: false });
                     }
                 };
             });
@@ -1256,6 +1264,34 @@
                     });
                 },
             },
+            sessionNotes: {
+                add: (note) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sessionNotes', 'readwrite');
+                        const req = tx.objectStore('sessionNotes').put(note);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result);
+                    });
+                },
+                getByExerciseAndDate: (exerciseId, date) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sessionNotes', 'readonly');
+                        const index = tx.objectStore('sessionNotes').index('by-exerciseId-date');
+                        const req = index.getAll([exerciseId, date]);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result[0] || null);
+                    });
+                },
+                getByExerciseId: (exerciseId) => {
+                    return new Promise((resolve, reject) => {
+                        const tx = db.transaction('sessionNotes', 'readonly');
+                        const index = tx.objectStore('sessionNotes').index('by-exerciseId');
+                        const req = index.getAll(exerciseId);
+                        req.onerror = () => reject(req.error);
+                        req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
+                    });
+                },
+            },
         };
 
         // ============ UTILITY FUNCTIONS ============
@@ -1321,7 +1357,7 @@
             return display;
         };
 
-        const getSetBoxColor = (setOrder) => {
+        const getSetBoxColor = (index) => {
             const colors = [
                 'rgba(67, 97, 238, 0.3)',    // muted blue
                 'rgba(114, 9, 183, 0.3)',     // muted purple
@@ -1330,7 +1366,7 @@
                 'rgba(6, 214, 160, 0.3)',     // muted green
                 'rgba(255, 209, 102, 0.3)',   // muted gold
             ];
-            return colors[(setOrder - 1) % colors.length];
+            return colors[index % colors.length];
         };
 
         const formatSetBox = (set, previousSet) => {
@@ -1342,7 +1378,8 @@
                 } else if (set.weightType === 'bodyweight') {
                     box += 'BW ';
                 } else if (set.weightType === 'banded') {
-                    box += 'B ';
+                    const bandLabel = set.bandedColor ? `${set.bandedColor} Band` : 'Band';
+                    box += bandLabel + ' ';
                 }
             }
 
@@ -1591,6 +1628,7 @@
             const [weight, setWeight] = useState(previousWeight || 45);
             const [weightType, setWeightType] = useState('lbs');
             const [showBandedColors, setShowBandedColors] = useState(false);
+            const [selectedBandColor, setSelectedBandColor] = useState(null);
             const [bandedCustomName, setBandedCustomName] = useState('');
 
             const commonWeights = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
@@ -1680,21 +1718,43 @@
                             {showBandedColors && (
                                 <div className="exercise-picker-section">
                                     <div className="banded-colors-grid">
-                                        <button className="banded-color-btn banded-red" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Red' }); }}>Red</button>
-                                        <button className="banded-color-btn banded-black" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Black' }); }}>Black</button>
-                                        <button className="banded-color-btn banded-purple" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Purple' }); }}>Purple</button>
-                                        <button className="banded-color-btn banded-green" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Green' }); }}>Green</button>
-                                        <button className="banded-color-btn banded-blue" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Blue' }); }}>Blue</button>
-                                        <button className="banded-color-btn banded-orange" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Orange' }); }}>Orange</button>
-                                        <button className="banded-color-btn banded-yellow" onClick={() => { onSelectWeight({ weight: null, weightType: 'banded', bandedColor: 'Yellow' }); }}>Yellow</button>
+                                        <button className="banded-color-btn banded-red" onClick={() => { setSelectedBandColor('Red'); }}>Red</button>
+                                        <button className="banded-color-btn banded-black" onClick={() => { setSelectedBandColor('Black'); }}>Black</button>
+                                        <button className="banded-color-btn banded-purple" onClick={() => { setSelectedBandColor('Purple'); }}>Purple</button>
+                                        <button className="banded-color-btn banded-green" onClick={() => { setSelectedBandColor('Green'); }}>Green</button>
+                                        <button className="banded-color-btn banded-blue" onClick={() => { setSelectedBandColor('Blue'); }}>Blue</button>
+                                        <button className="banded-color-btn banded-orange" onClick={() => { setSelectedBandColor('Orange'); }}>Orange</button>
+                                        <button className="banded-color-btn banded-yellow" onClick={() => { setSelectedBandColor('Yellow'); }}>Yellow</button>
+                                        <button className="banded-color-btn banded-gray" onClick={() => { setSelectedBandColor('Gray'); }}>Gray</button>
                                     </div>
+
+                                    {selectedBandColor && (
+                                        <div style={{ marginTop: '12px' }}>
+                                            <div className="section-title">Thickness</div>
+                                            <div className="button-row" style={{ flexWrap: 'wrap' }}>
+                                                <button className="btn btn-secondary" style={{ flex: '1' }} onClick={() => onSelectWeight({ weight: null, weightType: 'banded', bandedColor: selectedBandColor })}>
+                                                    Just {selectedBandColor}
+                                                </button>
+                                                <button className="btn btn-secondary" style={{ flex: '1' }} onClick={() => onSelectWeight({ weight: null, weightType: 'banded', bandedColor: `${selectedBandColor} Thin` })}>
+                                                    Thin
+                                                </button>
+                                                <button className="btn btn-secondary" style={{ flex: '1' }} onClick={() => onSelectWeight({ weight: null, weightType: 'banded', bandedColor: `${selectedBandColor} Medium` })}>
+                                                    Medium
+                                                </button>
+                                                <button className="btn btn-secondary" style={{ flex: '1' }} onClick={() => onSelectWeight({ weight: null, weightType: 'banded', bandedColor: `${selectedBandColor} Thick` })}>
+                                                    Thick
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <input
                                         type="text"
                                         className="form-input"
                                         placeholder="Custom band name"
                                         value={bandedCustomName}
                                         onChange={(e) => setBandedCustomName(e.target.value)}
-                                        style={{ marginBottom: '16px' }}
+                                        style={{ marginBottom: '16px', marginTop: '12px' }}
                                     />
                                     {bandedCustomName && (
                                         <button
@@ -1867,12 +1927,12 @@
                 <div className="modal-overlay" onClick={onCancel}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
-                            <h2>Edit Note</h2>
+                            <h2>Edit Form Cue</h2>
                             <button className="close-btn" onClick={onCancel}>✕</button>
                         </div>
                         <div className="modal-content">
                             <div className="form-group">
-                                <label className="form-label">Form Cue for {exercise.name}</label>
+                                <label className="form-label">Permanent Form Cue</label>
                                 <textarea
                                     className="form-input"
                                     placeholder="E.g., Keep elbows at 45 degrees"
@@ -1892,8 +1952,138 @@
             );
         };
 
+        const SessionNoteModal = ({ exercise, date, onSave, onCancel }) => {
+            const [tags, setTags] = useState([]);
+            const [freeText, setFreeText] = useState('');
+            const [formCueText, setFormCueText] = useState('');
+            const [trainerAdviceText, setTrainerAdviceText] = useState('');
+            const [loading, setLoading] = useState(true);
+
+            const presetTags = {
+                'Energy': ['Low Energy', 'Felt Strong', 'Fatigued', 'Feeling Sick', 'Sore Going In'],
+                'Performance': ['Went to Failure', 'Couldn\'t Hit Normal Weight', 'Couldn\'t Hit Normal Volume', 'New PR', 'Deload'],
+                'Form': ['Felt Off', 'Good Mind-Muscle'],
+            };
+
+            useEffect(() => {
+                const load = async () => {
+                    const existing = await dbOps.sessionNotes.getByExerciseAndDate(exercise.id, date);
+                    if (existing) {
+                        setTags(existing.tags || []);
+                        setFreeText(existing.freeText || '');
+                        setFormCueText(existing.formCueText || '');
+                        setTrainerAdviceText(existing.trainerAdviceText || '');
+                    }
+                    setLoading(false);
+                };
+                load();
+            }, [exercise, date]);
+
+            const toggleTag = (tag) => {
+                setTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
+            };
+
+            const handleSave = async () => {
+                const note = {
+                    id: `sn_${exercise.id}_${date}`,
+                    exerciseId: exercise.id,
+                    date: date,
+                    tags,
+                    freeText,
+                    formCueText,
+                    trainerAdviceText,
+                    updatedAt: new Date().toISOString(),
+                };
+                await dbOps.sessionNotes.add(note);
+                onSave();
+            };
+
+            if (loading) return null;
+
+            return (
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="modal" style={{ maxHeight: '95vh' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Session Note</h2>
+                            <button className="close-btn" onClick={onCancel}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <div style={{ color: '#999', fontSize: '13px', marginBottom: '16px' }}>
+                                {exercise.name} — {formatDateShort(date)}
+                            </div>
+
+                            {Object.entries(presetTags).map(([category, categoryTags]) => (
+                                <div key={category} style={{ marginBottom: '16px' }}>
+                                    <div className="section-title">{category}</div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                        {categoryTags.map(tag => (
+                                            <button
+                                                key={tag}
+                                                onClick={() => toggleTag(tag)}
+                                                style={{
+                                                    padding: '6px 12px',
+                                                    borderRadius: '16px',
+                                                    border: tags.includes(tag) ? '1px solid rgba(67, 97, 238, 0.5)' : '1px solid #333',
+                                                    background: tags.includes(tag) ? 'rgba(67, 97, 238, 0.3)' : 'rgba(255, 255, 255, 0.05)',
+                                                    color: tags.includes(tag) ? '#7b93f5' : '#999',
+                                                    fontSize: '12px',
+                                                    fontWeight: '500',
+                                                    cursor: 'pointer',
+                                                    WebkitAppearance: 'none',
+                                                }}
+                                            >
+                                                {tag}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div style={{ marginBottom: '16px' }}>
+                                <div className="section-title">Form Cue</div>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="e.g., Keep elbows at 45°"
+                                    value={formCueText}
+                                    onChange={(e) => setFormCueText(e.target.value)}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '16px' }}>
+                                <div className="section-title">Trainer Advice</div>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="e.g., Widen grip next time"
+                                    value={trainerAdviceText}
+                                    onChange={(e) => setTrainerAdviceText(e.target.value)}
+                                />
+                            </div>
+
+                            <div style={{ marginBottom: '16px' }}>
+                                <div className="section-title">General Notes</div>
+                                <textarea
+                                    className="form-input"
+                                    placeholder="Anything else..."
+                                    value={freeText}
+                                    onChange={(e) => setFreeText(e.target.value)}
+                                    style={{ minHeight: '80px', fontFamily: 'inherit' }}
+                                />
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                            <button className="btn" onClick={handleSave}>Save</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const HistoryModal = ({ exercise, onClose }) => {
             const [history, setHistory] = useState([]);
+            const [sessionNotes, setSessionNotes] = useState({});
 
             useEffect(() => {
                 const loadHistory = async () => {
@@ -1908,6 +2098,11 @@
 
                     const dates = Object.keys(grouped).sort().reverse();
                     setHistory(dates.map(date => ({ date, sets: grouped[date] })));
+
+                    const notes = await dbOps.sessionNotes.getByExerciseId(exercise.id);
+                    const notesByDate = {};
+                    notes.forEach(n => { notesByDate[n.date] = n; });
+                    setSessionNotes(notesByDate);
                 };
                 loadHistory();
             }, [exercise]);
@@ -1925,22 +2120,41 @@
                                     No history yet
                                 </div>
                             ) : (
-                                history.map((session, idx) => (
-                                    <div key={idx}>
-                                        <div className="history-date">{formatDateShort(session.date)}</div>
-                                        <div className="set-boxes-container">
-                                            {session.sets.map((s, sidx) => (
-                                                <div
-                                                    key={sidx}
-                                                    className="set-box"
-                                                    style={{ backgroundColor: getSetBoxColor(s.setOrder) }}
-                                                >
-                                                    {formatSetBox(s, session.sets[sidx - 1])}
+                                history.map((session, idx) => {
+                                    const note = sessionNotes[session.date];
+                                    return (
+                                        <div key={idx}>
+                                            <div className="history-date">{formatDateShort(session.date)}</div>
+                                            <div className="set-boxes-container">
+                                                {session.sets.map((s, sidx) => (
+                                                    <div
+                                                        key={sidx}
+                                                        className="set-box"
+                                                        style={{ backgroundColor: getSetBoxColor(sidx) }}
+                                                    >
+                                                        {formatSetBox(s, session.sets[sidx - 1])}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            {note && (
+                                                <div style={{ marginTop: '8px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
+                                                    {note.tags && note.tags.length > 0 && (
+                                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px' }}>
+                                                            {note.tags.map(tag => (
+                                                                <span key={tag} style={{ padding: '2px 8px', borderRadius: '12px', background: 'rgba(67, 97, 238, 0.2)', color: '#7b93f5', fontSize: '11px' }}>
+                                                                    {tag}
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    {note.formCueText && <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}><strong>Form:</strong> {note.formCueText}</div>}
+                                                    {note.trainerAdviceText && <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}><strong>Advice:</strong> {note.trainerAdviceText}</div>}
+                                                    {note.freeText && <div style={{ fontSize: '12px', color: '#999' }}>{note.freeText}</div>}
                                                 </div>
-                                            ))}
+                                            )}
                                         </div>
-                                    </div>
-                                ))
+                                    );
+                                })
                             )}
                         </div>
                     </div>
@@ -1953,6 +2167,8 @@
             const [weeklyLabels, setWeeklyLabels] = useState({
                 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
             });
+            const [resetConfirmStep, setResetConfirmStep] = useState(null);
+            const [resetConfirmText, setResetConfirmText] = useState('');
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             const templateOptions = ['', 'Push', 'Pull', 'Legs', 'Core', 'Cardio', 'Mobility', 'Stretch', 'Rest', 'Custom'];
@@ -2080,6 +2296,18 @@
                 input.click();
             };
 
+            const handleNuclearReset = async () => {
+                const storeNames = ['exercises', 'sets', 'dayNotes', 'templates', 'sessionNotes'];
+                for (const storeName of storeNames) {
+                    if (db.objectStoreNames.contains(storeName)) {
+                        const tx = db.transaction(storeName, 'readwrite');
+                        tx.objectStore(storeName).clear();
+                        await new Promise(r => { tx.oncomplete = r; });
+                    }
+                }
+                window.location.reload();
+            };
+
             return (
                 <div className="modal-overlay" onClick={onClose}>
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -2100,6 +2328,12 @@
                                     onClick={() => setActiveTab('data')}
                                 >
                                     Data
+                                </button>
+                                <button
+                                    className={`category-tab ${activeTab === 'reset' ? 'active' : ''}`}
+                                    onClick={() => setActiveTab('reset')}
+                                >
+                                    Reset
                                 </button>
                             </div>
 
@@ -2139,6 +2373,78 @@
                                     <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }}>Import Data from CSV</button>
                                 </>
                             )}
+
+                            {activeTab === 'reset' && (
+                                <div style={{ padding: '20px', textAlign: 'center' }}>
+                                    <div style={{ fontSize: '40px', marginBottom: '16px' }}>⚠️</div>
+                                    <h3 style={{ color: '#ff6b6b', marginBottom: '12px' }}>Reset All Data</h3>
+                                    <p style={{ color: '#999', marginBottom: '24px', lineHeight: '1.6' }}>
+                                        This will permanently delete ALL exercises, sets, notes, templates, and session notes.
+                                        This cannot be undone. Your browser's stored data will be completely wiped.
+                                    </p>
+                                    {!resetConfirmStep ? (
+                                        <button className="btn btn-danger" onClick={() => setResetConfirmStep(1)}>
+                                            Reset Everything
+                                        </button>
+                                    ) : resetConfirmStep === 1 ? (
+                                        <div>
+                                            <p style={{ color: '#ff6b6b', marginBottom: '16px', fontWeight: '600' }}>
+                                                Are you absolutely sure? Type DELETE to confirm.
+                                            </p>
+                                            <input
+                                                type="text"
+                                                className="form-input"
+                                                placeholder="Type DELETE"
+                                                value={resetConfirmText}
+                                                onChange={(e) => setResetConfirmText(e.target.value)}
+                                                style={{ marginBottom: '16px', textAlign: 'center' }}
+                                            />
+                                            <div className="button-row">
+                                                <button className="btn btn-secondary" onClick={() => { setResetConfirmStep(null); setResetConfirmText(''); }}>Cancel</button>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    disabled={resetConfirmText !== 'DELETE'}
+                                                    style={{ opacity: resetConfirmText === 'DELETE' ? 1 : 0.3 }}
+                                                    onClick={handleNuclearReset}
+                                                >
+                                                    Confirm Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ChangeCategoryModal = ({ exercise, onSave, onCancel }) => {
+            const categories = ['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'sauna', 'other'];
+
+            const handleSelect = async (cat) => {
+                exercise.category = cat;
+                await dbOps.exercises.update(exercise);
+                onSave();
+            };
+
+            return (
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h2>Change Category</h2>
+                            <button className="close-btn" onClick={onCancel}>✕</button>
+                        </div>
+                        <div className="modal-content">
+                            <p style={{ color: '#999', marginBottom: '16px' }}>Current: {exercise.category}</p>
+                            <div className="button-grid">
+                                {categories.map(cat => (
+                                    <button key={cat} className={`btn ${exercise.category === cat ? 'active' : ''}`} onClick={() => handleSelect(cat)}>
+                                        {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2371,6 +2677,12 @@
                         setSelectedExercise(ex);
                         setModal('editNote');
                     });
+                } else if (action === 'sessionNote') {
+                    setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
+                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                        setSelectedExercise(ex);
+                        setModal('sessionNote');
+                    });
                 } else if (action === 'viewHistory') {
                     setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
                     dbOps.exercises.get(exercise.exerciseId).then(ex => {
@@ -2382,6 +2694,12 @@
                     dbOps.exercises.get(exercise.exerciseId).then(ex => {
                         setSelectedExercise(ex);
                         setModal('rename');
+                    });
+                } else if (action === 'changeCategory') {
+                    setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
+                    dbOps.exercises.get(exercise.exerciseId).then(ex => {
+                        setSelectedExercise(ex);
+                        setModal('changeCategory');
                     });
                 }
             };
@@ -2480,7 +2798,7 @@
                                 exercises.map((exercise) => {
                                     const isExpanded = expandedExercise === exercise.exerciseId;
                                     return (
-                                        <div key={exercise.exerciseId} className="exercise-group">
+                                        <div key={exercise.exerciseId} className="exercise-group" style={isExpanded ? { border: '1px solid rgba(67, 97, 238, 0.12)', borderRadius: '12px', padding: '12px', background: 'rgba(67, 97, 238, 0.03)' } : {}}>
                                             <div
                                                 className="exercise-collapsible"
                                                 onClick={() => setExpandedExercise(isExpanded ? null : exercise.exerciseId)}
@@ -2494,7 +2812,7 @@
                                                         <div
                                                             key={set.id}
                                                             className="set-box"
-                                                            style={{ backgroundColor: getSetBoxColor(set.setOrder) }}
+                                                            style={{ backgroundColor: getSetBoxColor(idx) }}
                                                             onClick={() => isExpanded && handleEditSet(set)}
                                                         >
                                                             <div className="set-box-content">
@@ -2518,6 +2836,13 @@
 
                                             {isExpanded && (
                                                 <div style={{ marginTop: '8px' }}>
+                                                    <button
+                                                        className="btn btn-secondary"
+                                                        onClick={() => setExpandedExercise(null)}
+                                                        style={{ marginBottom: '8px', padding: '8px', fontSize: '12px', opacity: 0.7 }}
+                                                    >
+                                                        ↩ Close
+                                                    </button>
                                                     <button
                                                         className="btn btn-add-set"
                                                         onClick={() => {
@@ -2621,8 +2946,39 @@
                         <SettingsModal onClose={() => setModal(null)} />
                     )}
 
+                    {modal === 'sessionNote' && selectedExercise && (
+                        <SessionNoteModal
+                            exercise={selectedExercise}
+                            date={currentDate}
+                            onSave={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                                loadDayData();
+                            }}
+                            onCancel={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                            }}
+                        />
+                    )}
+
                     {modal === 'editNote' && selectedExercise && (
                         <EditNoteModal
+                            exercise={selectedExercise}
+                            onSave={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                                loadDayData();
+                            }}
+                            onCancel={() => {
+                                setModal(null);
+                                setSelectedExercise(null);
+                            }}
+                        />
+                    )}
+
+                    {modal === 'changeCategory' && selectedExercise && (
+                        <ChangeCategoryModal
                             exercise={selectedExercise}
                             onSave={() => {
                                 setModal(null);
@@ -2681,11 +3037,29 @@
                                             <div
                                                 className="context-menu-item"
                                                 onClick={() => {
+                                                    handleMenuClick(exercise, 'sessionNote');
+                                                    setModal(null);
+                                                }}
+                                            >
+                                                Session Note
+                                            </div>
+                                            <div
+                                                className="context-menu-item"
+                                                onClick={() => {
                                                     handleMenuClick(exercise, 'editNote');
                                                     setModal(null);
                                                 }}
                                             >
-                                                Edit Note
+                                                Edit Form Cue
+                                            </div>
+                                            <div
+                                                className="context-menu-item"
+                                                onClick={() => {
+                                                    handleMenuClick(exercise, 'changeCategory');
+                                                    setModal(null);
+                                                }}
+                                            >
+                                                Change Category
                                             </div>
                                             <div
                                                 className="context-menu-item"
