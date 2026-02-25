@@ -1345,12 +1345,13 @@
 
         const formatSetDisplay = (set) => {
             let display = `Set ${set.setOrder}: `;
-            if (set.weight !== null) {
-                display += `${set.weight} ${set.weightType === 'bodyweight' ? 'BW' : set.weightType}`;
-            } else if (set.weightType === 'bodyweight') {
+            if (set.weightType === 'bodyweight') {
                 display += 'BW';
             } else if (set.weightType === 'banded') {
-                display += 'Banded';
+                const bandLabel = (set.bandedColor && set.bandedColor !== 'undefined') ? set.bandedColor + ' Band' : 'Banded';
+                display += bandLabel;
+            } else if (set.weight !== null) {
+                display += `${set.weight} ${set.weightType || 'lbs'}`;
             }
 
             if (set.reps !== null) {
@@ -1378,13 +1379,13 @@
             let box = '';
 
             if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType) {
-                if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
-                    box += `${set.weight}£ `;
-                } else if (set.weightType === 'bodyweight') {
+                if (set.weightType === 'bodyweight') {
                     box += 'BW ';
                 } else if (set.weightType === 'banded') {
                     const bandLabel = (set.bandedColor && set.bandedColor !== 'undefined') ? `${set.bandedColor} Band` : 'Band';
                     box += bandLabel + ' ';
+                } else if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
+                    box += `${set.weight}£ `;
                 }
             }
 
@@ -1485,7 +1486,6 @@
                 setFiltered(result);
             }, [exercises, search, category]);
 
-            const recent = filtered.slice(0, 10);
             const allCategories = ['all', ...categories];
             const [showEditCategories, setShowEditCategories] = useState(false);
 
@@ -1519,24 +1519,6 @@
                                 onChange={(e) => setSearch(e.target.value)}
                             />
 
-                            {recent.length > 0 && (
-                                <div className="exercise-picker-section">
-                                    <div className="section-title">Recent</div>
-                                    {recent.map(ex => (
-                                        <div
-                                            key={ex.id}
-                                            className="exercise-picker-item"
-                                            onClick={() => onSelect(ex)}
-                                        >
-                                            <div className="exercise-picker-name">{ex.name}</div>
-                                            <div className="exercise-picker-meta">
-                                                Last: {ex.lastUsed ? formatDateShort(ex.lastUsed) : 'Never'}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
                             <div>
                                 <div className="category-tabs">
                                     {allCategories.map(cat => (
@@ -1558,15 +1540,26 @@
                                 </div>
                             </div>
 
-                            {search === '' && category === 'all' && recent.length === 0 && (
-                                <div style={{ textAlign: 'center', color: '#666', marginTop: 20, marginBottom: 20 }}>
-                                    No exercises yet. Create one below!
+                            {filtered.length > 0 ? (
+                                <div className="exercise-picker-section">
+                                    <div className="section-title">{category === 'all' ? 'All Exercises' : category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                                    {filtered.map(ex => (
+                                        <div
+                                            key={ex.id}
+                                            className="exercise-picker-item"
+                                            onClick={() => onSelect(ex)}
+                                        >
+                                            <div className="exercise-picker-name">{ex.name}</div>
+                                            <div className="exercise-picker-meta">
+                                                {ex.category && <span style={{ textTransform: 'capitalize' }}>{ex.category}</span>}
+                                                {ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            )}
-
-                            {search !== '' && filtered.length === 0 && (
+                            ) : (
                                 <div style={{ textAlign: 'center', color: '#666', marginTop: 20, marginBottom: 20 }}>
-                                    No exercises found
+                                    {search ? 'No exercises found' : 'No exercises yet. Create one below!'}
                                 </div>
                             )}
 
@@ -1581,7 +1574,7 @@
 
         const CreateExerciseModal = ({ onSave, onCancel, categories }) => {
             const [name, setName] = useState('');
-            const [category, setCategory] = useState('push');
+            const [category, setCategory] = useState(categories[0] || 'push');
             const [type, setType] = useState('reps');
 
             const handleSave = async () => {
@@ -1603,12 +1596,35 @@
 
             return (
                 <div className="modal-overlay" onClick={onCancel}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal" style={{ maxHeight: '100vh' }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h2>New Exercise</h2>
                             <button className="close-btn" onClick={onCancel}>✕</button>
                         </div>
                         <div className="modal-content">
+                            <button
+                                className="btn"
+                                onClick={handleSave}
+                                style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '20px' }}
+                            >
+                                Create Exercise
+                            </button>
+
+                            <div className="form-group">
+                                <label className="form-label">Category</label>
+                                <div className="button-grid">
+                                    {categories.map(cat => (
+                                        <button
+                                            key={cat}
+                                            className={`btn ${category === cat ? 'active' : ''}`}
+                                            onClick={() => setCategory(cat)}
+                                        >
+                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             <div className="form-group">
                                 <label className="form-label">Exercise Name</label>
                                 <input
@@ -1622,41 +1638,51 @@
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Category</label>
-                                <div className="button-grid">
-                                    {['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'sauna', 'other'].map(cat => (
-                                        <button
-                                            key={cat}
-                                            className={`btn ${category === cat ? 'active' : ''}`}
-                                            onClick={() => setCategory(cat)}
-                                        >
-                                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label">Exercise Type</label>
-                                <div className="button-row">
+                                <label className="form-label">Type</label>
+                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid #3a2a30' }}>
                                     <button
-                                        className={`btn ${type === 'reps' ? '' : 'btn-secondary'}`}
                                         onClick={() => setType('reps')}
+                                        style={{
+                                            flex: 1,
+                                            padding: '10px',
+                                            border: 'none',
+                                            fontSize: '13px',
+                                            fontWeight: '600',
+                                            cursor: 'pointer',
+                                            WebkitAppearance: 'none',
+                                            background: type === 'reps' ? 'rgba(139, 58, 98, 0.25)' : 'rgba(255, 255, 255, 0.03)',
+                                            color: type === 'reps' ? '#c77da0' : '#666',
+                                            borderRight: '1px solid #3a2a30',
+                                        }}
                                     >
                                         Reps
                                     </button>
                                     <button
-                                        className={`btn ${type === 'timed' ? '' : 'btn-secondary'}`}
                                         onClick={() => setType('timed')}
+                                        style={{
+                                            flex: 1,
+                                            padding: '10px',
+                                            border: 'none',
+                                            fontSize: '13px',
+                                            fontWeight: '600',
+                                            cursor: 'pointer',
+                                            WebkitAppearance: 'none',
+                                            background: type === 'timed' ? 'rgba(139, 58, 98, 0.25)' : 'rgba(255, 255, 255, 0.03)',
+                                            color: type === 'timed' ? '#c77da0' : '#666',
+                                        }}
                                     >
                                         Timed
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-secondary" onClick={onCancel}>Cancel</button>
-                            <button className="btn" onClick={handleSave}>Create</button>
+
+                            <button
+                                className="btn btn-secondary"
+                                onClick={onCancel}
+                                style={{ marginTop: '8px' }}
+                            >
+                                Cancel
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1874,7 +1900,7 @@
             );
         };
 
-        const RepPickerModal = ({ exercise, weight, weightType, onSelectReps }) => {
+        const RepPickerModal = ({ exercise, weight, weightType, onSelectReps, setNumber }) => {
             const reps = Array.from({ length: 20 }, (_, i) => i + 1);
 
             const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? 'Banded' : `${weight} ${weightType}`;
@@ -1884,7 +1910,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <div>
-                                <h2>{exercise.name} — Set 1</h2>
+                                <h2>{exercise.name} — Set {setNumber || 1}</h2>
                                 <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
                                     Weight: {displayWeight}
                                 </div>
@@ -1908,7 +1934,7 @@
             );
         };
 
-        const TimedDurationModal = ({ exercise, weight, weightType, onSelectDuration }) => {
+        const TimedDurationModal = ({ exercise, weight, weightType, onSelectDuration, setNumber }) => {
             const [time, setTime] = useState(0);
             const [isRunning, setIsRunning] = useState(false);
             const intervalRef = useRef(null);
@@ -1946,7 +1972,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <div>
-                                <h2>{exercise.name} — Set 1</h2>
+                                <h2>{exercise.name} — Set {setNumber || 1}</h2>
                                 <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
                                     Weight: {displayWeight}
                                 </div>
@@ -2199,7 +2225,7 @@
             );
         };
 
-        const SettingsModal = ({ onClose }) => {
+        const SettingsModal = ({ onClose, categories: settingsCategories }) => {
             const [activeTab, setActiveTab] = useState('weekly');
             const [weeklyLabels, setWeeklyLabels] = useState({
                 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
@@ -2208,7 +2234,7 @@
             const [resetConfirmText, setResetConfirmText] = useState('');
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const templateOptions = ['', 'Push', 'Pull', 'Legs', 'Core', 'Cardio', 'Mobility', 'Stretch', 'Rest', 'Custom'];
+            const templateOptions = ['', ...(settingsCategories || ['push', 'pull', 'legs', 'core', 'cardio']).map(c => c.charAt(0).toUpperCase() + c.slice(1)), 'Rest', 'Custom'];
 
             useEffect(() => {
                 if (activeTab === 'weekly') {
@@ -2265,6 +2291,37 @@
                 URL.revokeObjectURL(url);
             };
 
+            // Proper CSV line parser that handles quoted fields
+            const parseCSVLine = (line) => {
+                const fields = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const ch = line[i];
+                    if (inQuotes) {
+                        if (ch === '"' && line[i + 1] === '"') {
+                            current += '"';
+                            i++; // skip escaped quote
+                        } else if (ch === '"') {
+                            inQuotes = false;
+                        } else {
+                            current += ch;
+                        }
+                    } else {
+                        if (ch === '"') {
+                            inQuotes = true;
+                        } else if (ch === ',') {
+                            fields.push(current.trim());
+                            current = '';
+                        } else {
+                            current += ch;
+                        }
+                    }
+                }
+                fields.push(current.trim());
+                return fields;
+            };
+
             const handleImport = async () => {
                 const input = document.createElement('input');
                 input.type = 'file';
@@ -2276,92 +2333,108 @@
                     const text = await file.text();
                     const lines = text.split('\n').slice(1).filter(l => l.trim());
 
+                    // Cache exercises to avoid repeated DB reads
+                    let exerciseCache = await dbOps.exercises.getAll();
+                    let importErrors = 0;
+
                     for (const line of lines) {
-                        const parts = line.split(',');
-                        const date = parts[0];
-                        const exerciseName = parts[1];
-                        const category = parts[2] || 'push';
-                        const type = parts[3] || 'reps';
-                        const setNum = parts[4];
-                        const weight = parts[5];
-                        const weightType = parts[6] || 'lbs';
-                        const reps = parts[7];
-                        const duration = parts[8];
-                        const note = (parts[9] || '').trim();
+                        try {
+                            const parts = parseCSVLine(line);
+                            const date = parts[0];
+                            const exerciseName = parts[1];
+                            const category = (parts[2] || 'push').toLowerCase();
+                            const rawType = (parts[3] || 'reps').toLowerCase();
+                            // Normalize type: 'banded' is not a valid exercise type, use 'reps'
+                            const type = (rawType === 'reps' || rawType === 'timed') ? rawType : 'reps';
+                            const setNum = parts[4];
+                            const weight = parts[5];
+                            const weightType = parts[6] || 'lbs';
+                            const reps = parts[7];
+                            const duration = parts[8];
+                            const note = (parts[9] || '');
 
-                        if (!date) continue;
+                            if (!date || !exerciseName) continue;
 
-                        let exercise = null;
-                        const allEx = await dbOps.exercises.getAll();
-                        exercise = allEx.find(e => e.name === exerciseName);
+                            let exercise = exerciseCache.find(e => e.name === exerciseName);
 
-                        if (!exercise) {
-                            exercise = {
-                                id: generateId('ex'),
-                                name: exerciseName,
-                                category,
-                                type,
-                                note: '',
-                                lastUsed: date,
+                            if (!exercise) {
+                                exercise = {
+                                    id: generateId('ex'),
+                                    name: exerciseName,
+                                    category,
+                                    type,
+                                    note: '',
+                                    lastUsed: date,
+                                    createdAt: Date.now(),
+                                };
+                                await dbOps.exercises.add(exercise);
+                                exerciseCache.push(exercise);
+                            } else {
+                                // Update lastUsed if this date is more recent
+                                if (date > (exercise.lastUsed || '')) {
+                                    exercise.lastUsed = date;
+                                    await dbOps.exercises.update(exercise);
+                                }
+                            }
+
+                            const daySets = await dbOps.sets.getByDate(date);
+                            const existingForExercise = daySets.filter(s => s.exerciseId === exercise.id);
+                            const exerciseOrderNum = existingForExercise.length > 0 ? existingForExercise[0].exerciseOrder : Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
+                            const setOrderNum = parseInt(setNum) || 1;
+
+                            const set = {
+                                id: generateId('set'),
+                                date,
+                                exerciseId: exercise.id,
+                                exerciseName: exercise.name,
+                                exerciseOrder: exerciseOrderNum,
+                                setOrder: setOrderNum,
+                                weight: (weight && weight !== '') ? parseFloat(weight) : null,
+                                weightType,
+                                bandedColor: (weightType === 'banded' && note) ? note : undefined,
+                                reps: (reps && reps !== '') ? parseInt(reps) : null,
+                                duration: (duration && duration !== '') ? parseInt(duration) : null,
                                 createdAt: Date.now(),
                             };
-                            await dbOps.exercises.add(exercise);
-                        }
 
-                        const daySets = await dbOps.sets.getByDate(date);
-                        const existingForExercise = daySets.filter(s => s.exerciseId === exercise.id);
-                        const exerciseOrderNum = existingForExercise.length > 0 ? existingForExercise[0].exerciseOrder : Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
-                        const setOrderNum = parseInt(setNum) || 1;
+                            await dbOps.sets.add(set);
 
-                        const set = {
-                            id: generateId('set'),
-                            date,
-                            exerciseId: exercise.id,
-                            exerciseName: exercise.name,
-                            exerciseOrder: exerciseOrderNum,
-                            setOrder: setOrderNum,
-                            weight: (weight && weight.trim() !== '') ? parseFloat(weight) : null,
-                            weightType,
-                            bandedColor: (weightType === 'banded' && note) ? note : undefined,
-                            reps: (reps && reps.trim() !== '') ? parseInt(reps) : null,
-                            duration: (duration && duration.trim() !== '') ? parseInt(duration) : null,
-                            createdAt: Date.now(),
-                        };
-
-                        await dbOps.sets.add(set);
-
-                        // Parse session notes from Note column (for non-banded, set 1 only)
-                        if (note && weightType !== 'banded' && setOrderNum === 1) {
-                            // Format: tags separated by | then Form:text and General:text
-                            const parts = note.split('|').map(p => p.trim());
-                            const tags = [];
-                            let formCueText = '';
-                            let freeText = '';
-                            parts.forEach(p => {
-                                if (p.startsWith('Form:')) {
-                                    formCueText = p.substring(5).trim();
-                                } else if (p.startsWith('General:')) {
-                                    freeText = p.substring(8).trim();
-                                } else if (p) {
-                                    tags.push(p);
+                            // Parse session notes from Note column (for non-banded, set 1 only)
+                            if (note && weightType !== 'banded' && setOrderNum === 1) {
+                                const noteParts = note.split('|').map(p => p.trim());
+                                const tags = [];
+                                let formCueText = '';
+                                let freeText = '';
+                                noteParts.forEach(p => {
+                                    if (p.startsWith('Form:')) {
+                                        formCueText = p.substring(5).trim();
+                                    } else if (p.startsWith('General:')) {
+                                        freeText = p.substring(8).trim();
+                                    } else if (p) {
+                                        tags.push(p);
+                                    }
+                                });
+                                if (tags.length > 0 || formCueText || freeText) {
+                                    const sn = {
+                                        id: `sn_${exercise.id}_${date}`,
+                                        exerciseId: exercise.id,
+                                        date: date,
+                                        tags,
+                                        freeText,
+                                        formCueText,
+                                        updatedAt: new Date().toISOString(),
+                                    };
+                                    await dbOps.sessionNotes.add(sn);
                                 }
-                            });
-                            if (tags.length > 0 || formCueText || freeText) {
-                                const sn = {
-                                    id: `sn_${exercise.id}_${date}`,
-                                    exerciseId: exercise.id,
-                                    date: date,
-                                    tags,
-                                    freeText,
-                                    formCueText,
-                                    updatedAt: new Date().toISOString(),
-                                };
-                                await dbOps.sessionNotes.add(sn);
                             }
+                        } catch (err) {
+                            importErrors++;
+                            console.error('Import error on line:', line, err);
                         }
                     }
 
-                    onClose();
+                    // Force full reload to ensure all imported data is visible
+                    window.location.reload();
                 };
                 input.click();
             };
@@ -3008,6 +3081,7 @@
                             weight={selectedWeight.weight}
                             weightType={selectedWeight.weightType}
                             onSelectReps={handleRepsSelected}
+                            setNumber={setNumber}
                         />
                     )}
 
@@ -3017,11 +3091,12 @@
                             weight={selectedWeight.weight}
                             weightType={selectedWeight.weightType}
                             onSelectDuration={handleDurationSelected}
+                            setNumber={setNumber}
                         />
                     )}
 
                     {modal === 'settings' && (
-                        <SettingsModal onClose={() => setModal(null)} />
+                        <SettingsModal onClose={() => { setModal(null); loadDayData(); }} categories={categories} />
                     )}
 
                     {modal === 'sessionNote' && selectedExercise && (
