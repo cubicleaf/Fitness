@@ -1015,6 +1015,11 @@
 </head>
 <body>
     <div id="root"></div>
+    <script>
+        window.onerror = function(msg, url, line, col, error) {
+            document.getElementById('root').innerHTML = '<div style="color:red;padding:20px;font-size:13px"><h2>JS Error</h2><pre>' + msg + '\nLine: ' + line + '\nCol: ' + col + '</pre><pre style="font-size:11px;margin-top:10px">' + (error ? error.stack : '') + '</pre></div>';
+        };
+    </script>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -2031,7 +2036,7 @@
                     date: date,
                     tags,
                     freeText,
-                    formCueText
+                    formCueText,
                     updatedAt: new Date().toISOString(),
                 };
                 await dbOps.sessionNotes.add(note);
@@ -2741,7 +2746,7 @@
                     setSelectedExercise(exercise.sets[0] ? { id: exercise.exerciseId, name: exercise.exerciseName, type: 'reps' } : null);
                     dbOps.exercises.get(exercise.exerciseId).then(ex => {
                         setSelectedExercise(ex);
-                        setModal('changeCategory'); setSelectedExercise({...exercise, categories});
+                        setModal('changeCategory');
                     });
                 }
             };
@@ -3115,7 +3120,21 @@
             );
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        class ErrorBoundary extends React.Component {
+            constructor(props) { super(props); this.state = { error: null }; }
+            static getDerivedStateFromError(error) { return { error }; }
+            render() {
+                if (this.state.error) {
+                    return React.createElement('div', { style: { color: 'red', padding: '20px', fontSize: '14px' } },
+                        React.createElement('h2', null, 'App Error'),
+                        React.createElement('pre', { style: { whiteSpace: 'pre-wrap' } }, this.state.error.toString()),
+                        React.createElement('pre', { style: { whiteSpace: 'pre-wrap', fontSize: '11px', marginTop: '10px' } }, this.state.error.stack)
+                    );
+                }
+                return this.props.children;
+            }
+        }
+        ReactDOM.render(<ErrorBoundary><App /></ErrorBoundary>, document.getElementById('root'));
     </script>
 </body>
 </html>
