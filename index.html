@@ -2322,6 +2322,8 @@
                 return fields;
             };
 
+            const [importStatus, setImportStatus] = useState(null);
+
             const handleImport = async () => {
                 const input = document.createElement('input');
                 input.type = 'file';
@@ -2330,35 +2332,36 @@
                     const file = e.target.files[0];
                     if (!file) return;
 
+                    setImportStatus('Reading file...');
+
                     const text = await file.text();
                     const lines = text.split('\n').slice(1).filter(l => l.trim());
+                    const totalLines = lines.length;
 
-                    // Cache exercises to avoid repeated DB reads
-                    let exerciseCache = await dbOps.exercises.getAll();
-                    let importErrors = 0;
+                    setImportStatus(`Parsing ${totalLines} rows...`);
 
+                    // PHASE 1: Parse all lines into structured data (no DB operations)
+                    const exerciseMap = new Map(); // name -> exercise object
+                    const existingExercises = await dbOps.exercises.getAll();
+                    existingExercises.forEach(ex => exerciseMap.set(ex.name, ex));
+
+                    const parsedRows = [];
                     for (const line of lines) {
                         try {
                             const parts = parseCSVLine(line);
                             const date = parts[0];
                             const exerciseName = parts[1];
-                            const category = (parts[2] || 'push').toLowerCase();
-                            const rawType = (parts[3] || 'reps').toLowerCase();
-                            // Normalize type: 'banded' is not a valid exercise type, use 'reps'
-                            const type = (rawType === 'reps' || rawType === 'timed') ? rawType : 'reps';
-                            const setNum = parts[4];
-                            const weight = parts[5];
-                            const weightType = parts[6] || 'lbs';
-                            const reps = parts[7];
-                            const duration = parts[8];
-                            const note = (parts[9] || '');
-
                             if (!date || !exerciseName) continue;
 
-                            let exercise = exerciseCache.find(e => e.name === exerciseName);
+                            const category = (parts[2] || 'push').toLowerCase();
+                            const rawType = (parts[3] || 'reps').toLowerCase();
+                            const type = (rawType === 'reps' || rawType === 'timed') ? rawType : 'reps';
+                            const weightType = parts[6] || 'lbs';
+                            const note = (parts[9] || '');
 
-                            if (!exercise) {
-                                exercise = {
+                            // Create exercise record if needed
+                            if (!exerciseMap.has(exerciseName)) {
+                                const newEx = {
                                     id: generateId('ex'),
                                     name: exerciseName,
                                     category,
@@ -2367,73 +2370,147 @@
                                     lastUsed: date,
                                     createdAt: Date.now(),
                                 };
-                                await dbOps.exercises.add(exercise);
-                                exerciseCache.push(exercise);
+                                exerciseMap.set(exerciseName, newEx);
                             } else {
-                                // Update lastUsed if this date is more recent
-                                if (date > (exercise.lastUsed || '')) {
-                                    exercise.lastUsed = date;
-                                    await dbOps.exercises.update(exercise);
+                                const ex = exerciseMap.get(exerciseName);
+                                if (date > (ex.lastUsed || '')) {
+                                    ex.lastUsed = date;
                                 }
                             }
 
-                            const daySets = await dbOps.sets.getByDate(date);
-                            const existingForExercise = daySets.filter(s => s.exerciseId === exercise.id);
-                            const exerciseOrderNum = existingForExercise.length > 0 ? existingForExercise[0].exerciseOrder : Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
-                            const setOrderNum = parseInt(setNum) || 1;
+                            parsedRows.push({
+                                date,
+                                exerciseName,
+                                setOrder: parseInt(parts[4]) || 1,
+                                weight: (parts[5] && parts[5] !== '') ? parseFloat(parts[5]) : null,
+                                weightType,
+                                reps: (parts[7] && parts[7] !== '') ? parseInt(parts[7]) : null,
+                                duration: (parts[8] && parts[8] !== '') ? parseInt(parts[8]) : null,
+                                bandedColor: (weightType === 'banded' && note) ? note : undefined,
+                                note: (weightType !== 'banded') ? note : '',
+                            });
+                        } catch (err) {
+                            console.error('Parse error:', line, err);
+                        }
+                    }
 
-                            const set = {
+                    // PHASE 2: Compute exerciseOrder for each exercise on each date
+                    // Group rows by date to assign exerciseOrder
+                    const byDate = new Map();
+                    for (const row of parsedRows) {
+                        if (!byDate.has(row.date)) byDate.set(row.date, []);
+                        byDate.get(row.date).push(row);
+                    }
+
+                    // For each date, assign exerciseOrder based on first appearance
+                    const setsToWrite = [];
+                    for (const [date, rows] of byDate) {
+                        const exerciseOrderMap = new Map();
+                        let nextOrder = 1;
+                        for (const row of rows) {
+                            if (!exerciseOrderMap.has(row.exerciseName)) {
+                                exerciseOrderMap.set(row.exerciseName, nextOrder++);
+                            }
+                        }
+
+                        for (const row of rows) {
+                            const exercise = exerciseMap.get(row.exerciseName);
+                            setsToWrite.push({
                                 id: generateId('set'),
                                 date,
                                 exerciseId: exercise.id,
                                 exerciseName: exercise.name,
-                                exerciseOrder: exerciseOrderNum,
-                                setOrder: setOrderNum,
-                                weight: (weight && weight !== '') ? parseFloat(weight) : null,
-                                weightType,
-                                bandedColor: (weightType === 'banded' && note) ? note : undefined,
-                                reps: (reps && reps !== '') ? parseInt(reps) : null,
-                                duration: (duration && duration !== '') ? parseInt(duration) : null,
+                                exerciseOrder: exerciseOrderMap.get(row.exerciseName),
+                                setOrder: row.setOrder,
+                                weight: row.weight,
+                                weightType: row.weightType,
+                                bandedColor: row.bandedColor,
+                                reps: row.reps,
+                                duration: row.duration,
                                 createdAt: Date.now(),
-                            };
-
-                            await dbOps.sets.add(set);
-
-                            // Parse session notes from Note column (for non-banded, set 1 only)
-                            if (note && weightType !== 'banded' && setOrderNum === 1) {
-                                const noteParts = note.split('|').map(p => p.trim());
-                                const tags = [];
-                                let formCueText = '';
-                                let freeText = '';
-                                noteParts.forEach(p => {
-                                    if (p.startsWith('Form:')) {
-                                        formCueText = p.substring(5).trim();
-                                    } else if (p.startsWith('General:')) {
-                                        freeText = p.substring(8).trim();
-                                    } else if (p) {
-                                        tags.push(p);
-                                    }
-                                });
-                                if (tags.length > 0 || formCueText || freeText) {
-                                    const sn = {
-                                        id: `sn_${exercise.id}_${date}`,
-                                        exerciseId: exercise.id,
-                                        date: date,
-                                        tags,
-                                        freeText,
-                                        formCueText,
-                                        updatedAt: new Date().toISOString(),
-                                    };
-                                    await dbOps.sessionNotes.add(sn);
-                                }
-                            }
-                        } catch (err) {
-                            importErrors++;
-                            console.error('Import error on line:', line, err);
+                            });
                         }
                     }
 
-                    // Force full reload to ensure all imported data is visible
+                    // PHASE 3: Write exercises to DB (batch transaction)
+                    setImportStatus('Writing exercises...');
+                    const exercisesToWrite = Array.from(exerciseMap.values());
+                    await new Promise((resolve, reject) => {
+                        const tx = db.transaction('exercises', 'readwrite');
+                        const store = tx.objectStore('exercises');
+                        for (const ex of exercisesToWrite) {
+                            store.put(ex); // put = upsert
+                        }
+                        tx.oncomplete = () => resolve();
+                        tx.onerror = () => reject(tx.error);
+                    });
+
+                    // PHASE 4: Write sets to DB in batches (batch transaction)
+                    setImportStatus(`Writing ${setsToWrite.length} sets...`);
+                    const BATCH_SIZE = 200;
+                    for (let i = 0; i < setsToWrite.length; i += BATCH_SIZE) {
+                        const batch = setsToWrite.slice(i, i + BATCH_SIZE);
+                        await new Promise((resolve, reject) => {
+                            const tx = db.transaction('sets', 'readwrite');
+                            const store = tx.objectStore('sets');
+                            for (const set of batch) {
+                                store.add(set);
+                            }
+                            tx.oncomplete = () => resolve();
+                            tx.onerror = () => reject(tx.error);
+                        });
+                        setImportStatus(`Writing sets... ${Math.min(i + BATCH_SIZE, setsToWrite.length)}/${setsToWrite.length}`);
+                    }
+
+                    // PHASE 5: Write session notes
+                    setImportStatus('Writing session notes...');
+                    const sessionNotesToWrite = [];
+                    for (const row of parsedRows) {
+                        if (row.note && row.setOrder === 1) {
+                            const exercise = exerciseMap.get(row.exerciseName);
+                            const noteParts = row.note.split('|').map(p => p.trim());
+                            const tags = [];
+                            let formCueText = '';
+                            let freeText = '';
+                            noteParts.forEach(p => {
+                                if (p.startsWith('Form:')) {
+                                    formCueText = p.substring(5).trim();
+                                } else if (p.startsWith('General:')) {
+                                    freeText = p.substring(8).trim();
+                                } else if (p) {
+                                    tags.push(p);
+                                }
+                            });
+                            if (tags.length > 0 || formCueText || freeText) {
+                                sessionNotesToWrite.push({
+                                    id: `sn_${exercise.id}_${row.date}`,
+                                    exerciseId: exercise.id,
+                                    date: row.date,
+                                    tags,
+                                    freeText,
+                                    formCueText,
+                                    updatedAt: new Date().toISOString(),
+                                });
+                            }
+                        }
+                    }
+
+                    if (sessionNotesToWrite.length > 0) {
+                        await new Promise((resolve, reject) => {
+                            const tx = db.transaction('sessionNotes', 'readwrite');
+                            const store = tx.objectStore('sessionNotes');
+                            for (const sn of sessionNotesToWrite) {
+                                store.put(sn);
+                            }
+                            tx.oncomplete = () => resolve();
+                            tx.onerror = () => reject(tx.error);
+                        });
+                    }
+
+                    setImportStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} exercises.`);
+
+                    // Wait briefly for UI to show success, then reload
+                    await new Promise(r => setTimeout(r, 1000));
                     window.location.reload();
                 };
                 input.click();
@@ -2513,7 +2590,14 @@
                             {activeTab === 'data' && (
                                 <>
                                     <button className="btn" onClick={handleExport}>Export Data to CSV</button>
-                                    <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }}>Import Data from CSV</button>
+                                    <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }} disabled={!!importStatus}>
+                                        {importStatus ? 'Importing...' : 'Import Data from CSV'}
+                                    </button>
+                                    {importStatus && (
+                                        <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(139, 58, 98, 0.1)', borderRadius: '8px', textAlign: 'center' }}>
+                                            <div style={{ fontSize: '13px', color: '#c77da0', fontWeight: '500' }}>{importStatus}</div>
+                                        </div>
+                                    )}
                                 </>
                             )}
 
