@@ -1386,7 +1386,7 @@
                     const bandLabel = (set.bandedColor && set.bandedColor !== 'undefined') ? `${set.bandedColor} Band` : 'Band';
                     box += bandLabel + ' ';
                 } else if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
-                    box += `${set.weight}£ `;
+                    box += `${set.weight}lbs `;
                 }
             }
 
@@ -1597,19 +1597,23 @@
 
             return (
                 <div className="modal-overlay" onClick={onCancel}>
-                    <div className="modal" style={{ maxHeight: '100vh' }} onClick={(e) => e.stopPropagation()}>
+                    <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0 }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h2>New Activity</h2>
                             <button className="close-btn" onClick={onCancel}>✕</button>
                         </div>
-                        <div className="modal-content">
-                            <button
-                                className="btn"
-                                onClick={handleSave}
-                                style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '20px' }}
-                            >
-                                Create Activity
-                            </button>
+                        <div className="modal-content" style={{ flex: 1, overflow: 'auto' }}>
+                            <div className="form-group">
+                                <label className="form-label">Activity Name</label>
+                                <input
+                                    type="text"
+                                    className="form-input"
+                                    placeholder="E.g., Bench Press"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    autoFocus
+                                />
+                            </div>
 
                             <div className="form-group">
                                 <label className="form-label">Category</label>
@@ -1624,18 +1628,6 @@
                                         </button>
                                     ))}
                                 </div>
-                            </div>
-
-                            <div className="form-group">
-                                <label className="form-label">Activity Name</label>
-                                <input
-                                    type="text"
-                                    className="form-input"
-                                    placeholder="E.g., Bench Press"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    autoFocus
-                                />
                             </div>
 
                             <div className="form-group">
@@ -1676,11 +1668,18 @@
                                     </button>
                                 </div>
                             </div>
-
+                        </div>
+                        <div style={{ padding: '12px 16px', borderTop: '1px solid #333', background: '#241218' }}>
+                            <button
+                                className="btn"
+                                onClick={handleSave}
+                                style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '8px' }}
+                            >
+                                Create Activity
+                            </button>
                             <button
                                 className="btn btn-secondary"
                                 onClick={onCancel}
-                                style={{ marginTop: '8px' }}
                             >
                                 Cancel
                             </button>
@@ -2263,6 +2262,17 @@
                         let noteStr = '';
                         if (set.weightType === 'banded' && set.bandedColor) {
                             noteStr = set.bandedColor;
+                            // For banded set 1, also include session notes after band color
+                            if (set.setOrder === 1) {
+                                const sn = noteMap[`${set.exerciseId}_${set.date}`];
+                                if (sn) {
+                                    const parts = [];
+                                    if (sn.tags) sn.tags.forEach(t => parts.push(t));
+                                    if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
+                                    if (sn.freeText) parts.push(`General:${sn.freeText}`);
+                                    if (parts.length > 0) noteStr += '|' + parts.join('|');
+                                }
+                            }
                         } else if (set.setOrder === 1) {
                             // Include session notes on set 1 for round-trip fidelity
                             const sn = noteMap[`${set.exerciseId}_${set.date}`];
@@ -2385,8 +2395,8 @@
                                 weightType,
                                 reps: (parts[7] && parts[7] !== '') ? parseInt(parts[7]) : null,
                                 duration: (parts[8] && parts[8] !== '') ? parseInt(parts[8]) : null,
-                                bandedColor: (weightType === 'banded' && note) ? note : undefined,
-                                note: (weightType !== 'banded') ? note : '',
+                                bandedColor: (weightType === 'banded' && note) ? note.split('|')[0].trim() : undefined,
+                                note: (weightType === 'banded' && note && note.includes('|')) ? note.split('|').slice(1).join('|').trim() : (weightType !== 'banded' ? note : ''),
                             });
                         } catch (err) {
                             console.error('Parse error:', line, err);
@@ -3170,7 +3180,7 @@
                             exercise={selectedExercise}
                             onLogSet={handleLogSet}
                             onClose={() => {
-                                setModal(null);
+                                setModal('exercisePicker');
                                 setSelectedExercise(null);
                             }}
                         />
