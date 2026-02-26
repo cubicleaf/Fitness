@@ -190,9 +190,12 @@
         }
 
         .day-label {
-            font-size: 12px;
-            color: #999;
-            margin-top: 2px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #8b3a62;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         /* Content Area */
@@ -202,6 +205,7 @@
             overflow-x: hidden;
             padding: 0;
             -webkit-overflow-scrolling: touch;
+            transition: transform 0.25s ease-out, opacity 0.25s ease-out;
         }
 
         .content-padding {
@@ -1668,12 +1672,11 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                        <div style={{ padding: '12px 16px', borderTop: '1px solid #333', background: '#241218' }}>
+
                             <button
                                 className="btn"
                                 onClick={handleSave}
-                                style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '8px' }}
+                                style={{ opacity: name.trim() ? 1 : 0.4, marginBottom: '8px', marginTop: '8px' }}
                             >
                                 Create Activity
                             </button>
@@ -2155,7 +2158,7 @@
                                 history.map((session, idx) => {
                                     const note = sessionNotes[session.date];
                                     return (
-                                        <div key={idx}>
+                                        <div key={idx} style={{ paddingBottom: '12px', marginBottom: '12px', borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
                                             <div className="history-date">{formatDateShort(session.date)}</div>
                                             <div className="set-boxes-container">
                                                 {session.sets.map((s, sidx) => (
@@ -2169,7 +2172,7 @@
                                                 ))}
                                             </div>
                                             {note && (
-                                                <div style={{ marginTop: '8px', paddingBottom: '12px', borderBottom: '1px solid #333' }}>
+                                                <div style={{ marginTop: '8px' }}>
                                                     {note.tags && note.tags.length > 0 && (
                                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px' }}>
                                                             {note.tags.map(tag => (
@@ -2252,7 +2255,13 @@
                     noteMap[`${sn.exerciseId}_${sn.date}`] = sn;
                 });
 
-                let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n';
+                // Include weekly splits as a metadata row
+                const allTemplates = await dbOps.templates.getAll();
+                const splitMap = {};
+                allTemplates.forEach(t => { splitMap[t.dayOfWeek] = t.label || ''; });
+                const splitLine = ['__SPLITS__', splitMap[0]||'', splitMap[1]||'', splitMap[2]||'', splitMap[3]||'', splitMap[4]||'', splitMap[5]||'', splitMap[6]||'', '', ''].join(',');
+
+                let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n' + splitLine + '\n';
                 allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder)
                     .forEach(set => {
                         const ex = allExercises.find(e => e.id === set.exerciseId) || {};
@@ -2344,7 +2353,18 @@
                     setImportStatus('Reading file...');
 
                     const text = await file.text();
-                    const lines = text.split('\n').slice(1).filter(l => l.trim());
+                    const allLines = text.split('\n').slice(1).filter(l => l.trim());
+
+                    // Check for __SPLITS__ metadata row and extract weekly splits
+                    let importedSplits = null;
+                    const lines = allLines.filter(l => {
+                        const parts = parseCSVLine(l);
+                        if (parts[0] === '__SPLITS__') {
+                            importedSplits = { 0: parts[1]||'', 1: parts[2]||'', 2: parts[3]||'', 3: parts[4]||'', 4: parts[5]||'', 5: parts[6]||'', 6: parts[7]||'' };
+                            return false;
+                        }
+                        return true;
+                    });
                     const totalLines = lines.length;
 
                     setImportStatus(`Parsing ${totalLines} rows...`);
@@ -2516,6 +2536,13 @@
                         });
                     }
 
+                    // PHASE 6: Write weekly splits if present
+                    if (importedSplits) {
+                        for (let i = 0; i < 7; i++) {
+                            await dbOps.templates.set(i, importedSplits[i] || '');
+                        }
+                    }
+
                     setImportStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} activities.`);
 
                     // Wait briefly for UI to show success, then reload
@@ -2539,115 +2566,114 @@
 
             return (
                 <div className="modal-overlay" onClick={onClose}>
-                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0 }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header">
                             <h2>Settings</h2>
                             <button className="close-btn" onClick={onClose}>✕</button>
                         </div>
-                        <div className="modal-content">
-                            <div className="category-tabs">
+                        <div className="modal-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                            <div style={{ display: 'flex', gap: '0', marginBottom: '12px' }}>
                                 <button
-                                    className={`category-tab ${activeTab === 'weekly' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('weekly')}
+                                    style={{
+                                        flex: 1, padding: '12px 0', border: 'none', fontSize: '14px', fontWeight: '600',
+                                        cursor: 'pointer', WebkitAppearance: 'none',
+                                        background: activeTab === 'weekly' ? '#8b3a62' : 'rgba(255,255,255,0.05)',
+                                        color: activeTab === 'weekly' ? '#fff' : '#999',
+                                        borderRadius: '8px 0 0 8px',
+                                    }}
                                 >
-                                    Weekly View
+                                    Weekly Splits
                                 </button>
                                 <button
-                                    className={`category-tab ${activeTab === 'data' ? 'active' : ''}`}
                                     onClick={() => setActiveTab('data')}
+                                    style={{
+                                        flex: 1, padding: '12px 0', border: 'none', fontSize: '14px', fontWeight: '600',
+                                        cursor: 'pointer', WebkitAppearance: 'none',
+                                        background: activeTab === 'data' ? '#8b3a62' : 'rgba(255,255,255,0.05)',
+                                        color: activeTab === 'data' ? '#fff' : '#999',
+                                        borderRadius: '0 8px 8px 0',
+                                    }}
                                 >
                                     Data
-                                </button>
-                                <button
-                                    className={`category-tab ${activeTab === 'reset' ? 'active' : ''}`}
-                                    onClick={() => setActiveTab('reset')}
-                                >
-                                    Reset
                                 </button>
                             </div>
 
                             {activeTab === 'weekly' && (
-                                <>
-                                    {dayNames.map((day, idx) => (
-                                        <div key={idx} className="form-group">
-                                            <label className="form-label">{day}</label>
-                                            <select
-                                                className="form-select"
-                                                value={weeklyLabels[idx]}
-                                                onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
-                                            >
-                                                {templateOptions.map(opt => (
-                                                    <option key={opt} value={opt}>{opt || 'Unset'}</option>
-                                                ))}
-                                            </select>
-                                            {weeklyLabels[idx] === 'Custom' && (
-                                                <input
-                                                    type="text"
-                                                    className="form-input"
-                                                    placeholder="Enter custom label"
-                                                    value={weeklyLabels[idx] || ''}
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                                    <div style={{ flex: 1 }}>
+                                        {dayNames.map((day, idx) => (
+                                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                                                <label style={{ fontSize: '13px', fontWeight: '600', color: '#c77da0', textTransform: 'uppercase', letterSpacing: '0.5px', width: '36px', flexShrink: 0 }}>
+                                                    {day.substring(0, 3)}
+                                                </label>
+                                                <select
+                                                    className="form-select"
+                                                    value={weeklyLabels[idx]}
                                                     onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
-                                                    style={{ marginTop: '8px' }}
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
-                                    <button className="btn" onClick={handleSaveTemplate}>Save Weekly View</button>
-                                </>
+                                                    style={{ flex: 1, margin: 0, padding: '10px 12px' }}
+                                                >
+                                                    {templateOptions.map(opt => (
+                                                        <option key={opt} value={opt}>{opt || 'Unset'}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button className="btn" onClick={handleSaveTemplate} style={{ marginTop: '8px' }}>Save Weekly Splits</button>
+                                </div>
                             )}
 
                             {activeTab === 'data' && (
-                                <>
-                                    <button className="btn" onClick={handleExport}>Export Data to CSV</button>
-                                    <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }} disabled={!!importStatus}>
-                                        {importStatus ? 'Importing...' : 'Import Data from CSV'}
-                                    </button>
-                                    {importStatus && (
-                                        <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(139, 58, 98, 0.1)', borderRadius: '8px', textAlign: 'center' }}>
-                                            <div style={{ fontSize: '13px', color: '#c77da0', fontWeight: '500' }}>{importStatus}</div>
-                                        </div>
-                                    )}
-                                </>
-                            )}
-
-                            {activeTab === 'reset' && (
-                                <div style={{ padding: '20px', textAlign: 'center' }}>
-                                    <div style={{ fontSize: '40px', marginBottom: '16px' }}>⚠️</div>
-                                    <h3 style={{ color: '#ff6b6b', marginBottom: '12px' }}>Reset All Data</h3>
-                                    <p style={{ color: '#999', marginBottom: '24px', lineHeight: '1.6' }}>
-                                        This will permanently delete ALL exercises, sets, notes, templates, and session notes.
-                                        This cannot be undone. Your browser's stored data will be completely wiped.
-                                    </p>
-                                    {!resetConfirmStep ? (
-                                        <button className="btn btn-danger" onClick={() => setResetConfirmStep(1)}>
-                                            Reset Everything
+                                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                    <div>
+                                        <button className="btn" onClick={handleExport}>Export Data to CSV</button>
+                                        <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }} disabled={!!importStatus}>
+                                            {importStatus ? 'Importing...' : 'Import Data from CSV'}
                                         </button>
-                                    ) : resetConfirmStep === 1 ? (
-                                        <div>
-                                            <p style={{ color: '#ff6b6b', marginBottom: '16px', fontWeight: '600' }}>
-                                                Are you absolutely sure? Type DELETE to confirm.
-                                            </p>
-                                            <input
-                                                type="text"
-                                                className="form-input"
-                                                placeholder="Type DELETE"
-                                                value={resetConfirmText}
-                                                onChange={(e) => setResetConfirmText(e.target.value)}
-                                                style={{ marginBottom: '16px', textAlign: 'center' }}
-                                            />
-                                            <div className="button-row">
-                                                <button className="btn btn-secondary" onClick={() => { setResetConfirmStep(null); setResetConfirmText(''); }}>Cancel</button>
-                                                <button
-                                                    className="btn btn-danger"
-                                                    disabled={resetConfirmText !== 'DELETE'}
-                                                    style={{ opacity: resetConfirmText === 'DELETE' ? 1 : 0.3 }}
-                                                    onClick={handleNuclearReset}
-                                                >
-                                                    Confirm Reset
-                                                </button>
+                                        {importStatus && (
+                                            <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(139, 58, 98, 0.1)', borderRadius: '8px', textAlign: 'center' }}>
+                                                <div style={{ fontSize: '13px', color: '#c77da0', fontWeight: '500' }}>{importStatus}</div>
                                             </div>
-                                        </div>
-                                    ) : null}
+                                        )}
+                                    </div>
+                                    <div style={{ flex: 1 }}></div>
+                                    <div style={{ borderTop: '1px solid #333', paddingTop: '16px', textAlign: 'center' }}>
+                                        <h3 style={{ color: '#ff6b6b', marginBottom: '8px', fontSize: '14px' }}>Reset All Data</h3>
+                                        <p style={{ color: '#666', marginBottom: '12px', lineHeight: '1.5', fontSize: '12px' }}>
+                                            Permanently delete all activities, sets, notes, templates, and session notes. This cannot be undone.
+                                        </p>
+                                        {!resetConfirmStep ? (
+                                            <button className="btn btn-danger" onClick={() => setResetConfirmStep(1)} style={{ fontSize: '13px', padding: '10px 16px' }}>
+                                                Reset Everything
+                                            </button>
+                                        ) : resetConfirmStep === 1 ? (
+                                            <div>
+                                                <p style={{ color: '#ff6b6b', marginBottom: '12px', fontWeight: '600', fontSize: '13px' }}>
+                                                    Are you sure? Type DELETE to confirm.
+                                                </p>
+                                                <input
+                                                    type="text"
+                                                    className="form-input"
+                                                    placeholder="Type DELETE"
+                                                    value={resetConfirmText}
+                                                    onChange={(e) => setResetConfirmText(e.target.value)}
+                                                    style={{ marginBottom: '12px', textAlign: 'center' }}
+                                                />
+                                                <div className="button-row">
+                                                    <button className="btn btn-secondary" onClick={() => { setResetConfirmStep(null); setResetConfirmText(''); }}>Cancel</button>
+                                                    <button
+                                                        className="btn btn-danger"
+                                                        disabled={resetConfirmText !== 'DELETE'}
+                                                        style={{ opacity: resetConfirmText === 'DELETE' ? 1 : 0.3 }}
+                                                        onClick={handleNuclearReset}
+                                                    >
+                                                        Confirm Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : null}
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -2716,6 +2742,117 @@
             await dbOps.dayNotes.set('__categories__', JSON.stringify(cats));
         };
 
+        const DayDetailModal = ({ date, onClose }) => {
+            const [activities, setActivities] = useState([]);
+            const [currentIdx, setCurrentIdx] = useState(0);
+            const [sessionNotes, setSessionNotes] = useState({});
+            const [allHistory, setAllHistory] = useState({});
+            const detailTouchRef = useRef(null);
+
+            useEffect(() => {
+                const load = async () => {
+                    const sets = await dbOps.sets.getByDate(date);
+                    const grouped = {};
+                    sets.forEach(s => {
+                        if (!grouped[s.exerciseId]) grouped[s.exerciseId] = { exerciseId: s.exerciseId, exerciseName: s.exerciseName, sets: [] };
+                        grouped[s.exerciseId].sets.push(s);
+                    });
+                    const acts = Object.values(grouped).sort((a, b) => (a.sets[0]?.exerciseOrder||0) - (b.sets[0]?.exerciseOrder||0));
+                    setActivities(acts);
+
+                    // Load full history and notes for each activity
+                    const histMap = {};
+                    const noteMap = {};
+                    for (const act of acts) {
+                        const allSets = await dbOps.sets.getByExerciseId(act.exerciseId);
+                        const byDate = {};
+                        allSets.forEach(s => {
+                            if (!byDate[s.date]) byDate[s.date] = [];
+                            byDate[s.date].push(s);
+                        });
+                        histMap[act.exerciseId] = Object.keys(byDate).sort().reverse().map(d => ({
+                            date: d, sets: byDate[d].sort((a, b) => a.setOrder - b.setOrder)
+                        }));
+                        const notes = await dbOps.sessionNotes.getByExerciseId(act.exerciseId);
+                        notes.forEach(n => { noteMap[`${n.exerciseId}_${n.date}`] = n; });
+                    }
+                    setAllHistory(histMap);
+                    setSessionNotes(noteMap);
+                };
+                load();
+            }, [date]);
+
+            const handleDetailTouchStart = (e) => {
+                detailTouchRef.current = { startX: e.touches[0].clientX, startTime: Date.now() };
+            };
+            const handleDetailTouchEnd = (e) => {
+                if (!detailTouchRef.current) return;
+                const dx = e.changedTouches[0].clientX - detailTouchRef.current.startX;
+                const dt = Date.now() - detailTouchRef.current.startTime;
+                detailTouchRef.current = null;
+                if (Math.abs(dx) > 60 && dt < 400) {
+                    if (dx > 0 && currentIdx > 0) setCurrentIdx(currentIdx - 1);
+                    else if (dx < 0 && currentIdx < activities.length - 1) setCurrentIdx(currentIdx + 1);
+                }
+            };
+
+            const act = activities[currentIdx];
+            const history = act ? (allHistory[act.exerciseId] || []) : [];
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0 }} onClick={(e) => e.stopPropagation()} onTouchStart={handleDetailTouchStart} onTouchEnd={handleDetailTouchEnd}>
+                        <div className="modal-header">
+                            <h2>{formatDateShort(date)}</h2>
+                            <button className="close-btn" onClick={onClose}>✕</button>
+                        </div>
+                        {activities.length > 0 && (
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '8px 16px', gap: '8px', background: 'rgba(139, 58, 98, 0.05)', borderBottom: '1px solid #333' }}>
+                                <button onClick={() => currentIdx > 0 && setCurrentIdx(currentIdx - 1)} style={{ background: 'none', border: 'none', color: currentIdx > 0 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}>◀</button>
+                                <div style={{ fontSize: '15px', fontWeight: '700', color: '#e0e0e0', textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: 'center', flex: 1 }}>{act?.exerciseName}</div>
+                                <button onClick={() => currentIdx < activities.length - 1 && setCurrentIdx(currentIdx + 1)} style={{ background: 'none', border: 'none', color: currentIdx < activities.length - 1 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}>▶</button>
+                            </div>
+                        )}
+                        <div style={{ padding: '4px 16px 4px', display: 'flex', justifyContent: 'center', gap: '6px' }}>
+                            {activities.map((_, i) => (
+                                <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: i === currentIdx ? '#8b3a62' : 'rgba(255,255,255,0.15)', cursor: 'pointer' }} onClick={() => setCurrentIdx(i)} />
+                            ))}
+                        </div>
+                        <div className="modal-content" style={{ flex: 1, overflow: 'auto' }}>
+                            {history.map((session, idx) => {
+                                const note = sessionNotes[`${act.exerciseId}_${session.date}`];
+                                return (
+                                    <div key={idx} style={{ paddingBottom: '12px', marginBottom: '12px', borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                                        <div className="history-date">{formatDateShort(session.date)}</div>
+                                        <div className="set-boxes-container">
+                                            {session.sets.map((s, sidx) => (
+                                                <div key={sidx} className="set-box" style={{ backgroundColor: getSetBoxColor(sidx) }}>
+                                                    {formatSetBox(s, session.sets[sidx - 1])}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {note && (
+                                            <div style={{ marginTop: '8px' }}>
+                                                {note.tags && note.tags.length > 0 && (
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '6px' }}>
+                                                        {note.tags.map(tag => (
+                                                            <span key={tag} style={{ padding: '2px 8px', borderRadius: '12px', background: 'rgba(139, 58, 98, 0.2)', color: '#7b93f5', fontSize: '11px' }}>{tag}</span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                {note.formCueText && <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}><strong>Form:</strong> {note.formCueText}</div>}
+                                                {note.freeText && <div style={{ fontSize: '12px', color: '#999' }}>{note.freeText}</div>}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         function App() {
             const [currentDate, setCurrentDate] = useState(getTodayString());
             const [daySets, setDaySets] = useState([]);
@@ -2732,6 +2869,7 @@
             const [categories, setCategories] = useState(['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'other']);
             const touchRef = useRef(null);
             const contentRef = useRef(null);
+            const longPressRef = useRef(null);
 
             const handleTouchStart = useCallback((e) => {
                 if (modal) return; // Don't swipe when a modal is open
@@ -2746,12 +2884,28 @@
                 const dy = touch.clientY - touchRef.current.startY;
                 const dt = Date.now() - touchRef.current.startTime;
                 touchRef.current = null;
-                // Require: horizontal distance > 60px, mostly horizontal (2:1 ratio), under 400ms
                 if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 2 && dt < 400) {
-                    if (dx > 0) {
-                        setCurrentDate(prev => addDays(prev, -1)); // swipe right = previous day
+                    const direction = dx > 0 ? 1 : -1; // 1=right(prev), -1=left(next)
+                    const el = contentRef.current;
+                    if (el) {
+                        // Slide out
+                        el.style.transform = `translateX(${direction * 100}px)`;
+                        el.style.opacity = '0';
+                        setTimeout(() => {
+                            // Jump to opposite side (invisible)
+                            el.style.transition = 'none';
+                            el.style.transform = `translateX(${-direction * 100}px)`;
+                            // Update date
+                            setCurrentDate(prev => addDays(prev, direction > 0 ? -1 : 1));
+                            // Force reflow then slide in
+                            requestAnimationFrame(() => {
+                                el.style.transition = 'transform 0.25s ease-out, opacity 0.25s ease-out';
+                                el.style.transform = 'translateX(0)';
+                                el.style.opacity = '1';
+                            });
+                        }, 150);
                     } else {
-                        setCurrentDate(prev => addDays(prev, 1)); // swipe left = next day
+                        setCurrentDate(prev => addDays(prev, direction > 0 ? -1 : 1));
                     }
                 }
             }, [modal]);
@@ -3049,12 +3203,21 @@
                 <div className="app-container">
                     <div className="top-nav">
                         <div className="nav-title">Fitness Tracker</div>
-                        <button className="settings-btn" onClick={() => { setExpandedExercise(null); setModal('settings'); }}>⚙️</button>
+                        <button className="settings-btn" onClick={() => { setExpandedExercise(null); setModal('settings'); }}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b3a62" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                        </button>
                     </div>
 
                     <div className="day-nav">
                         <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, -1))}>◀</button>
-                        <div className="day-display">
+                        <div className="day-display"
+                            onTouchStart={() => { longPressRef.current = setTimeout(() => { setModal('dayDetail'); }, 500); }}
+                            onTouchEnd={() => { clearTimeout(longPressRef.current); }}
+                            onTouchMove={() => { clearTimeout(longPressRef.current); }}
+                        >
                             <div className="day-date">{formatDate(currentDate)}</div>
                             {dayLabel && <div className="day-label">{dayLabel}</div>}
                         </div>
@@ -3274,6 +3437,13 @@
                                 setModal(null);
                                 setSelectedExercise(null);
                             }}
+                        />
+                    )}
+
+                    {modal === 'dayDetail' && (
+                        <DayDetailModal
+                            date={currentDate}
+                            onClose={() => setModal(null)}
                         />
                     )}
 
