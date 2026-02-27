@@ -2196,16 +2196,25 @@
             );
         };
 
-        const SettingsModal = ({ onClose, categories: settingsCategories }) => {
+        const SettingsModal = ({ onClose, onCategoriesChanged, categories: settingsCategories }) => {
             const [activeTab, setActiveTab] = useState('weekly');
             const [weeklyLabels, setWeeklyLabels] = useState({
                 0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: ''
             });
             const [resetConfirmStep, setResetConfirmStep] = useState(null);
             const [resetConfirmText, setResetConfirmText] = useState('');
+            const [showCatEditor, setShowCatEditor] = useState(false);
 
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const templateOptions = ['', ...(settingsCategories || ['push', 'pull', 'legs', 'core', 'cardio']).map(c => c.charAt(0).toUpperCase() + c.slice(1)), 'Rest', 'Custom'];
+            const templateOptions = ['', ...(settingsCategories || ['push', 'pull', 'legs', 'core', 'cardio']).map(c => c.charAt(0).toUpperCase() + c.slice(1)), 'Rest'];
+
+            const handleSelectChange = (idx, value) => {
+                if (value === '__add_new__') {
+                    setShowCatEditor(true);
+                } else {
+                    setWeeklyLabels({ ...weeklyLabels, [idx]: value });
+                }
+            };
 
             useEffect(() => {
                 if (activeTab === 'weekly') {
@@ -2235,7 +2244,7 @@
                 const todayDow = parseLocalDate(getTodayString()).getDay();
                 const todayStr = getTodayString();
                 if (oldLabels[todayDow] !== weeklyLabels[todayDow]) {
-                    if (window.confirm(`Apply "${weeklyLabels[todayDow] || 'Unset'}" to today as well?`)) {
+                    if (window.confirm(`Apply "${weeklyLabels[todayDow] || 'None'}" to today as well?`)) {
                         await dbOps.dayNotes.set(`__split_${todayStr}`, weeklyLabels[todayDow]);
                     }
                 }
@@ -2648,17 +2657,29 @@
                                                 <select
                                                     className="form-select"
                                                     value={weeklyLabels[idx]}
-                                                    onChange={(e) => setWeeklyLabels({ ...weeklyLabels, [idx]: e.target.value })}
+                                                    onChange={(e) => handleSelectChange(idx, e.target.value)}
                                                     style={{ flex: 1, margin: 0, padding: '10px 12px' }}
                                                 >
                                                     {templateOptions.map(opt => (
-                                                        <option key={opt} value={opt}>{opt || 'Unset'}</option>
+                                                        <option key={opt} value={opt}>{opt || 'None'}</option>
                                                     ))}
+                                                    <option value="__add_new__">+ Add New Split...</option>
                                                 </select>
                                             </div>
                                         ))}
                                     </div>
                                     <button className="btn" onClick={handleSaveTemplate} style={{ marginTop: '8px' }}>Save Weekly Splits</button>
+                                    {showCatEditor && (
+                                        <EditCategoriesModal
+                                            categories={settingsCategories || ['push', 'pull', 'legs', 'core', 'cardio']}
+                                            onSave={async (cats) => {
+                                                await saveCategories(cats);
+                                                if (onCategoriesChanged) onCategoriesChanged(cats);
+                                                setShowCatEditor(false);
+                                            }}
+                                            onCancel={() => setShowCatEditor(false)}
+                                        />
+                                    )}
                                 </div>
                             )}
 
@@ -2859,7 +2880,7 @@
             const act = activities[currentIdx];
             const history = act ? (allHistory[act.id] || []) : [];
 
-            const splitOptions = [...new Set([...(categories || []), 'rest'].map(c => c.charAt(0).toUpperCase() + c.slice(1)))];
+            const splitOptions = [...new Set([...(categories || [])].map(c => c.charAt(0).toUpperCase() + c.slice(1)))];
 
             return (
                 <div className="modal-overlay" onClick={onClose}>
@@ -2910,7 +2931,7 @@
                                             {activities.length > 1 && (
                                                 <div style={{ padding: '0 0 8px', display: 'flex', justifyContent: 'center', gap: '6px', flexShrink: 0 }}>
                                                     {activities.map((_, i) => (
-                                                        <div key={i} style={{ width: '7px', height: '7px', borderRadius: '50%', background: i === currentIdx ? '#8b3a62' : 'rgba(255,255,255,0.15)', cursor: 'pointer' }} onClick={() => setCurrentIdx(i)} />
+                                                        <div key={i} style={{ width: '7px', height: '7px', borderRadius: '50%', background: i === currentIdx ? '#e8c8d8' : 'rgba(232,200,216,0.25)', cursor: 'pointer', transition: 'background 0.2s' }} onClick={() => setCurrentIdx(i)} />
                                                     ))}
                                                 </div>
                                             )}
@@ -2962,7 +2983,6 @@
 
                             {(activeTab === 'split' || !dayLabel) && (
                                 <div style={{ padding: '8px 0' }}>
-                                    {dayLabel && <div style={{ fontSize: '12px', color: '#666', marginBottom: '12px', textAlign: 'center' }}>Current: {dayLabel}</div>}
                                     <div className="button-grid">
                                         {splitOptions.map(opt => (
                                             <button
@@ -2977,7 +2997,7 @@
                                     {dayLabel && (
                                         <button
                                             className="btn btn-secondary"
-                                            onClick={() => handleSplitSelect('')}
+                                            onClick={() => { onSplitChange(''); onClose(); }}
                                             style={{ marginTop: '8px' }}
                                         >
                                             Remove Split
@@ -3369,9 +3389,8 @@
                     <div className="day-nav">
                         <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, -1))}>◀</button>
                         <div className="day-display"
-                            onTouchStart={() => { longPressRef.current = setTimeout(() => { setModal('dayDetail'); }, 500); }}
-                            onTouchEnd={() => { clearTimeout(longPressRef.current); }}
-                            onTouchMove={() => { clearTimeout(longPressRef.current); }}
+                            onClick={() => setModal('dayDetail')}
+                            style={{ cursor: 'pointer' }}
                         >
                             <div className="day-date">{formatDate(currentDate)}</div>
                             {dayLabel && <div className="day-label">{dayLabel}</div>}
@@ -3536,7 +3555,7 @@
                     )}
 
                     {modal === 'settings' && (
-                        <SettingsModal onClose={() => { setModal(null); loadDayData(); }} categories={categories} />
+                        <SettingsModal onClose={() => { setModal(null); loadDayData(); }} categories={categories} onCategoriesChanged={(cats) => setCategories(cats)} />
                     )}
 
                     {modal === 'sessionNote' && selectedExercise && (
