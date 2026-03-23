@@ -707,9 +707,10 @@
         .rep-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+            gap: 5px;
             margin-bottom: 0;
             flex: 1;
+            align-content: start;
         }
 
         .rep-btn {
@@ -717,16 +718,17 @@
             border: 1px solid rgba(139, 58, 98, 0.2);
             border-radius: 8px;
             padding: 0;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: #e0e0e0;
             cursor: pointer;
-            transition: all 0.2s ease;
-            min-height: 0;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            aspect-ratio: 1.1;
+            min-height: 38px;
+            height: calc((100vh - 260px) / 6 - 5px);
+            max-height: 52px;
         }
 
         .rep-btn:active {
@@ -1066,6 +1068,7 @@
 
             .rep-grid {
                 grid-template-columns: repeat(5, 1fr);
+                gap: 4px;
             }
 
             .duration-grid {
@@ -1112,6 +1115,24 @@
 
     <script type="text/babel">
         const { useState, useEffect, useRef, useCallback } = React;
+
+        // ============ FEATHER ICONS (inline SVG) ============
+        const iconProps = { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round' };
+        const Icon = ({ children, size = 16, style = {}, ...rest }) => (
+            <svg {...iconProps} width={size} height={size} style={{ display: 'inline-block', verticalAlign: 'middle', ...style }} {...rest}>{children}</svg>
+        );
+        const IconArrowLeft = ({ size, style }) => <Icon size={size} style={style}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></Icon>;
+        const IconArrowRight = ({ size, style }) => <Icon size={size} style={style}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></Icon>;
+        const IconClock = ({ size, style }) => <Icon size={size} style={style}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>;
+        const IconFileText = ({ size, style }) => <Icon size={size} style={style}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></Icon>;
+        const IconUpload = ({ size, style }) => <Icon size={size} style={style}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></Icon>;
+        const IconTrash = ({ size, style }) => <Icon size={size} style={style}><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></Icon>;
+        const IconEdit2 = ({ size, style }) => <Icon size={size} style={style}><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></Icon>;
+        const IconPlus = ({ size, style }) => <Icon size={size} style={style}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></Icon>;
+        const IconCheck = ({ size, style }) => <Icon size={size} style={style}><polyline points="20 6 9 17 4 12"/></Icon>;
+        const IconX = ({ size, style }) => <Icon size={size} style={style}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Icon>;
+        const IconSettings = ({ size, style }) => <Icon size={size} style={style}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></Icon>;
+        const IconChevronDown = ({ size, style }) => <Icon size={size} style={style}><polyline points="6 9 12 15 18 9"/></Icon>;
 
         // ============ DATABASE ============
 
@@ -1759,11 +1780,11 @@
             const chords = { major: [1, 1.25, 1.5], minor: [1, 1.2, 1.5], pentatonic: [1, 1.125, 1.5], octave: [1, 1.5, 2] };
             (chords[variant] || chords.major).forEach((r, i) => playToneAt(pitch * r, ctx.currentTime + i * spd, 0.8, 'sine', 0.25));
         };
-        const playSingingBowl = (sustain = 3, harmonics = 5) => {
+        const playSingingBowl = (sustain = 3, harmonics = 2, basePitch = 220) => {
             const ctx = getAudioCtx();
             for (let h = 1; h <= harmonics; h++) {
                 const osc = ctx.createOscillator(); const gain = ctx.createGain();
-                osc.type = 'sine'; osc.frequency.value = 220 * h; osc.detune.value = (Math.random() - 0.5) * 10;
+                osc.type = 'sine'; osc.frequency.value = basePitch * h; osc.detune.value = (Math.random() - 0.5) * 10;
                 gain.gain.setValueAtTime(0, ctx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.25 / h, ctx.currentTime + 0.05);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + sustain);
@@ -1832,8 +1853,8 @@
         };
         const playCompletionSound = () => {
             const cat = getPref('timerSoundCategory', 'chime');
-            if (cat === 'chime') playGentleChime(getPref('timerChimeVariant', 'major'), parseInt(getPref('timerChimeSpeed', '150')), parseInt(getPref('timerChimePitch', '523')));
-            else if (cat === 'bowl') playSingingBowl(parseFloat(getPref('timerBowlSustain', '3')), parseInt(getPref('timerBowlHarmonics', '5')));
+            if (cat === 'chime') playGentleChime(getPref('timerChimeVariant', 'octave'), parseInt(getPref('timerChimeSpeed', '180')), parseInt(getPref('timerChimePitch', '350')));
+            else if (cat === 'bowl') playSingingBowl(parseFloat(getPref('timerBowlSustain', '3')), parseInt(getPref('timerBowlHarmonics', '2')), parseInt(getPref('timerBowlPitch', '220')));
             else if (cat === 'fanfare') playVictoryFanfare(getPref('timerFanfareVariant', 'short'));
             else if (cat === 'sos') playSOSMorse(parseInt(getPref('timerSOSFrequency', '600')), parseFloat(getPref('timerSOSSpeed', '1')));
             if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
@@ -1981,7 +2002,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onCancel)}>
                             <h2>Edit Categories</h2>
-                            <button className="close-btn" onClick={onCancel}>x</button>
+                            <button className="close-btn" onClick={onCancel}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
@@ -2009,16 +2030,16 @@
                                                 autoFocus
                                                 style={{ flex: 1, padding: '6px 10px', fontSize: '13px' }}
                                             />
-                                            <button onClick={confirmRename} style={{ background: 'none', border: 'none', color: '#8b3a62', fontSize: '13px', fontWeight: '600', cursor: 'pointer', padding: '4px 8px' }}>Save</button>
-                                            <button onClick={() => setRenamingCat(null)} style={{ background: 'none', border: 'none', color: '#999', fontSize: '13px', cursor: 'pointer', padding: '4px 8px' }}>Cancel</button>
+                                            <button onClick={confirmRename} style={{ background: 'none', border: 'none', color: '#8b3a62', cursor: 'pointer', padding: '4px 8px' }}><IconCheck size={14} /></button>
+                                            <button onClick={() => setRenamingCat(null)} style={{ background: 'none', border: 'none', color: '#999', cursor: 'pointer', padding: '4px 8px' }}><IconX size={14} /></button>
                                         </div>
                                     ) : (
                                         <>
                                             <span style={{ color: '#e8c1d0', flex: 1 }}>{cat}</span>
                                             <button
                                                 onClick={() => startRename(cat)}
-                                                style={{ background: 'none', border: 'none', color: 'rgba(199,125,160,0.4)', fontSize: '12px', cursor: 'pointer', padding: '4px 8px' }}
-                                            >rename</button>
+                                                style={{ background: 'none', border: 'none', color: 'rgba(199,125,160,0.4)', cursor: 'pointer', padding: '4px 8px' }}
+                                            ><IconEdit2 size={14} /></button>
                                             <button
                                                 onClick={() => removeCategory(cat)}
                                                 style={{ background: 'none', border: 'none', color: 'rgba(255, 100, 100, 0.4)', fontSize: '18px', cursor: 'pointer', padding: '4px 8px' }}
@@ -2056,8 +2077,13 @@
             useEffect(() => {
                 let result = exercises;
 
-                if (category !== 'all') {
-                    result = result.filter(e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase()));
+                // In pairing mode: show ALL timed exercises except the source
+                if (pairingSource) {
+                    result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
+                } else {
+                    if (category !== 'all') {
+                        result = result.filter(e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase()));
+                    }
                 }
 
                 if (search.trim()) {
@@ -2066,7 +2092,7 @@
                 }
 
                 setFiltered(result);
-            }, [exercises, search, category]);
+            }, [exercises, search, category, pairingSource]);
 
             const [sortedCategories, setSortedCategories] = useState(categories);
             const [showEditCategories, setShowEditCategories] = useState(false);
@@ -2113,7 +2139,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(() => onSelect(null))}>
                             <h2>Add Activity</h2>
-                            <button className="close-btn" onClick={() => onSelect(null)}>x</button>
+                            <button className="close-btn" onClick={() => onSelect(null)}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             <button className="btn btn-secondary" onClick={onCreateNew} style={{ marginBottom: 16 }}>
@@ -2176,8 +2202,8 @@
 
                             {filtered.length > 0 ? (
                                 <div className="exercise-picker-section">
-                                    <div className="section-title">{category === 'all' ? 'All Activities' : category}</div>
-                                    <div style={{ fontSize: '10px', color: 'rgba(199,125,160,0.3)', marginBottom: '8px' }}>Long press to delete</div>
+                                    <div className="section-title">{pairingSource ? 'Select activity to pair with' : (category === 'all' ? 'All Activities' : category)}</div>
+                                    {!pairingSource && <div style={{ fontSize: '10px', color: 'rgba(199,125,160,0.3)', marginBottom: '8px' }}>Long press to delete</div>}
                                     {filtered.map(ex => (
                                         <div
                                             key={ex.id}
@@ -2185,9 +2211,7 @@
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                                             onClick={() => {
                                                 if (pairingSource) {
-                                                    if (ex.id === pairingSource.id) return;
-                                                    if (ex.type !== 'timed') return;
-                                                    if (onPair) onPair(pairingSource.id, ex.id);
+                                                    if (onPair) onPair(pairingSource, ex);
                                                     setPairingSource(null);
                                                 } else {
                                                     onSelect(ex);
@@ -2220,12 +2244,6 @@
                                                     }}
                                                 >pair</button>
                                             )}
-                                            {pairingSource && ex.id !== pairingSource.id && ex.type === 'timed' && (
-                                                <span style={{ fontSize: '10px', color: '#8b3a62', fontWeight: '600', flexShrink: 0 }}>tap to pair</span>
-                                            )}
-                                            {pairingSource && ex.id === pairingSource.id && (
-                                                <span style={{ fontSize: '10px', color: 'rgba(199,125,160,0.3)', flexShrink: 0 }}>source</span>
-                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -2243,11 +2261,11 @@
         const CreateExerciseModal = ({ onSave, onCancel, categories, dayLabel }) => {
             const [name, setName] = useState('');
             const [selectedCats, setSelectedCats] = useState(dayLabel && categories.includes(dayLabel.toLowerCase()) ? [dayLabel.toLowerCase()] : []);
-            const [type, setType] = useState('reps');
-            const [weightMeaning, setWeightMeaning] = useState('total');
+            const [type, setType] = useState(null);
+            const [weightMeaning, setWeightMeaning] = useState(null);
             const [barType, setBarType] = useState(null);
             const [customBarWeight, setCustomBarWeight] = useState('');
-            const [weightDefault, setWeightDefault] = useState('weight');
+            const [weightDefault, setWeightDefault] = useState(null);
             const [showSplitWarning, setShowSplitWarning] = useState(false);
             const [recommendation, setRecommendation] = useState(null);
             const [dupMatches, setDupMatches] = useState([]);
@@ -2391,15 +2409,15 @@
             };
 
             const doSave = async (opts = {}) => {
-                const finalWeightMeaning = weightMeaning === 'bar' ? (barType === 'custom' ? 'bar-custom' : 'barbell') : weightMeaning;
+                const finalWeightMeaning = weightMeaning === 'bar' ? (barType === 'custom' ? 'bar-custom' : 'barbell') : (weightMeaning || 'total');
                 const exercise = {
                     id: generateId('ex'),
                     name: name.trim(),
                     category: selectedCats.length > 0 ? selectedCats[0] : '',
                     categories: selectedCats,
-                    type,
+                    type: type || 'reps',
                     weightMeaning: finalWeightMeaning,
-                    weightDefault,
+                    weightDefault: weightDefault || 'bodyweight',
                     customBarWeight: weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
                     variationOf: opts.variationOf || null,
                     note: '',
@@ -2413,6 +2431,9 @@
 
             const handleSave = async () => {
                 if (!name.trim()) return;
+                if (!type) return;
+                if (!weightMeaning && type === 'reps') return;
+                if (!weightDefault && type === 'reps') return;
                 if (weightMeaning === 'bar' && !barType) return;
                 if (weightMeaning === 'bar' && barType === 'custom' && !customBarWeight.trim()) return;
 
@@ -2435,7 +2456,7 @@
                     <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0 }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onCancel)}>
                             <h2>New Activity</h2>
-                            <button className="close-btn" onClick={onCancel}>x</button>
+                            <button className="close-btn" onClick={onCancel}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content" style={{ flex: 1, overflow: 'auto' }}>
                             <div className="form-group">
@@ -2505,14 +2526,18 @@
                                         >Neither — Create Brand New</button>
                                     </div>
                                 )}
-                                <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                                    <button
-                                        onClick={handleRecommend}
-                                        className="btn btn-secondary"
-                                        style={{ flex: 1, fontSize: '11px' }}
-                                    >
-                                        Recommend Split
-                                    </button>
+                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid #3a2a30', marginTop: '8px' }}>
+                                    <button onClick={() => setSelectedCats([])} style={{
+                                        flex: 1, padding: '10px', border: 'none', fontSize: '11px', fontWeight: '600',
+                                        cursor: 'pointer', WebkitAppearance: 'none', borderRight: '1px solid #3a2a30',
+                                        background: selectedCats.length === 0 ? 'rgba(139,58,98,0.25)' : 'rgba(255,255,255,0.03)',
+                                        color: selectedCats.length === 0 ? '#c77da0' : '#666',
+                                    }}>No Split</button>
+                                    <button onClick={handleRecommend} style={{
+                                        flex: 1, padding: '10px', border: 'none', fontSize: '11px', fontWeight: '600',
+                                        cursor: 'pointer', WebkitAppearance: 'none',
+                                        background: 'rgba(255,255,255,0.03)', color: '#666',
+                                    }}>Recommend</button>
                                 </div>
                                 {recommendation && (
                                     <div style={{ fontSize: '11px', marginTop: '6px', textAlign: 'center', color: recommendation === 'no-match' ? '#999' : recommendation === 'unknown' ? '#999' : '#90ee90' }}>
@@ -2527,13 +2552,6 @@
 
                             <div className="form-group">
                                 <label className="form-label">Splits (select multiple)</label>
-                                <button
-                                    onClick={() => setSelectedCats([])}
-                                    className={`btn ${selectedCats.length === 0 ? '' : 'btn-secondary'}`}
-                                    style={{ width: '100%', marginBottom: '8px' }}
-                                >
-                                    Do Not Assign to a Split
-                                </button>
                                 <div className="button-grid">
                                     {categories.map(cat => (
                                         <button
@@ -2548,84 +2566,92 @@
                             </div>
 
                             <div className="form-group">
-                                <label className="form-label">Type</label>
-                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid #3a2a30' }}>
-                                    <button
-                                        onClick={() => setType('reps')}
-                                        style={{
-                                            flex: 1,
-                                            padding: '10px',
-                                            border: 'none',
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            cursor: 'pointer',
-                                            WebkitAppearance: 'none',
-                                            background: type === 'reps' ? 'rgba(139, 58, 98, 0.25)' : 'rgba(255, 255, 255, 0.03)',
-                                            color: type === 'reps' ? '#c77da0' : '#666',
-                                            borderRight: '1px solid #3a2a30',
-                                        }}
-                                    >
-                                        Reps
-                                    </button>
-                                    <button
-                                        onClick={() => setType('timed')}
-                                        style={{
-                                            flex: 1,
-                                            padding: '10px',
-                                            border: 'none',
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            cursor: 'pointer',
-                                            WebkitAppearance: 'none',
-                                            background: type === 'timed' ? 'rgba(139, 58, 98, 0.25)' : 'rgba(255, 255, 255, 0.03)',
-                                            color: type === 'timed' ? '#c77da0' : '#666',
-                                        }}
-                                    >
-                                        Timed
-                                    </button>
+                                <label className="form-label">Type {!type && <span style={{ color: '#e88a8a', fontSize: '11px', fontWeight: '400' }}>— select one</span>}</label>
+                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${!type ? 'rgba(232,138,138,0.3)' : '#3a2a30'}` }}>
+                                    {['reps', 'timed'].map((t, i) => (
+                                        <button key={t} onClick={() => setType(t)} style={{
+                                            flex: 1, padding: '10px', border: 'none', fontSize: '13px', fontWeight: '600',
+                                            cursor: 'pointer', WebkitAppearance: 'none',
+                                            borderRight: i === 0 ? '1px solid #3a2a30' : 'none',
+                                            background: type === t ? 'rgba(139,58,98,0.25)' : 'rgba(255,255,255,0.03)',
+                                            color: type === t ? '#c77da0' : '#666',
+                                        }}>{t === 'reps' ? 'Reps' : <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}><IconClock size={13} /> Timed</span>}</button>
+                                    ))}
                                 </div>
                             </div>
 
-                            {/* Weight section */}
+                            {/* Weight section — only show for reps type */}
+                            {type === 'reps' && (
                             <div className="form-group">
-                                <label className="form-label">Weight</label>
-                                <div className="button-row" style={{ gap: '4px' }}>
-                                    <button className={`btn ${weightMeaning === 'total' ? '' : 'btn-secondary'}`} onClick={() => { setWeightMeaning('total'); setBarType(null); }} style={{ flex: 1 }}>Total</button>
-                                    <button className={`btn ${weightMeaning === 'per-side' ? '' : 'btn-secondary'}`} onClick={() => { setWeightMeaning('per-side'); setBarType(null); }} style={{ flex: 1 }}>Per Side</button>
-                                    <button className={`btn ${weightMeaning === 'bar' ? '' : 'btn-secondary'}`} onClick={() => setWeightMeaning('bar')} style={{ flex: 1 }}>Bar</button>
+                                <label className="form-label">Weight Style {!weightMeaning && <span style={{ color: '#e88a8a', fontSize: '11px', fontWeight: '400' }}>— select one</span>}</label>
+                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${!weightMeaning ? 'rgba(232,138,138,0.3)' : '#3a2a30'}` }}>
+                                    {[{v:'total',l:'Total'},{v:'per-side',l:'Per Side'},{v:'bar',l:'Bar'}].map((opt, i) => (
+                                        <button key={opt.v} onClick={() => { setWeightMeaning(opt.v); if (opt.v !== 'bar') setBarType(null); }} style={{
+                                            flex: 1, padding: '10px', border: 'none', fontSize: '12px', fontWeight: '600',
+                                            cursor: 'pointer', WebkitAppearance: 'none',
+                                            borderRight: i < 2 ? '1px solid #3a2a30' : 'none',
+                                            background: weightMeaning === opt.v ? 'rgba(139,58,98,0.25)' : 'rgba(255,255,255,0.03)',
+                                            color: weightMeaning === opt.v ? '#c77da0' : '#666',
+                                        }}>{opt.l}</button>
+                                    ))}
                                 </div>
-                                <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
-                                    {weightMeaning === 'total' ? 'Machine / cable -- log total weight' : weightMeaning === 'per-side' ? 'Dumbbells -- log weight per hand' : weightMeaning === 'bar' ? 'Select bar type below' : ''}
-                                </div>
+                                {weightMeaning && (
+                                    <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
+                                        {weightMeaning === 'total' ? 'Machine / cable — log total weight' : weightMeaning === 'per-side' ? 'Dumbbells — log weight per hand' : 'Select bar type below'}
+                                    </div>
+                                )}
 
                                 {weightMeaning === 'bar' && (
                                     <div style={{ marginTop: '8px' }}>
-                                        <div className="button-row" style={{ gap: '4px' }}>
-                                            <button className={`btn ${barType === 'barbell' ? '' : 'btn-secondary'}`} onClick={() => { setBarType('barbell'); setCustomBarWeight(''); }} style={{ flex: 1 }}>Barbell</button>
-                                            <button className={`btn ${barType === 'custom' ? '' : 'btn-secondary'}`} onClick={() => setBarType('custom')} style={{ flex: 1 }}>Custom</button>
+                                        <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid #3a2a30' }}>
+                                            {[{v:'barbell',l:'Barbell (45 lbs)'},{v:'custom',l:'Custom Bar'}].map((opt, i) => (
+                                                <button key={opt.v} onClick={() => { setBarType(opt.v); if (opt.v === 'barbell') setCustomBarWeight(''); }} style={{
+                                                    flex: 1, padding: '10px', border: 'none', fontSize: '12px', fontWeight: '600',
+                                                    cursor: 'pointer', WebkitAppearance: 'none',
+                                                    borderRight: i === 0 ? '1px solid #3a2a30' : 'none',
+                                                    background: barType === opt.v ? 'rgba(139,58,98,0.25)' : 'rgba(255,255,255,0.03)',
+                                                    color: barType === opt.v ? '#c77da0' : '#666',
+                                                }}>{opt.l}</button>
+                                            ))}
                                         </div>
                                         {barType === 'custom' && (
-                                            <input type="number" className="form-input" placeholder="Bar weight..." value={customBarWeight} onChange={(e) => setCustomBarWeight(e.target.value)} style={{ marginTop: '6px' }} />
+                                            <input type="number" inputMode="decimal" placeholder="Bar weight (lbs)..." value={customBarWeight}
+                                                onChange={(e) => setCustomBarWeight(e.target.value)}
+                                                onClick={(e) => e.target.focus()}
+                                                style={{ width: '100%', marginTop: '8px', padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.3)', background: 'rgba(255,255,255,0.04)', color: '#e8c1d0', fontSize: '14px', WebkitAppearance: 'none' }} />
                                         )}
-                                        <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
-                                            {barType === 'barbell' ? '45 lbs will be automatically added to each set to account for the bar' : barType === 'custom' && customBarWeight ? `${customBarWeight} lbs will be automatically added to each set to account for the bar` : barType === 'custom' ? 'Enter the bar weight to auto-add to each set' : 'Select a bar type'}
-                                        </div>
+                                        {barType && (
+                                            <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
+                                                {barType === 'barbell' ? '45 lbs auto-added to each set for the bar' : customBarWeight ? `${customBarWeight} lbs auto-added to each set for the bar` : 'Enter the bar weight to auto-add'}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>
+                            )}
 
-                            {/* Weight Default */}
+                            {/* Weight Default — only show for reps type */}
+                            {type === 'reps' && (
                             <div className="form-group">
-                                <label className="form-label">Default Weight Mode</label>
-                                <div className="button-row" style={{ gap: '4px' }}>
-                                    <button className={`btn ${weightDefault === 'weight' ? '' : 'btn-secondary'}`} onClick={() => setWeightDefault('weight')} style={{ flex: 1, fontSize: '12px' }}>Weight</button>
-                                    <button className={`btn ${weightDefault === 'bodyweight' ? '' : 'btn-secondary'}`} onClick={() => setWeightDefault('bodyweight')} style={{ flex: 1, fontSize: '12px' }}>Bodyweight</button>
-                                    <button className={`btn ${weightDefault === 'none' ? '' : 'btn-secondary'}`} onClick={() => setWeightDefault('none')} style={{ flex: 1, fontSize: '12px' }}>No Weight</button>
+                                <label className="form-label">Weight Mode {!weightDefault && <span style={{ color: '#e88a8a', fontSize: '11px', fontWeight: '400' }}>— select one</span>}</label>
+                                <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: `1px solid ${!weightDefault ? 'rgba(232,138,138,0.3)' : '#3a2a30'}` }}>
+                                    {[{v:'weight',l:'Weight'},{v:'bodyweight',l:'Bodyweight'},{v:'none',l:'No Weight'}].map((opt, i) => (
+                                        <button key={opt.v} onClick={() => setWeightDefault(opt.v)} style={{
+                                            flex: 1, padding: '10px', border: 'none', fontSize: '11px', fontWeight: '600',
+                                            cursor: 'pointer', WebkitAppearance: 'none',
+                                            borderRight: i < 2 ? '1px solid #3a2a30' : 'none',
+                                            background: weightDefault === opt.v ? 'rgba(139,58,98,0.25)' : 'rgba(255,255,255,0.03)',
+                                            color: weightDefault === opt.v ? '#c77da0' : '#666',
+                                        }}>{opt.l}</button>
+                                    ))}
                                 </div>
-                                <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
-                                    {weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration'}
-                                </div>
+                                {weightDefault && (
+                                    <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '4px' }}>
+                                        {weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration'}
+                                    </div>
+                                )}
                             </div>
+                            )}
 
                             <button
                                 className="btn"
@@ -2708,7 +2734,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(() => onSelectWeight(null))}>
                             <h2>{exercise.name} — Set {setNumber || 1}</h2>
-                            <button className="close-btn" onClick={() => onSelectWeight(null)}>x</button>
+                            <button className="close-btn" onClick={() => onSelectWeight(null)}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             {/* Row 1: compact stepper + dominant Use button */}
@@ -2929,7 +2955,7 @@
                                     Weight: {displayWeight}
                                 </div>
                             </div>
-                            <button className="close-btn" onClick={() => onSelectReps(null)}>x</button>
+                            <button className="close-btn" onClick={() => onSelectReps(null)}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content" style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '12px 16px' }}>
                             {/* Custom reps input + Use button — 50/50 split at top */}
@@ -2985,17 +3011,17 @@
         // ============ SOUND SETTINGS MODAL ============
         const SoundSettingsModal = ({ onClose }) => {
             const [category, setCategory] = useState(getPref('timerSoundCategory', 'chime'));
-            const [chimeVariant, setChimeVariant] = useState(getPref('timerChimeVariant', 'major'));
-            const [chimeSpeed, setChimeSpeed] = useState(parseInt(getPref('timerChimeSpeed', '150')));
-            const [chimePitch, setChimePitch] = useState(parseInt(getPref('timerChimePitch', '523')));
+            const [chimeVariant, setChimeVariant] = useState(getPref('timerChimeVariant', 'octave'));
+            const [chimeSpeed, setChimeSpeed] = useState(parseInt(getPref('timerChimeSpeed', '180')));
+            const [chimePitch, setChimePitch] = useState(parseInt(getPref('timerChimePitch', '350')));
             const [bowlSustain, setBowlSustain] = useState(parseFloat(getPref('timerBowlSustain', '3')));
-            const [bowlHarmonics, setBowlHarmonics] = useState(parseInt(getPref('timerBowlHarmonics', '5')));
+            const [bowlHarmonics, setBowlHarmonics] = useState(parseInt(getPref('timerBowlHarmonics', '2')));
+            const [bowlPitch, setBowlPitch] = useState(parseInt(getPref('timerBowlPitch', '220')));
             const [fanfareVariant, setFanfareVariant] = useState(getPref('timerFanfareVariant', 'short'));
             const [sosFrequency, setSOSFrequency] = useState(parseInt(getPref('timerSOSFrequency', '600')));
             const [sosSpeed, setSOSSpeed] = useState(parseFloat(getPref('timerSOSSpeed', '1')));
             const [tickStyle, setTickStyle] = useState(getPref('timerTickStyle', 'beep'));
             const [tickSeconds, setTickSeconds] = useState(parseInt(getPref('timerTickSeconds', '5')));
-            const [openSection, setOpenSection] = useState(null); // 'ticks' or 'chimes'
 
             // Save on every change
             useEffect(() => {
@@ -3005,12 +3031,13 @@
                 setPref('timerChimePitch', String(chimePitch));
                 setPref('timerBowlSustain', String(bowlSustain));
                 setPref('timerBowlHarmonics', String(bowlHarmonics));
+                setPref('timerBowlPitch', String(bowlPitch));
                 setPref('timerFanfareVariant', fanfareVariant);
                 setPref('timerSOSFrequency', String(sosFrequency));
                 setPref('timerSOSSpeed', String(sosSpeed));
                 setPref('timerTickStyle', tickStyle);
                 setPref('timerTickSeconds', String(tickSeconds));
-            }, [category, chimeVariant, chimeSpeed, chimePitch, bowlSustain, bowlHarmonics, fanfareVariant, sosFrequency, sosSpeed, tickStyle, tickSeconds]);
+            }, [category, chimeVariant, chimeSpeed, chimePitch, bowlSustain, bowlHarmonics, bowlPitch, fanfareVariant, sosFrequency, sosSpeed, tickStyle, tickSeconds]);
 
             const variantBtnStyle = (isSelected) => ({
                 padding: '8px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: '500',
@@ -3029,7 +3056,7 @@
 
             const previewCompletion = () => {
                 if (category === 'chime') playGentleChime(chimeVariant, chimeSpeed, chimePitch);
-                else if (category === 'bowl') playSingingBowl(bowlSustain, bowlHarmonics);
+                else if (category === 'bowl') playSingingBowl(bowlSustain, bowlHarmonics, bowlPitch);
                 else if (category === 'fanfare') playVictoryFanfare(fanfareVariant);
                 else if (category === 'sos') playSOSMorse(sosFrequency, sosSpeed);
             };
@@ -3055,139 +3082,98 @@
                 { id: 'sos', label: 'SOS Morse' },
             ];
 
-            const currentTickLabel = tickOptions.find(t => t.id === tickStyle)?.label || 'Beep';
             const currentChimeLabel = chimeOptions.find(c => c.id === category)?.label || 'Gentle Chime';
-
-            const dropdownBtnStyle = (isOpen) => ({
-                width: '100%', padding: '14px 16px', borderRadius: '12px',
-                border: isOpen ? '1.5px solid #8b3a62' : '1.5px solid rgba(139,58,98,0.25)',
-                background: isOpen ? 'rgba(139,58,98,0.12)' : 'rgba(139,58,98,0.04)',
-                color: '#e8c1d0', fontSize: '14px', fontWeight: '500',
-                cursor: 'pointer', WebkitAppearance: 'none',
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                transition: 'all 0.15s',
-            });
 
             return (
                 <div className="modal-overlay" style={{ zIndex: 200 }} onClick={onClose}>
                     <div className="modal" style={{ top: 0, bottom: 0, borderRadius: 0, borderTop: 'none', zIndex: 201 }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onClose)}>
                             <h2 style={{ fontSize: '16px' }}>Timer Sounds</h2>
-                            <button className="close-btn" onClick={onClose}>x</button>
+                            <button className="close-btn" onClick={onClose}><IconX size={20} /></button>
                         </div>
-                        <div className="modal-content" style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
+                        <div className="modal-content" style={{ flex: 1, overflowY: 'auto', padding: '14px' }}>
 
-                            {/* ===== TICKS DROPDOWN ===== */}
-                            <div style={{ marginBottom: '12px' }}>
-                                <button onClick={() => setOpenSection(openSection === 'ticks' ? null : 'ticks')} style={dropdownBtnStyle(openSection === 'ticks')}>
-                                    <div>
-                                        <div style={{ fontSize: '10px', color: 'rgba(199,125,160,0.5)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Ticks</div>
-                                        <div>{currentTickLabel}</div>
-                                    </div>
-                                    <span style={{ fontSize: '16px', color: '#c77da0', transform: openSection === 'ticks' ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>▾</span>
-                                </button>
-                                {openSection === 'ticks' && (
-                                    <div style={{ padding: '12px', marginTop: '4px', borderRadius: '12px', background: 'rgba(139,58,98,0.04)', border: '1px solid rgba(139,58,98,0.15)' }}>
-                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                                            {tickOptions.map(t => (
-                                                <button key={t.id} onClick={() => { setTickStyle(t.id); playTickSound(t.id); }} style={{
-                                                    padding: '12px 6px', borderRadius: '10px', textAlign: 'center', cursor: 'pointer', WebkitAppearance: 'none',
-                                                    border: tickStyle === t.id ? '1.5px solid #8b3a62' : '1px solid rgba(139,58,98,0.2)',
-                                                    background: tickStyle === t.id ? 'rgba(139,58,98,0.15)' : 'rgba(139,58,98,0.04)',
-                                                    color: tickStyle === t.id ? '#e8c1d0' : '#c77da0'
-                                                }}>
-                                                    <div style={{ fontSize: '13px', fontWeight: '500' }}>{t.label}</div>
-                                                    <div style={{ fontSize: '9px', opacity: 0.5, marginTop: '2px' }}>{t.sub}</div>
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
+                            {/* ===== TICK STYLE ===== */}
+                            <div style={{ color: 'rgba(199,125,160,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>Tick Style</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px', marginBottom: '14px' }}>
+                                {tickOptions.map(t => (
+                                    <button key={t.id} onClick={() => { setTickStyle(t.id); playTickSound(t.id); }} style={{
+                                        padding: '10px 4px', borderRadius: '8px', textAlign: 'center', cursor: 'pointer', WebkitAppearance: 'none',
+                                        border: tickStyle === t.id ? '1.5px solid #8b3a62' : '1px solid rgba(139,58,98,0.2)',
+                                        background: tickStyle === t.id ? 'rgba(139,58,98,0.15)' : 'rgba(139,58,98,0.04)',
+                                        color: tickStyle === t.id ? '#e8c1d0' : '#c77da0'
+                                    }}>
+                                        <div style={{ fontSize: '12px', fontWeight: '500' }}>{t.label}</div>
+                                        <div style={{ fontSize: '9px', opacity: 0.5, marginTop: '1px' }}>{t.sub}</div>
+                                    </button>
+                                ))}
                             </div>
 
-                            {/* ===== FINAL CHIMES DROPDOWN ===== */}
-                            <div style={{ marginBottom: '16px' }}>
-                                <button onClick={() => setOpenSection(openSection === 'chimes' ? null : 'chimes')} style={dropdownBtnStyle(openSection === 'chimes')}>
-                                    <div>
-                                        <div style={{ fontSize: '10px', color: 'rgba(199,125,160,0.5)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Final Chime</div>
-                                        <div>{currentChimeLabel}</div>
-                                    </div>
-                                    <span style={{ fontSize: '16px', color: '#c77da0', transform: openSection === 'chimes' ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>▾</span>
-                                </button>
-                                {openSection === 'chimes' && (
-                                    <div style={{ padding: '12px', marginTop: '4px', borderRadius: '12px', background: 'rgba(139,58,98,0.04)', border: '1px solid rgba(139,58,98,0.15)' }}>
-                                        {chimeOptions.map(opt => (
-                                            <div key={opt.id} style={{
-                                                padding: '12px', borderRadius: '10px', marginBottom: '8px',
-                                                border: category === opt.id ? '1.5px solid #8b3a62' : '1px solid rgba(139,58,98,0.15)',
-                                                background: category === opt.id ? 'rgba(139,58,98,0.1)' : 'rgba(139,58,98,0.02)',
-                                                cursor: 'pointer', transition: 'all 0.15s',
-                                            }} onClick={() => setCategory(opt.id)}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                        <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: category === opt.id ? '2px solid #8b3a62' : '2px solid rgba(139,58,98,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                            {category === opt.id && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8b3a62' }} />}
-                                                        </div>
-                                                        <span style={{ color: '#e8c1d0', fontSize: '13px', fontWeight: '500' }}>{opt.label}</span>
-                                                    </div>
-                                                    {category === opt.id && (
-                                                        <button onClick={(e) => { e.stopPropagation(); previewCompletion(); }} style={{
-                                                            padding: '3px 8px', borderRadius: '6px', border: '1px solid rgba(139,58,98,0.3)',
-                                                            background: 'rgba(139,58,98,0.08)', color: '#c77da0', fontSize: '10px',
-                                                            cursor: 'pointer', WebkitAppearance: 'none'
-                                                        }}>Preview</button>
-                                                    )}
-                                                </div>
+                            {/* ===== COMPLETION SOUND ===== */}
+                            <div style={{ color: 'rgba(199,125,160,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>Completion Sound</div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px', marginBottom: '10px' }}>
+                                {chimeOptions.map(opt => (
+                                    <button key={opt.id} onClick={() => setCategory(opt.id)} style={{
+                                        padding: '8px 2px', borderRadius: '8px', textAlign: 'center', cursor: 'pointer', WebkitAppearance: 'none',
+                                        border: category === opt.id ? '1.5px solid #8b3a62' : '1px solid rgba(139,58,98,0.2)',
+                                        background: category === opt.id ? 'rgba(139,58,98,0.15)' : 'rgba(139,58,98,0.04)',
+                                        color: category === opt.id ? '#e8c1d0' : '#c77da0',
+                                        fontSize: '11px', fontWeight: '500', lineHeight: '1.2',
+                                    }}>{opt.label.replace('Victory ', '').replace('Gentle ', '').replace('SOS ', 'SOS')}</button>
+                                ))}
+                            </div>
 
-                                                {/* Expanded controls per chime type */}
-                                                {category === 'fanfare' && opt.id === 'fanfare' && (
-                                                    <div onClick={(e) => e.stopPropagation()} style={{ marginTop: '10px' }}>
-                                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                                            {['short', 'full', 'retro', 'epic'].map(v => (
-                                                                <button key={v} onClick={() => { setFanfareVariant(v); playVictoryFanfare(v); }} style={variantBtnStyle(fanfareVariant === v)}>
-                                                                    {v.charAt(0).toUpperCase() + v.slice(1)}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                {category === 'bowl' && opt.id === 'bowl' && (
-                                                    <div onClick={(e) => e.stopPropagation()} style={{ marginTop: '10px' }}>
-                                                        {sliderRow('Sustain', bowlSustain, 1, 5, 0.5, setBowlSustain, bowlSustain.toFixed(1) + 's')}
-                                                        {sliderRow('Richness', bowlHarmonics, 2, 8, 1, setBowlHarmonics, bowlHarmonics + ' overtones')}
-                                                        <div style={{ fontSize: '9px', color: 'rgba(199,125,160,0.35)', marginTop: '4px' }}>Richness = number of harmonic overtones layered on the fundamental tone (220 Hz). More overtones = fuller, richer sound.</div>
-                                                    </div>
-                                                )}
-                                                {category === 'chime' && opt.id === 'chime' && (
-                                                    <div onClick={(e) => e.stopPropagation()} style={{ marginTop: '10px' }}>
-                                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '6px' }}>
-                                                            {['major', 'minor', 'pentatonic', 'octave'].map(v => (
-                                                                <button key={v} onClick={() => { setChimeVariant(v); playGentleChime(v, chimeSpeed, chimePitch); }} style={variantBtnStyle(chimeVariant === v)}>
-                                                                    {v.charAt(0).toUpperCase() + v.slice(1)}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                        {sliderRow('Speed', chimeSpeed, 80, 300, 10, setChimeSpeed, chimeSpeed + 'ms')}
-                                                        {sliderRow('Pitch', chimePitch, 200, 800, 10, setChimePitch, chimePitch + 'Hz')}
-                                                    </div>
-                                                )}
-                                                {category === 'sos' && opt.id === 'sos' && (
-                                                    <div onClick={(e) => e.stopPropagation()} style={{ marginTop: '10px' }}>
-                                                        {sliderRow('Frequency', sosFrequency, 300, 1200, 50, setSOSFrequency, sosFrequency + 'Hz')}
-                                                        {sliderRow('Speed', sosSpeed, 0.5, 2, 0.1, setSOSSpeed, sosSpeed.toFixed(1) + 'x')}
-                                                        <div style={{ fontSize: '9px', color: 'rgba(199,125,160,0.35)', marginTop: '4px' }}>Morse SOS pattern: ··· — — — ···</div>
-                                                    </div>
-                                                )}
-                                            </div>
+                            {/* ===== SOUND-SPECIFIC CONTROLS ===== */}
+                            <div style={{ padding: '10px', borderRadius: '10px', background: 'rgba(139,58,98,0.04)', border: '1px solid rgba(139,58,98,0.12)', marginBottom: '14px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                                    <span style={{ fontSize: '11px', color: 'rgba(199,125,160,0.6)', fontWeight: '500' }}>{currentChimeLabel} Settings</span>
+                                    <button onClick={previewCompletion} style={{
+                                        padding: '3px 10px', borderRadius: '6px', border: '1px solid rgba(139,58,98,0.3)',
+                                        background: 'rgba(139,58,98,0.08)', color: '#c77da0', fontSize: '10px',
+                                        cursor: 'pointer', WebkitAppearance: 'none'
+                                    }}>Preview</button>
+                                </div>
+                                {category === 'fanfare' && (
+                                    <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                                        {['short', 'full', 'retro', 'epic'].map(v => (
+                                            <button key={v} onClick={() => { setFanfareVariant(v); playVictoryFanfare(v); }} style={variantBtnStyle(fanfareVariant === v)}>
+                                                {v.charAt(0).toUpperCase() + v.slice(1)}
+                                            </button>
                                         ))}
                                     </div>
                                 )}
+                                {category === 'bowl' && (
+                                    <div>
+                                        {sliderRow('Sustain', bowlSustain, 1, 5, 0.5, setBowlSustain, bowlSustain.toFixed(1) + 's')}
+                                        {sliderRow('Richness', bowlHarmonics, 1, 8, 1, setBowlHarmonics, String(bowlHarmonics))}
+                                        {sliderRow('Depth', bowlPitch, 80, 300, 10, (v) => setBowlPitch(Math.round(v)), bowlPitch + 'Hz')}
+                                    </div>
+                                )}
+                                {category === 'chime' && (
+                                    <div>
+                                        <div style={{ display: 'flex', gap: '5px', marginBottom: '6px' }}>
+                                            {['major', 'minor', 'pentatonic', 'octave'].map(v => (
+                                                <button key={v} onClick={() => { setChimeVariant(v); playGentleChime(v, chimeSpeed, chimePitch); }} style={{...variantBtnStyle(chimeVariant === v), flex: 1, padding: '7px 4px', fontSize: '11px', textAlign: 'center'}}>
+                                                    {v.charAt(0).toUpperCase() + v.slice(1)}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {sliderRow('Speed', chimeSpeed, 80, 300, 10, setChimeSpeed, chimeSpeed + 'ms')}
+                                        {sliderRow('Pitch', chimePitch, 200, 800, 10, setChimePitch, chimePitch + 'Hz')}
+                                    </div>
+                                )}
+                                {category === 'sos' && (
+                                    <div>
+                                        {sliderRow('Freq', sosFrequency, 300, 1200, 50, setSOSFrequency, sosFrequency + 'Hz')}
+                                        {sliderRow('Speed', sosSpeed, 0.5, 2, 0.1, setSOSSpeed, sosSpeed.toFixed(1) + 'x')}
+                                    </div>
+                                )}
                             </div>
 
-                            {/* ===== COUNTDOWN DURATION 3-SEGMENT ===== */}
-                            <div style={{ color: 'rgba(199,125,160,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>Countdown Duration</div>
-                            <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(139,58,98,0.3)', marginBottom: '20px', height: '36px' }}>
-                                {[{v: 5, l: '5 seconds'}, {v: 10, l: '10 seconds'}, {v: 0, l: 'No countdown'}].map((seg, i) => (
+                            {/* ===== COUNTDOWN DURATION ===== */}
+                            <div style={{ color: 'rgba(199,125,160,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '6px' }}>Countdown</div>
+                            <div style={{ display: 'flex', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(139,58,98,0.3)', marginBottom: '14px', height: '34px' }}>
+                                {[{v: 5, l: '5 sec'}, {v: 10, l: '10 sec'}, {v: 0, l: 'None'}].map((seg, i) => (
                                     <button key={seg.v} onClick={() => setTickSeconds(seg.v)} style={{
                                         flex: 1, border: 'none', borderLeft: i > 0 ? '1px solid rgba(139,58,98,0.3)' : 'none',
                                         fontSize: '11px', fontWeight: '600', cursor: 'pointer', WebkitAppearance: 'none',
@@ -3197,14 +3183,14 @@
                                 ))}
                             </div>
 
-                            {/* ===== PLAY 5s COUNTDOWN BUTTON ===== */}
+                            {/* ===== PREVIEW BUTTON ===== */}
                             <button onClick={previewCountdown} style={{
-                                width: '100%', height: '48px', border: '1.5px solid rgba(139,58,98,0.4)', borderRadius: '12px',
+                                width: '100%', height: '42px', border: '1.5px solid rgba(139,58,98,0.4)', borderRadius: '10px',
                                 background: 'linear-gradient(135deg, rgba(139,58,98,0.12), rgba(139,58,98,0.06))',
-                                color: '#e8c1d0', fontSize: '14px', fontWeight: '600',
+                                color: '#e8c1d0', fontSize: '13px', fontWeight: '600',
                                 cursor: 'pointer', WebkitAppearance: 'none',
                             }}>
-                                Play 5s Countdown
+                                Play Full Preview
                             </button>
                         </div>
                     </div>
@@ -3375,7 +3361,7 @@
                                 <h2 style={{ fontSize: '16px' }}>{exercise.name} — Set {setNumber || 1}</h2>
                                 <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.5)', marginTop: '2px' }}>Weight: {displayWeight}</div>
                             </div>
-                            <button className="close-btn" onClick={() => { if (!countdownActive) onSelectDuration(null); }}>x</button>
+                            <button className="close-btn" onClick={() => { if (!countdownActive) onSelectDuration(null); }}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content" style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
 
@@ -3582,7 +3568,7 @@
                     <div className="modal" style={{ maxHeight: '95vh' }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onCancel)}>
                             <h2>Session Note</h2>
-                            <button className="close-btn" onClick={onCancel}>x</button>
+                            <button className="close-btn" onClick={onCancel}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             <div style={{ color: 'rgba(199,125,160,0.5)', fontSize: '13px', marginBottom: '16px' }}>
@@ -3686,7 +3672,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onClose)}>
                             <h2>{exercise.name}{onLogSet ? '' : ' History'}</h2>
-                            <button className="close-btn" onClick={onClose}>x</button>
+                            <button className="close-btn" onClick={onClose}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             {onLogSet && (
@@ -4252,7 +4238,7 @@
                     <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0 }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onClose)}>
                             <h2>Settings</h2>
-                            <button className="close-btn" onClick={onClose}>x</button>
+                            <button className="close-btn" onClick={onClose}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                             <div style={{ display: 'flex', gap: '0', marginBottom: '12px' }}>
@@ -4325,19 +4311,19 @@
                                         </button>
                                     </div>
                                     <div style={{ flex: 1, overflow: 'auto' }}>
-                                        {dayNames.map((day, idx) => (
-                                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                                                <label style={{ fontSize: '12px', fontWeight: '600', color: '#c77da0', textTransform: 'uppercase', letterSpacing: '0.5px', width: '34px', flexShrink: 0 }}>
-                                                    {day.substring(0, 3)}
-                                                </label>
-                                                <button
-                                                    onClick={() => setEditingDayIdx(idx)}
-                                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #333', background: 'rgba(255,255,255,0.05)', color: '#e8c1d0', fontSize: '13px', fontWeight: '500', textAlign: 'left', cursor: 'pointer', WebkitAppearance: 'none' }}
-                                                >
-                                                    {weeklyLabels[idx] || 'None'}
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
+                                            {dayNames.map((day, idx) => (
+                                                <button key={idx} onClick={() => setEditingDayIdx(idx)} style={{
+                                                    padding: '10px 8px', borderRadius: '8px', cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'center',
+                                                    border: weeklyLabels[idx] ? '1px solid rgba(139,58,98,0.3)' : '1px solid #333',
+                                                    background: weeklyLabels[idx] ? 'rgba(139,58,98,0.1)' : 'rgba(255,255,255,0.03)',
+                                                    color: '#e8c1d0',
+                                                }}>
+                                                    <div style={{ fontSize: '10px', fontWeight: '600', color: '#c77da0', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '2px' }}>{day.substring(0, 3)}</div>
+                                                    <div style={{ fontSize: '13px', fontWeight: '500' }}>{weeklyLabels[idx] || 'Rest'}</div>
                                                 </button>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                     <button className="btn" onClick={handleSaveTemplate} style={{ marginTop: '6px' }}>Save Weekly Splits</button>
                                     {showCatEditor && (
@@ -4356,28 +4342,42 @@
                                             <div className="modal" onClick={(e) => e.stopPropagation()}>
                                                 <div className="modal-header" {...makeSwipeDownHandlers(() => setEditingDayIdx(null))}>
                                                     <h2 style={{ fontSize: '16px' }}>{dayNames[editingDayIdx]}</h2>
-                                                    <button className="close-btn" onClick={() => setEditingDayIdx(null)}>x</button>
+                                                    <button className="close-btn" onClick={() => setEditingDayIdx(null)}><IconX size={20} /></button>
                                                 </div>
                                                 <div className="modal-content" style={{ padding: '12px 16px' }}>
-                                                    <button
-                                                        onClick={() => { setShowCatEditor(true); setEditingDayIdx(null); }}
-                                                        style={{
-                                                            width: '100%', padding: '12px', marginBottom: '10px',
-                                                            borderRadius: '8px', border: '1px dashed rgba(139,58,98,0.4)',
-                                                            background: 'none', color: '#c77da0', fontSize: '13px', fontWeight: '600',
-                                                            cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'center',
-                                                        }}
-                                                    >
-                                                        + New Split Category
-                                                    </button>
+                                                    <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
+                                                        <button
+                                                            onClick={() => { setShowCatEditor(true); setEditingDayIdx(null); }}
+                                                            style={{
+                                                                flex: 1, padding: '10px', borderRadius: '8px', border: '1px dashed rgba(139,58,98,0.4)',
+                                                                background: 'none', color: '#c77da0', fontSize: '12px', fontWeight: '600',
+                                                                cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'center',
+                                                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+                                                            }}
+                                                        >
+                                                            <IconPlus size={14} /> New Split
+                                                        </button>
+                                                        <button
+                                                            onClick={() => { setShowCatEditor(true); setEditingDayIdx(null); }}
+                                                            style={{
+                                                                flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.2)',
+                                                                background: 'rgba(139,58,98,0.04)', color: '#c77da0', fontSize: '12px', fontWeight: '600',
+                                                                cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'center',
+                                                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+                                                            }}
+                                                        >
+                                                            <IconEdit2 size={14} /> Rename
+                                                        </button>
+                                                    </div>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
                                                     {templateOptions.map(opt => (
                                                         <button
                                                             key={opt}
                                                             onClick={() => { handleSelectChange(editingDayIdx, opt); setEditingDayIdx(null); }}
                                                             style={{
-                                                                width: '100%', padding: '12px', marginBottom: '4px',
+                                                                padding: '12px 8px',
                                                                 borderRadius: '8px', border: weeklyLabels[editingDayIdx] === opt ? 'none' : '1px solid rgba(139,58,98,0.15)',
-                                                                fontSize: '14px', fontWeight: '500',
+                                                                fontSize: '13px', fontWeight: '500',
                                                                 background: weeklyLabels[editingDayIdx] === opt ? '#8b3a62' : 'rgba(139,58,98,0.06)',
                                                                 color: weeklyLabels[editingDayIdx] === opt ? '#fff' : '#e8c1d0',
                                                                 cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'center',
@@ -4386,6 +4386,7 @@
                                                             {opt || 'None'}
                                                         </button>
                                                     ))}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -4396,9 +4397,9 @@
                             {activeTab === 'data' && (
                                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                                     <div>
-                                        <button className="btn" onClick={handleExport}>Export Data to CSV</button>
-                                        <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px' }} disabled={!!importStatus}>
-                                            {importStatus ? 'Importing...' : 'Import Data from CSV'}
+                                        <button className="btn" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}><IconFileText size={15} /> Export Data to CSV</button>
+                                        <button className="btn btn-secondary" onClick={handleImport} style={{ marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} disabled={!!importStatus}>
+                                            {importStatus ? 'Importing...' : <><IconUpload size={15} /> Import Data from CSV</>}
                                         </button>
                                         {importStatus && (
                                             <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(139, 58, 98, 0.1)', borderRadius: '8px', textAlign: 'center' }}>
@@ -4611,7 +4612,7 @@
                                                 }}
                                             >
                                                 <span>Configure Sounds</span>
-                                                <span style={{ fontSize: '14px' }}>›</span>
+                                                <IconArrowRight size={14} />
                                             </button>
                                         )}
                                     </div>
@@ -4681,7 +4682,7 @@
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onCancel)}>
                             <h2>Assign Splits</h2>
-                            <button className="close-btn" onClick={onCancel}>x</button>
+                            <button className="close-btn" onClick={onCancel}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content">
                             {dayLabel && <div style={{ fontSize: '12px', color: '#8b3a62', marginBottom: '8px', textAlign: 'center' }}>Today's split: {dayLabel}</div>}
@@ -4711,7 +4712,7 @@
                         <div className="confirmation-message">{message}</div>
                         <div className="confirmation-buttons">
                             <button className="btn-cancel" onClick={onCancel}>Cancel</button>
-                            <button className="btn-confirm" onClick={onConfirm}>Delete</button>
+                            <button className="btn-confirm" onClick={onConfirm} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}><IconTrash size={14} /> Delete</button>
                         </div>
                     </div>
                 </div>
@@ -4891,7 +4892,7 @@
                         </div>
                         <div className="modal-header" onTouchStart={handlePullDownTouchStart} onTouchMove={handlePullDownTouchMove} onTouchEnd={handlePullDownTouchEnd}>
                             <h2>{formatDateShort(date)}</h2>
-                            <button className="close-btn" onClick={onClose}>x</button>
+                            <button className="close-btn" onClick={onClose}><IconX size={20} /></button>
                         </div>
                         <div className="modal-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
                             {dayLabel ? (
@@ -4927,9 +4928,9 @@
                                         <>
                                             {activities.length > 0 && (
                                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '4px 0 8px', gap: '8px', flexShrink: 0 }}>
-                                                    <button onClick={() => currentIdx > 0 && setCurrentIdx(currentIdx - 1)} style={{ background: 'none', border: 'none', color: currentIdx > 0 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}>&lt;</button>
+                                                    <button onClick={() => currentIdx > 0 && setCurrentIdx(currentIdx - 1)} style={{ background: 'none', border: 'none', color: currentIdx > 0 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}><IconArrowLeft size={18} /></button>
                                                     <div style={{ fontSize: '14px', fontWeight: '700', color: '#e8c1d0', textTransform: 'uppercase', letterSpacing: '0.5px', textAlign: 'center', flex: 1 }}>{act?.name}</div>
-                                                    <button onClick={() => currentIdx < activities.length - 1 && setCurrentIdx(currentIdx + 1)} style={{ background: 'none', border: 'none', color: currentIdx < activities.length - 1 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}>&gt;</button>
+                                                    <button onClick={() => currentIdx < activities.length - 1 && setCurrentIdx(currentIdx + 1)} style={{ background: 'none', border: 'none', color: currentIdx < activities.length - 1 ? '#8b3a62' : '#333', fontSize: '18px', padding: '4px 8px', cursor: 'pointer', WebkitAppearance: 'none' }}><IconArrowRight size={18} /></button>
                                                 </div>
                                             )}
                                             {activities.length > 1 && (
@@ -5062,9 +5063,19 @@
                     // Exercise record
                     const fullEx = await dbOps.exercises.get(exerciseId);
                     if (fullEx) setExercise(fullEx);
-                    // History
-                    const allSets = await dbOps.sets.getAll();
-                    const exSets = allSets.filter(s => s.exerciseId === exerciseId);
+                    // History — try indexed lookup first, fallback to getAll + filter
+                    let exSets = [];
+                    try {
+                        exSets = await dbOps.sets.getByExerciseId(exerciseId);
+                    } catch(e) {
+                        const allSets = await dbOps.sets.getAll();
+                        exSets = allSets.filter(s => s.exerciseId === exerciseId);
+                    }
+                    if (exSets.length === 0) {
+                        // Double-check with full scan in case index is stale
+                        const allSets = await dbOps.sets.getAll();
+                        exSets = allSets.filter(s => s.exerciseId === exerciseId);
+                    }
                     const grouped = {};
                     exSets.forEach(s => {
                         if (!grouped[s.date]) grouped[s.date] = [];
@@ -5112,7 +5123,10 @@
                 setSelectedQuickNotes(prev => {
                     const current = prev[exerciseId] || [];
                     const isSelected = current.includes(chip);
-                    return { ...prev, [exerciseId]: isSelected ? current.filter(c => c !== chip) : [...current, chip] };
+                    const updated = { ...prev, [exerciseId]: isSelected ? current.filter(c => c !== chip) : [...current, chip] };
+                    // Auto-save quick notes after selection
+                    debounce('qnsave_' + exerciseId, () => saveNote('quicknotes'), 300);
+                    return updated;
                 });
                 // Update global frequency
                 setQuickNoteFreq(prev => {
@@ -5184,7 +5198,7 @@
                     <div className="modal" style={{ height: '100vh', maxHeight: '100vh', top: 0, bottom: 0, display: 'flex', flexDirection: 'column' }} onClick={(e) => e.stopPropagation()}>
                         <div className="modal-header" {...makeSwipeDownHandlers(onClose)}>
                             <h2>{exerciseName}</h2>
-                            <button className="close-btn" onClick={onClose}>x</button>
+                            <button className="close-btn" onClick={onClose}><IconX size={20} /></button>
                         </div>
 
                         {/* 3-segment tab control */}
@@ -5243,10 +5257,12 @@
                                     {/* Custom Notes */}
                                     {notesTab === 'custom' && (
                                         <div>
-                                            <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
-                                                <input type="text" value={customNoteText} onChange={(e) => setCustomNoteText(e.target.value)} placeholder="Add a note..."
-                                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.3)', background: 'rgba(255,255,255,0.04)', color: '#e8c1d0', fontSize: '13px' }} />
-                                                <button onClick={() => saveNote('custom')} style={{ padding: '10px 16px', borderRadius: '8px', border: 'none', background: '#8b3a62', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer', WebkitAppearance: 'none' }}>Add</button>
+                                            <div style={{ marginBottom: '12px' }}>
+                                                <input type="text" value={customNoteText}
+                                                    onChange={(e) => setCustomNoteText(e.target.value)}
+                                                    onBlur={() => saveNote('custom')}
+                                                    placeholder="Type a note — auto-saves..."
+                                                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.3)', background: 'rgba(255,255,255,0.04)', color: '#e8c1d0', fontSize: '13px' }} />
                                             </div>
                                             {pastNotes.length > 0 && pastNotes.map((n, i) => (
                                                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', borderBottom: '1px solid rgba(139,58,98,0.08)', alignItems: 'center' }}>
@@ -5309,17 +5325,17 @@
                                                 </div>
                                             ))}
 
-                                            <button onClick={() => saveNote('quicknotes')} style={{ width: '100%', marginTop: '8px', padding: '12px', borderRadius: '8px', background: '#8b3a62', border: 'none', color: '#fff', fontSize: '14px', fontWeight: '600', cursor: 'pointer', WebkitAppearance: 'none' }}>Save</button>
                                         </div>
                                     )}
 
                                     {/* Form Cues */}
                                     {notesTab === 'formcue' && (
                                         <div>
-                                            <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
-                                                <input type="text" value={formCueText} onChange={(e) => setFormCueText(e.target.value)} placeholder="Add a form cue..."
-                                                    style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.3)', background: 'rgba(255,255,255,0.04)', color: '#e8c1d0', fontSize: '13px' }} />
-                                                <button onClick={() => saveNote('formcue')} style={{ padding: '10px 16px', borderRadius: '8px', border: 'none', background: '#8b3a62', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer', WebkitAppearance: 'none' }}>Add</button>
+                                            <div style={{ marginBottom: '12px' }}>
+                                                <input type="text" value={formCueText} onChange={(e) => setFormCueText(e.target.value)}
+                                                    onBlur={() => { if (formCueText.trim()) saveNote('formcue'); }}
+                                                    placeholder="Type a form cue — auto-saves..."
+                                                    style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid rgba(139,58,98,0.3)', background: 'rgba(255,255,255,0.04)', color: '#e8c1d0', fontSize: '13px' }} />
                                             </div>
                                             {pastFormCues.length > 0 && pastFormCues.map((n, i) => (
                                                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', borderBottom: '1px solid rgba(139,58,98,0.08)', alignItems: 'center' }}>
@@ -5835,6 +5851,45 @@
                     set.bandedColor = selectedWeight.bandedColor;
                 }
 
+                // Check if this is a paired duration (from picker pairing flow)
+                if (pairingExerciseId && pairingExerciseId.source && pairingExerciseId.target) {
+                    const pair = pairingExerciseId;
+                    const daySetsNow = await dbOps.sets.getByDate(currentDate);
+                    const maxOrderNow = Math.max(...daySetsNow.map(s => s.exerciseOrder), 0);
+
+                    const sourceSet = {
+                        id: generateId('set'), date: currentDate,
+                        exerciseId: pair.source.id, exerciseName: pair.source.name,
+                        exerciseOrder: maxOrderNow + 1, setOrder: 1,
+                        weight: null, weightType: 'bodyweight', reps: null, duration,
+                        weightMeaning: 'total', pairedWith: pair.target.id, createdAt: Date.now(),
+                    };
+                    const targetSet = {
+                        id: generateId('set'), date: currentDate,
+                        exerciseId: pair.target.id, exerciseName: pair.target.name,
+                        exerciseOrder: maxOrderNow + 1, setOrder: 1,
+                        weight: null, weightType: 'bodyweight', reps: null, duration,
+                        weightMeaning: 'total', pairedWith: pair.source.id, createdAt: Date.now(),
+                    };
+
+                    await safeDb(() => dbOps.sets.add(sourceSet), 'add paired source set');
+                    await safeDb(() => dbOps.sets.add(targetSet), 'add paired target set');
+
+                    // Update lastUsed on both exercises
+                    const srcEx = await dbOps.exercises.get(pair.source.id);
+                    const tgtEx = await dbOps.exercises.get(pair.target.id);
+                    if (srcEx) { srcEx.lastUsed = currentDate; await safeDb(() => dbOps.exercises.update(srcEx), 'update src'); }
+                    if (tgtEx) { tgtEx.lastUsed = currentDate; await safeDb(() => dbOps.exercises.update(tgtEx), 'update tgt'); }
+
+                    setPairingExerciseId(null);
+                    setLoggedSetCount(loggedSetCount + 1);
+                    setModal(null);
+                    setSelectedExercise(null);
+                    setSelectedWeight(null);
+                    await loadDayData();
+                    return;
+                }
+
                 const ok = await safeDb(() => dbOps.sets.add(set), 'log set');
                 if (!ok) return;
 
@@ -6043,7 +6098,7 @@
                         <div className="modal" onClick={(e) => e.stopPropagation()}>
                             <div className="modal-header" {...makeSwipeDownHandlers(onCancel)}>
                                 <h2>Rename Activity</h2>
-                                <button className="close-btn" onClick={onCancel}>x</button>
+                                <button className="close-btn" onClick={onCancel}><IconX size={20} /></button>
                             </div>
                             <div className="modal-content">
                                 <div className="form-group">
@@ -6079,7 +6134,7 @@
                     </div>
 
                     <div className="day-nav">
-                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, -1))}>&lt;</button>
+                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, -1))}><IconArrowLeft size={18} /></button>
                         <div className="day-display"
                             onClick={() => setModal('dayDetail')}
                             style={{ cursor: 'pointer' }}
@@ -6087,7 +6142,7 @@
                             <div className="day-date">{formatDate(currentDate)}</div>
                             {dayLabel && <div className="day-label">{dayLabel}</div>}
                         </div>
-                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, 1))}>&gt;</button>
+                        <button className="nav-arrow" onClick={() => setCurrentDate(addDays(currentDate, 1))}><IconArrowRight size={18} /></button>
                     </div>
 
                     <div className="content" ref={contentRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
@@ -6565,53 +6620,6 @@
 
                                             {isExpanded && (
                                                 <>
-                                                    {/* Pair with button — timed only, not already paired */}
-                                                    {(() => {
-                                                        const exType = exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps';
-                                                        const isTimed = exType === 'timed';
-                                                        const isAlreadyPaired = exercise._pairedPartner || exercise.sets[0]?.pairedWith;
-                                                        if (!isTimed || isAlreadyPaired || exercise.sets.length === 0) return null;
-                                                        return (
-                                                            <div style={{ marginTop: '4px' }}>
-                                                                <button
-                                                                    onClick={() => setPairingExerciseId(pairingExerciseId === exercise.exerciseId ? null : exercise.exerciseId)}
-                                                                    style={{
-                                                                        width: '100%', padding: '8px', borderRadius: '8px',
-                                                                        border: '1px dashed rgba(139,58,98,0.3)',
-                                                                        background: pairingExerciseId === exercise.exerciseId ? 'rgba(139,58,98,0.12)' : 'none',
-                                                                        color: '#c77da0', fontSize: '11px', fontWeight: '500',
-                                                                        cursor: 'pointer', WebkitAppearance: 'none',
-                                                                    }}
-                                                                >
-                                                                    {pairingExerciseId === exercise.exerciseId ? 'Cancel pairing' : 'Pair with...'}
-                                                                </button>
-                                                                {pairingExerciseId === exercise.exerciseId && (() => {
-                                                                    const otherTimed = exercises.filter(e =>
-                                                                        e.exerciseId !== exercise.exerciseId &&
-                                                                        !e._pairedPartner && !e.sets[0]?.pairedWith
-                                                                    );
-                                                                    return otherTimed.length > 0 ? (
-                                                                        <div style={{ marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                                                                            {otherTimed.map(e => (
-                                                                                <button key={e.exerciseId} onClick={() => handlePairWith(exercise.exerciseId, e.exerciseId)} style={{
-                                                                                    width: '100%', padding: '10px 12px', borderRadius: '8px',
-                                                                                    border: '1px solid rgba(139,58,98,0.2)', background: 'rgba(139,58,98,0.05)',
-                                                                                    color: '#e8c1d0', fontSize: '13px', fontWeight: '500',
-                                                                                    cursor: 'pointer', WebkitAppearance: 'none', textAlign: 'left',
-                                                                                }}>
-                                                                                    {e.exerciseName}
-                                                                                </button>
-                                                                            ))}
-                                                                        </div>
-                                                                    ) : (
-                                                                        <div style={{ fontSize: '11px', color: 'rgba(199,125,160,0.4)', marginTop: '4px', textAlign: 'center' }}>
-                                                                            No other activities to pair with today
-                                                                        </div>
-                                                                    );
-                                                                })()}
-                                                            </div>
-                                                        );
-                                                    })()}
                                                     {/* Mood Range Slider - 1-100 gradient */}
                                                     <div style={{ marginTop: '4px', position: 'relative' }}>
                                                         <input
@@ -6743,9 +6751,12 @@
                             }}
                             selectedDate={currentDate}
                             defaultCategory={dayLabel ? dayLabel.toLowerCase() : 'all'}
-                            onPair={async (sourceId, targetId) => {
-                                await handlePairWith(sourceId, targetId);
-                                setModal(null);
+                            onPair={(sourceEx, targetEx) => {
+                                // Store both exercises for paired duration logging
+                                setPairingExerciseId({ source: sourceEx, target: targetEx });
+                                setSelectedExercise(sourceEx);
+                                setSelectedWeight({ weight: null, weightType: 'bodyweight' });
+                                setModal('timedDuration', 'exercisePicker');
                             }}
                         />
                     )}
