@@ -3782,6 +3782,7 @@ const RepPickerModal = ({
     }
   }, /*#__PURE__*/React.createElement("input", {
     type: "number",
+    "data-tour": "log-row",
     value: customReps,
     onChange: e => setCustomReps(e.target.value),
     placeholder: "Reps",
@@ -6904,6 +6905,7 @@ const DayDetailModal = ({
     }
   }, dayLabel, " Day Activities"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setActiveTab('split'),
+    "data-tour": "splits",
     style: {
       flex: 1,
       padding: '10px 0',
@@ -7353,6 +7355,7 @@ const ActivityContextModal = ({
     }
   }, ['history', 'notes', 'edit'].map(t => /*#__PURE__*/React.createElement("button", {
     key: t,
+    "data-tour": t === 'history' ? 'history-tab' : t === 'notes' ? 'notes-tab' : null,
     onClick: () => setTab(t),
     style: {
       flex: 1,
@@ -8583,7 +8586,8 @@ function App() {
   }), /*#__PURE__*/React.createElement("path", {
     d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
   })))), /*#__PURE__*/React.createElement("div", {
-    className: "day-nav"
+    className: "day-nav",
+    "data-tour": "date-nav"
   }, /*#__PURE__*/React.createElement("button", {
     className: "nav-arrow",
     onClick: () => setCurrentDate(addDays(currentDate, -1))
@@ -9222,6 +9226,7 @@ function App() {
         marginTop: '4px'
       }
     }, /*#__PURE__*/React.createElement("button", {
+      "data-tour": "activity-card",
       onClick: () => setActivityContext({
         exerciseId: exercise.exerciseId,
         exerciseName: exercise.exerciseName,
@@ -9278,6 +9283,7 @@ function App() {
     }, "Edit")))));
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn",
+    "data-tour": "add-activity",
     onClick: () => setModal('exercisePicker')
   }, "+ Add Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
     exerciseId: activityContext.exerciseId,
@@ -9770,5 +9776,118 @@ initPrefs().then(() => {
   ReactDOM.render(/*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(App, null)), document.getElementById('root'));
 });
     </script>
+
+<!-- ===================== ONBOARDING TOUR ENGINE (build phase 2) =====================
+     Dark-themed spotlight + tooltip step-through. Vanilla DOM (runs over the React app).
+     Preview: load the app with #tour in the URL. First-run auto-play is phase 4. -->
+<style id="wp-tour-styles">
+.wp-tour-overlay{position:fixed;inset:0;z-index:2147483000;pointer-events:auto;}
+.wp-tour-overlay[hidden]{display:none;}
+.wp-tour-scrim{position:absolute;inset:0;background:rgba(12,6,10,0.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;transition:opacity .30s ease;}
+.wp-tour-overlay.is-open .wp-tour-scrim{opacity:1;}
+.wp-tour-hilite{position:fixed;top:0;left:0;width:0;height:0;border-radius:12px;box-shadow:0 0 0 100vmax rgba(12,6,10,0.45);opacity:0;pointer-events:none;
+  transition:top .70s cubic-bezier(.4,0,.2,1),left .70s cubic-bezier(.4,0,.2,1),width .70s cubic-bezier(.4,0,.2,1),height .70s cubic-bezier(.4,0,.2,1),opacity .40s ease;}
+.wp-tour-tip{position:fixed;width:clamp(280px,88vw,360px);box-sizing:border-box;padding:1.2rem 1.35rem;background:#2a1520;border:1px solid rgba(139,58,98,0.55);border-radius:12px;
+  box-shadow:0 14px 44px rgba(0,0,0,0.5);color:#e8c1d0;opacity:0;transform:translateY(8px) scale(.96);
+  transition:opacity .25s cubic-bezier(.25,.1,.25,1),transform .25s cubic-bezier(.25,.1,.25,1),top .70s cubic-bezier(.4,0,.2,1),left .70s cubic-bezier(.4,0,.2,1);}
+.wp-tour-overlay.is-open .wp-tour-tip{opacity:1;transform:none;}
+.wp-tour-overlay.is-closing .wp-tour-tip{opacity:0;transform:translateY(4px) scale(.98);transition:opacity .18s,transform .18s;}
+.wp-tour-tip h3{margin:0 0 .4rem;font-size:1rem;color:#f4d8e2;font-weight:700;}
+.wp-tour-tip p{margin:0;font-size:.86rem;line-height:1.5;color:#e8c1d0;}
+.wp-tour-foot{display:flex;align-items:center;justify-content:space-between;margin-top:1.1rem;gap:.5rem;}
+.wp-tour-dots{display:flex;gap:6px;}
+.wp-tour-dot{width:7px;height:7px;border-radius:50%;background:rgba(232,193,208,.28);transition:background .3s;}
+.wp-tour-dot.on{background:#c77da0;}
+.wp-tour-btns{display:flex;gap:.4rem;align-items:center;}
+.wp-tour-btn{min-height:44px;min-width:44px;padding:0 1rem;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;-webkit-appearance:none;transition:transform 0s;}
+.wp-tour-btn:active{transform:scale(.95);}
+.wp-tour-next{background:#8b3a62;color:#ffe9f1;}
+.wp-tour-ghost{background:transparent;color:#c77da0;}
+.wp-tour-skip{position:absolute;top:-2.5rem;right:0;background:transparent;color:rgba(232,193,208,.7);border:none;font-size:.8rem;cursor:pointer;min-height:40px;-webkit-appearance:none;}
+@media (prefers-reduced-motion: reduce){
+  .wp-tour-hilite,.wp-tour-tip,.wp-tour-scrim{transition:opacity .12s ease !important;}
+}
+</style>
+<script id="wp-tour-engine">
+(function(){
+  "use strict";
+  var SEEN_KEY='wp_tour_seen';
+  // step-5 navigation: open an activity to reveal its History tab, then close it on leave
+  function openActivity(){var b=document.querySelector('[data-tour="activity-card"]');if(b)b.click();}
+  function closeActivity(){var m=document.querySelector('.modal .close-btn, .close-btn');if(m)m.click();}
+  var STEPS=[
+    {t:null,h:'This is a sample log',b:"Someone's first eight months. Have a poke around to see how things work — then clear it and make it your own."},
+    {t:'[data-tour="date-nav"]',h:'Every workout lives on a day',b:'Swipe left or right to move between days.'},
+    {t:'[data-tour="splits"]',h:'Splits group your days',b:'Push, Pull, Legs. Suggestions, not rules.'},
+    {t:'[data-tour="activity-card"]',h:'Tap an activity',b:'Open any exercise to see its full history and your last numbers.'},
+    {t:'[data-tour="history-tab"]',h:'Last time is king',b:'Every past session is here — so you never guess your weight again.',before:openActivity,beforeWait:440,after:closeActivity},
+    {t:'[data-tour="add-activity"]',h:'Add your own',b:'Tap here to log a new exercise.'},
+    {t:null,h:"That's the tour",b:'Clear the sample log to start your own. Replay this anytime in Settings.'}
+  ];
+  var ov,scrim,hi,tip,tipH,tipB,dots,btnNext,btnBack,btnSkip,foot,btnsWrap,curTarget=null;
+  var i=0,active=false,hiShown=false;
+  function mk(tag,cls,parent){var e=document.createElement(tag);if(cls)e.className=cls;if(parent)parent.appendChild(e);return e;}
+  function build(){
+    ov=mk('div','wp-tour-overlay');ov.hidden=true;
+    scrim=mk('div','wp-tour-scrim',ov);
+    hi=mk('div','wp-tour-hilite',ov);
+    tip=mk('div','wp-tour-tip',ov);
+    btnSkip=mk('button','wp-tour-skip',tip);btnSkip.textContent='Skip';
+    tipH=mk('h3',null,tip);tipB=mk('p',null,tip);
+    foot=mk('div','wp-tour-foot',tip);
+    dots=mk('div','wp-tour-dots',foot);
+    btnsWrap=mk('div','wp-tour-btns',foot);
+    btnBack=mk('button','wp-tour-btn wp-tour-ghost',btnsWrap);btnBack.textContent='Back';
+    btnNext=mk('button','wp-tour-btn wp-tour-next',btnsWrap);btnNext.textContent='Next';
+    STEPS.forEach(function(){mk('div','wp-tour-dot',dots);});
+    document.body.appendChild(ov);
+    btnNext.addEventListener('click',next);
+    btnBack.addEventListener('click',back);
+    btnSkip.addEventListener('click',finish);
+    window.addEventListener('resize',reposition);
+    window.addEventListener('scroll',reposition,true);
+  }
+  function inView(el){var r=el.getBoundingClientRect();return r.width>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}
+  function positionHi(t){
+    if(!t){hi.style.opacity='0';hi.style.width='0';hi.style.height='0';hiShown=false;return;}
+    var r=t.getBoundingClientRect(),P=8,top=r.top-P,left=r.left-P,w=r.width+2*P,h=r.height+2*P;
+    if(!hiShown){var pv=hi.style.transition;hi.style.transition='none';hi.style.top=top+'px';hi.style.left=left+'px';hi.style.width=w+'px';hi.style.height=h+'px';void hi.offsetWidth;hi.style.transition=pv;hi.style.opacity='1';hiShown=true;}
+    else{hi.style.top=top+'px';hi.style.left=left+'px';hi.style.width=w+'px';hi.style.height=h+'px';hi.style.opacity='1';}
+  }
+  function positionTip(t){
+    var tw=tip.offsetWidth||340,th=tip.offsetHeight||180,vw=innerWidth,vh=innerHeight,gap=14,top,left;
+    if(!t){left=(vw-tw)/2;top=(vh-th)/2;}
+    else{var r=t.getBoundingClientRect(),sb=vh-r.bottom,below=sb>=th+gap||sb>=r.top;top=below?(r.bottom+gap):(r.top-th-gap);top=Math.max(gap,Math.min(top,vh-th-gap));left=r.left+r.width/2-tw/2;left=Math.max(gap,Math.min(left,vw-tw-gap));}
+    tip.style.top=top+'px';tip.style.left=left+'px';
+  }
+  function place(t){curTarget=t;positionHi(t);positionTip(t);}
+  function reposition(){if(!active)return;if(curTarget&&!document.body.contains(curTarget))return;positionHi(curTarget);positionTip(curTarget);}
+  function render(){
+    var s=STEPS[i];
+    tipH.textContent=s.h;tipB.textContent=s.b;
+    Array.prototype.forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===i);});
+    btnBack.style.visibility=i===0?'hidden':'visible';
+    btnNext.textContent=i===STEPS.length-1?'Done':'Next';
+    var go=function(){
+      var t=s.t?document.querySelector(s.t):null; // graceful: missing target -> centered
+      if(t&&!inView(t)){t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){place(t);},360);}
+      else place(t);
+    };
+    if(s.before){try{s.before();}catch(e){} setTimeout(go,s.beforeWait||400);} else go();
+  }
+  function runAfter(){var s=STEPS[i];if(s&&s.after){try{s.after();}catch(e){}}}
+  function resetIfCentered(){if(!STEPS[i].t)hiShown=false;}
+  function next(){if(i>=STEPS.length-1){finish();return;}runAfter();i++;resetIfCentered();render();}
+  function back(){if(i<=0)return;runAfter();i--;resetIfCentered();render();}
+  function start(){if(active)return;if(!ov)build();try{localStorage.setItem(SEEN_KEY,'1');}catch(e){}active=true;i=0;ov.hidden=false;void ov.offsetWidth;ov.classList.add('is-open');render();}
+  function finish(){if(!active)return;runAfter();active=false;ov.classList.add('is-closing');ov.classList.remove('is-open');setTimeout(function(){ov.hidden=true;ov.classList.remove('is-closing');hiShown=false;curTarget=null;},260);}
+  function onKey(e){if(!active)return;if(e.key==='Escape'){e.stopPropagation();finish();}else if(e.key==='ArrowRight'||e.key==='Enter'){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();back();}}
+  document.addEventListener('keydown',onKey,true);
+  window.WPTour={start:start,get active(){return active;}};
+  // TEMPORARY phase-2 preview: visit with #tour. Remove when phase 4 wires first-run/Settings.
+  function maybePreview(){if(location.hash==='#tour')setTimeout(start,700);}
+  if(document.readyState!=='loading')setTimeout(maybePreview,300);else window.addEventListener('load',maybePreview);
+})();
+</script>
 </body>
 </html>
