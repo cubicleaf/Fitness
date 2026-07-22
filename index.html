@@ -2159,12 +2159,16 @@ const formatSetDisplay = set => {
 
 // Smart type detection: checks set.type first, falls back to duration/reps heuristic
 const getSetType = set => {
+  if (set?.type === 'neutral') return 'neutral';
   if (set?.type === 'timed') return 'timed';
   if (set?.type === 'reps') return 'reps';
   // Heuristic: has duration but no reps → timed
   if (set?.duration && !set?.reps) return 'timed';
   return 'reps';
 };
+const isNeutralExercise = exercise => exercise?.type === 'neutral';
+const isNeutralAnchorSet = set => !!set?.isPlaceholder || set?.type === 'neutral';
+const getVisibleSets = sets => (sets || []).filter(set => !isNeutralAnchorSet(set));
 
 // ============ SAFE DB OPERATIONS ============
 // Wraps any async DB call in try/catch. Shows a brief error toast if it fails.
@@ -3243,15 +3247,16 @@ const CreateExerciseModal = ({
   };
   const doSave = async (opts = {}) => {
     const finalWeightMeaning = weightMeaning === 'bar' ? barType === 'custom' ? 'bar-custom' : 'barbell' : weightMeaning || 'total';
+    const finalType = type || 'reps';
     const exercise = {
       id: generateId('ex'),
       name: name.trim(),
       category: selectedCats.length > 0 ? selectedCats[0] : '',
       categories: selectedCats,
-      type: type || 'reps',
-      weightMeaning: finalWeightMeaning,
-      weightDefault: weightDefault || 'bodyweight',
-      customBarWeight: weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
+      type: finalType,
+      weightMeaning: finalType === 'neutral' ? 'total' : finalWeightMeaning,
+      weightDefault: finalType === 'neutral' ? 'none' : weightDefault || 'bodyweight',
+      customBarWeight: finalType === 'neutral' ? null : weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
       variationOf: opts.variationOf || null,
       note: '',
       lastUsed: getTodayString(),
@@ -3408,7 +3413,34 @@ const CreateExerciseModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Neither \u2014 Create Brand New")), /*#__PURE__*/React.createElement("div", {
+  }, "Neither \u2014 Create Brand New")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setType(type === 'neutral' ? null : 'neutral');
+      setWeightMeaning(null);
+      setWeightDefault(null);
+      setBarType(null);
+      setCustomBarWeight('');
+    },
+    style: {
+      width: '100%',
+      marginTop: '8px',
+      padding: '10px 12px',
+      borderRadius: '8px',
+      border: '1px solid var(--surface-edge)',
+      background: type === 'neutral' ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: type === 'neutral' ? 'var(--accent-soft)' : 'var(--text-placeholder)',
+      fontSize: '12px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, type === 'neutral' ? 'Neutral Activity Selected' : 'Neutral / Note-Only Activity'), type === 'neutral' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
+      marginTop: '6px'
+    }
+  }, "Creates a note-only activity with feel, history, notes, and edit, but no set logging controls."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       borderRadius: '8px',
@@ -7829,7 +7861,15 @@ const ActivityContextModal = ({
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)'
     }
-  }, "tap to go \u2192")), day.sets.map((set, si) => /*#__PURE__*/React.createElement("div", {
+  }, "tap to go \u2192")), getVisibleSets(day.sets).length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '8px 10px',
+      borderRadius: '6px',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+    }
+  }, "Note-only activity") : getVisibleSets(day.sets).map((set, si) => /*#__PURE__*/React.createElement("div", {
     key: set.id,
     style: {
       padding: '6px 10px',
@@ -8090,7 +8130,7 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Change Split"), /*#__PURE__*/React.createElement("button", {
+  }, "Change Split"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('changeType');
       onClose();
@@ -8116,7 +8156,7 @@ const ActivityContextModal = ({
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)'
     }
-  }, exercise?.type === 'timed' ? 'timed' : 'reps')), /*#__PURE__*/React.createElement("button", {
+  }, exercise?.type === 'timed' ? 'timed' : 'reps')), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('changeWeightDefault');
       onClose();
@@ -8292,6 +8332,7 @@ function App() {
       if (fullEx) {
         catsMap[exId] = getExCategories(fullEx);
         catsMap[exId + '_wd'] = fullEx.weightDefault || 'weight';
+        catsMap[exId + '_type'] = fullEx.type || 'reps';
       }
     }
     setExerciseCatsCache(catsMap);
@@ -8376,10 +8417,57 @@ function App() {
       setModal(null);
       return;
     }
+    if (isNeutralExercise(exercise)) {
+      const daySets = await dbOps.sets.getByDate(currentDate);
+      const existingNeutral = daySets.find(set => set.exerciseId === exercise.id);
+      if (!existingNeutral) {
+        const shifted = [];
+        for (const set of daySets) {
+          const updated = {
+            ...set,
+            exerciseOrder: (set.exerciseOrder || 0) + 1
+          };
+          const ok = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
+          if (!ok) return;
+          shifted.push(updated);
+        }
+        const anchorSet = {
+          id: generateId('set'),
+          date: currentDate,
+          exerciseId: exercise.id,
+          exerciseName: exercise.name,
+          exerciseOrder: 1,
+          setOrder: 1,
+          weight: null,
+          weightType: 'bodyweight',
+          reps: null,
+          duration: null,
+          weightMeaning: 'total',
+          type: 'neutral',
+          isPlaceholder: true,
+          createdAt: Date.now()
+        };
+        const ok = await safeDb(() => dbOps.sets.add(anchorSet), 'add neutral activity');
+        if (!ok) return;
+        await safeDb(() => dbOps.exercises.update({
+          ...exercise,
+          lastUsed: currentDate
+        }), 'update exercise');
+      }
+      setExpandedExercise(exercise.id);
+      setModal(null);
+      await loadDayData();
+      return;
+    }
     setSelectedExercise(exercise);
     setModal('activityHistory');
   };
   const handleCreateExercise = async exercise => {
+    if (isNeutralExercise(exercise)) {
+      await handleExerciseSelect(exercise);
+      setPendingNewExerciseId(null);
+      return;
+    }
     setSelectedExercise(exercise);
     setPendingNewExerciseId(exercise.id);
     setPreviousWeight(null);
@@ -8398,6 +8486,30 @@ function App() {
       return;
     }
     setModal('weightPicker', 'exercisePicker');
+  };
+  const assignExerciseOrder = async exerciseId => {
+    const daySets = await dbOps.sets.getByDate(currentDate);
+    const existingExercise = daySets.filter(s => s.exerciseId === exerciseId);
+    if (existingExercise.length > 0) {
+      return {
+        exerciseOrder: existingExercise[0].exerciseOrder || 1,
+        daySets,
+        existingExercise
+      };
+    }
+    for (const set of daySets) {
+      const updated = {
+        ...set,
+        exerciseOrder: (set.exerciseOrder || 0) + 1
+      };
+      const ok = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
+      if (!ok) return null;
+    }
+    return {
+      exerciseOrder: 1,
+      daySets,
+      existingExercise: []
+    };
   };
   const handleLogSet = async () => {
     const daySets = await dbOps.sets.getByDate(currentDate);
@@ -8479,14 +8591,12 @@ function App() {
       setModal('timedDuration', 'weightPicker');
     } else if (prefilledReps !== null) {
       // Auto-save with prefilled reps
-      const daySets = await dbOps.sets.getByDate(currentDate);
-      let exerciseOrder = 1;
-      const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
-      if (existingExercise.length === 0) {
-        exerciseOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
-      } else {
-        exerciseOrder = existingExercise[0].exerciseOrder;
-      }
+      const orderData = await assignExerciseOrder(selectedExercise.id);
+      if (!orderData) return;
+      const {
+        exerciseOrder,
+        existingExercise
+      } = orderData;
       const maxSetOrderPrefill = existingExercise.reduce((max, s) => Math.max(max, s.setOrder || 0), 0);
       const setOrder = Math.max(existingExercise.length + 1, maxSetOrderPrefill + 1);
       const fullExPrefill = await dbOps.exercises.get(selectedExercise.id);
@@ -8544,13 +8654,12 @@ function App() {
       return;
     }
     const daySets = await dbOps.sets.getByDate(currentDate);
-    let exerciseOrder = 1;
-    const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
-    if (existingExercise.length === 0) {
-      exerciseOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
-    } else {
-      exerciseOrder = existingExercise[0].exerciseOrder;
-    }
+    const orderData = await assignExerciseOrder(selectedExercise.id);
+    if (!orderData) return;
+    const {
+      exerciseOrder,
+      existingExercise
+    } = orderData;
 
     // Use max existing setOrder + 1 to prevent duplicates from race conditions
     const maxSetOrder = existingExercise.reduce((max, s) => Math.max(max, s.setOrder || 0), 0);
@@ -8612,14 +8721,12 @@ function App() {
       setPreviousWeight(null);
       return;
     }
-    const daySets = await dbOps.sets.getByDate(currentDate);
-    let exerciseOrder = 1;
-    const existingExercise = daySets.filter(s => s.exerciseId === selectedExercise.id);
-    if (existingExercise.length === 0) {
-      exerciseOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0) + 1;
-    } else {
-      exerciseOrder = existingExercise[0].exerciseOrder;
-    }
+    const orderData = await assignExerciseOrder(selectedExercise.id);
+    if (!orderData) return;
+    const {
+      exerciseOrder,
+      existingExercise
+    } = orderData;
     const maxSetOrderDur = existingExercise.reduce((max, s) => Math.max(max, s.setOrder || 0), 0);
     const setOrder = Math.max(existingExercise.length + 1, maxSetOrderDur + 1);
     const fullExerciseDur = await dbOps.exercises.get(selectedExercise.id);
@@ -8648,13 +8755,20 @@ function App() {
     if (pairingExerciseId && pairingExerciseId.source && pairingExerciseId.target) {
       const pair = pairingExerciseId;
       const daySetsNow = await dbOps.sets.getByDate(currentDate);
-      const maxOrderNow = Math.max(...daySetsNow.map(s => s.exerciseOrder), 0);
+      for (const existingSet of daySetsNow) {
+        const updated = {
+          ...existingSet,
+          exerciseOrder: (existingSet.exerciseOrder || 0) + 1
+        };
+        const reorderOk = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
+        if (!reorderOk) return;
+      }
       const sourceSet = {
         id: generateId('set'),
         date: currentDate,
         exerciseId: pair.source.id,
         exerciseName: pair.source.name,
-        exerciseOrder: maxOrderNow + 1,
+        exerciseOrder: 1,
         setOrder: 1,
         weight: null,
         weightType: 'bodyweight',
@@ -8669,7 +8783,7 @@ function App() {
         date: currentDate,
         exerciseId: pair.target.id,
         exerciseName: pair.target.name,
-        exerciseOrder: maxOrderNow + 1,
+        exerciseOrder: 1,
         setOrder: 1,
         weight: null,
         weightType: 'bodyweight',
@@ -8925,7 +9039,8 @@ function App() {
         exerciseId: set.exerciseId,
         exerciseName: set.exerciseName,
         sets: [],
-        _categories: null
+        _categories: null,
+        _type: exerciseCatsCache[set.exerciseId + '_type'] || getSetType(set)
       };
     }
     groupedExercises[set.exerciseId].sets.push(set);
@@ -9330,6 +9445,7 @@ function App() {
     className: "empty-state"
   }, currentDate === getTodayString() ? /*#__PURE__*/React.createElement(React.Fragment, null, "No activities logged yet today.") : /*#__PURE__*/React.createElement(React.Fragment, null, "No activities on this day.")) : exercises.map(exercise => {
     const isExpanded = expandedExercise === exercise.exerciseId;
+    const visibleSets = getVisibleSets(exercise.sets);
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
       className: "exercise-group",
@@ -9429,7 +9545,7 @@ function App() {
       }, "unlock")) : null;
     })()), /*#__PURE__*/React.createElement("div", {
       className: "set-boxes-container"
-    }, exercise.sets.map((set, idx) => /*#__PURE__*/React.createElement("div", {
+    }, visibleSets.map((set, idx) => /*#__PURE__*/React.createElement("div", {
       key: set.id,
       className: "set-box",
       style: {
@@ -9457,11 +9573,14 @@ function App() {
       }
     }, /*#__PURE__*/React.createElement("div", {
       className: "set-box-content"
-    }, formatSetBox(set, exercise.sets[idx - 1], unit)))))), isExpanded && (() => {
-      const lastSet = exercise.sets.length > 0 ? exercise.sets[exercise.sets.length - 1] : null;
-      const exerciseType = lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps';
-      const hasSets = exercise.sets.length > 0;
+    }, formatSetBox(set, visibleSets[idx - 1], unit)))))), isExpanded && (() => {
+      const lastSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
+      const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
+      const hasSets = visibleSets.length > 0;
       const hasWeight = lastSet && lastSet.weight !== null && lastSet.weightType !== 'bodyweight';
+      if (exerciseType === 'neutral') {
+        return null;
+      }
 
       // Helper: duplicate last set instantly
       const duplicateLastSet = async () => {
@@ -9569,7 +9688,7 @@ function App() {
             type: exerciseType
           });
           setPreviousWeight(lastSet?.weight || null);
-          setSetNumber(exercise.sets.length + 1);
+          setSetNumber(visibleSets.length + 1);
           if (isTimed) {
             setSelectedWeight({
               weight: lastSet?.weight || null,
@@ -9605,7 +9724,7 @@ function App() {
             bandedColor: lastSet.bandedColor
           });
           setPreviousWeight(lastSet.weight);
-          setSetNumber(exercise.sets.length + 1);
+          setSetNumber(visibleSets.length + 1);
           if (isTimed) {
             setModal('timedDuration');
           } else {
@@ -9621,7 +9740,7 @@ function App() {
             type: exerciseType
           });
           setPreviousWeight(lastSet.weight);
-          setSetNumber(exercise.sets.length + 1);
+          setSetNumber(visibleSets.length + 1);
           if (isTimed) {
             if (isPureTimed) {
               // Pure timed: same duration = instant duplicate
