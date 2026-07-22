@@ -39,6 +39,9 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Activity log
 
+- 2026-07-22 (gold CTA + long-press rep delete + barbell presets): Ran three live-source UX experiments in `index.html`. `+ Add Activity` now uses a pure-gold fill (`#D4A853`) with dark text (`#12070C`) as a visual test. Expanded rep pills now support press-and-hold delete via the existing confirmation flow, replacing the removed inline-corner delete pattern with an action directly on the pill itself. The weight picker now branches for bar-style exercises (`weightMeaning: barbell` / `bar-custom`): quick presets and common totals explicitly include the bar, and the plate quick-picks are labeled as per-side pairs instead of pretending generic totals mean the same thing for machines and barbells. Verified all 5 inline script blocks with a Node syntax pass.
+- 2026-07-22 (date persistence + today jump): Changed day navigation so refreshing the app no longer snaps back to the current day. The active `currentDate` now restores from saved preferences and updates whenever the viewed day changes, including arrow/swipe/history navigation. Added a small `Today` button in the date header when viewing another day so returning to the present stays one tap away. Verified the 5 inline script blocks with a Node syntax pass.
+- 2026-07-22 (aesthetic exploration spec): Tim asked to explore a less-dark gold/cream direction, with possible Holden Flâneur/Ambiance moving-atmosphere influence, but explicitly not as a high-priority source-app change. Created WDM handoff spec at `webdev/fit-logs-gold-cream-aesthetic-build-spec.md` with five directions: Candlelit Logbook, Cream Ledger, Antique Brass Utility, Ambient Ember, and Bone + Burgundy. No source app UI/code changes made.
 - 2026-07-22 (red bubble hotfix): Removed the inline per-set delete buttons from expanded exercise set pills. Root cause: expanded cards rendered an absolutely positioned `.set-box-delete-inline` button for every set; its oversized padding made it appear as red circles over the pill text on iPhone. Fix: set pills still tap to edit when expanded, but no longer render the red delete overlay; removed the unused red-bubble CSS. Verified all 6 inline script blocks with `node --check`.
 - 2026-07-22 (production correction): After Tim still saw `40lbs ×2 ×10` on `fit-logs.vercel.app`, confirmed the actual problem was deployment scope: the fix had only been pushed to `fix-babel-crash`, while production was still serving `main` at `bdcf910`. Fast-forwarded `main` to `d73b9ff` and verified Vercel production deployment `dpl_G44DUaRemFxemqTQ5tzKw9vGXhWQ` (`fitness-re2gvy6dr-tims-projects-5135e79e.vercel.app`) is Ready and aliased to `fit-logs.vercel.app`. Live HTML now contains `set.weightMeaning === 'per-side' ? ' ea' : ''`. If a phone still shows `×2`, treat it as local browser/cache/service-worker freshness and reload.
 - 2026-07-22: Hot-fixed two gym-blocking logging UX bugs in `index.html`. Set pills for per-hand/dumbbell weights no longer render a second multiplication term (`40lbs ×2 ×10`); they now show per-hand weight as `40lbs ea ×10` so reps are the only `×#` value. Add Activity search now searches across all activities when text is entered instead of hiding exact matches behind the active split filter; root cause of the reported Decline Dumbbell Press mismatch was that the existing activity had "No split" while the picker was filtered to `push`. Duplicate detection also now shows only exact normalized matches when an exact name already exists, instead of cluttering the panel with weaker similar presses. Verified all 6 inline script blocks with `node --check`.
@@ -62,6 +65,18 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
   - Rename visible app copy/title/meta tags only after the current local changes are committed/pushed.
   - Decide whether repository/folder/deploy metadata should remain Fitness/Fit Logs internally or move to Tim's Logbook later.
 - Caution: "Tim's Logbook" is a safer-feeling working name, not a legal opinion or clearance result.
+
+### Gold / cream aesthetic exploration
+
+- Pending, not high priority: explore a broader aesthetic rebalance using gold, cream/bone, and possibly the Holden Flâneur/Ambiance moving-atmosphere language to offset the app's current very dark burgundy/mauve feel.
+- Current artifact: `webdev/fit-logs-gold-cream-aesthetic-build-spec.md`.
+- Proposed WDM directions:
+  - Candlelit Logbook — HF-faithful gold punctuation, cream readability.
+  - Cream Ledger — dark shell with cream raised cards.
+  - Antique Brass Utility — gold/brass active controls; deliberately riskier.
+  - Ambient Ember — subtle moving HF-style atmosphere behind glassy UI.
+  - Bone + Burgundy — most usability-forward, lightened card surfaces.
+- Constraint: source app should not be rethemed until a WDM mockup is built and Tim chooses a direction/hybrid.
 
 ### Desktop phone-frame consistency
 

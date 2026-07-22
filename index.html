@@ -3756,7 +3756,13 @@ const WeightPickerModal = ({
   const [storedCustomBarWeight, setStoredCustomBarWeight] = useState(0);
   const commonWeightsLbs = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
   const commonWeightsKg = [2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65, 67.5, 70, 72.5, 75, 77.5, 80, 82.5, 85, 87.5, 90, 92.5, 95, 97.5, 100];
-  const commonWeights = unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
+  const plateWeight = unit === 'kg' ? 20 : 45;
+  const isBarExercise = exerciseWeightMeaning === 'barbell' || exerciseWeightMeaning === 'bar-custom';
+  const barWeight = exerciseWeightMeaning === 'barbell' ? plateWeight : exerciseWeightMeaning === 'bar-custom' ? storedCustomBarWeight : 0;
+  const barbellCommonWeightsLbs = [0, 20, 30, 50, 70, 90, 110, 140, 160, 180, 200, 230, 270].map(increment => barWeight + increment);
+  const barbellCommonWeightsKg = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140].map(increment => barWeight + increment);
+  const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
+  const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
   const stepperAmount = unit === 'kg' ? 2.5 : 5;
   useEffect(() => {
     const loadWeights = async () => {
@@ -3777,10 +3783,18 @@ const WeightPickerModal = ({
     const loadMeaning = async () => {
       const fullEx = await dbOps.exercises.get(exercise.id);
       setExerciseWeightMeaning(fullEx?.weightMeaning || 'total');
-      if (fullEx?.customBarWeight) setStoredCustomBarWeight(parseFloat(fullEx.customBarWeight) || 0);
+      const customBar = fullEx?.customBarWeight ? parseFloat(fullEx.customBarWeight) || 0 : 0;
+      setStoredCustomBarWeight(customBar);
+      if (previousWeight == null) {
+        if (fullEx?.weightMeaning === 'barbell') {
+          setWeight(unit === 'kg' ? 20 : 45);
+        } else if (fullEx?.weightMeaning === 'bar-custom' && customBar > 0) {
+          setWeight(customBar);
+        }
+      }
     };
     loadMeaning();
-  }, [exercise]);
+  }, [exercise, previousWeight, unit]);
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: () => onSelectWeight(null)
@@ -4033,16 +4047,25 @@ const WeightPickerModal = ({
     }
   }, "Use ", bandedCustomName)), /*#__PURE__*/React.createElement("div", {
     style: {
-      display: 'flex',
-      gap: '4px',
       marginBottom: '12px'
     }
-  }, [1, 2, 4, 6, 8, 10].map(totalPlates => {
-    const plateWeight = unit === 'kg' ? 20 : 45;
-    const barWeight = exerciseWeightMeaning === 'barbell' ? plateWeight : exerciseWeightMeaning === 'bar-custom' ? storedCustomBarWeight : 0;
-    const total = barWeight + totalPlates * plateWeight;
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, isBarExercise ? `Plate Pairs (${barWeight} ${unit} bar included)` : `${plateWeight} ${unit} Plates`), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
+      marginBottom: '8px'
+    }
+  }, isBarExercise ? 'Quick totals for bar work. Each step adds one plate per side.' : 'Quick plate math for machine or plate-loaded totals.'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '4px'
+    }
+  }, quickPlateOptions.map(plateCount => {
+    const total = isBarExercise ? barWeight + plateCount * plateWeight * 2 : plateCount * plateWeight;
     return /*#__PURE__*/React.createElement("button", {
-      key: totalPlates,
+      key: `${isBarExercise ? 'pair' : 'plate'}-${plateCount}`,
       onClick: () => onSelectWeight({
         weight: total,
         weightType: unit
@@ -4066,18 +4089,18 @@ const WeightPickerModal = ({
         display: 'block',
         fontSize: '14px'
       }
-    }, totalPlates), /*#__PURE__*/React.createElement("span", {
+    }, plateCount), /*#__PURE__*/React.createElement("span", {
       style: {
         display: 'block',
         fontSize: '11px',
         opacity: 0.7
       }
-    }, totalPlates === 1 ? 'plate' : 'plates'), /*#__PURE__*/React.createElement("span", {
+    }, isBarExercise ? plateCount === 1 ? 'pair' : 'pairs' : plateCount === 1 ? 'plate' : 'plates'), /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: '11px'
       }
     }, total, unit === 'kg' ? 'kg' : 'lbs'));
-  })), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("div", {
     style: {
       height: '1px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 20%, transparent)',
@@ -4089,7 +4112,13 @@ const WeightPickerModal = ({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, "Common Weights"), /*#__PURE__*/React.createElement("div", {
+  }, isBarExercise ? `Bar Totals (${barWeight} ${unit} bar included)` : "Common Weights"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
+      marginBottom: '8px'
+    }
+  }, isBarExercise ? 'These presets already include the bar, so 95 means 95 total, not plates-only.' : 'Fast total-weight presets for non-bar work.'), /*#__PURE__*/React.createElement("div", {
     className: "weight-grid"
   }, commonWeights.map(w => /*#__PURE__*/React.createElement("button", {
     key: w,
@@ -8708,6 +8737,30 @@ function App() {
     }
     await loadDayData();
   };
+  const startSetDeleteLongPress = (el, set) => {
+    if (!el) return;
+    if (el._setLongPressTimer) clearTimeout(el._setLongPressTimer);
+    el._setLongPressFired = false;
+    el._setLongPressTimer = setTimeout(() => {
+      el._setLongPressFired = true;
+      setConfirmation({
+        title: 'Delete this rep?',
+        message: `Remove ${formatSetBox(set, null, unit)} from ${set.exerciseName}?`,
+        onConfirm: async () => {
+          setConfirmation(null);
+          await handleDeleteSet(set.id);
+        },
+        onCancel: () => setConfirmation(null)
+      });
+    }, 600);
+  };
+  const clearSetDeleteLongPress = el => {
+    if (!el) return;
+    if (el._setLongPressTimer) {
+      clearTimeout(el._setLongPressTimer);
+      el._setLongPressTimer = null;
+    }
+  };
   const handleEditSet = async set => {
     setSelectedSetForEdit(set);
     setSelectedExercise(await dbOps.exercises.get(set.exerciseId));
@@ -9373,7 +9426,26 @@ function App() {
       style: {
         backgroundColor: getSetBoxColor(idx)
       },
-      onClick: () => isExpanded && handleEditSet(set)
+      onMouseDown: e => {
+        if (!isExpanded) return;
+        startSetDeleteLongPress(e.currentTarget, set);
+      },
+      onMouseUp: e => clearSetDeleteLongPress(e.currentTarget),
+      onMouseLeave: e => clearSetDeleteLongPress(e.currentTarget),
+      onTouchStart: e => {
+        if (!isExpanded) return;
+        startSetDeleteLongPress(e.currentTarget, set);
+      },
+      onTouchMove: e => clearSetDeleteLongPress(e.currentTarget),
+      onTouchEnd: e => clearSetDeleteLongPress(e.currentTarget),
+      onClick: e => {
+        if (!isExpanded) return;
+        if (e.currentTarget._setLongPressFired) {
+          e.currentTarget._setLongPressFired = false;
+          return;
+        }
+        handleEditSet(set);
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "set-box-content"
     }, formatSetBox(set, exercise.sets[idx - 1], unit)))))), isExpanded && (() => {
@@ -9682,6 +9754,11 @@ function App() {
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn",
     "data-tour": "add-activity",
+    style: {
+      background: '#D4A853',
+      color: '#12070C',
+      border: '1px solid color-mix(in srgb, #F0E6D3 26%, #D4A853)'
+    },
     onClick: () => setModal('exercisePicker')
   }, "+ Add Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
     exerciseId: activityContext.exerciseId,
