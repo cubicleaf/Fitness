@@ -311,6 +311,13 @@
             flex: 1;
         }
 
+        .day-display-inner {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
         .day-date {
             font-size: 16px;
             font-weight: 600;
@@ -324,6 +331,24 @@
             margin-top: 6px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+        }
+
+        .today-jump-btn {
+            background: color-mix(in srgb, var(--accent) 14%, transparent);
+            border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+            color: var(--accent-soft);
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            min-height: 28px;
+        }
+
+        .today-jump-btn:active {
+            background: color-mix(in srgb, var(--accent) 22%, transparent);
         }
 
         /* Content Area */
@@ -2098,6 +2123,11 @@ const formatDateShort = date => {
 const getDateString = date => {
   const d = typeof date === 'string' ? parseLocalDate(date) : date;
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+};
+const isValidDateString = value => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = parseLocalDate(value);
+  return !Number.isNaN(parsed.getTime()) && getDateString(parsed) === value;
 };
 const getTodayString = () => {
   return getDateString(new Date());
@@ -8113,7 +8143,10 @@ const ActivityContextModal = ({
   }, "Delete")))));
 };
 function App() {
-  const [currentDate, setCurrentDate] = useState(getTodayString());
+  const [currentDate, setCurrentDate] = useState(() => {
+    const savedDate = getPref('lastViewedDate');
+    return isValidDateString(savedDate) ? savedDate : getTodayString();
+  });
   const [daySets, setDaySets] = useState([]);
   const [exerciseCatsCache, setExerciseCatsCache] = useState({});
   const [dayLabel, setDayLabel] = useState('');
@@ -8270,6 +8303,11 @@ function App() {
       }
     });
   }, [currentDate, loadDayData]);
+  useEffect(() => {
+    if (isValidDateString(currentDate)) {
+      setPref('lastViewedDate', currentDate);
+    }
+  }, [currentDate]);
   useEffect(() => {
     if (!expandedExercise) return;
     const loadExNotes = async () => {
@@ -8956,10 +8994,19 @@ function App() {
       cursor: 'pointer'
     }
   }, /*#__PURE__*/React.createElement("div", {
+    className: "day-display-inner"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "day-date"
   }, formatDate(currentDate)), dayLabel && /*#__PURE__*/React.createElement("div", {
     className: "day-label"
-  }, dayLabel)), /*#__PURE__*/React.createElement("button", {
+  }, dayLabel), currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
+    className: "today-jump-btn",
+    "aria-label": "Go to today",
+    onClick: e => {
+      e.stopPropagation();
+      setCurrentDate(getTodayString());
+    }
+  }, "Today"))), /*#__PURE__*/React.createElement("button", {
     className: "nav-arrow",
     "aria-label": "Next day",
     onClick: () => setCurrentDate(addDays(currentDate, 1))
