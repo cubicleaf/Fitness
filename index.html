@@ -2539,7 +2539,7 @@ const getSetBoxColor = index => {
 const formatSetBox = (set, previousSet, unitOverride) => {
   let box = '';
   const displayUnit = unitOverride || 'lbs';
-  if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType) {
+  if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType || set.bandedColor !== previousSet.bandedColor) {
     if (set.weightType === 'bodyweight') {
       box += 'BW ';
     } else if (set.weightType === 'banded') {
