@@ -3089,6 +3089,7 @@ const CreateExerciseModal = ({
   categories,
   dayLabel
 }) => {
+  const activityRecommenderEnabled = false;
   const [name, setName] = useState('');
   const [selectedCats, setSelectedCats] = useState(dayLabel && categories.includes(dayLabel.toLowerCase()) ? [dayLabel.toLowerCase()] : []);
   const [type, setType] = useState(null);
@@ -3113,6 +3114,11 @@ const CreateExerciseModal = ({
 
   // Fuzzy duplicate detection
   const checkDuplicates = input => {
+    if (!activityRecommenderEnabled) {
+      setDupMatches([]);
+      setShowDupPanel(false);
+      return;
+    }
     if (getPref('skipDupWarning') === 'true') return;
     if (!input || input.length < 3) {
       setDupMatches([]);
@@ -3161,10 +3167,12 @@ const CreateExerciseModal = ({
   };
   const handleNameChange = val => {
     setName(val);
+    if (!activityRecommenderEnabled) return;
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
   const handleRecommend = () => {
+    if (!activityRecommenderEnabled) return;
     const raw = name.trim().toLowerCase();
     if (!raw) return;
 
@@ -3309,7 +3317,7 @@ const CreateExerciseModal = ({
     value: name,
     onChange: e => handleNameChange(e.target.value),
     autoFocus: true
-  }), showDupPanel && dupMatches.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }), activityRecommenderEnabled && showDupPanel && dupMatches.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: '8px',
       padding: '10px 12px',
@@ -3411,18 +3419,19 @@ const CreateExerciseModal = ({
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setSelectedCats([]),
     style: {
-      flex: 1,
+      flex: activityRecommenderEnabled ? 1 : 'unset',
+      width: activityRecommenderEnabled ? 'auto' : '100%',
       padding: '10px',
       border: 'none',
       fontSize: '11px',
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      borderRight: '1px solid var(--surface-edge)',
+      borderRight: activityRecommenderEnabled ? '1px solid var(--surface-edge)' : 'none',
       background: selectedCats.length === 0 ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: selectedCats.length === 0 ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
-  }, "No Split"), /*#__PURE__*/React.createElement("button", {
+  }, "No Split"), activityRecommenderEnabled && /*#__PURE__*/React.createElement("button", {
     onClick: handleRecommend,
     style: {
       flex: 1,
@@ -3435,7 +3444,7 @@ const CreateExerciseModal = ({
       background: 'rgba(255,255,255,0.03)',
       color: 'var(--text-placeholder)'
     }
-  }, "Recommend")), recommendation && /*#__PURE__*/React.createElement("div", {
+  }, "Recommend")), activityRecommenderEnabled && recommendation && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       marginTop: '6px',
