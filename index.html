@@ -446,26 +446,6 @@
             padding-right: 0;
         }
 
-        .set-box-delete-inline {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: rgba(255, 50, 50, 0.35);
-            border: none;
-            color: white;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 14px;
-            line-height: 1;
-            box-sizing: content-box;
-        }
-
         .set-box-delete {
             position: absolute;
             top: -6px;
@@ -9349,13 +9329,7 @@ function App() {
       onClick: () => isExpanded && handleEditSet(set)
     }, /*#__PURE__*/React.createElement("div", {
       className: "set-box-content"
-    }, formatSetBox(set, exercise.sets[idx - 1], unit)), isExpanded && /*#__PURE__*/React.createElement("button", {
-      className: "set-box-delete-inline",
-      onClick: e => {
-        e.stopPropagation();
-        handleDeleteSet(set.id);
-      }
-    }, "x"))))), isExpanded && (() => {
+    }, formatSetBox(set, exercise.sets[idx - 1], unit)))))), isExpanded && (() => {
       const lastSet = exercise.sets.length > 0 ? exercise.sets[exercise.sets.length - 1] : null;
       const exerciseType = lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps';
       const hasSets = exercise.sets.length > 0;
