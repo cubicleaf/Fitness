@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Personal workout data
+my real data/
+
+# Archive & old stuff
+old screenshots/
+past versions of html/
+_archive/
+
+# HTML experiments
+learning htmls/
