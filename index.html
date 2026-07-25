@@ -1694,7 +1694,7 @@ const IconChevronDown = ({
 let db = null;
 const initDB = () => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('FitnessTracker', 2);
+    const request = indexedDB.open('FitnessTracker', 3);
     request.onerror = () => reject(request.error);
     request.onsuccess = () => {
       db = request.result;
@@ -1754,6 +1754,14 @@ const initDB = () => {
           unique: false
         });
         sessionNotesStore.createIndex('by-exerciseId-date', ['exerciseId', 'date'], {
+          unique: false
+        });
+      }
+      if (!database.objectStoreNames.contains('movementFamilies')) {
+        const familiesStore = database.createObjectStore('movementFamilies', {
+          keyPath: 'id'
+        });
+        familiesStore.createIndex('by-name', 'name', {
           unique: false
         });
       }
@@ -1980,6 +1988,15 @@ const dbOps = {
         req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
       });
     },
+    getAll: () => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('sets', 'readonly');
+        const store = tx.objectStore('sets');
+        const req = store.getAll();
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result);
+      });
+    },
     getLastSession: exerciseId => {
       return new Promise((resolve, reject) => {
         const tx = db.transaction('sets', 'readonly');
@@ -2100,6 +2117,53 @@ const dbOps = {
         const req = index.getAll(exerciseId);
         req.onerror = () => reject(req.error);
         req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
+      });
+    },
+    getAll: () => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('sessionNotes', 'readonly');
+        const store = tx.objectStore('sessionNotes');
+        const req = store.getAll();
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result);
+      });
+    }
+  },
+  families: {
+    add: family => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('movementFamilies', 'readwrite');
+        const store = tx.objectStore('movementFamilies');
+        const req = store.add(family);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result);
+      });
+    },
+    update: family => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('movementFamilies', 'readwrite');
+        const store = tx.objectStore('movementFamilies');
+        const req = store.put(family);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result);
+      });
+    },
+    getAll: () => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('movementFamilies', 'readonly');
+        const store = tx.objectStore('movementFamilies');
+        const req = store.getAll();
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result.sort((a, b) => (a.name || '').localeCompare(b.name || '')));
+      });
+    },
+    findByName: name => {
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction('movementFamilies', 'readonly');
+        const index = tx.objectStore('movementFamilies').index('by-name');
+        const req = index.getAll(name);
+        req.onerror = () => reject(req.error);
+        req.onsuccess = () => resolve(req.result[0] || null);
       });
     }
   }
@@ -2297,6 +2361,102 @@ const exerciseInSplit = (exercise, splitName) => {
 // Format categories for display (e.g. "Push, Legs")
 const formatCategories = exercise => {
   return getExCategories(exercise).join(', ');
+};
+const normalizeFamilyName = name => (name || '').trim().replace(/\s+/g, ' ');
+const normalizeFamilyKey = name => normalizeFamilyName(name).toLowerCase();
+const inferMovementFamilyName = activityName => {
+  const lower = (activityName || '').toLowerCase().trim();
+  if (!lower) return '';
+  const rules = [{
+    match: ['pulldown', 'pull down', 'lat pull'],
+    family: 'Pulldown'
+  }, {
+    match: ['pull up', 'pullup', 'chin up', 'chinup'],
+    family: 'Pull-up'
+  }, {
+    match: ['row'],
+    family: 'Row'
+  }, {
+    match: ['bench', 'press'],
+    family: 'Press'
+  }, {
+    match: ['squat'],
+    family: 'Squat'
+  }, {
+    match: ['deadlift', 'rdl', 'romanian deadlift', 'hinge'],
+    family: 'Hinge'
+  }, {
+    match: ['curl'],
+    family: 'Curl'
+  }, {
+    match: ['run', 'running'],
+    family: 'Run'
+  }, {
+    match: ['sauna'],
+    family: 'Sauna'
+  }];
+  const found = rules.find(rule => rule.match.some(token => lower.includes(token)));
+  return found ? found.family : '';
+};
+const isLikelyGripRelevant = exerciseOrName => {
+  const source = typeof exerciseOrName === 'string' ? exerciseOrName : `${exerciseOrName?.name || ''} ${exerciseOrName?.movementFamilyName || ''}`;
+  const lower = source.toLowerCase();
+  return ['pulldown', 'pull down', 'row', 'pullup', 'pull up', 'chinup', 'chin up', 'curl', 'grip', 'hang', 'farmer', 'carry'].some(token => lower.includes(token));
+};
+const formatGripLabel = set => {
+  if (!set) return '';
+  const parts = [];
+  if (set.gripType) parts.push(set.gripType.charAt(0).toUpperCase() + set.gripType.slice(1));
+  if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-grip' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
+  return parts.join(' · ');
+};
+const withNormalizedExerciseFields = exercise => ({
+  ...exercise,
+  movementFamilyId: exercise.movementFamilyId || null,
+  movementFamilyName: exercise.movementFamilyName || '',
+  variationLabel: exercise.variationLabel || '',
+  gripTrackingEnabled: !!exercise.gripTrackingEnabled
+});
+const ensureMovementFamilyRecord = async familyName => {
+  const normalized = normalizeFamilyName(familyName);
+  if (!normalized) return null;
+  const existingFamilies = await dbOps.families.getAll();
+  const existing = existingFamilies.find(f => normalizeFamilyKey(f.name) === normalizeFamilyKey(normalized));
+  if (existing) return existing;
+  const family = {
+    id: generateId('fam'),
+    name: normalized,
+    createdAt: Date.now()
+  };
+  await dbOps.families.add(family);
+  return family;
+};
+const migrateActivityModel = async () => {
+  const exercises = await dbOps.exercises.getAll();
+  const existingFamilies = await dbOps.families.getAll();
+  const familyMap = new Map(existingFamilies.map(f => [normalizeFamilyKey(f.name), f]));
+  for (const exercise of exercises) {
+    const normalized = withNormalizedExerciseFields(exercise);
+    const inferredFamily = normalized.movementFamilyName || inferMovementFamilyName(normalized.name);
+    if (!normalized.movementFamilyId && inferredFamily) {
+      const key = normalizeFamilyKey(inferredFamily);
+      let family = familyMap.get(key);
+      if (!family) {
+        family = {
+          id: generateId('fam'),
+          name: normalizeFamilyName(inferredFamily),
+          createdAt: Date.now()
+        };
+        await dbOps.families.add(family);
+        familyMap.set(key, family);
+      }
+      normalized.movementFamilyId = family.id;
+      normalized.movementFamilyName = family.name;
+    }
+    if (normalized.gripTrackingEnabled !== exercise.gripTrackingEnabled || normalized.movementFamilyId !== exercise.movementFamilyId || normalized.movementFamilyName !== exercise.movementFamilyName || normalized.variationLabel !== exercise.variationLabel) {
+      await dbOps.exercises.update(normalized);
+    }
+  }
 };
 
 // ============ MOOD GRADIENT (1-100) ============
@@ -2564,6 +2724,10 @@ const formatSetBox = (set, previousSet, unitOverride) => {
     const mins = Math.floor(set.duration / 60);
     const secs = set.duration % 60;
     box += `${mins}:${String(secs).padStart(2, '0')}`;
+  }
+  const gripLabel = formatGripLabel(set);
+  if (gripLabel) {
+    box += `${box ? ' · ' : ''}${gripLabel}`;
   }
   return box.trim();
 };
@@ -3113,6 +3277,9 @@ const CreateExerciseModal = ({
   const [dupMatches, setDupMatches] = useState([]);
   const [showDupPanel, setShowDupPanel] = useState(false);
   const [allExercises, setAllExercisesLocal] = useState([]);
+  const [movementFamilyName, setMovementFamilyName] = useState('');
+  const [variationLabel, setVariationLabel] = useState('');
+  const [gripTrackingEnabled, setGripTrackingEnabled] = useState(false);
   const dupCheckRef = useRef(null);
 
   // Load all exercises on mount for duplicate checking
@@ -3178,6 +3345,13 @@ const CreateExerciseModal = ({
   };
   const handleNameChange = val => {
     setName(val);
+    if (!movementFamilyName.trim()) {
+      const inferredFamily = inferMovementFamilyName(val);
+      if (inferredFamily) setMovementFamilyName(inferredFamily);
+    }
+    if (isLikelyGripRelevant(val)) {
+      setGripTrackingEnabled(true);
+    }
     if (!activityRecommenderEnabled) return;
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
@@ -3255,6 +3429,8 @@ const CreateExerciseModal = ({
   const doSave = async (opts = {}) => {
     const finalWeightMeaning = weightMeaning === 'bar' ? barType === 'custom' ? 'bar-custom' : 'barbell' : weightMeaning || 'total';
     const finalType = type || 'reps';
+    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName || movementFamilyName);
+    const familyRecord = resolvedFamilyName ? await ensureMovementFamilyRecord(resolvedFamilyName) : null;
     const exercise = {
       id: generateId('ex'),
       name: name.trim(),
@@ -3265,6 +3441,10 @@ const CreateExerciseModal = ({
       weightDefault: finalType === 'neutral' ? 'none' : weightDefault || 'bodyweight',
       customBarWeight: finalType === 'neutral' ? null : weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
       variationOf: opts.variationOf || null,
+      movementFamilyId: familyRecord?.id || null,
+      movementFamilyName: familyRecord?.name || '',
+      variationLabel: (opts.variationLabel || variationLabel || '').trim(),
+      gripTrackingEnabled: finalType !== 'neutral' && !!gripTrackingEnabled,
       note: '',
       lastUsed: getTodayString(),
       createdAt: Date.now()
@@ -8139,6 +8319,42 @@ const ActivityContextModal = ({
     }
   }, "Change Split"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
+      onAction('manageFamily');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, "Movement Family"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      onAction('viewFamily');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, "View Family"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
       onAction('changeType');
       onClose();
     },
@@ -8189,7 +8405,61 @@ const ActivityContextModal = ({
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)'
     }
-  }, exercise?.weightDefault === 'bodyweight' ? 'bodyweight' : exercise?.weightDefault === 'none' ? 'no weight' : 'weight')), /*#__PURE__*/React.createElement("button", {
+  }, exercise?.weightDefault === 'bodyweight' ? 'bodyweight' : exercise?.weightDefault === 'none' ? 'no weight' : 'weight')), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      onAction('changeWeightMeaning');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, "Weight Style"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      onAction('changeGripTracking');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, exercise?.gripTrackingEnabled ? 'Grip Tracking: On' : 'Grip Tracking: Off'), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      onAction('createVariation');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, "Create Variation"), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('rename');
       onClose();
@@ -8227,6 +8497,369 @@ const ActivityContextModal = ({
     }
   }, "Delete")))));
 };
+const GripPromptModal = ({
+  exercise,
+  initialGrip,
+  onConfirm,
+  onCancel
+}) => {
+  const [gripType, setGripType] = useState(initialGrip?.gripType || null);
+  const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
+  const typeOptions = ['pronated', 'supinated', 'neutral'];
+  const widthOptions = ['close', 'standard', 'wide', 'v-grip'];
+  const buttonStyle = (active, compact = false) => ({
+    padding: compact ? '10px' : '12px',
+    borderRadius: '10px',
+    border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
+    background: active ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+    color: active ? 'var(--text-body)' : 'var(--text-faint)',
+    fontSize: compact ? '12px' : '13px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    WebkitAppearance: 'none'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, exercise.name, " Grip"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Grip Type"), /*#__PURE__*/React.createElement("div", {
+    className: "button-grid"
+  }, typeOptions.map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt,
+    onClick: () => setGripType(gripType === opt ? null : opt),
+    style: buttonStyle(gripType === opt)
+  }, opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
+    className: "section-title",
+    style: {
+      marginTop: '18px'
+    }
+  }, "Width / Handle"), /*#__PURE__*/React.createElement("div", {
+    className: "button-grid"
+  }, widthOptions.map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt,
+    onClick: () => setGripWidth(gripWidth === opt ? null : opt),
+    style: buttonStyle(gripWidth === opt, true)
+  }, opt === 'v-grip' ? 'V-grip' : opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => onConfirm({
+      gripType: null,
+      gripWidth: null
+    })
+  }, "Skip"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => onConfirm({
+      gripType,
+      gripWidth
+    })
+  }, "Continue")))));
+};
+const ManageFamilyModal = ({
+  exercise,
+  onSave,
+  onCancel
+}) => {
+  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
+  const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
+  const handleSave = async () => {
+    const normalized = normalizeFamilyName(familyName);
+    const familyRecord = normalized ? await ensureMovementFamilyRecord(normalized) : null;
+    await onSave({
+      ...exercise,
+      movementFamilyId: familyRecord?.id || null,
+      movementFamilyName: familyRecord?.name || '',
+      variationLabel: variationLabel.trim()
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Movement Family"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Family"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "E.g., Row",
+    value: familyName,
+    onChange: e => setFamilyName(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Variation Label"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "E.g., Wide Neutral",
+    value: variationLabel,
+    onChange: e => setVariationLabel(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onCancel
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: handleSave
+  }, "Save")))));
+};
+const ChangeWeightMeaningModal = ({
+  exercise,
+  onSave,
+  onCancel
+}) => {
+  const [weightMeaning, setWeightMeaning] = useState(exercise?.weightMeaning === 'bar-custom' || exercise?.weightMeaning === 'barbell' ? 'bar' : exercise?.weightMeaning || 'total');
+  const [barType, setBarType] = useState(exercise?.weightMeaning === 'bar-custom' ? 'custom' : exercise?.weightMeaning === 'barbell' ? 'standard' : null);
+  const [customBarWeight, setCustomBarWeight] = useState(exercise?.customBarWeight ? String(exercise.customBarWeight) : '');
+  const handleSave = async () => {
+    const finalWeightMeaning = weightMeaning === 'bar' ? barType === 'custom' ? 'bar-custom' : 'barbell' : weightMeaning;
+    await onSave({
+      ...exercise,
+      weightMeaning: finalWeightMeaning,
+      customBarWeight: weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Weight Style"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "button-grid"
+  }, [{
+    v: 'total',
+    l: 'Total'
+  }, {
+    v: 'per-side',
+    l: 'Per Side'
+  }, {
+    v: 'bar',
+    l: 'Bar'
+  }].map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt.v,
+    className: "btn",
+    onClick: () => {
+      setWeightMeaning(opt.v);
+      if (opt.v !== 'bar') setBarType(null);
+    },
+    style: {
+      background: weightMeaning === opt.v ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: weightMeaning === opt.v ? 'var(--text-body)' : 'var(--text-faint)'
+    }
+  }, opt.l))), weightMeaning === 'bar' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "button-row",
+    style: {
+      marginTop: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => setBarType('standard'),
+    style: {
+      background: barType === 'standard' ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: barType === 'standard' ? 'var(--text-body)' : 'var(--text-faint)'
+    }
+  }, "Standard Bar"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => setBarType('custom'),
+    style: {
+      background: barType === 'custom' ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: barType === 'custom' ? 'var(--text-body)' : 'var(--text-faint)'
+    }
+  }, "Custom Bar")), barType === 'custom' && /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    className: "form-input",
+    placeholder: "Custom bar weight",
+    value: customBarWeight,
+    onChange: e => setCustomBarWeight(e.target.value),
+    style: {
+      marginTop: '10px'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onCancel
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: handleSave
+  }, "Save")))));
+};
+const CreateVariationModal = ({
+  exercise,
+  onSave,
+  onCancel
+}) => {
+  const [name, setName] = useState('');
+  const [variationLabel, setVariationLabel] = useState('');
+  const handleSave = async () => {
+    if (!name.trim()) return;
+    const familySourceName = exercise.movementFamilyName || inferMovementFamilyName(exercise.name);
+    const familyRecord = familySourceName ? await ensureMovementFamilyRecord(familySourceName) : null;
+    await onSave({
+      ...exercise,
+      id: generateId('ex'),
+      name: name.trim(),
+      variationOf: exercise.id,
+      movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
+      movementFamilyName: familyRecord?.name || exercise.movementFamilyName || '',
+      variationLabel: variationLabel.trim(),
+      lastUsed: '',
+      createdAt: Date.now()
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Create Variation"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "New Activity Name"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "E.g., Wide Neutral Grip Pulldown",
+    value: name,
+    onChange: e => setName(e.target.value),
+    autoFocus: true
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Variation Label"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "E.g., Wide Neutral",
+    value: variationLabel,
+    onChange: e => setVariationLabel(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onCancel
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: handleSave
+  }, "Create")))));
+};
+const FamilyViewModal = ({
+  exercise,
+  onClose,
+  onOpenExercise
+}) => {
+  const [siblings, setSiblings] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const all = (await dbOps.exercises.getAll()).map(withNormalizedExerciseFields);
+      const familyId = exercise?.movementFamilyId || null;
+      const familyName = normalizeFamilyKey(exercise?.movementFamilyName || '');
+      const related = all.filter(ex => ex.id !== exercise.id && (familyId && ex.movementFamilyId === familyId || !familyId && familyName && normalizeFamilyKey(ex.movementFamilyName) === familyName));
+      setSiblings(related.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '')));
+    })();
+  }, [exercise]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, exercise?.movementFamilyName || 'Family View'), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, siblings.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      color: 'var(--text-placeholder)',
+      padding: '20px 0',
+      fontSize: '13px'
+    }
+  }, "No linked variations yet") : siblings.map(sibling => /*#__PURE__*/React.createElement("button", {
+    key: sibling.id,
+    onClick: () => onOpenExercise(sibling),
+    style: {
+      width: '100%',
+      textAlign: 'left',
+      padding: '12px',
+      marginBottom: '8px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, sibling.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
+      marginTop: '4px'
+    }
+  }, sibling.variationLabel || 'No variation label', sibling.lastUsed ? ` · Last ${formatDateShort(sibling.lastUsed)}` : ' · Not logged yet'))))));
+};
 function App() {
   const [currentDate, setCurrentDate] = useState(() => {
     const savedDate = getPref('lastViewedDate');
@@ -8249,6 +8882,8 @@ function App() {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [pendingNewExerciseId, setPendingNewExerciseId] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
+  const [selectedGrip, setSelectedGrip] = useState(null);
+  const [pendingGripNextModal, setPendingGripNextModal] = useState(null);
   const [previousWeight, setPreviousWeight] = useState(null);
   const [loggedSetCount, setLoggedSetCount] = useState(0);
   const [confirmation, setConfirmation] = useState(null);
@@ -8374,6 +9009,7 @@ function App() {
   };
   useEffect(() => {
     initDB().then(async () => {
+      await migrateActivityModel();
       await loadDayData();
       const cats = await getCategories();
       setCategories(cats);
@@ -8389,6 +9025,23 @@ function App() {
       }
     });
   }, [currentDate, loadDayData]);
+  const maybeOpenGripStep = async (exercise, nextModal, backTo) => {
+    const fullEx = withNormalizedExerciseFields(await dbOps.exercises.get(exercise.id) || exercise);
+    if (fullEx.gripTrackingEnabled) {
+      const lastSession = await dbOps.sets.getLastSession(fullEx.id);
+      const lastSet = lastSession?.sets?.sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0] || null;
+      setSelectedExercise(fullEx);
+      setSelectedGrip({
+        gripType: lastSet?.gripType || null,
+        gripWidth: lastSet?.gripWidth || null
+      });
+      setPendingGripNextModal(nextModal);
+      setModal('gripPicker', backTo);
+      return true;
+    }
+    setSelectedGrip(null);
+    return false;
+  };
   useEffect(() => {
     if (isValidDateString(currentDate)) {
       setPref('lastViewedDate', currentDate);
@@ -8485,11 +9138,18 @@ function App() {
         weight: null,
         weightType: 'bodyweight'
       });
+      const targetModal = exercise.type === 'timed' ? 'timedDuration' : 'repPicker';
+      if (await maybeOpenGripStep(exercise, targetModal, 'exercisePicker')) {
+        return;
+      }
       if (exercise.type === 'timed') {
         setModal('timedDuration', 'exercisePicker');
       } else {
         setModal('repPicker', 'exercisePicker');
       }
+      return;
+    }
+    if (await maybeOpenGripStep(exercise, 'weightPicker', 'exercisePicker')) {
       return;
     }
     setModal('weightPicker', 'exercisePicker');
@@ -8541,11 +9201,18 @@ function App() {
         weight: null,
         weightType: 'bodyweight'
       });
+      const targetModal = fullEx.type === 'timed' ? 'timedDuration' : 'repPicker';
+      if (await maybeOpenGripStep(fullEx, targetModal, 'activityHistory')) {
+        return;
+      }
       if (fullEx.type === 'timed') {
         setModal('timedDuration', 'activityHistory');
       } else {
         setModal('repPicker', 'activityHistory');
       }
+      return;
+    }
+    if (await maybeOpenGripStep(fullEx, 'weightPicker', 'activityHistory')) {
       return;
     }
     setModal('weightPicker', 'activityHistory');
@@ -8555,6 +9222,9 @@ function App() {
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
+    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
+      return;
+    }
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
@@ -8564,6 +9234,9 @@ function App() {
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
+    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
+      return;
+    }
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
@@ -8573,6 +9246,9 @@ function App() {
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
+    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
+      return;
+    }
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
@@ -8622,6 +9298,8 @@ function App() {
         weightMeaning: wmPrefill,
         createdAt: Date.now()
       };
+      if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
+      if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
 
       // CHANGE 6: Record bandedColor if present
       if (weightData.weightType === 'banded' && weightData.bandedColor) {
@@ -8687,6 +9365,8 @@ function App() {
       weightMeaning,
       createdAt: Date.now()
     };
+    if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
+    if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
 
     // CHANGE 6: Record bandedColor if present
     if (selectedWeight.weightType === 'banded' && selectedWeight.bandedColor) {
@@ -8752,6 +9432,8 @@ function App() {
       weightMeaning: weightMeaningDur,
       createdAt: Date.now()
     };
+    if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
+    if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
 
     // CHANGE 6: Record bandedColor if present
     if (selectedWeight.weightType === 'banded' && selectedWeight.bandedColor) {
@@ -8894,6 +9576,10 @@ function App() {
   const handleEditSet = async set => {
     setSelectedSetForEdit(set);
     setSelectedExercise(await dbOps.exercises.get(set.exerciseId));
+    setSelectedGrip({
+      gripType: set.gripType || null,
+      gripWidth: set.gripWidth || null
+    });
     setSelectedWeight({
       weight: set.weight,
       weightType: set.weightType,
@@ -9036,6 +9722,31 @@ function App() {
       dbOps.exercises.get(exercise.exerciseId).then(ex => {
         setSelectedExercise(ex);
         setModal('changeWeightDefault');
+      });
+    } else if (action === 'changeWeightMeaning') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(ex);
+        setModal('changeWeightMeaning');
+      });
+    } else if (action === 'manageFamily') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(withNormalizedExerciseFields(ex));
+        setModal('manageFamily');
+      });
+    } else if (action === 'changeGripTracking') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(withNormalizedExerciseFields(ex));
+        setModal('changeGripTracking');
+      });
+    } else if (action === 'createVariation') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(withNormalizedExerciseFields(ex));
+        setModal('createVariation');
+      });
+    } else if (action === 'viewFamily') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(withNormalizedExerciseFields(ex));
+        setModal('familyView');
       });
     }
   };
@@ -9626,6 +10337,8 @@ function App() {
           type: exerciseType,
           createdAt: Date.now()
         };
+        if (lastSet.gripType) newSet.gripType = lastSet.gripType;
+        if (lastSet.gripWidth) newSet.gripWidth = lastSet.gripWidth;
         await dbOps.sets.add(newSet);
         setLoggedSetCount(loggedSetCount + 1);
         await loadDayData();
@@ -9643,7 +10356,7 @@ function App() {
             width: '100%',
             marginBottom: 0
           },
-          onClick: () => {
+          onClick: async () => {
             setSelectedExercise({
               id: exercise.exerciseId,
               name: exercise.exerciseName,
@@ -9656,6 +10369,11 @@ function App() {
                 weight: null,
                 weightType: 'bodyweight'
               });
+              if (await maybeOpenGripStep({
+                id: exercise.exerciseId,
+                name: exercise.exerciseName,
+                type: exerciseType
+              }, 'timedDuration')) return;
               setModal('timedDuration');
             } else {
               const wd = exerciseCatsCache[exercise.exerciseId + '_wd'];
@@ -9664,8 +10382,18 @@ function App() {
                   weight: null,
                   weightType: 'bodyweight'
                 });
+                if (await maybeOpenGripStep({
+                  id: exercise.exerciseId,
+                  name: exercise.exerciseName,
+                  type: exerciseType
+                }, 'repPicker')) return;
                 setModal('repPicker');
               } else {
+                if (await maybeOpenGripStep({
+                  id: exercise.exerciseId,
+                  name: exercise.exerciseName,
+                  type: exerciseType
+                }, 'weightPicker')) return;
                 setModal('weightPicker');
               }
             }
@@ -9704,7 +10432,7 @@ function App() {
           color: '#fff',
           fontSize: '11px'
         },
-        onClick: () => {
+        onClick: async () => {
           setSelectedExercise({
             id: exercise.exerciseId,
             name: exercise.exerciseName,
@@ -9717,6 +10445,11 @@ function App() {
               weight: lastSet?.weight || null,
               weightType: lastSet?.weightType || 'bodyweight'
             });
+            if (await maybeOpenGripStep({
+              id: exercise.exerciseId,
+              name: exercise.exerciseName,
+              type: exerciseType
+            }, 'timedDuration')) return;
             setModal('timedDuration');
           } else if (lastSet?.weightType === 'bodyweight' && !lastSet?.weight) {
             // Bodyweight/no-weight exercise — skip weight picker
@@ -9724,8 +10457,18 @@ function App() {
               weight: null,
               weightType: 'bodyweight'
             });
+            if (await maybeOpenGripStep({
+              id: exercise.exerciseId,
+              name: exercise.exerciseName,
+              type: exerciseType
+            }, 'repPicker')) return;
             setModal('repPicker');
           } else {
+            if (await maybeOpenGripStep({
+              id: exercise.exerciseId,
+              name: exercise.exerciseName,
+              type: exerciseType
+            }, 'weightPicker')) return;
             setModal('weightPicker');
           }
         }
@@ -9734,7 +10477,7 @@ function App() {
           ...segStyle(false, false),
           opacity: isPureTimed ? 0.3 : 1
         },
-        onClick: () => {
+        onClick: async () => {
           if (isPureTimed) return; // No weight to lock for pure timed
           setSelectedExercise({
             id: exercise.exerciseId,
@@ -9749,8 +10492,18 @@ function App() {
           setPreviousWeight(lastSet.weight);
           setSetNumber(visibleSets.length + 1);
           if (isTimed) {
+            if (await maybeOpenGripStep({
+              id: exercise.exerciseId,
+              name: exercise.exerciseName,
+              type: exerciseType
+            }, 'timedDuration')) return;
             setModal('timedDuration');
           } else {
+            if (await maybeOpenGripStep({
+              id: exercise.exerciseId,
+              name: exercise.exerciseName,
+              type: exerciseType
+            }, 'repPicker')) return;
             setModal('repPicker');
           }
         }
@@ -9962,6 +10715,27 @@ function App() {
     dayLabel: dayLabel,
     onSave: handleCreateExercise,
     onCancel: () => setModal('exercisePicker')
+  }), modal === 'gripPicker' && selectedExercise && /*#__PURE__*/React.createElement(GripPromptModal, {
+    exercise: selectedExercise,
+    initialGrip: selectedGrip,
+    onConfirm: grip => {
+      setSelectedGrip(grip);
+      const nextModal = pendingGripNextModal || 'weightPicker';
+      setPendingGripNextModal(null);
+      setModal(nextModal, 'gripPicker');
+    },
+    onCancel: async () => {
+      setPendingGripNextModal(null);
+      setSelectedGrip(null);
+      if (pendingNewExerciseId) {
+        const existingSets = await dbOps.sets.getByExerciseId(pendingNewExerciseId);
+        if (!existingSets || existingSets.length === 0) {
+          await safeDb(() => dbOps.exercises.delete(pendingNewExerciseId), 'cleanup ghost exercise');
+        }
+        setPendingNewExerciseId(null);
+      }
+      modalBack();
+    }
   }), modal === 'activityHistory' && selectedExercise && /*#__PURE__*/React.createElement(HistoryModal, {
     exercise: selectedExercise,
     onLogSet: handleLogSet,
@@ -10027,6 +10801,148 @@ function App() {
     onCancel: () => {
       setModal(null);
       setSelectedExercise(null);
+    }
+  }), modal === 'manageFamily' && selectedExercise && /*#__PURE__*/React.createElement(ManageFamilyModal, {
+    exercise: selectedExercise,
+    onSave: async updated => {
+      const ok = await safeDb(() => dbOps.exercises.update(updated), 'save movement family');
+      if (ok) {
+        setModal(null);
+        setSelectedExercise(null);
+        loadDayData();
+      }
+    },
+    onCancel: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    }
+  }), modal === 'changeWeightMeaning' && selectedExercise && /*#__PURE__*/React.createElement(ChangeWeightMeaningModal, {
+    exercise: selectedExercise,
+    onSave: async updated => {
+      const ok = await safeDb(() => dbOps.exercises.update(updated), 'save weight style');
+      if (ok) {
+        setModal(null);
+        setSelectedExercise(null);
+        loadDayData();
+      }
+    },
+    onCancel: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    }
+  }), modal === 'changeGripTracking' && selectedExercise && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'var(--bg-page)',
+      borderRadius: '16px',
+      padding: '24px',
+      maxWidth: '340px',
+      width: '100%',
+      margin: '0 20px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '15px',
+      fontWeight: '600',
+      color: 'var(--text-body)',
+      marginBottom: '8px',
+      textAlign: 'center'
+    }
+  }, "Track Grip"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      textAlign: 'center',
+      marginBottom: '18px',
+      lineHeight: '1.5'
+    }
+  }, "When enabled, a quick grip step appears before weight for this activity."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '10px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: async () => {
+      const ok = await safeDb(() => dbOps.exercises.update({
+        ...selectedExercise,
+        gripTrackingEnabled: false
+      }), 'disable grip tracking');
+      if (ok) {
+        setModal(null);
+        setSelectedExercise(null);
+        loadDayData();
+      }
+    },
+    style: {
+      flex: 1,
+      padding: '12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: selectedExercise.gripTrackingEnabled ? 'color-mix(in srgb, var(--accent) 4%, transparent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
+      color: selectedExercise.gripTrackingEnabled ? 'var(--text-faint)' : 'var(--text-body)',
+      fontSize: '13px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Off"), /*#__PURE__*/React.createElement("button", {
+    onClick: async () => {
+      const ok = await safeDb(() => dbOps.exercises.update({
+        ...selectedExercise,
+        gripTrackingEnabled: true
+      }), 'enable grip tracking');
+      if (ok) {
+        setModal(null);
+        setSelectedExercise(null);
+        loadDayData();
+      }
+    },
+    style: {
+      flex: 1,
+      padding: '12px',
+      borderRadius: '10px',
+      border: 'none',
+      background: selectedExercise.gripTrackingEnabled ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
+      color: '#fff',
+      fontSize: '13px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "On")))), modal === 'createVariation' && selectedExercise && /*#__PURE__*/React.createElement(CreateVariationModal, {
+    exercise: selectedExercise,
+    onSave: async newExercise => {
+      const ok = await safeDb(() => dbOps.exercises.add(newExercise), 'create variation');
+      if (ok) {
+        setModal(null);
+        setSelectedExercise(null);
+      }
+    },
+    onCancel: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    }
+  }), modal === 'familyView' && selectedExercise && /*#__PURE__*/React.createElement(FamilyViewModal, {
+    exercise: selectedExercise,
+    onClose: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    },
+    onOpenExercise: exercise => {
+      setModal(null);
+      setSelectedExercise(null);
+      setActivityContext({
+        exerciseId: exercise.id,
+        exerciseName: exercise.name,
+        defaultTab: 'history'
+      });
     }
   }), modal === 'changeType' && selectedExercise && (() => {
     const currentType = selectedExercise.type || 'reps';
