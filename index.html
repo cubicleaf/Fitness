@@ -1706,6 +1706,28 @@ const IconChevronDown = ({
 }, /*#__PURE__*/React.createElement("polyline", {
   points: "6 9 12 15 18 9"
 }));
+const IconFieldNote = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "9",
+  fill: "currentColor",
+  opacity: "0.16"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "17.2",
+  r: "1.15",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9.9 9.25c.15-1.78 1.58-3.02 3.63-3.02 2.08 0 3.48 1.2 3.48 2.97 0 1.15-.55 1.95-1.84 2.84-1.07.74-1.44 1.22-1.44 2.15v.28h-1.75v-.37c0-1.28.46-1.96 1.63-2.8 1.07-.76 1.47-1.3 1.47-2.09 0-.88-.7-1.49-1.73-1.49-1.05 0-1.77.62-1.9 1.53H9.9Z",
+  fill: "currentColor"
+}));
 
 // ============ DATABASE ============
 
@@ -2462,6 +2484,29 @@ const formatGripLabel = set => {
   if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-grip' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
+const FIELD_NOTES = {
+  bodyweight: {
+    eyebrow: 'Field Note',
+    title: 'Why log bodyweight here?',
+    body: ['This gives each day its own bodyweight entry instead of one floating global number. That keeps your weight tied to the same date as the workout history around it.', 'Today gets the gentle reminder treatment. Past days can still be filled in manually when you are catching up from paper notes, memory, or another tracker.']
+  },
+  neutralActivity: {
+    eyebrow: 'Field Note',
+    title: 'What is a neutral activity?',
+    body: ['Neutral activities are for things you want to record without pretending they are a normal lift. They still keep feel, notes, history, and edit, but they skip the set logging controls.', 'Use this for note-only events, recovery items, or anything where “it happened” matters more than weight, reps, or time.']
+  },
+  movementFamily: {
+    eyebrow: 'Field Note',
+    title: 'What is a movement family?',
+    body: ['A movement family links related activities without merging them into one history. Cable row, dumbbell row, and machine row can stay separate while still belonging to the broader row family.', 'Think of the family as the umbrella and the activity as the exact variation you actually performed. That keeps presets and history precise while still allowing broader views later.']
+  },
+  gripTracking: {
+    eyebrow: 'Field Note',
+    title: 'What does grip tracking do?',
+    body: ['When this is on, the app asks for grip details before the weight step and saves them with the set instead of bloating the activity name.', 'This is best for movements where hand position materially changes the feel of the exercise, like pulldowns, rows, curls, carries, or hanging work.']
+  }
+};
+const getFieldNote = noteId => noteId ? FIELD_NOTES[noteId] || null : null;
 const withNormalizedExerciseFields = exercise => ({
   ...exercise,
   movementFamilyId: exercise.movementFamilyId || null,
@@ -3314,7 +3359,8 @@ const CreateExerciseModal = ({
   onSave,
   onCancel,
   categories,
-  dayLabel
+  dayLabel,
+  onOpenFieldNote
 }) => {
   const activityRecommenderEnabled = false;
   const [name, setName] = useState('');
@@ -3652,7 +3698,14 @@ const CreateExerciseModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Neither \u2014 Create Brand New")), /*#__PURE__*/React.createElement("button", {
+  }, "Neither \u2014 Create Brand New")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginTop: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       setType(type === 'neutral' ? null : 'neutral');
       setWeightMeaning(null);
@@ -3661,8 +3714,7 @@ const CreateExerciseModal = ({
       setCustomBarWeight('');
     },
     style: {
-      width: '100%',
-      marginTop: '8px',
+      flex: 1,
       padding: '10px 12px',
       borderRadius: '8px',
       border: '1px solid var(--surface-edge)',
@@ -3673,7 +3725,11 @@ const CreateExerciseModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, type === 'neutral' ? 'Neutral Activity Selected' : 'Neutral / Note-Only Activity'), type === 'neutral' && /*#__PURE__*/React.createElement("div", {
+  }, type === 'neutral' ? 'Neutral Activity Selected' : 'Neutral / Note-Only Activity'), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "neutralActivity",
+    onOpen: onOpenFieldNote,
+    ariaLabel: "What is a neutral activity?"
+  })), type === 'neutral' && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
@@ -7391,7 +7447,8 @@ const DayDetailModal = ({
   onSplitChange,
   unit,
   bodyweight,
-  onEditBodyweight
+  onEditBodyweight,
+  onOpenFieldNote
 }) => {
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
   const [activities, setActivities] = useState([]);
@@ -7634,12 +7691,26 @@ const DayDetailModal = ({
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)'
     }
-  }, bodyweight !== null ? `${bodyweight} ${unit}` : 'Add bodyweight for this day'))), /*#__PURE__*/React.createElement(IconArrowRight, {
+  }, bodyweight !== null ? `${bodyweight} ${unit}` : 'Add bodyweight for this day'))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '2px'
+    }
+  }, /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "bodyweight",
+    onOpen: onOpenFieldNote,
+    ariaLabel: "Why log bodyweight here?",
+    style: {
+      width: '28px',
+      height: '28px'
+    }
+  }), /*#__PURE__*/React.createElement(IconArrowRight, {
     size: 16,
     style: {
       color: 'color-mix(in srgb, var(--accent-soft) 42%, transparent)'
     }
-  })), dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }))), dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '0',
@@ -7986,6 +8057,118 @@ const BodyweightEntryModal = ({
       WebkitAppearance: 'none'
     }
   }, "\u2713"))));
+};
+const FieldNoteTrigger = ({
+  noteId,
+  onOpen,
+  ariaLabel,
+  style
+}) => /*#__PURE__*/React.createElement("button", {
+  type: "button",
+  onClick: e => {
+    e.stopPropagation();
+    onOpen && onOpen(noteId);
+  },
+  "aria-label": ariaLabel || 'Open field note',
+  style: {
+    border: 'none',
+    background: 'none',
+    color: 'color-mix(in srgb, var(--accent-soft) 78%, transparent)',
+    width: '30px',
+    height: '30px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 0,
+    cursor: 'pointer',
+    WebkitAppearance: 'none',
+    flexShrink: 0,
+    ...style
+  }
+}, /*#__PURE__*/React.createElement(IconFieldNote, {
+  size: 18
+}));
+const FieldNoteModal = ({
+  note,
+  onClose
+}) => {
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+  if (!note) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: onClose,
+    style: {
+      position: 'fixed',
+      inset: 0,
+      zIndex: 14000,
+      background: 'rgba(16, 7, 12, 0.56)',
+      backdropFilter: 'blur(16px) saturate(0.82)',
+      WebkitBackdropFilter: 'blur(16px) saturate(0.82)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    style: {
+      width: '100%',
+      maxWidth: '332px',
+      padding: '22px 20px 18px',
+      borderRadius: '24px',
+      background: 'linear-gradient(180deg, color-mix(in srgb, var(--surface) 92%, rgba(255,255,255,0.04)) 0%, color-mix(in srgb, var(--bg-page) 90%, rgba(255,255,255,0.03)) 100%)',
+      boxShadow: '0 24px 64px rgba(0,0,0,0.34)',
+      border: '1px solid color-mix(in srgb, var(--accent) 16%, transparent)',
+      position: 'relative'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: onClose,
+    "aria-label": "Close field note",
+    style: {
+      position: 'absolute',
+      top: '14px',
+      right: '16px',
+      border: 'none',
+      background: 'none',
+      color: 'color-mix(in srgb, var(--accent-soft) 56%, transparent)',
+      fontSize: '24px',
+      lineHeight: 1,
+      padding: 0,
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "\u00d7"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      color: 'color-mix(in srgb, var(--accent-soft) 54%, transparent)',
+      marginBottom: '10px'
+    }
+  }, note.eyebrow || 'Field Note'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '24px',
+      lineHeight: '1.2',
+      fontWeight: '600',
+      color: 'var(--text-warm)',
+      marginBottom: '14px',
+      maxWidth: '250px'
+    }
+  }, note.title), note.body.map((paragraph, idx) => /*#__PURE__*/React.createElement("p", {
+    key: idx,
+    style: {
+      margin: idx === 0 ? '0 0 12px' : '0 0 10px',
+      fontSize: '13px',
+      lineHeight: '1.62',
+      color: idx === 0 ? 'var(--text-body)' : 'color-mix(in srgb, var(--text-body) 78%, var(--accent-soft) 22%)'
+    }
+  }, paragraph))));
 };
 
 // ============ ACTIVITY CONTEXT MODAL ============
@@ -8866,7 +9049,8 @@ const GripPromptModal = ({
 const ManageFamilyModal = ({
   exercise,
   onSave,
-  onCancel
+  onCancel,
+  onOpenFieldNote
 }) => {
   const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
   const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
@@ -8888,7 +9072,17 @@ const ManageFamilyModal = ({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
-  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Movement Family"), /*#__PURE__*/React.createElement("button", {
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px'
+    }
+  }, /*#__PURE__*/React.createElement("h2", null, "Movement Family"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "movementFamily",
+    onOpen: onOpenFieldNote,
+    ariaLabel: "What is a movement family?"
+  })), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
     onClick: onCancel
@@ -8897,6 +9091,13 @@ const ManageFamilyModal = ({
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
   }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      lineHeight: '1.55',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      marginBottom: '14px'
+    }
+  }, "Link exact variations under one broader movement without merging their individual history or presets."), /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
@@ -9191,6 +9392,7 @@ function App() {
   const [showBWEditor, setShowBWEditor] = useState(false);
   const [bwEditValue, setBWEditValue] = useState('');
   const [bwEditorDate, setBWEditorDate] = useState(null);
+  const [activeFieldNoteId, setActiveFieldNoteId] = useState(null);
   const [weightBannerDismissed, setWeightBannerDismissed] = useState(false);
   const [bannerSlidingOut, setBannerSlidingOut] = useState(false);
   const bannerSwipeRef = useRef({
@@ -9311,6 +9513,13 @@ function App() {
     setShowBWEditor(false);
     setBWEditorDate(null);
     setBWEditValue('');
+  }, []);
+  const openFieldNote = useCallback(noteId => {
+    if (!noteId) return;
+    setActiveFieldNoteId(current => current === noteId ? null : noteId);
+  }, []);
+  const closeFieldNote = useCallback(() => {
+    setActiveFieldNoteId(null);
   }, []);
   const saveBodyweightEntry = useCallback(async () => {
     if (!bwEditorDate || !bwEditValue.trim()) {
@@ -10865,7 +11074,8 @@ function App() {
     categories: categories,
     dayLabel: dayLabel,
     onSave: handleCreateExercise,
-    onCancel: () => setModal('exercisePicker')
+    onCancel: () => setModal('exercisePicker'),
+    onOpenFieldNote: openFieldNote
   }), modal === 'gripPicker' && selectedExercise && /*#__PURE__*/React.createElement(GripPromptModal, {
     exercise: selectedExercise,
     initialGrip: selectedGrip,
@@ -10966,7 +11176,8 @@ function App() {
     onCancel: () => {
       setModal(null);
       setSelectedExercise(null);
-    }
+    },
+    onOpenFieldNote: openFieldNote
   }), modal === 'changeWeightMeaning' && selectedExercise && /*#__PURE__*/React.createElement(ChangeWeightMeaningModal, {
     exercise: selectedExercise,
     onSave: async updated => {
@@ -11000,13 +11211,24 @@ function App() {
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '6px',
+      marginBottom: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
       fontSize: '15px',
       fontWeight: '600',
       color: 'var(--text-body)',
-      marginBottom: '8px',
       textAlign: 'center'
     }
-  }, "Track Grip"), /*#__PURE__*/React.createElement("div", {
+  }, "Track Grip"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "gripTracking",
+    onOpen: openFieldNote,
+    ariaLabel: "What does grip tracking do?"
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '12px',
       color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
@@ -11420,7 +11642,8 @@ function App() {
     },
     unit: unit,
     bodyweight: bodyweight,
-    onEditBodyweight: openBodyweightEditor
+    onEditBodyweight: openBodyweightEditor,
+    onOpenFieldNote: openFieldNote
   }), showBWEditor && bwEditorDate && /*#__PURE__*/React.createElement(BodyweightEntryModal, {
     date: bwEditorDate,
     unit: unit,
@@ -11428,6 +11651,9 @@ function App() {
     onChange: setBWEditValue,
     onClose: closeBodyweightEditor,
     onSave: saveBodyweightEntry
+  }), activeFieldNoteId && /*#__PURE__*/React.createElement(FieldNoteModal, {
+    note: getFieldNote(activeFieldNoteId),
+    onClose: closeFieldNote
   }), confirmation && /*#__PURE__*/React.createElement(ConfirmationDialog, {
     title: confirmation.title,
     message: confirmation.message,
