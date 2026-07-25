@@ -2,11 +2,11 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-07-22
+updated: 2026-07-25
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-07-22
+**Last updated:** 2026-07-25
 
 ## Where I left off
 
@@ -39,6 +39,7 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Activity log
 
+- 2026-07-25 (top-bar SVG refresh + today jump cleanup): Reworked the header controls in `index.html` to reduce accidental taps around the date/split control. Replaced the previous left/right arrows and settings icon with Tim-provided duotone SVG shapes, tinted the app title and day date to the same gold family as the CTA, removed the boxed/pill container around the top-nav today jump, enlarged its curved-line icon, and added a small `Today` label underneath it. Also bumped the day-nav arrow icon size to match the new visual weight. Verified all 6 inline script blocks with a Node syntax pass after fixing a parenthesis mismatch introduced during the render-chain edit.
 - 2026-07-25 (family/variation + grip first implementation pass): Began integrating the new layered activity model directly into `index.html`. Added a real `movementFamilies` IndexedDB store, migration/normalization helpers for activity records, family inference/linking helpers, set-level grip qualifier support (`gripType` / `gripWidth`), and display formatting so grip context can appear with logged sets. The activity edit flow now has new routes for movement family management, family view, weight-style editing, variation creation, and grip-tracking control, and the logging flow gained a pre-weight grip step for grip-enabled activities. Syntax verification passed for all 6 inline script blocks after the pass. Follow-up still needed: do a manual in-browser click-through of every new modal path and decide whether movement-family / variation fields should also surface during initial activity creation instead of edit-only.
 - 2026-07-25 (family + variation implementation spec): Added active build-facing spec [FAMILY-VARIATION-IMPLEMENTATION-SPEC.md](/Users/cubicleaf/Documents/webdev/projects/Fitness-git/FAMILY-VARIATION-IMPLEMENTATION-SPEC.md) covering the first proper architecture for movement families and tracked variations. The spec defines the split between `movementFamily` and `trackedActivity`, preserves per-variation presets/history/weight behavior, describes late-linking and family-view UX, and lays out migration from today's flatter activity model before grip and other qualifiers expand further.
 - 2026-07-25 (grip qualifier implementation spec): Added active build-facing spec [GRIP-QUALIFIER-IMPLEMENTATION-SPEC.md](/Users/cubicleaf/Documents/webdev/projects/Fitness-git/GRIP-QUALIFIER-IMPLEMENTATION-SPEC.md) to define the first concrete rollout of the layered activity model. The spec turns the broader family/activity/qualifier idea into a narrow first slice: optional per-activity grip tracking, conservative relevance filtering, a small pre-weight grip step, structured set-level grip storage, and compact qualifier display in the daily log and history.
