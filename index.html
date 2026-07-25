@@ -1686,6 +1686,17 @@ const IconSettings = ({
   d: "M15.5227 12C15.5227 13.6569 14.1694 15 12.4999 15C10.8304 15 9.47705 13.6569 9.47705 12C9.47705 10.3431 10.8304 9 12.4999 9C14.1694 9 15.5227 10.3431 15.5227 12Z",
   fill: "currentColor"
 }));
+const IconScale = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M17.25 2H6.75A4.755 4.755 0 0 0 2 6.75v10.5A4.755 4.755 0 0 0 6.75 22h10.5A4.755 4.755 0 0 0 22 17.25V6.75A4.755 4.755 0 0 0 17.25 2Zm1.697 7.5-1.561 1.838a1.958 1.958 0 0 1-1.495.695 1.985 1.985 0 0 1-1.045-.299C14.18 11.324 13.145 10.833 12 10.833s-2.18.491-2.846.901a1.963 1.963 0 0 1-2.54-.397L5.053 9.5a2.366 2.366 0 0 1 .21-3.293C6.57 5.02 8.797 3.604 12 3.604s5.43 1.416 6.737 2.603a2.366 2.366 0 0 1 .21 3.293Z",
+  fill: "currentColor"
+}));
 const IconChevronDown = ({
   size,
   style
@@ -2209,6 +2220,40 @@ const isValidDateString = value => {
 };
 const getTodayString = () => {
   return getDateString(new Date());
+};
+const getBodyweightKey = date => `__bodyweight_${date}`;
+const hasBodyweightValue = value => value !== null && value !== undefined && `${value}`.trim() !== '' && !Number.isNaN(parseFloat(value));
+const getStoredBodyweightForDate = async date => {
+  const dated = await dbOps.dayNotes.get(getBodyweightKey(date));
+  if (dated?.note) return dated.note;
+  if (date === getTodayString()) {
+    const legacy = await dbOps.dayNotes.get('__bodyweight__');
+    if (legacy?.note) return legacy.note;
+  }
+  return null;
+};
+const setStoredBodyweightForDate = async (date, value) => {
+  if (!hasBodyweightValue(value)) {
+    await dbOps.dayNotes.delete(getBodyweightKey(date));
+    if (date === getTodayString()) {
+      await dbOps.dayNotes.delete('__bodyweight__');
+    }
+    return;
+  }
+  const normalized = `${value}`.trim();
+  await dbOps.dayNotes.set(getBodyweightKey(date), normalized);
+  if (date === getTodayString()) {
+    await dbOps.dayNotes.set('__bodyweight__', normalized);
+  }
+};
+const migrateLegacyBodyweightIfNeeded = async () => {
+  const today = getTodayString();
+  const dated = await dbOps.dayNotes.get(getBodyweightKey(today));
+  if (dated?.note) return;
+  const legacy = await dbOps.dayNotes.get('__bodyweight__');
+  if (legacy?.note) {
+    await dbOps.dayNotes.set(getBodyweightKey(today), legacy.note);
+  }
 };
 const addDays = (dateStr, days) => {
   const d = typeof dateStr === 'string' ? parseLocalDate(dateStr) : new Date(dateStr);
@@ -6111,6 +6156,7 @@ const SettingsModal = ({
     let daySplitLines = '';
     let unitLine = '';
     let bwLine = '';
+    let bwDayLines = '';
     allDayNotes.forEach(dn => {
       if (dn.date.startsWith('__split_')) {
         const splitDate = dn.date.replace('__split_', '');
@@ -6119,6 +6165,9 @@ const SettingsModal = ({
         unitLine = `__UNIT__,${dn.note},,,,,,,, \n`;
       } else if (dn.date === '__bodyweight__') {
         bwLine = `__BODYWEIGHT__,${dn.note},,,,,,,, \n`;
+      } else if (dn.date.startsWith('__bodyweight_')) {
+        const bwDate = dn.date.replace('__bodyweight_', '');
+        bwDayLines += `__BODYWEIGHT_DAY__,${bwDate},${dn.note},,,,,,, \n`;
       }
     });
     let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n';
@@ -6166,6 +6215,7 @@ const SettingsModal = ({
     csv += '\n__META__,,,,,,,,,\n';
     if (unitLine) csv += unitLine;
     if (bwLine) csv += bwLine;
+    if (bwDayLines) csv += bwDayLines;
     // Only include splits line if there's actual template data
     const hasSplitData = Object.values(splitMap).some(v => v);
     if (hasSplitData) csv += splitLine + '\n';
@@ -6230,6 +6280,7 @@ const SettingsModal = ({
       const importedDaySplits = [];
       let importedUnit = 'lbs';
       let importedBodyweight = null;
+      const importedBodyweightDays = [];
       const lines = allLines.filter(l => {
         const parts = parseCSVLine(l);
         if (parts[0] === '__META__') return false;
@@ -6239,6 +6290,13 @@ const SettingsModal = ({
         }
         if (parts[0] === '__BODYWEIGHT__') {
           importedBodyweight = parts[1] || null;
+          return false;
+        }
+        if (parts[0] === '__BODYWEIGHT_DAY__') {
+          importedBodyweightDays.push({
+            date: parts[1],
+            value: parts[2] || null
+          });
           return false;
         }
         if (parts[0] === '__SPLITS__') {
@@ -6451,7 +6509,12 @@ const SettingsModal = ({
         await dbOps.dayNotes.set('__unit__', importedUnit);
       }
       if (importedBodyweight) {
-        await dbOps.dayNotes.set('__bodyweight__', importedBodyweight);
+        await setStoredBodyweightForDate(getTodayString(), importedBodyweight);
+      }
+      for (const bw of importedBodyweightDays) {
+        if (bw.date && bw.value) {
+          await setStoredBodyweightForDate(bw.date, bw.value);
+        }
       }
 
       // PHASE 7: Write weekly splits if present
@@ -7326,7 +7389,9 @@ const DayDetailModal = ({
   dayLabel,
   categories,
   onSplitChange,
-  unit
+  unit,
+  bodyweight,
+  onEditBodyweight
 }) => {
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
   const [activities, setActivities] = useState([]);
@@ -7526,7 +7591,55 @@ const DayDetailModal = ({
       flexDirection: 'column',
       overflow: 'hidden'
     }
-  }, dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => onEditBodyweight && onEditBodyweight(date),
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '12px',
+      marginBottom: '12px',
+      padding: '6px 2px 10px',
+      border: 'none',
+      background: 'none',
+      color: 'var(--text-body)',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      flexShrink: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px'
+    }
+  }, /*#__PURE__*/React.createElement(IconScale, {
+    size: 18,
+    style: {
+      color: 'var(--accent-soft)',
+      opacity: 0.9
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'left'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '13px',
+      fontWeight: '600',
+      color: 'var(--text-warm)'
+    }
+  }, "Bodyweight"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)'
+    }
+  }, bodyweight !== null ? `${bodyweight} ${unit}` : 'Add bodyweight for this day'))), /*#__PURE__*/React.createElement(IconArrowRight, {
+    size: 16,
+    style: {
+      color: 'color-mix(in srgb, var(--accent-soft) 42%, transparent)'
+    }
+  })), dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '0',
@@ -7748,6 +7861,133 @@ const DayDetailModal = ({
   }, "Restore to Weekly Template (", templateSplit, ")")))));
 };
 
+const BodyweightEntryModal = ({
+  date,
+  unit,
+  value,
+  onChange,
+  onClose,
+  onSave
+}) => {
+  return /*#__PURE__*/React.createElement("div", {
+    onClick: onClose,
+    style: {
+      position: 'fixed',
+      inset: 0,
+      zIndex: 12000,
+      background: 'rgba(12, 6, 10, 0.34)',
+      backdropFilter: 'blur(14px) saturate(0.85)',
+      WebkitBackdropFilter: 'blur(14px) saturate(0.85)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    style: {
+      width: '100%',
+      maxWidth: '320px',
+      padding: '28px 24px 22px',
+      background: 'color-mix(in srgb, var(--surface) 82%, rgba(255,255,255,0.04))',
+      borderRadius: '28px',
+      boxShadow: '0 24px 60px rgba(0,0,0,0.28)',
+      position: 'relative'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    "aria-label": "Close weight entry",
+    style: {
+      position: 'absolute',
+      top: '14px',
+      right: '16px',
+      border: 'none',
+      background: 'none',
+      color: 'color-mix(in srgb, var(--accent-soft) 64%, transparent)',
+      fontSize: '28px',
+      lineHeight: 1,
+      padding: 0,
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "\u00d7"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      marginBottom: '20px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '14px',
+      color: 'color-mix(in srgb, var(--accent-soft) 54%, transparent)',
+      marginBottom: '8px',
+      letterSpacing: '0.04em',
+      textTransform: 'uppercase'
+    }
+  }, date === getTodayString() ? 'Today' : formatDateShort(date)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '26px',
+      lineHeight: '1.2',
+      color: 'var(--text-warm)',
+      fontWeight: '600'
+    }
+  }, date === getTodayString() ? "What is your weight today?" : "What was your weight this day?")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'baseline',
+      justifyContent: 'center',
+      gap: '10px',
+      marginBottom: '18px'
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "decimal",
+    autoFocus: true,
+    value: value,
+    onChange: e => onChange(e.target.value),
+    onKeyDown: e => {
+      if (e.key === 'Enter' && value.trim()) onSave();
+    },
+    placeholder: unit === 'kg' ? 'kg' : 'lb',
+    style: {
+      width: '100%',
+      maxWidth: '150px',
+      border: 'none',
+      outline: 'none',
+      background: 'none',
+      color: 'var(--text-warm)',
+      fontSize: '42px',
+      fontWeight: '600',
+      textAlign: 'center',
+      letterSpacing: '-0.03em',
+      padding: 0
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '16px',
+      color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)',
+      fontWeight: '600'
+    }
+  }, unit)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onSave,
+    "aria-label": "Save weight",
+    style: {
+      border: 'none',
+      background: 'none',
+      color: value.trim() ? 'var(--accent-soft)' : 'color-mix(in srgb, var(--accent-soft) 28%, transparent)',
+      fontSize: '30px',
+      lineHeight: 1,
+      padding: 0,
+      cursor: value.trim() ? 'pointer' : 'default',
+      WebkitAppearance: 'none'
+    }
+  }, "\u2713"))));
+};
+
 // ============ ACTIVITY CONTEXT MODAL ============
 const QUICK_NOTE_SECTIONS = [{
   label: 'Physical Sensations',
@@ -7790,6 +8030,10 @@ const ActivityContextModal = ({
   const [pastNotes, setPastNotes] = useState([]);
   const [pastFormCues, setPastFormCues] = useState([]);
   const [quickNoteFreq, setQuickNoteFreq] = useState({});
+  const hasLoadedNotesRef = useRef(false);
+  const latestCustomNoteRef = useRef('');
+  const latestFormCueRef = useRef('');
+  const latestQuickNotesRef = useRef([]);
   const [collapsedSections, setCollapsedSections] = useState(() => {
     try {
       return JSON.parse(getPref('qnCollapsed_' + exerciseId, '{}') || '{}');
@@ -7856,8 +8100,18 @@ const ActivityContextModal = ({
           setQuickNoteFreq(JSON.parse(freqRecord.note));
         } catch (e) {}
       }
+      hasLoadedNotesRef.current = true;
     })();
   }, []);
+  useEffect(() => {
+    latestCustomNoteRef.current = customNoteText;
+  }, [customNoteText]);
+  useEffect(() => {
+    latestFormCueRef.current = formCueText;
+  }, [formCueText]);
+  useEffect(() => {
+    latestQuickNotesRef.current = selectedQuickNotes[exerciseId] || [];
+  }, [exerciseId, selectedQuickNotes]);
   const saveCollapsed = c => {
     setCollapsedSections(c);
     setPref('qnCollapsed_' + exerciseId, JSON.stringify(c));
@@ -7892,12 +8146,15 @@ const ActivityContextModal = ({
       return updated;
     });
   };
-  const saveNote = async type => {
+  const saveNote = async (type, options = {}) => {
+    const customValue = options.customText !== undefined ? options.customText : latestCustomNoteRef.current;
+    const formCueValue = options.formCueText !== undefined ? options.formCueText : latestFormCueRef.current;
+    const quickTags = options.quickTags !== undefined ? options.quickTags : latestQuickNotesRef.current;
     const existing = await dbOps.sessionNotes.getByExerciseAndDate(exerciseId, currentDate);
     if (existing) {
-      if (type === 'custom') existing.freeText = customNoteText;
-      if (type === 'formcue') existing.formCueText = formCueText;
-      if (type === 'quicknotes') existing.tags = selectedQuickNotes[exerciseId] || [];
+      if (type === 'custom') existing.freeText = customValue;
+      if (type === 'formcue') existing.formCueText = formCueValue;
+      if (type === 'quicknotes') existing.tags = quickTags;
       await safeDb(() => dbOps.sessionNotes.add(existing), 'save note');
     } else {
       await safeDb(() => dbOps.sessionNotes.add({
@@ -7906,49 +8163,79 @@ const ActivityContextModal = ({
         exerciseName,
         date: currentDate,
         mood: null,
-        tags: type === 'quicknotes' ? selectedQuickNotes[exerciseId] || [] : [],
-        formCueText: type === 'formcue' ? formCueText : '',
-        freeText: type === 'custom' ? customNoteText : ''
+        tags: type === 'quicknotes' ? quickTags : [],
+        formCueText: type === 'formcue' ? formCueValue : '',
+        freeText: type === 'custom' ? customValue : ''
       }), 'save note');
     }
     if (type === 'custom') {
       setInlineNote(prev => ({
         ...prev,
-        [exerciseId]: customNoteText
+        [exerciseId]: customValue
       }));
-      if (customNoteText.trim()) {
+      if (customValue.trim()) {
         setPastNotes(prev => {
           const exists = prev.some(n => n.date === currentDate);
           if (exists) return prev.map(n => n.date === currentDate ? {
             ...n,
-            text: customNoteText
+            text: customValue
           } : n);
           return [{
             date: currentDate,
-            text: customNoteText
+            text: customValue
           }, ...prev];
         });
+      } else {
+        setPastNotes(prev => prev.filter(n => n.date !== currentDate));
       }
     }
     if (type === 'formcue') {
       setInlineFormCue(prev => ({
         ...prev,
-        [exerciseId]: formCueText
+        [exerciseId]: formCueValue
       }));
-      if (formCueText.trim()) {
+      if (formCueValue.trim()) {
         setPastFormCues(prev => {
           const exists = prev.some(n => n.date === currentDate);
           if (exists) return prev.map(n => n.date === currentDate ? {
             ...n,
-            text: formCueText
+            text: formCueValue
           } : n);
           return [{
             date: currentDate,
-            text: formCueText
+            text: formCueValue
           }, ...prev];
         });
+      } else {
+        setPastFormCues(prev => prev.filter(n => n.date !== currentDate));
       }
     }
+  };
+  useEffect(() => {
+    if (!hasLoadedNotesRef.current) return;
+    debounce('customnote_' + exerciseId + '_' + currentDate, () => saveNote('custom', {
+      customText: latestCustomNoteRef.current
+    }), 350);
+  }, [customNoteText, exerciseId, currentDate]);
+  useEffect(() => {
+    if (!hasLoadedNotesRef.current) return;
+    debounce('formcue_' + exerciseId + '_' + currentDate, () => saveNote('formcue', {
+      formCueText: latestFormCueRef.current
+    }), 350);
+  }, [formCueText, exerciseId, currentDate]);
+  const handleClose = async () => {
+    if (hasLoadedNotesRef.current) {
+      await saveNote('custom', {
+        customText: latestCustomNoteRef.current
+      });
+      await saveNote('formcue', {
+        formCueText: latestFormCueRef.current
+      });
+      await saveNote('quicknotes', {
+        quickTags: latestQuickNotesRef.current
+      });
+    }
+    onClose();
   };
 
   // Get used notes sorted by frequency
@@ -7972,7 +8259,7 @@ const ActivityContextModal = ({
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
-    onClick: onClose
+    onClick: handleClose
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal",
     style: {
@@ -7986,10 +8273,10 @@ const ActivityContextModal = ({
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
-  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, exerciseName), /*#__PURE__*/React.createElement("button", {
+  }, makeSwipeDownHandlers(handleClose)), /*#__PURE__*/React.createElement("h2", null, exerciseName), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
-    onClick: onClose
+    onClick: handleClose
   }, /*#__PURE__*/React.createElement(IconX, {
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
@@ -8903,10 +9190,9 @@ function App() {
   const [bodyweight, setBodyweight] = useState(null);
   const [showBWEditor, setShowBWEditor] = useState(false);
   const [bwEditValue, setBWEditValue] = useState('');
+  const [bwEditorDate, setBWEditorDate] = useState(null);
   const [weightBannerDismissed, setWeightBannerDismissed] = useState(false);
   const [bannerSlidingOut, setBannerSlidingOut] = useState(false);
-  const [showDisableBannerConfirm, setShowDisableBannerConfirm] = useState(false);
-  const bannerLongPressRef = useRef(null);
   const bannerSwipeRef = useRef({
     startX: 0,
     startY: 0,
@@ -9014,9 +9300,33 @@ function App() {
       setDayLabel(value === '__none__' ? '' : split);
     }
   };
+  const openBodyweightEditor = useCallback(async date => {
+    const targetDate = date || currentDate;
+    const storedValue = await getStoredBodyweightForDate(targetDate);
+    setBWEditorDate(targetDate);
+    setBWEditValue(storedValue || '');
+    setShowBWEditor(true);
+  }, [currentDate]);
+  const closeBodyweightEditor = useCallback(() => {
+    setShowBWEditor(false);
+    setBWEditorDate(null);
+    setBWEditValue('');
+  }, []);
+  const saveBodyweightEntry = useCallback(async () => {
+    if (!bwEditorDate || !bwEditValue.trim()) {
+      closeBodyweightEditor();
+      return;
+    }
+    await safeDb(() => setStoredBodyweightForDate(bwEditorDate, bwEditValue.trim()), 'save bodyweight');
+    if (bwEditorDate === currentDate) {
+      setBodyweight(parseFloat(bwEditValue.trim()));
+    }
+    closeBodyweightEditor();
+  }, [bwEditValue, bwEditorDate, closeBodyweightEditor, currentDate]);
   useEffect(() => {
     initDB().then(async () => {
       await migrateActivityModel();
+      await migrateLegacyBodyweightIfNeeded();
       await loadDayData();
       const cats = await getCategories();
       setCategories(cats);
@@ -9026,12 +9336,14 @@ function App() {
         setUnit(unitRecord.note);
       }
       // Load bodyweight
-      const bwRecord = await dbOps.dayNotes.get('__bodyweight__');
-      if (bwRecord && bwRecord.note) {
-        setBodyweight(parseFloat(bwRecord.note));
-      }
+      const storedBodyweight = await getStoredBodyweightForDate(currentDate);
+      setBodyweight(hasBodyweightValue(storedBodyweight) ? parseFloat(storedBodyweight) : null);
     });
   }, [currentDate, loadDayData]);
+  useEffect(() => {
+    setWeightBannerDismissed(false);
+    setBannerSlidingOut(false);
+  }, [currentDate]);
   const maybeOpenGripStep = async (exercise, nextModal, backTo) => {
     const fullEx = withNormalizedExerciseFields(await dbOps.exercises.get(exercise.id) || exercise);
     if (fullEx.gripTrackingEnabled) {
@@ -9852,6 +10164,10 @@ function App() {
       onClick: handleSave
     }, "Save"))));
   };
+  const todayString = getTodayString();
+  const todayWeightMissing = currentDate === todayString && bodyweight === null;
+  const showWeightRecallIcon = todayWeightMissing && !showBWEditor && (weightBannerDismissed || getPref('hideWeightBanner') === 'true');
+  const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
   return /*#__PURE__*/React.createElement("div", {
     className: "app-container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -9860,10 +10176,16 @@ function App() {
     className: "nav-title"
   }, "Fitness Tracker"), /*#__PURE__*/React.createElement("div", {
     className: "top-nav-actions"
-  }, currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
+  }, showWeightRecallIcon && /*#__PURE__*/React.createElement("button", {
+    className: "settings-btn",
+    "aria-label": "Log today's weight",
+    onClick: () => openBodyweightEditor(currentDate)
+  }, /*#__PURE__*/React.createElement(IconScale, {
+    size: 22
+  })), currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
     className: "today-jump-top-btn",
     "aria-label": "Jump to today",
-    onClick: () => setCurrentDate(getTodayString())
+    onClick: () => setCurrentDate(todayString)
   }, /*#__PURE__*/React.createElement("svg", {
     width: "22",
     height: "22",
@@ -9931,7 +10253,7 @@ function App() {
     onTouchEnd: handleTouchEnd
   }, /*#__PURE__*/React.createElement("div", {
     className: "content-padding"
-  }, !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && currentDate === getTodayString() && !showBWEditor && /*#__PURE__*/React.createElement("div", {
+  }, showWeightBanner && /*#__PURE__*/React.createElement("div", {
     onTouchStart: e => {
       bannerSwipeRef.current = {
         startX: e.touches[0].clientX,
@@ -9939,37 +10261,31 @@ function App() {
         swiping: false,
         el: e.currentTarget
       };
-      bannerLongPressRef.current = setTimeout(() => {
-        bannerLongPressRef.current = 'fired';
-        setShowDisableBannerConfirm(true);
-      }, 600);
     },
     onTouchMove: e => {
       const dx = e.touches[0].clientX - bannerSwipeRef.current.startX;
       const dy = e.touches[0].clientY - bannerSwipeRef.current.startY;
-      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-        if (bannerLongPressRef.current && bannerLongPressRef.current !== 'fired') clearTimeout(bannerLongPressRef.current);
-      }
-      if (dx < -10) {
+      if (dy < -10 && Math.abs(dy) > Math.abs(dx)) {
         bannerSwipeRef.current.swiping = true;
-        if (bannerSwipeRef.current.el) bannerSwipeRef.current.el.style.transform = `translateX(${Math.min(0, dx)}px)`;
-        if (bannerSwipeRef.current.el) bannerSwipeRef.current.el.style.opacity = Math.max(0, 1 + dx / 150);
+        if (bannerSwipeRef.current.el) bannerSwipeRef.current.el.style.transform = `translateY(${Math.max(dy, -120)}px)`;
+        if (bannerSwipeRef.current.el) bannerSwipeRef.current.el.style.opacity = Math.max(0, 1 + dy / 180);
       }
     },
     onTouchEnd: e => {
-      if (bannerLongPressRef.current && bannerLongPressRef.current !== 'fired') clearTimeout(bannerLongPressRef.current);
-      const dx = e.changedTouches[0].clientX - bannerSwipeRef.current.startX;
-      if (dx < -80) {
+      const dy = e.changedTouches[0].clientY - bannerSwipeRef.current.startY;
+      if (dy < -70 && bannerSwipeRef.current.swiping) {
         setBannerSlidingOut(true);
-        setTimeout(() => setWeightBannerDismissed(true), 300);
+        setTimeout(() => {
+          setWeightBannerDismissed(true);
+          setBannerSlidingOut(false);
+        }, 220);
       } else {
         if (bannerSwipeRef.current.el) {
           bannerSwipeRef.current.el.style.transform = '';
           bannerSwipeRef.current.el.style.opacity = '';
         }
-        if (!bannerSwipeRef.current.swiping && bannerLongPressRef.current !== 'fired') {
-          setShowBWEditor(true);
-          setBWEditValue(bodyweight ? bodyweight.toString() : '');
+        if (!bannerSwipeRef.current.swiping) {
+          openBodyweightEditor(currentDate);
         }
       }
     },
@@ -10005,178 +10321,12 @@ function App() {
       color: 'var(--text-warm)',
       fontWeight: '500'
     }
-  }, "Log today's weight", bodyweight ? ` \u2014 last: ${bodyweight} ${unit}` : '')), /*#__PURE__*/React.createElement("div", {
+  }, "Log today's weight"), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)'
+      color: 'color-mix(in srgb, var(--accent-soft) 46%, transparent)'
     }
-  }, "<")), showBWEditor && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '8px 12px',
-      marginBottom: '12px',
-      background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
-      borderRadius: '12px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      animation: 'bannerFadeIn 0.3s ease-out'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
-      fontWeight: '500',
-      flexShrink: 0
-    }
-  }, "BW (", unit, ")"), /*#__PURE__*/React.createElement("input", {
-    type: "number",
-    value: bwEditValue,
-    onChange: e => setBWEditValue(e.target.value),
-    autoFocus: true,
-    onKeyDown: e => {
-      if (e.key === 'Enter' && bwEditValue.trim()) {
-        const val = parseFloat(bwEditValue);
-        setBodyweight(val);
-        safeDb(() => dbOps.dayNotes.set('__bodyweight__', bwEditValue.trim()), 'save bodyweight');
-        setShowBWEditor(false);
-      }
-    },
-    style: {
-      flex: 1,
-      textAlign: 'center',
-      padding: '6px 8px',
-      borderRadius: '6px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'rgba(255,255,255,0.05)',
-      color: 'var(--text-warm)',
-      fontSize: '16px',
-      fontWeight: '600',
-      maxWidth: '90px'
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: async () => {
-      if (bwEditValue.trim()) {
-        const val = parseFloat(bwEditValue);
-        setBodyweight(val);
-        await safeDb(() => dbOps.dayNotes.set('__bodyweight__', bwEditValue.trim()), 'save bodyweight');
-      }
-      setShowBWEditor(false);
-    },
-    style: {
-      width: '44px',
-      height: '44px',
-      borderRadius: '8px',
-      border: 'none',
-      background: 'var(--accent)',
-      color: '#fff',
-      fontSize: '16px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      WebkitAppearance: 'none',
-      padding: 0,
-      flexShrink: 0
-    }
-  }, "\u2713"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowBWEditor(false),
-    style: {
-      width: '44px',
-      height: '44px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'none',
-      color: 'var(--accent-soft)',
-      fontSize: '14px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      WebkitAppearance: 'none',
-      padding: 0,
-      flexShrink: 0
-    }
-  }, "\u2715")), showDisableBannerConfirm && /*#__PURE__*/React.createElement("div", {
-    onClick: () => setShowDisableBannerConfirm(false),
-    style: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(12, 6, 10, 0.7)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 10000,
-      padding: '20px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    onClick: e => e.stopPropagation(),
-    style: {
-      background: 'var(--surface)',
-      borderRadius: '16px',
-      padding: '24px',
-      maxWidth: '280px',
-      width: '100%',
-      textAlign: 'center',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '15px',
-      fontWeight: '600',
-      color: 'var(--text-warm)',
-      marginBottom: '8px'
-    }
-  }, "Disable weight reminder?"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '12px',
-      color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
-      marginBottom: '20px',
-      lineHeight: '1.4'
-    }
-  }, "You can re-enable this in Settings > Preferences."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '10px'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowDisableBannerConfirm(false),
-    style: {
-      flex: 1,
-      padding: '11px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'none',
-      color: 'var(--accent-soft)',
-      fontSize: '14px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Keep"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      setPref('hideWeightBanner', 'true');
-      setWeightBannerDismissed(true);
-      setShowDisableBannerConfirm(false);
-    },
-    style: {
-      flex: 1,
-      padding: '11px',
-      borderRadius: '10px',
-      border: 'none',
-      background: 'var(--accent)',
-      color: '#fff',
-      fontSize: '14px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Disable")))), exercises.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, "Swipe up to dismiss"))), exercises.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "empty-state"
   }, currentDate === getTodayString() ? /*#__PURE__*/React.createElement(React.Fragment, null, "No activities logged yet today.") : /*#__PURE__*/React.createElement(React.Fragment, null, "No activities on this day.")) : exercises.map(exercise => {
     const isExpanded = expandedExercise === exercise.exerciseId;
@@ -11268,7 +11418,16 @@ function App() {
       await setDaySplit(currentDate, newSplit);
       await loadDayData();
     },
-    unit: unit
+    unit: unit,
+    bodyweight: bodyweight,
+    onEditBodyweight: openBodyweightEditor
+  }), showBWEditor && bwEditorDate && /*#__PURE__*/React.createElement(BodyweightEntryModal, {
+    date: bwEditorDate,
+    unit: unit,
+    value: bwEditValue,
+    onChange: setBWEditValue,
+    onClose: closeBodyweightEditor,
+    onSave: saveBodyweightEntry
   }), confirmation && /*#__PURE__*/React.createElement(ConfirmationDialog, {
     title: confirmation.title,
     message: confirmation.message,
