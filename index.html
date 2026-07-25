@@ -255,6 +255,31 @@
             color: var(--text-bright);
         }
 
+        .top-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .today-jump-top-btn {
+            background: color-mix(in srgb, var(--accent) 14%, transparent);
+            border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+            color: var(--accent-soft);
+            border-radius: 10px;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .today-jump-top-btn:active {
+            background: color-mix(in srgb, var(--accent) 22%, transparent);
+        }
+
         .settings-btn {
             background: none;
             border: none;
@@ -331,24 +356,6 @@
             margin-top: 6px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-        }
-
-        .today-jump-btn {
-            background: color-mix(in srgb, var(--accent) 14%, transparent);
-            border: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
-            color: var(--accent-soft);
-            border-radius: 999px;
-            padding: 5px 12px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-            cursor: pointer;
-            min-height: 28px;
-        }
-
-        .today-jump-btn:active {
-            background: color-mix(in srgb, var(--accent) 22%, transparent);
         }
 
         /* Content Area */
@@ -9133,7 +9140,30 @@ function App() {
     className: "top-nav"
   }, /*#__PURE__*/React.createElement("div", {
     className: "nav-title"
-  }, "Fitness Tracker"), /*#__PURE__*/React.createElement("button", {
+  }, "Fitness Tracker"), /*#__PURE__*/React.createElement("div", {
+    className: "top-nav-actions"
+  }, currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
+    className: "today-jump-top-btn",
+    "aria-label": "Jump to today",
+    onClick: () => setCurrentDate(getTodayString())
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "18",
+    height: "18",
+    viewBox: "0 0 21 21",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, /*#__PURE__*/React.createElement("g", {
+    fill: "none",
+    fillRule: "evenodd",
+    stroke: "currentColor",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    transform: "translate(5.5 6.5)"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "m0 8v-2c0-1.65685425 1.34314575-3 3-3h8"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "m7.999 6 3.001-3-3.001-3"
+  })))), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
     "aria-label": "Settings",
     onClick: () => {
@@ -9155,7 +9185,7 @@ function App() {
     r: "3"
   }), /*#__PURE__*/React.createElement("path", {
     d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-  })))), /*#__PURE__*/React.createElement("div", {
+  }))))), /*#__PURE__*/React.createElement("div", {
     className: "day-nav",
     "data-tour": "date-nav"
   }, /*#__PURE__*/React.createElement("button", {
@@ -9176,14 +9206,7 @@ function App() {
     className: "day-date"
   }, formatDate(currentDate)), dayLabel && /*#__PURE__*/React.createElement("div", {
     className: "day-label"
-  }, dayLabel), currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
-    className: "today-jump-btn",
-    "aria-label": "Go to today",
-    onClick: e => {
-      e.stopPropagation();
-      setCurrentDate(getTodayString());
-    }
-  }, "Today"))), /*#__PURE__*/React.createElement("button", {
+  }, dayLabel))), /*#__PURE__*/React.createElement("button", {
     className: "nav-arrow",
     "aria-label": "Next day",
     onClick: () => setCurrentDate(addDays(currentDate, 1))
