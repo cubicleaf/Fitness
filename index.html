@@ -252,7 +252,7 @@
         .nav-title {
             font-size: 16px;
             font-weight: 600;
-            color: #D4A853;
+            color: var(--accent);
         }
 
         .top-nav-actions {
@@ -262,7 +262,7 @@
         }
 
         .today-jump-top-btn {
-            color: var(--accent-soft);
+            color: var(--accent);
             background: none;
             border: none;
             padding: 0;
@@ -317,10 +317,10 @@
             background: none;
             border: none;
             color: var(--accent);
-            font-size: 20px;
+            font-size: 40px;
             padding: 8px;
-            width: 40px;
-            height: 40px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -347,7 +347,7 @@
         .day-date {
             font-size: 16px;
             font-weight: 600;
-            color: #D4A853;
+            color: var(--accent);
         }
 
         .day-label {
@@ -2484,6 +2484,16 @@ const formatGripLabel = set => {
   if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-grip' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
+const getGripSelectionForDate = async (exerciseId, date) => {
+  const daySets = await dbOps.sets.getByDate(date);
+  const lastGripSet = daySets
+    .filter(set => set.exerciseId === exerciseId && (set.gripType || set.gripWidth))
+    .sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0];
+  return lastGripSet ? {
+    gripType: lastGripSet.gripType || null,
+    gripWidth: lastGripSet.gripWidth || null
+  } : null;
+};
 const FIELD_NOTES = {
   bodyweight: {
     eyebrow: 'Field Note',
@@ -2503,7 +2513,7 @@ const FIELD_NOTES = {
   gripTracking: {
     eyebrow: 'Field Note',
     title: 'What does grip tracking do?',
-    body: ['When this is on, the app asks for grip details before the weight step and saves them with the set instead of bloating the activity name.', 'This is best for movements where hand position materially changes the feel of the exercise, like pulldowns, rows, curls, carries, or hanging work.']
+    body: ['When this is on, the first set screen can show optional grip choices for that activity. Once you pick one for that activity on that day, the app silently reuses it for later sets instead of asking again.', 'This is best for movements where hand position materially changes the feel of the exercise, like pulldowns, rows, curls, carries, or hanging work.']
   }
 };
 const getFieldNote = noteId => noteId ? FIELD_NOTES[noteId] || null : null;
@@ -3447,9 +3457,6 @@ const CreateExerciseModal = ({
       const inferredFamily = inferMovementFamilyName(val);
       if (inferredFamily) setMovementFamilyName(inferredFamily);
     }
-    if (isLikelyGripRelevant(val)) {
-      setGripTrackingEnabled(true);
-    }
     if (!activityRecommenderEnabled) return;
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
@@ -3985,7 +3992,68 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginTop: '4px'
     }
-  }, weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration')), /*#__PURE__*/React.createElement("button", {
+  }, weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration')), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '6px',
+      marginBottom: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label",
+    style: {
+      marginBottom: 0
+    }
+  }, "Ask about grip?"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "gripTracking",
+    onOpen: onOpenFieldNote,
+    ariaLabel: "What does asking about grip do?"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      textAlign: 'center',
+      marginBottom: '8px',
+      lineHeight: '1.45'
+    }
+  }, "Default is no. Turn it on only for movements where grip actually matters."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      border: '1px solid var(--surface-edge)'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setGripTrackingEnabled(false),
+    style: {
+      flex: 1,
+      padding: '10px',
+      border: 'none',
+      fontSize: '12px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      borderRight: '1px solid var(--surface-edge)',
+      background: !gripTrackingEnabled ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: !gripTrackingEnabled ? 'var(--accent-soft)' : 'var(--text-placeholder)'
+    }
+  }, "No"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setGripTrackingEnabled(true),
+    style: {
+      flex: 1,
+      padding: '10px',
+      border: 'none',
+      fontSize: '12px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      background: gripTrackingEnabled ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: gripTrackingEnabled ? 'var(--accent-soft)' : 'var(--text-placeholder)'
+    }
+  }, "Yes"))), /*#__PURE__*/React.createElement("button", {
     className: "btn",
     onClick: handleSave,
     style: {
@@ -4080,7 +4148,11 @@ const WeightPickerModal = ({
   selectedDate,
   previousWeight,
   setNumber,
-  unit = 'lbs'
+  unit = 'lbs',
+  gripTrackingEnabled = false,
+  initialGrip = null,
+  gripLockedForDay = false,
+  onGripChange
 }) => {
   const [weight, setWeight] = useState(previousWeight || (unit === 'kg' ? 20 : 45));
   const [weightType, setWeightType] = useState(unit);
@@ -4147,7 +4219,10 @@ const WeightPickerModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+    initialGrip: initialGrip,
+    onChange: onGripChange
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '5px',
@@ -4471,7 +4546,11 @@ const RepPickerModal = ({
   weightType,
   bandedColor,
   onSelectReps,
-  setNumber
+  setNumber,
+  gripTrackingEnabled = false,
+  initialGrip = null,
+  gripLockedForDay = false,
+  onGripChange
 }) => {
   const reps = Array.from({
     length: 30
@@ -4511,7 +4590,10 @@ const RepPickerModal = ({
       flex: 1,
       padding: '12px 16px'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+    initialGrip: initialGrip,
+    onChange: onGripChange
+  }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '6px',
@@ -4904,7 +4986,11 @@ const TimedDurationModal = ({
   weightType,
   bandedColor,
   onSelectDuration,
-  setNumber
+  setNumber,
+  gripTrackingEnabled = false,
+  initialGrip = null,
+  gripLockedForDay = false,
+  onGripChange
 }) => {
   // Stopwatch
   const [time, setTime] = useState(0);
@@ -5156,7 +5242,10 @@ const TimedDurationModal = ({
       overflowY: 'auto',
       padding: '16px'
     }
-  }, editMode ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+    initialGrip: initialGrip,
+    onChange: onGripChange
+  }), editMode ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -9046,6 +9135,76 @@ const GripPromptModal = ({
     })
   }, "Continue")))));
 };
+const GripInlineSelector = ({
+  initialGrip,
+  onChange
+}) => {
+  const [gripType, setGripType] = useState(initialGrip?.gripType || null);
+  const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
+  const typeOptions = ['pronated', 'supinated', 'neutral'];
+  const widthOptions = ['close', 'standard', 'wide', 'v-grip'];
+  useEffect(() => {
+    setGripType(initialGrip?.gripType || null);
+    setGripWidth(initialGrip?.gripWidth || null);
+  }, [initialGrip?.gripType, initialGrip?.gripWidth]);
+  useEffect(() => {
+    if (onChange) {
+      onChange({
+        gripType,
+        gripWidth
+      });
+    }
+  }, [gripType, gripWidth, onChange]);
+  const toggleStyle = active => ({
+    padding: '8px 10px',
+    borderRadius: '8px',
+    border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+    background: active ? 'color-mix(in srgb, var(--accent) 20%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+    color: active ? 'var(--text-body)' : 'var(--text-faint)',
+    fontSize: '11px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    WebkitAppearance: 'none'
+  });
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '12px',
+      padding: '10px',
+      borderRadius: '10px',
+      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 14%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.06em',
+      marginBottom: '8px'
+    }
+  }, "Grip (Optional)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '6px',
+      marginBottom: '6px'
+    }
+  }, typeOptions.map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt,
+    onClick: () => setGripType(gripType === opt ? null : opt),
+    style: toggleStyle(gripType === opt)
+  }, opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '6px'
+    }
+  }, widthOptions.map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt,
+    onClick: () => setGripWidth(gripWidth === opt ? null : opt),
+    style: toggleStyle(gripWidth === opt)
+  }, opt === 'v-grip' ? 'V-grip' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
+};
 const ManageFamilyModal = ({
   exercise,
   onSave,
@@ -9378,7 +9537,7 @@ function App() {
   const [pendingNewExerciseId, setPendingNewExerciseId] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [selectedGrip, setSelectedGrip] = useState(null);
-  const [pendingGripNextModal, setPendingGripNextModal] = useState(null);
+  const [gripLockedForDay, setGripLockedForDay] = useState(false);
   const [previousWeight, setPreviousWeight] = useState(null);
   const [loggedSetCount, setLoggedSetCount] = useState(0);
   const [confirmation, setConfirmation] = useState(null);
@@ -9411,6 +9570,34 @@ function App() {
   const [exerciseLocks, setExerciseLocks] = useState({});
   const [pendingLockType, setPendingLockType] = useState(null);
   const [pillGlowId, setPillGlowId] = useState(null);
+  const flashLockPill = useCallback(exerciseId => {
+    setPillGlowId(exerciseId);
+    setTimeout(() => {
+      setPillGlowId(current => current === exerciseId ? null : current);
+    }, 1200);
+  }, []);
+  const applyExerciseLock = useCallback((exerciseId, lockType) => {
+    setExerciseLocks(prev => ({
+      ...prev,
+      [exerciseId]: lockType
+    }));
+    flashLockPill(exerciseId);
+  }, [flashLockPill]);
+  const hydrateExerciseForLogging = useCallback(async exerciseLike => {
+    return withNormalizedExerciseFields(await dbOps.exercises.get(exerciseLike.id) || exerciseLike);
+  }, []);
+  const primeGripSelection = useCallback(async exerciseLike => {
+    const dayGrip = await getGripSelectionForDate(exerciseLike.id, currentDate);
+    setSelectedGrip(dayGrip);
+    setGripLockedForDay(!!dayGrip);
+    return dayGrip;
+  }, [currentDate]);
+  const resolveGripForSave = useCallback(async exerciseId => {
+    if (selectedGrip && (selectedGrip.gripType || selectedGrip.gripWidth)) {
+      return selectedGrip;
+    }
+    return await getGripSelectionForDate(exerciseId, currentDate);
+  }, [currentDate, selectedGrip]);
   const [renameConfirmData, setRenameConfirmData] = useState(null);
   const [pairingExerciseId, setPairingExerciseId] = useState(null); // exerciseId currently pairing
   const touchRef = useRef(null);
@@ -9553,23 +9740,6 @@ function App() {
     setWeightBannerDismissed(false);
     setBannerSlidingOut(false);
   }, [currentDate]);
-  const maybeOpenGripStep = async (exercise, nextModal, backTo) => {
-    const fullEx = withNormalizedExerciseFields(await dbOps.exercises.get(exercise.id) || exercise);
-    if (fullEx.gripTrackingEnabled) {
-      const lastSession = await dbOps.sets.getLastSession(fullEx.id);
-      const lastSet = lastSession?.sets?.sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0] || null;
-      setSelectedExercise(fullEx);
-      setSelectedGrip({
-        gripType: lastSet?.gripType || null,
-        gripWidth: lastSet?.gripWidth || null
-      });
-      setPendingGripNextModal(nextModal);
-      setModal('gripPicker', backTo);
-      return true;
-    }
-    setSelectedGrip(null);
-    return false;
-  };
   useEffect(() => {
     if (isValidDateString(currentDate)) {
       setPref('lastViewedDate', currentDate);
@@ -9657,6 +9827,7 @@ function App() {
       return;
     }
     setSelectedExercise(exercise);
+    await primeGripSelection(exercise);
     setPendingNewExerciseId(exercise.id);
     setPreviousWeight(null);
     setSetNumber(1);
@@ -9666,18 +9837,11 @@ function App() {
         weight: null,
         weightType: 'bodyweight'
       });
-      const targetModal = exercise.type === 'timed' ? 'timedDuration' : 'repPicker';
-      if (await maybeOpenGripStep(exercise, targetModal, 'exercisePicker')) {
-        return;
-      }
       if (exercise.type === 'timed') {
         setModal('timedDuration', 'exercisePicker');
       } else {
         setModal('repPicker', 'exercisePicker');
       }
-      return;
-    }
-    if (await maybeOpenGripStep(exercise, 'weightPicker', 'exercisePicker')) {
       return;
     }
     setModal('weightPicker', 'exercisePicker');
@@ -9724,15 +9888,12 @@ function App() {
 
     // Bypass weight picker for bodyweight/no-weight exercises
     const fullEx = await dbOps.exercises.get(selectedExercise.id);
+    await primeGripSelection(fullEx || selectedExercise);
     if (fullEx?.weightDefault === 'bodyweight' || fullEx?.weightDefault === 'none') {
       setSelectedWeight({
         weight: null,
         weightType: 'bodyweight'
       });
-      const targetModal = fullEx.type === 'timed' ? 'timedDuration' : 'repPicker';
-      if (await maybeOpenGripStep(fullEx, targetModal, 'activityHistory')) {
-        return;
-      }
       if (fullEx.type === 'timed') {
         setModal('timedDuration', 'activityHistory');
       } else {
@@ -9740,43 +9901,36 @@ function App() {
       }
       return;
     }
-    if (await maybeOpenGripStep(fullEx, 'weightPicker', 'activityHistory')) {
-      return;
-    }
     setModal('weightPicker', 'activityHistory');
   };
   const handleUniformWeight = async () => {
     setPendingLockType('uniformWeight');
+    applyExerciseLock(selectedExercise.id, 'uniformWeight');
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
-    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
-      return;
-    }
+    await primeGripSelection(selectedExercise);
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
   };
   const handleUniformReps = async () => {
     setPendingLockType('uniformReps');
+    applyExerciseLock(selectedExercise.id, 'uniformReps');
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
-    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
-      return;
-    }
+    await primeGripSelection(selectedExercise);
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
   };
   const handleBoth = async () => {
-    setPendingLockType('both');
+    setPendingLockType(null);
     const daySets = await dbOps.sets.getByDate(currentDate);
     const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
     setSetNumber(exerciseSets.length + 1);
-    if (await maybeOpenGripStep(selectedExercise, 'weightPicker')) {
-      return;
-    }
+    await primeGripSelection(selectedExercise);
     setModal('weightPicker');
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
@@ -9826,8 +9980,9 @@ function App() {
         weightMeaning: wmPrefill,
         createdAt: Date.now()
       };
-      if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
-      if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
+      const resolvedGripPrefill = await resolveGripForSave(selectedExercise.id);
+      if (resolvedGripPrefill?.gripType) set.gripType = resolvedGripPrefill.gripType;
+      if (resolvedGripPrefill?.gripWidth) set.gripWidth = resolvedGripPrefill.gripWidth;
 
       // CHANGE 6: Record bandedColor if present
       if (weightData.weightType === 'banded' && weightData.bandedColor) {
@@ -9847,6 +10002,13 @@ function App() {
       setSelectedWeight(null);
       setPreviousWeight(null);
       setPrefilledReps(null);
+      if (resolvedGripPrefill) {
+        setSelectedGrip(resolvedGripPrefill);
+        setGripLockedForDay(true);
+      } else {
+        setSelectedGrip(null);
+        setGripLockedForDay(false);
+      }
       await loadDayData();
     } else {
       setModal('repPicker', 'weightPicker');
@@ -9893,8 +10055,9 @@ function App() {
       weightMeaning,
       createdAt: Date.now()
     };
-    if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
-    if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
+    const resolvedGripReps = await resolveGripForSave(selectedExercise.id);
+    if (resolvedGripReps?.gripType) set.gripType = resolvedGripReps.gripType;
+    if (resolvedGripReps?.gripWidth) set.gripWidth = resolvedGripReps.gripWidth;
 
     // CHANGE 6: Record bandedColor if present
     if (selectedWeight.weightType === 'banded' && selectedWeight.bandedColor) {
@@ -9913,6 +10076,13 @@ function App() {
     setSelectedExercise(null);
     setSelectedWeight(null);
     setPreviousWeight(null);
+    if (resolvedGripReps) {
+      setSelectedGrip(resolvedGripReps);
+      setGripLockedForDay(true);
+    } else {
+      setSelectedGrip(null);
+      setGripLockedForDay(false);
+    }
     await loadDayData();
     if (pendingLockType) {
       setExerciseLocks(prev => ({
@@ -9960,8 +10130,9 @@ function App() {
       weightMeaning: weightMeaningDur,
       createdAt: Date.now()
     };
-    if (selectedGrip?.gripType) set.gripType = selectedGrip.gripType;
-    if (selectedGrip?.gripWidth) set.gripWidth = selectedGrip.gripWidth;
+    const resolvedGripDuration = await resolveGripForSave(selectedExercise.id);
+    if (resolvedGripDuration?.gripType) set.gripType = resolvedGripDuration.gripType;
+    if (resolvedGripDuration?.gripWidth) set.gripWidth = resolvedGripDuration.gripWidth;
 
     // CHANGE 6: Record bandedColor if present
     if (selectedWeight.weightType === 'banded' && selectedWeight.bandedColor) {
@@ -10029,6 +10200,8 @@ function App() {
       setModal(null);
       setSelectedExercise(null);
       setSelectedWeight(null);
+      setSelectedGrip(null);
+      setGripLockedForDay(false);
       await loadDayData();
       return;
     }
@@ -10045,6 +10218,13 @@ function App() {
     setSelectedExercise(null);
     setSelectedWeight(null);
     setPreviousWeight(null);
+    if (resolvedGripDuration) {
+      setSelectedGrip(resolvedGripDuration);
+      setGripLockedForDay(true);
+    } else {
+      setSelectedGrip(null);
+      setGripLockedForDay(false);
+    }
     await loadDayData();
     if (pendingLockType) {
       setExerciseLocks(prev => ({
@@ -10377,6 +10557,7 @@ function App() {
   const todayWeightMissing = currentDate === todayString && bodyweight === null;
   const showWeightRecallIcon = todayWeightMissing && !showBWEditor && (weightBannerDismissed || getPref('hideWeightBanner') === 'true');
   const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
+  const isViewingFutureDay = currentDate > todayString;
   return /*#__PURE__*/React.createElement("div", {
     className: "app-container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -10405,9 +10586,10 @@ function App() {
     fill: "none",
     fillRule: "evenodd",
     stroke: "currentColor",
+    strokeWidth: "2.6",
     strokeLinecap: "round",
     strokeLinejoin: "round",
-    transform: "translate(5.5 6.5)"
+    transform: isViewingFutureDay ? "translate(5.5 6.5) scale(-1 1) translate(-11 0)" : "translate(5.5 6.5)"
   }, /*#__PURE__*/React.createElement("path", {
     d: "m0 8v-2c0-1.65685425 1.34314575-3 3-3h8"
   }), /*#__PURE__*/React.createElement("path", {
@@ -10417,7 +10599,7 @@ function App() {
       fontSize: '10px',
       fontWeight: '600',
       lineHeight: 1,
-      color: 'var(--accent-soft)'
+      color: 'var(--accent)'
     }
   }, "Today")), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
@@ -10436,7 +10618,7 @@ function App() {
     "aria-label": "Previous day",
     onClick: () => setCurrentDate(addDays(currentDate, -1))
   }, /*#__PURE__*/React.createElement(IconArrowLeft, {
-    size: 20
+    size: 40
   })), /*#__PURE__*/React.createElement("div", {
     className: "day-display",
     onClick: () => setModal('dayDetail'),
@@ -10454,7 +10636,7 @@ function App() {
     "aria-label": "Next day",
     onClick: () => setCurrentDate(addDays(currentDate, 1))
   }, /*#__PURE__*/React.createElement(IconArrowRight, {
-    size: 20
+    size: 40
   }))), /*#__PURE__*/React.createElement("div", {
     className: "content",
     ref: contentRef,
@@ -10604,6 +10786,7 @@ function App() {
       }, /*#__PURE__*/React.createElement("div", {
         onClick: e => {
           e.stopPropagation();
+          setPendingLockType(null);
           setExerciseLocks(prev => {
             const next = {
               ...prev
@@ -10717,11 +10900,13 @@ function App() {
             marginBottom: 0
           },
           onClick: async () => {
-            setSelectedExercise({
+            const fullExercise = await hydrateExerciseForLogging({
               id: exercise.exerciseId,
               name: exercise.exerciseName,
               type: exerciseType
             });
+            setSelectedExercise(fullExercise);
+            await primeGripSelection(fullExercise);
             setPreviousWeight(null);
             setSetNumber(1);
             if (exerciseType === 'timed') {
@@ -10729,11 +10914,6 @@ function App() {
                 weight: null,
                 weightType: 'bodyweight'
               });
-              if (await maybeOpenGripStep({
-                id: exercise.exerciseId,
-                name: exercise.exerciseName,
-                type: exerciseType
-              }, 'timedDuration')) return;
               setModal('timedDuration');
             } else {
               const wd = exerciseCatsCache[exercise.exerciseId + '_wd'];
@@ -10742,18 +10922,8 @@ function App() {
                   weight: null,
                   weightType: 'bodyweight'
                 });
-                if (await maybeOpenGripStep({
-                  id: exercise.exerciseId,
-                  name: exercise.exerciseName,
-                  type: exerciseType
-                }, 'repPicker')) return;
                 setModal('repPicker');
               } else {
-                if (await maybeOpenGripStep({
-                  id: exercise.exerciseId,
-                  name: exercise.exerciseName,
-                  type: exerciseType
-                }, 'weightPicker')) return;
                 setModal('weightPicker');
               }
             }
@@ -10761,8 +10931,9 @@ function App() {
         }, "+ Add Set"));
       }
 
-      // ≥1 set: 4-segment control
-      const segStyle = (isFirst, isLast) => ({
+      // ≥1 set: unlocked shows all 4 actions; locked collapses to the 2 that still make sense
+      const lockMode = exerciseLocks[exercise.exerciseId] || null;
+      const segStyle = isLast => ({
         flex: 1,
         padding: '8px 2px',
         border: 'none',
@@ -10776,6 +10947,128 @@ function App() {
       });
       const isTimed = exerciseType === 'timed';
       const isPureTimed = isTimed && !hasWeight;
+      const openUnlockedSetFlow = async () => {
+        const fullExercise = await hydrateExerciseForLogging({
+          id: exercise.exerciseId,
+          name: exercise.exerciseName,
+          type: exerciseType
+        });
+        setSelectedExercise(fullExercise);
+        await primeGripSelection(fullExercise);
+        setPreviousWeight(lastSet?.weight || null);
+        setSetNumber(visibleSets.length + 1);
+        if (isTimed) {
+          setSelectedWeight({
+            weight: lastSet?.weight || null,
+            weightType: lastSet?.weightType || 'bodyweight'
+          });
+          setModal('timedDuration');
+        } else if (lastSet?.weightType === 'bodyweight' && !lastSet?.weight) {
+          setSelectedWeight({
+            weight: null,
+            weightType: 'bodyweight'
+          });
+          setModal('repPicker');
+        } else {
+          setModal('weightPicker');
+        }
+      };
+      const openSameWeightFlow = async () => {
+        if (isPureTimed) return;
+        applyExerciseLock(exercise.exerciseId, 'uniformWeight');
+        setPendingLockType(null);
+        const fullExercise = await hydrateExerciseForLogging({
+          id: exercise.exerciseId,
+          name: exercise.exerciseName,
+          type: exerciseType
+        });
+        setSelectedExercise(fullExercise);
+        await primeGripSelection(fullExercise);
+        setSelectedWeight({
+          weight: lastSet.weight,
+          weightType: lastSet.weightType,
+          bandedColor: lastSet.bandedColor
+        });
+        setPreviousWeight(lastSet.weight);
+        setSetNumber(visibleSets.length + 1);
+        if (isTimed) {
+          setModal('timedDuration');
+        } else {
+          setModal('repPicker');
+        }
+      };
+      const openSameRepsFlow = async () => {
+        applyExerciseLock(exercise.exerciseId, 'uniformReps');
+        setPendingLockType(null);
+        const fullExercise = await hydrateExerciseForLogging({
+          id: exercise.exerciseId,
+          name: exercise.exerciseName,
+          type: exerciseType
+        });
+        setSelectedExercise(fullExercise);
+        await primeGripSelection(fullExercise);
+        setPreviousWeight(lastSet.weight);
+        setSetNumber(visibleSets.length + 1);
+        if (isTimed) {
+          if (isPureTimed) {
+            duplicateLastSet();
+          } else {
+            setPrefilledReps(lastSet.duration);
+            setModal('weightPicker');
+          }
+        } else if (lastSet.weightType === 'bodyweight' && !lastSet.weight) {
+          duplicateLastSet();
+        } else {
+          setPrefilledReps(lastSet.reps);
+          setModal('weightPicker');
+        }
+      };
+      const openLockedVariableFlow = async () => {
+        if (lockMode === 'uniformWeight') {
+          const fullExercise = await hydrateExerciseForLogging({
+            id: exercise.exerciseId,
+            name: exercise.exerciseName,
+            type: exerciseType
+          });
+          setSelectedExercise(fullExercise);
+          await primeGripSelection(fullExercise);
+          setSelectedWeight({
+            weight: lastSet.weight,
+            weightType: lastSet.weightType,
+            bandedColor: lastSet.bandedColor
+          });
+          setPreviousWeight(lastSet.weight);
+          setSetNumber(visibleSets.length + 1);
+          if (isTimed) {
+            setModal('timedDuration');
+          } else {
+            setModal('repPicker');
+          }
+          return;
+        }
+        const fullExercise = await hydrateExerciseForLogging({
+          id: exercise.exerciseId,
+          name: exercise.exerciseName,
+          type: exerciseType
+        });
+        setSelectedExercise(fullExercise);
+        await primeGripSelection(fullExercise);
+        setPreviousWeight(lastSet.weight);
+        setSetNumber(visibleSets.length + 1);
+        if (isTimed) {
+          if (isPureTimed) {
+            duplicateLastSet();
+          } else {
+            setPrefilledReps(lastSet.duration);
+            setModal('weightPicker');
+          }
+        } else if (lastSet.weightType === 'bodyweight' && !lastSet.weight) {
+          duplicateLastSet();
+        } else {
+          setPrefilledReps(lastSet.reps);
+          setModal('weightPicker');
+        }
+      };
       return /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
@@ -10785,119 +11078,26 @@ function App() {
           border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
           height: '40px'
         }
-      }, /*#__PURE__*/React.createElement("button", {
+      }, !lockMode && /*#__PURE__*/React.createElement("button", {
         style: {
-          ...segStyle(true, false),
+          ...segStyle(false),
           background: 'var(--accent)',
           color: '#fff',
           fontSize: '11px'
         },
-        onClick: async () => {
-          setSelectedExercise({
-            id: exercise.exerciseId,
-            name: exercise.exerciseName,
-            type: exerciseType
-          });
-          setPreviousWeight(lastSet?.weight || null);
-          setSetNumber(visibleSets.length + 1);
-          if (isTimed) {
-            setSelectedWeight({
-              weight: lastSet?.weight || null,
-              weightType: lastSet?.weightType || 'bodyweight'
-            });
-            if (await maybeOpenGripStep({
-              id: exercise.exerciseId,
-              name: exercise.exerciseName,
-              type: exerciseType
-            }, 'timedDuration')) return;
-            setModal('timedDuration');
-          } else if (lastSet?.weightType === 'bodyweight' && !lastSet?.weight) {
-            // Bodyweight/no-weight exercise — skip weight picker
-            setSelectedWeight({
-              weight: null,
-              weightType: 'bodyweight'
-            });
-            if (await maybeOpenGripStep({
-              id: exercise.exerciseId,
-              name: exercise.exerciseName,
-              type: exerciseType
-            }, 'repPicker')) return;
-            setModal('repPicker');
-          } else {
-            if (await maybeOpenGripStep({
-              id: exercise.exerciseId,
-              name: exercise.exerciseName,
-              type: exerciseType
-            }, 'weightPicker')) return;
-            setModal('weightPicker');
-          }
-        }
+        onClick: openUnlockedSetFlow
       }, "+ Add Set"), /*#__PURE__*/React.createElement("button", {
         style: {
-          ...segStyle(false, false),
+          ...segStyle(!lockMode),
           opacity: isPureTimed ? 0.3 : 1
         },
-        onClick: async () => {
-          if (isPureTimed) return; // No weight to lock for pure timed
-          setSelectedExercise({
-            id: exercise.exerciseId,
-            name: exercise.exerciseName,
-            type: exerciseType
-          });
-          setSelectedWeight({
-            weight: lastSet.weight,
-            weightType: lastSet.weightType,
-            bandedColor: lastSet.bandedColor
-          });
-          setPreviousWeight(lastSet.weight);
-          setSetNumber(visibleSets.length + 1);
-          if (isTimed) {
-            if (await maybeOpenGripStep({
-              id: exercise.exerciseId,
-              name: exercise.exerciseName,
-              type: exerciseType
-            }, 'timedDuration')) return;
-            setModal('timedDuration');
-          } else {
-            if (await maybeOpenGripStep({
-              id: exercise.exerciseId,
-              name: exercise.exerciseName,
-              type: exerciseType
-            }, 'repPicker')) return;
-            setModal('repPicker');
-          }
-        }
-      }, "Same Wt"), /*#__PURE__*/React.createElement("button", {
-        style: segStyle(false, false),
-        onClick: () => {
-          setSelectedExercise({
-            id: exercise.exerciseId,
-            name: exercise.exerciseName,
-            type: exerciseType
-          });
-          setPreviousWeight(lastSet.weight);
-          setSetNumber(visibleSets.length + 1);
-          if (isTimed) {
-            if (isPureTimed) {
-              // Pure timed: same duration = instant duplicate
-              duplicateLastSet();
-            } else {
-              // Weighted timed: lock duration, open weight picker
-              setPrefilledReps(lastSet.duration);
-              setModal('weightPicker');
-            }
-          } else if (lastSet.weightType === 'bodyweight' && !lastSet.weight) {
-            // Bodyweight/no-weight reps: same reps = instant duplicate
-            duplicateLastSet();
-          } else {
-            // Reps: lock reps, open weight picker
-            setPrefilledReps(lastSet.reps);
-            setModal('weightPicker');
-          }
-        }
+        onClick: lockMode ? openLockedVariableFlow : openSameWeightFlow
+      }, lockMode ? lockMode === 'uniformWeight' ? isTimed ? 'New Dur' : 'New Reps' : 'New Wt' : "Same Wt"), !lockMode && /*#__PURE__*/React.createElement("button", {
+        style: segStyle(false),
+        onClick: openSameRepsFlow
       }, isTimed ? 'Same Dur' : 'Same Reps'), /*#__PURE__*/React.createElement("button", {
         style: {
-          ...segStyle(false, true),
+          ...segStyle(true),
           background: 'color-mix(in srgb, var(--accent) 15%, transparent)'
         },
         onClick: () => duplicateLastSet()
@@ -11019,12 +11219,12 @@ function App() {
     className: "btn",
     "data-tour": "add-activity",
     style: {
-      background: '#D4A853',
-      color: '#12070C',
-      border: '1px solid color-mix(in srgb, #F0E6D3 26%, #D4A853)'
+      background: 'var(--accent)',
+      color: '#D4A853',
+      border: '1px solid color-mix(in srgb, #D4A853 35%, var(--accent))'
     },
     onClick: () => setModal('exercisePicker')
-  }, "+ Add Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
+  }, "+ Create New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
     exerciseId: activityContext.exerciseId,
     exerciseName: activityContext.exerciseName,
     defaultTab: activityContext.defaultTab,
@@ -11076,27 +11276,6 @@ function App() {
     onSave: handleCreateExercise,
     onCancel: () => setModal('exercisePicker'),
     onOpenFieldNote: openFieldNote
-  }), modal === 'gripPicker' && selectedExercise && /*#__PURE__*/React.createElement(GripPromptModal, {
-    exercise: selectedExercise,
-    initialGrip: selectedGrip,
-    onConfirm: grip => {
-      setSelectedGrip(grip);
-      const nextModal = pendingGripNextModal || 'weightPicker';
-      setPendingGripNextModal(null);
-      setModal(nextModal, 'gripPicker');
-    },
-    onCancel: async () => {
-      setPendingGripNextModal(null);
-      setSelectedGrip(null);
-      if (pendingNewExerciseId) {
-        const existingSets = await dbOps.sets.getByExerciseId(pendingNewExerciseId);
-        if (!existingSets || existingSets.length === 0) {
-          await safeDb(() => dbOps.exercises.delete(pendingNewExerciseId), 'cleanup ghost exercise');
-        }
-        setPendingNewExerciseId(null);
-      }
-      modalBack();
-    }
   }), modal === 'activityHistory' && selectedExercise && /*#__PURE__*/React.createElement(HistoryModal, {
     exercise: selectedExercise,
     onLogSet: handleLogSet,
@@ -11114,21 +11293,33 @@ function App() {
     selectedDate: currentDate,
     previousWeight: previousWeight,
     setNumber: setNumber,
-    unit: unit
+    unit: unit,
+    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled,
+    initialGrip: selectedGrip,
+    gripLockedForDay: gripLockedForDay,
+    onGripChange: grip => setSelectedGrip(grip)
   }), modal === 'repPicker' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(RepPickerModal, {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
     weightType: selectedWeight.weightType,
     bandedColor: selectedWeight.bandedColor,
     onSelectReps: handleRepsSelected,
-    setNumber: setNumber
+    setNumber: setNumber,
+    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
+    initialGrip: selectedGrip,
+    gripLockedForDay: gripLockedForDay,
+    onGripChange: grip => setSelectedGrip(grip)
   }), modal === 'timedDuration' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(TimedDurationModal, {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
     weightType: selectedWeight.weightType,
     bandedColor: selectedWeight.bandedColor,
     onSelectDuration: handleDurationSelected,
-    setNumber: setNumber
+    setNumber: setNumber,
+    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
+    initialGrip: selectedGrip,
+    gripLockedForDay: gripLockedForDay,
+    onGripChange: grip => setSelectedGrip(grip)
   }), modal === 'settings' && /*#__PURE__*/React.createElement(SettingsModal, {
     onClose: () => {
       setModal(null);
@@ -11236,7 +11427,7 @@ function App() {
       marginBottom: '18px',
       lineHeight: '1.5'
     }
-  }, "When enabled, a quick grip step appears before weight for this activity."), /*#__PURE__*/React.createElement("div", {
+  }, "When enabled, the first set screen shows optional grip choices until you pick one for that activity that day."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '10px'

@@ -2,11 +2,11 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-07-25
+updated: 2026-07-27
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-07-25
+**Last updated:** 2026-07-27
 
 ## Where I left off
 
@@ -39,6 +39,8 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Activity log
 
+- 2026-07-27 (grip flow demoted from gatekeeper to optional first-set detail): Reworked grip tracking in `index.html` because the previous pre-weight grip modal was too interruptive for normal use. Grip is now off by default at activity creation behind an explicit `Ask about grip?` yes/no choice, the old name-based auto-enable behavior was removed, and the blocking `gripPicker` detour was eliminated entirely. For grip-enabled activities, the first relevant set-entry screen now shows optional inline grip chips instead of forcing a separate step; once a grip is actually chosen for that activity on that date, later sets silently reuse it and stop showing the selector for the rest of the day. This keeps grip available for rows/pulldowns/carries without making ordinary logging pay an extra tap tax. Verified all 5 inline script blocks with a JavaScript syntax pass after extraction from the HTML shell.
+- 2026-07-27 (lock-strip enforcement + header/CTA retune): Tightened the expanded activity control so the lock pill now corresponds to a real constrained mode instead of just a hint. In `index.html`, choosing `Same Wt` or `Same Reps` now immediately applies the lock, re-triggers the white-pill pop, and collapses the four-way strip into a two-segment control: `Both` plus the one remaining intentional action (`New Reps`, `New Dur`, or `New Wt`). Unlocking instantly restores the full four-button strip, so changing both variables now requires an explicit unlock first. Same pass also restored the top-left title and date/today affordance to the darker burgundy family, enlarged the side day arrows, flipped the top `Today` arrow to point left when browsing future dates, and swapped the bottom CTA from gold-fill to burgundy-fill with gold text. Verified all 5 inline script blocks with a JavaScript syntax pass after extraction from the HTML shell.
 - 2026-07-25 (field notes system: first non-GSW port): Added the first reusable field-notes layer directly to `index.html` as a shared mobile help system rather than one-off tooltip copy. The app now has a central field-note registry plus a burgundy/mauve blurred modal with lightweight help triggers wired into bodyweight logging, neutral activity creation, movement-family editing, and grip-tracking setup. Rationale: these are all places where the new model is powerful but not yet self-evident, so the app now has a quiet way to explain itself without bloating the main interface. Verified all 6 inline script blocks with a Node syntax pass.
 - 2026-07-25 (bodyweight flow rebuilt: dated storage + recall icon + full-screen entry): Reworked bodyweight logging so it is no longer a single global value. `index.html` now stores bodyweight per date (`__bodyweight_YYYY-MM-DD`) with a compatibility bridge from the old `__bodyweight__` key, exports/imports dated bodyweight metadata, and loads bodyweight against the currently viewed day. The old inline banner editor / left-swipe pattern was replaced with a swipe-up-to-dismiss today banner, a today-only scale recall icon after dismissal when today's weight is still missing, and a full-screen blurred weight-entry takeover with plain X / check controls. Day Detail also gained a bodyweight entry row so past-date catch-up can use the same entry surface without putting reminder banners on historical days. Verified all 6 inline script blocks with a Node syntax pass.
 - 2026-07-25 (notes autosave hardening for activity modal): Fixed a real data-loss risk in the `History | Notes | Edit` activity sheet. Root issue: custom notes and form cues were only persisted on input blur, which meant a fast close/swipe-dismiss after typing could unmount the modal before the latest text safely hit IndexedDB. `ActivityContextModal` now keeps live refs for the current note state, debounces saves while typing, and forces a final save for custom notes, form cues, and quick-note tags on close. This should protect both neutral and normal activities because they share the same notes modal. Verified all 6 inline script blocks with a Node syntax pass.
