@@ -252,9 +252,10 @@
         }
 
         .nav-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             color: var(--accent-deep);
+            line-height: 1;
         }
 
         .top-nav-actions {
@@ -268,6 +269,7 @@
             background: none;
             border: none;
             padding: 0;
+            width: 44px;
             min-width: 44px;
             min-height: 44px;
             display: flex;
@@ -287,10 +289,10 @@
             background: none;
             border: none;
             color: var(--accent-deep);
-            font-size: 20px;
+            font-size: 22px;
             padding: 8px;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -319,10 +321,10 @@
             background: none;
             border: none;
             color: var(--accent);
-            font-size: 52px;
+            font-size: 44px;
             padding: 8px;
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -349,7 +351,7 @@
         .day-date {
             font-size: 16px;
             font-weight: 600;
-            color: var(--accent);
+            color: #D4A853;
         }
 
         .day-label {
@@ -11387,8 +11389,8 @@ function App() {
     "aria-label": "Jump to today",
     onClick: () => setCurrentDate(todayString)
   }, /*#__PURE__*/React.createElement("svg", {
-    width: "24",
-    height: "24",
+    width: "22",
+    height: "22",
     viewBox: "0 0 21 21",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
@@ -11396,7 +11398,7 @@ function App() {
     fill: "none",
     fillRule: "evenodd",
     stroke: "currentColor",
-    strokeWidth: "6.4",
+    strokeWidth: "5.1",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     transform: isViewingFutureDay ? "translate(15.5 6.5) scale(-1 1)" : "translate(5.5 6.5)"
@@ -11409,14 +11411,14 @@ function App() {
       fontSize: '10px',
       fontWeight: '600',
       lineHeight: 1,
-      color: 'var(--accent)'
+      color: 'var(--accent-deep)'
     }
   }, "Today")), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
     "aria-label": "Open log coach",
     onClick: () => setModal('aiCoach')
   }, /*#__PURE__*/React.createElement(IconChat, {
-    size: 20
+    size: 22
   })), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
     "aria-label": "Settings",
@@ -11425,7 +11427,7 @@ function App() {
       setModal('settings');
     }
   }, /*#__PURE__*/React.createElement(IconSettings, {
-    size: 22
+    size: 24
   })))), /*#__PURE__*/React.createElement("div", {
     className: "day-nav",
     "data-tour": "date-nav"
@@ -11434,7 +11436,7 @@ function App() {
     "aria-label": "Previous day",
     onClick: () => setCurrentDate(addDays(currentDate, -1))
   }, /*#__PURE__*/React.createElement(IconArrowLeft, {
-    size: 52
+    size: 44
   })), /*#__PURE__*/React.createElement("div", {
     className: "day-display",
     onClick: () => setModal('dayDetail'),
@@ -11452,7 +11454,7 @@ function App() {
     "aria-label": "Next day",
     onClick: () => setCurrentDate(addDays(currentDate, 1))
   }, /*#__PURE__*/React.createElement(IconArrowRight, {
-    size: 52
+    size: 44
   }))), /*#__PURE__*/React.createElement("div", {
     className: "content",
     ref: contentRef,
@@ -12045,9 +12047,9 @@ function App() {
     className: "btn",
     "data-tour": "add-activity",
     style: {
-      background: 'var(--accent)',
+      background: 'var(--accent-deep)',
       color: '#D4A853',
-      border: '1px solid color-mix(in srgb, #D4A853 35%, var(--accent))'
+      border: '1px solid color-mix(in srgb, #D4A853 38%, var(--accent-deep))'
     },
     onClick: () => setModal('exercisePicker')
   }, "+ Create New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
