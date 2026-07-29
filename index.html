@@ -115,7 +115,9 @@
             background: var(--bg-page);
             border-top: none;
             max-height: 100vh;
+            max-height: 100dvh;
             height: 100vh;
+            height: 100dvh;
             overflow-y: auto;
             animation: slideUp 0.3s ease-out;
             z-index: 101;
@@ -952,6 +954,7 @@
         .modal-content {
             padding: 16px;
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -8539,7 +8542,11 @@ const AIChatModal = ({
   const [loading, setLoading] = useState(false);
   const [draftKey, setDraftKey] = useState(() => getStoredGroqApiKey());
   const [draftModel, setDraftModel] = useState(() => getStoredGroqModel());
+  const [coachConfigNotice, setCoachConfigNotice] = useState('');
   const threadRef = useRef(null);
+  const savedKey = getStoredGroqApiKey();
+  const savedModel = getStoredGroqModel();
+  const hasUnsavedCoachConfig = draftKey.trim() !== savedKey.trim() || draftModel !== savedModel;
   useEffect(() => {
     setStoredCoachMessages(messages);
   }, [messages]);
@@ -8561,6 +8568,12 @@ const AIChatModal = ({
 - Available splits: ${(categories || []).join(', ')}
 - Activities on the viewed date:
 ${summarizeExercises()}`;
+  const saveCoachConfig = () => {
+    const trimmedKey = draftKey.trim();
+    setStoredGroqApiKey(trimmedKey);
+    setStoredGroqModel(draftModel);
+    setCoachConfigNotice(trimmedKey ? 'Saved to this device.' : 'Saved with no key on this device.');
+  };
   const sendMessage = async () => {
     const text = input.trim();
     if (!text || loading) return;
@@ -8649,7 +8662,8 @@ ${summarizeExercises()}`;
       display: 'flex',
       flexDirection: 'column',
       gap: '12px',
-      height: '100%'
+      height: '100%',
+      paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -8670,18 +8684,25 @@ ${summarizeExercises()}`;
     className: "form-input",
     placeholder: "Paste Groq API key",
     value: draftKey,
-    onChange: e => setDraftKey(e.target.value)
+    onChange: e => {
+      setDraftKey(e.target.value);
+      setCoachConfigNotice('');
+    }
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: '8px',
       display: 'flex',
-      gap: '8px'
+      gap: '8px',
+      flexWrap: 'wrap'
     }
   }, FITLOGS_AI_MODELS.map(model => /*#__PURE__*/React.createElement("button", {
     key: model.id,
-    onClick: () => setDraftModel(model.id),
+    onClick: () => {
+      setDraftModel(model.id);
+      setCoachConfigNotice('');
+    },
     style: {
-      flex: 1,
+      flex: '1 1 140px',
       padding: '9px 10px',
       borderRadius: '8px',
       border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
@@ -8693,6 +8714,40 @@ ${summarizeExercises()}`;
       WebkitAppearance: 'none'
     }
   }, model.label))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '10px',
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: saveCoachConfig,
+    disabled: !hasUnsavedCoachConfig,
+    style: {
+      marginBottom: 0,
+      opacity: hasUnsavedCoachConfig ? 1 : 0.45
+    }
+  }, "Save Key"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => {
+      setDraftKey('');
+      setCoachConfigNotice('');
+    },
+    style: {
+      marginBottom: 0
+    }
+  }, "Clear"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: '1 1 160px',
+      minHeight: '16px',
+      fontSize: '11px',
+      lineHeight: '1.45',
+      color: coachConfigNotice ? 'var(--text-warm)' : 'var(--text-faint)',
+      textAlign: 'right'
+    }
+  }, coachConfigNotice || (hasUnsavedCoachConfig ? 'Save before closing if you want this key kept here.' : 'Key already saved on this device.'))), /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: '8px',
       fontSize: '11px',
@@ -8732,7 +8787,12 @@ ${summarizeExercises()}`;
     style: {
       display: 'flex',
       gap: '8px',
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
+      position: 'sticky',
+      bottom: 0,
+      paddingTop: '10px',
+      paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6px)',
+      background: 'linear-gradient(180deg, rgba(26,10,18,0.78) 0%, rgba(26,10,18,0.96) 22%, rgba(26,10,18,1) 100%)'
     }
   }, /*#__PURE__*/React.createElement("textarea", {
     className: "form-input",
