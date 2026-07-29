@@ -252,7 +252,7 @@
         .nav-title {
             font-size: 16px;
             font-weight: 600;
-            color: var(--accent);
+            color: var(--accent-deep);
         }
 
         .top-nav-actions {
@@ -284,7 +284,7 @@
         .settings-btn {
             background: none;
             border: none;
-            color: #D4A853;
+            color: var(--accent-deep);
             font-size: 20px;
             padding: 8px;
             width: 40px;
@@ -317,10 +317,10 @@
             background: none;
             border: none;
             color: var(--accent);
-            font-size: 40px;
+            font-size: 52px;
             padding: 8px;
-            width: 52px;
-            height: 52px;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -341,7 +341,7 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 2px;
         }
 
         .day-date {
@@ -354,7 +354,7 @@
             font-size: 13px;
             font-weight: 700;
             color: var(--accent);
-            margin-top: 6px;
+            margin-top: 1px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -1554,6 +1554,57 @@ const IconArrowRight = ({
   fill: "currentColor",
   opacity: "0.5"
 }));
+const IconFlowChart = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none",
+  viewBox: "0 0 36 36"
+}, /*#__PURE__*/React.createElement("polygon", {
+  points: "9.8 18.8 26.2 18.8 26.2 21.88 27.8 21.88 27.8 17.2 18.8 17.2 18.8 14 17.2 14 17.2 17.2 8.2 17.2 8.2 21.88 9.8 21.88 9.8 18.8",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "2",
+  y: "23",
+  width: "14",
+  height: "10",
+  rx: "2",
+  ry: "2",
+  fill: "currentColor",
+  opacity: "0.72"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "20",
+  y: "23",
+  width: "14",
+  height: "10",
+  rx: "2",
+  ry: "2",
+  fill: "currentColor",
+  opacity: "0.72"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "11",
+  y: "3",
+  width: "14",
+  height: "10",
+  rx: "2",
+  ry: "2",
+  fill: "currentColor"
+}));
+const IconChat = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M8 9h8"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M8 13h5"
+}));
 const IconClock = ({
   size,
   style
@@ -2484,6 +2535,28 @@ const formatGripLabel = set => {
   if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-grip' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
+const formatGripHeaderTag = set => {
+  if (!set) return '';
+  const parts = [];
+  if (set.gripType) {
+    const typeMap = {
+      neutral: 'N',
+      pronated: 'P',
+      supinated: 'S'
+    };
+    parts.push(typeMap[set.gripType] || set.gripType.charAt(0).toUpperCase());
+  }
+  if (set.gripWidth) {
+    const widthMap = {
+      close: 'C',
+      standard: 'Std',
+      wide: 'W',
+      'v-grip': 'V'
+    };
+    parts.push(widthMap[set.gripWidth] || set.gripWidth.charAt(0).toUpperCase());
+  }
+  return parts.join(' ');
+};
 const getGripSelectionForDate = async (exerciseId, date) => {
   const daySets = await dbOps.sets.getByDate(date);
   const lastGripSet = daySets
@@ -2510,6 +2583,11 @@ const FIELD_NOTES = {
     title: 'What is a movement family?',
     body: ['A movement family links related activities without merging them into one history. Cable row, dumbbell row, and machine row can stay separate while still belonging to the broader row family.', 'Think of the family as the umbrella and the activity as the exact variation you actually performed. That keeps presets and history precise while still allowing broader views later.']
   },
+  activityLineage: {
+    eyebrow: 'Field Note',
+    title: 'Parent or variant?',
+    body: ['Use parent when an activity is the umbrella version and you may want spin-off variations later. Use variant when this exact activity belongs under a broader parent that already exists or needs to be created now.', 'This is just a linking tool. It does not merge histories, and it does not force you to classify every activity. If an activity does not need this structure, leave it alone.']
+  },
   gripTracking: {
     eyebrow: 'Field Note',
     title: 'What does grip tracking do?',
@@ -2517,6 +2595,94 @@ const FIELD_NOTES = {
   }
 };
 const getFieldNote = noteId => noteId ? FIELD_NOTES[noteId] || null : null;
+const GROQ_API_KEY_STORAGE = 'fitlogsGroqApiKey';
+const GROQ_MODEL_STORAGE = 'fitlogsGroqModel';
+const FITLOGS_CHAT_STORAGE = 'fitlogsCoachMessages';
+const FITLOGS_AI_MODELS = [{
+  id: 'openai/gpt-oss-120b',
+  label: 'GPT OSS 120B',
+  helper: 'Better default for app-aware help, long answers, and spec-heavy questions.'
+}, {
+  id: 'qwen/qwen3.6-27b',
+  label: 'Qwen3.6 27B',
+  helper: 'Useful if you want vision and strong coding, but it costs more on Groq.'
+}];
+const getStoredGroqApiKey = () => {
+  try {
+    return localStorage.getItem(GROQ_API_KEY_STORAGE) || '';
+  } catch (error) {
+    return '';
+  }
+};
+const setStoredGroqApiKey = value => {
+  try {
+    if (value) localStorage.setItem(GROQ_API_KEY_STORAGE, value);else localStorage.removeItem(GROQ_API_KEY_STORAGE);
+  } catch (error) {}
+};
+const getStoredGroqModel = () => {
+  try {
+    return localStorage.getItem(GROQ_MODEL_STORAGE) || FITLOGS_AI_MODELS[0].id;
+  } catch (error) {
+    return FITLOGS_AI_MODELS[0].id;
+  }
+};
+const setStoredGroqModel = value => {
+  try {
+    localStorage.setItem(GROQ_MODEL_STORAGE, value);
+  } catch (error) {}
+};
+const getStoredCoachMessages = () => {
+  try {
+    const raw = localStorage.getItem(FITLOGS_CHAT_STORAGE);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+};
+const setStoredCoachMessages = messages => {
+  try {
+    localStorage.setItem(FITLOGS_CHAT_STORAGE, JSON.stringify(messages.slice(-24)));
+  } catch (error) {}
+};
+const formatGroqError = rawMessage => {
+  const msg = rawMessage || '';
+  if (/invalid api key|authentication/i.test(msg) || msg.includes('401')) {
+    return 'That Groq key was rejected. Open Settings, paste a working key, and try again.';
+  }
+  if (/tokens per day|requests per day/i.test(msg)) {
+    return 'Groq says this key hit its daily limit. Try again later or switch keys.';
+  }
+  if (/tokens per minute|requests per minute|rate limit/i.test(msg)) {
+    return 'Groq is rate-limiting this key right now. Give it a moment and try again.';
+  }
+  if (/model/i.test(msg) && /not found|does not exist|unavailable/i.test(msg)) {
+    return 'That model is not available on this key right now. Try the other model in Settings.';
+  }
+  return 'The coach hit a Groq error. Check the key/model in Settings and try again.';
+};
+const getFieldNoteSummary = () => Object.entries(FIELD_NOTES).map(([id, note]) => `${id}: ${note.title} — ${note.body.join(' ')}`).join('\n');
+const FITLOGS_COACH_SYSTEM_PROMPT = `You are the in-app coach for Tim's Logbook, a phone-first local workout logger.
+
+Your job is to help the user understand the app, make decisions inside the app, and reduce workout friction.
+
+Rules:
+- Be concrete, brief, and product-aware.
+- Prefer the app's existing concepts over inventing new terminology.
+- If a field note already answers the question, say which note to open.
+- Do not pretend to have data the app did not send you.
+- Do not recommend servers, accounts, or subscriptions as the default path.
+- Remember the app is local-first, single-file, and meant to be fast between sets.
+
+App guidance:
+- The app logs workouts locally in IndexedDB and works offline after the first visit.
+- The core loop is quick set logging: pick activity, weight, reps/duration.
+- Movement family = the umbrella. Activity/variation = the exact thing performed.
+- Grip tracking is optional and off by default.
+- Neutral activities are note-only and skip set logging controls.
+
+Field notes:
+${getFieldNoteSummary()}`;
 const withNormalizedExerciseFields = exercise => ({
   ...exercise,
   movementFamilyId: exercise.movementFamilyId || null,
@@ -2821,8 +2987,7 @@ const formatSetBox = (set, previousSet, unitOverride) => {
       const bandLabel = set.bandedColor && set.bandedColor !== 'undefined' ? set.bandedColor : 'Band';
       box += bandLabel + ' ';
     } else if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
-      const perSide = set.weightMeaning === 'per-side' ? ' ea' : '';
-      box += `${set.weight}${displayUnit}${perSide} `;
+      box += `${set.weight}${displayUnit} `;
     }
   }
   if (set.reps !== null) {
@@ -2831,10 +2996,6 @@ const formatSetBox = (set, previousSet, unitOverride) => {
     const mins = Math.floor(set.duration / 60);
     const secs = set.duration % 60;
     box += `${mins}:${String(secs).padStart(2, '0')}`;
-  }
-  const gripLabel = formatGripLabel(set);
-  if (gripLabel) {
-    box += `${box ? ' · ' : ''}${gripLabel}`;
   }
   return box.trim();
 };
@@ -3078,7 +3239,8 @@ const ExercisePickerModal = ({
   categories,
   onCategoriesChanged,
   defaultCategory,
-  onPair
+  onPair,
+  onOpenLineage
 }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(defaultCategory || 'all');
@@ -3289,74 +3451,101 @@ const ExercisePickerModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)',
       marginBottom: '8px'
     }
-  }, "Long press to delete"), filtered.map(ex => /*#__PURE__*/React.createElement("div", {
-    key: ex.id,
-    className: "exercise-picker-item",
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px'
-    },
-    onClick: () => {
-      if (pairingSource) {
-        if (onPair) onPair(pairingSource, ex);
-        setPairingSource(null);
-      } else {
-        onSelect(ex);
+  }, "Long press to delete"), filtered.map(ex => {
+    const meta = /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
       }
-    },
-    onTouchStart: e => {
-      if (pairingSource) return;
-      const el = e.currentTarget;
-      el._lpTimer = setTimeout(() => {
-        el._lpFired = true;
-        setDeleteConfirm(ex);
-      }, 600);
-      el._lpFired = false;
-    },
-    onTouchMove: e => {
-      const el = e.currentTarget;
-      if (el._lpTimer) {
-        clearTimeout(el._lpTimer);
-        el._lpTimer = null;
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "exercise-picker-name"
+    }, ex.name), /*#__PURE__*/React.createElement("div", {
+      className: "exercise-picker-meta"
+    }, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''));
+    const pairButton = !pairingSource && ex.type === 'timed' && onPair ? /*#__PURE__*/React.createElement("button", {
+      onClick: e => {
+        e.stopPropagation();
+        setPairingSource(ex);
+      },
+      style: {
+        padding: '4px 10px',
+        borderRadius: '6px',
+        flexShrink: 0,
+        border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+        color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
+        fontSize: '11px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
       }
-    },
-    onTouchEnd: e => {
-      const el = e.currentTarget;
-      if (el._lpTimer) {
-        clearTimeout(el._lpTimer);
-        el._lpTimer = null;
+    }, "pair") : null;
+    const lineageButton = !pairingSource ? /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      "aria-label": `Set parent or variant for ${ex.name}`,
+      onClick: e => {
+        e.stopPropagation();
+        onOpenLineage && onOpenLineage(ex);
+      },
+      style: {
+        border: 'none',
+        background: 'none',
+        color: 'color-mix(in srgb, var(--accent-soft) 70%, transparent)',
+        width: '44px',
+        height: '44px',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        WebkitAppearance: 'none',
+        flexShrink: 0
       }
-      if (el._lpFired) {
-        e.preventDefault();
+    }, /*#__PURE__*/React.createElement(IconFlowChart, {
+      size: 20
+    })) : null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: ex.id,
+      className: "exercise-picker-item",
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px'
+      },
+      onClick: () => {
+        if (pairingSource) {
+          if (onPair) onPair(pairingSource, ex);
+          setPairingSource(null);
+        } else {
+          onSelect(ex);
+        }
+      },
+      onTouchStart: e => {
+        if (pairingSource) return;
+        const el = e.currentTarget;
+        el._lpTimer = setTimeout(() => {
+          el._lpFired = true;
+          setDeleteConfirm(ex);
+        }, 600);
+        el._lpFired = false;
+      },
+      onTouchMove: e => {
+        const el = e.currentTarget;
+        if (el._lpTimer) {
+          clearTimeout(el._lpTimer);
+          el._lpTimer = null;
+        }
+      },
+      onTouchEnd: e => {
+        const el = e.currentTarget;
+        if (el._lpTimer) {
+          clearTimeout(el._lpTimer);
+          el._lpTimer = null;
+        }
+        if (el._lpFired) {
+          e.preventDefault();
+        }
       }
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      flex: 1
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "exercise-picker-name"
-  }, ex.name), /*#__PURE__*/React.createElement("div", {
-    className: "exercise-picker-meta"
-  }, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : '')), !pairingSource && ex.type === 'timed' && onPair && /*#__PURE__*/React.createElement("button", {
-    onClick: e => {
-      e.stopPropagation();
-      setPairingSource(ex);
-    },
-    style: {
-      padding: '4px 10px',
-      borderRadius: '6px',
-      flexShrink: 0,
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-      color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
-      fontSize: '11px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "pair")))) : /*#__PURE__*/React.createElement("div", {
+    }, meta, pairButton, lineageButton);
+  })) : /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       color: 'var(--text-placeholder)',
@@ -6199,6 +6388,8 @@ const SettingsModal = ({
   const [timerSounds, setTimerSounds] = useState(() => getPref('timerSoundsEnabled') === 'true');
   const [showSoundConfig, setShowSoundConfig] = useState(false);
   const [showDupInfo, setShowDupInfo] = useState(false);
+  const [groqApiKey, setGroqApiKeyState] = useState(() => getStoredGroqApiKey());
+  const [groqModel, setGroqModelState] = useState(() => getStoredGroqModel());
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const templateOptions = ['', ...(settingsCategories || ['Push', 'Pull', 'Legs', 'Core', 'Cardio']), 'Rest'];
   const handleSelectChange = (idx, value) => {
@@ -7345,7 +7536,72 @@ const SettingsModal = ({
     }
   }, /*#__PURE__*/React.createElement("span", null, "Configure Sounds"), /*#__PURE__*/React.createElement(IconArrowRight, {
     size: 14
-  }))), showSoundConfig && /*#__PURE__*/React.createElement(SoundSettingsModal, {
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '28px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '15px',
+      fontWeight: '600',
+      color: 'var(--text-warm)'
+    }
+  }, "Log Coach")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      lineHeight: '1.55',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      marginBottom: '10px'
+    }
+  }, "Bring your own Groq key. The coach uses it directly from this browser and keeps the key local to this device."), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    className: "form-input",
+    placeholder: "Paste Groq API key",
+    value: groqApiKey,
+    onChange: e => {
+      const value = e.target.value;
+      setGroqApiKeyState(value);
+      setStoredGroqApiKey(value.trim());
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '8px',
+      marginTop: '10px'
+    }
+  }, FITLOGS_AI_MODELS.map(model => /*#__PURE__*/React.createElement("button", {
+    key: model.id,
+    onClick: () => {
+      setGroqModelState(model.id);
+      setStoredGroqModel(model.id);
+    },
+    style: {
+      flex: 1,
+      padding: '10px 8px',
+      borderRadius: '8px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: groqModel === model.id ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: groqModel === model.id ? 'var(--text-body)' : 'var(--text-faint)',
+      fontSize: '11px',
+      fontWeight: '700',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, model.label))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '8px',
+      fontSize: '11px',
+      lineHeight: '1.5',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+    }
+  }, (FITLOGS_AI_MODELS.find(model => model.id === groqModel) || FITLOGS_AI_MODELS[0]).helper)), showSoundConfig && /*#__PURE__*/React.createElement(SoundSettingsModal, {
     onClose: () => setShowSoundConfig(false)
   })), showDupInfo && /*#__PURE__*/React.createElement("div", {
     onClick: () => setShowDupInfo(false),
@@ -8258,6 +8514,244 @@ const FieldNoteModal = ({
       color: idx === 0 ? 'var(--text-body)' : 'color-mix(in srgb, var(--text-body) 78%, var(--accent-soft) 22%)'
     }
   }, paragraph))));
+};
+const AIChatModal = ({
+  onClose,
+  currentDate,
+  dayLabel,
+  exercises,
+  categories,
+  unit
+}) => {
+  const starterMessages = getStoredCoachMessages();
+  const [messages, setMessages] = useState(starterMessages.length > 0 ? starterMessages : [{
+    role: 'assistant',
+    content: 'Ask me about this app, your current day, movement families, grip tracking, or what to log next.'
+  }]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [draftKey, setDraftKey] = useState(() => getStoredGroqApiKey());
+  const [draftModel, setDraftModel] = useState(() => getStoredGroqModel());
+  const threadRef = useRef(null);
+  useEffect(() => {
+    setStoredCoachMessages(messages);
+  }, [messages]);
+  useEffect(() => {
+    const el = threadRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, loading]);
+  const summarizeExercises = () => {
+    if (!exercises || exercises.length === 0) return 'No activities logged on the currently viewed date.';
+    return exercises.map(item => {
+      const latestSet = item.sets && item.sets.length ? item.sets[item.sets.length - 1] : null;
+      const latestSummary = latestSet ? formatSetBox(latestSet, null, unit) : 'no sets yet';
+      return `- ${item.exerciseName}${item._categories?.length ? ` [${item._categories.join(', ')}]` : ''}: ${latestSummary}`;
+    }).join('\n');
+  };
+  const buildContext = () => `Today in the app:
+- Viewed date: ${currentDate}
+- Split label: ${dayLabel || 'none'}
+- Available splits: ${(categories || []).join(', ')}
+- Activities on the viewed date:
+${summarizeExercises()}`;
+  const sendMessage = async () => {
+    const text = input.trim();
+    if (!text || loading) return;
+    const apiKey = draftKey.trim();
+    if (!apiKey) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'This coach is bring-your-own-key. Add your Groq key in Settings or paste it into the key box here first.'
+      }]);
+      return;
+    }
+    const nextMessages = [...messages, {
+      role: 'user',
+      content: text
+    }];
+    setMessages(nextMessages);
+    setInput('');
+    setLoading(true);
+    setStoredGroqApiKey(apiKey);
+    setStoredGroqModel(draftModel);
+    try {
+      const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: draftModel,
+          temperature: 0.4,
+          messages: [{
+            role: 'system',
+            content: FITLOGS_COACH_SYSTEM_PROMPT
+          }, {
+            role: 'developer',
+            content: buildContext()
+          }, ...nextMessages.slice(-10).map(message => ({
+            role: message.role,
+            content: message.content
+          }))]
+        })
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const rawError = data?.error?.message || data?.message || '';
+        throw new Error(formatGroqError(rawError));
+      }
+      const reply = data?.choices?.[0]?.message?.content?.trim() || 'The coach came back empty. Try asking again.';
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: reply
+      }]);
+    } catch (error) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: error?.message || 'The coach could not reach Groq right now.'
+      }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Log Coach"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content",
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      height: '100%'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px',
+      borderRadius: '12px',
+      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      fontWeight: '700',
+      color: 'var(--text-warm)',
+      marginBottom: '8px'
+    }
+  }, "Bring your own Groq key"), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    className: "form-input",
+    placeholder: "Paste Groq API key",
+    value: draftKey,
+    onChange: e => setDraftKey(e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '8px',
+      display: 'flex',
+      gap: '8px'
+    }
+  }, FITLOGS_AI_MODELS.map(model => /*#__PURE__*/React.createElement("button", {
+    key: model.id,
+    onClick: () => setDraftModel(model.id),
+    style: {
+      flex: 1,
+      padding: '9px 10px',
+      borderRadius: '8px',
+      border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
+      background: draftModel === model.id ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: draftModel === model.id ? 'var(--text-body)' : 'var(--text-faint)',
+      fontSize: '11px',
+      fontWeight: '700',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, model.label))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '8px',
+      fontSize: '11px',
+      lineHeight: '1.5',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+    }
+  }, (FITLOGS_AI_MODELS.find(model => model.id === draftModel) || FITLOGS_AI_MODELS[0]).helper)), /*#__PURE__*/React.createElement("div", {
+    ref: threadRef,
+    style: {
+      flex: 1,
+      overflowY: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px',
+      paddingRight: '2px'
+    }
+  }, messages.map((message, index) => /*#__PURE__*/React.createElement("div", {
+    key: `${message.role}-${index}`,
+    style: {
+      alignSelf: message.role === 'user' ? 'flex-end' : 'stretch',
+      maxWidth: message.role === 'user' ? '82%' : '100%',
+      background: message.role === 'user' ? 'color-mix(in srgb, var(--accent) 24%, transparent)' : 'color-mix(in srgb, var(--surface) 92%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)',
+      color: message.role === 'user' ? 'var(--text-warm)' : 'var(--text-body)',
+      borderRadius: '14px',
+      padding: '11px 12px',
+      fontSize: '13px',
+      lineHeight: '1.55',
+      whiteSpace: 'pre-wrap'
+    }
+  }, message.content)), loading && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'var(--text-faint)'
+    }
+  }, "Thinking...")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'flex-end'
+    }
+  }, /*#__PURE__*/React.createElement("textarea", {
+    className: "form-input",
+    placeholder: "Ask about the app, your split, or what to log next...",
+    value: input,
+    rows: 2,
+    onChange: e => setInput(e.target.value),
+    onKeyDown: e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    },
+    style: {
+      minHeight: '62px',
+      resize: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: sendMessage,
+    disabled: loading || !input.trim(),
+    style: {
+      width: '98px',
+      opacity: loading || !input.trim() ? 0.45 : 1
+    }
+  }, "Send")))));
 };
 
 // ============ ACTIVITY CONTEXT MODAL ============
@@ -9448,6 +9942,310 @@ const CreateVariationModal = ({
     onClick: handleSave
   }, "Create")))));
 };
+const ActivityLineageModal = ({
+  exercise,
+  onClose,
+  onSaveExercise,
+  onCreateExercise,
+  onOpenFieldNote
+}) => {
+  const [step, setStep] = useState('role');
+  const [parents, setParents] = useState([]);
+  const [selectedParentId, setSelectedParentId] = useState('');
+  const [newParentName, setNewParentName] = useState(inferMovementFamilyName(exercise?.name) || '');
+  const [newVariantName, setNewVariantName] = useState('');
+  const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
+  useEffect(() => {
+    (async () => {
+      const all = (await dbOps.exercises.getAll()).filter(ex => ex.id !== exercise.id && ex.type !== 'neutral');
+      setParents(all.sort((a, b) => a.name.localeCompare(b.name)));
+    })();
+  }, [exercise]);
+  const saveVariantLink = async parentExercise => {
+    const familySeed = normalizeFamilyName(parentExercise.movementFamilyName || parentExercise.name);
+    const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
+    await onSaveExercise({
+      ...exercise,
+      variationOf: parentExercise.id,
+      movementFamilyId: familyRecord?.id || parentExercise.movementFamilyId || null,
+      movementFamilyName: familyRecord?.name || parentExercise.movementFamilyName || parentExercise.name,
+      variationLabel: variationLabel.trim()
+    });
+  };
+  const createParentAndLink = async () => {
+    if (!newParentName.trim()) return;
+    const familyRecord = await ensureMovementFamilyRecord(newParentName.trim());
+    const parentExercise = {
+      ...exercise,
+      id: generateId('ex'),
+      name: newParentName.trim(),
+      note: '',
+      lastUsed: '',
+      createdAt: Date.now(),
+      variationOf: null,
+      movementFamilyId: familyRecord?.id || null,
+      movementFamilyName: familyRecord?.name || newParentName.trim(),
+      variationLabel: ''
+    };
+    await onCreateExercise(parentExercise);
+    await onSaveExercise({
+      ...exercise,
+      variationOf: parentExercise.id,
+      movementFamilyId: familyRecord?.id || null,
+      movementFamilyName: familyRecord?.name || newParentName.trim(),
+      variationLabel: variationLabel.trim()
+    });
+  };
+  const markAsParent = async () => {
+    const familySeed = normalizeFamilyName(exercise.movementFamilyName || exercise.name);
+    const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
+    await onSaveExercise({
+      ...exercise,
+      variationOf: null,
+      movementFamilyId: familyRecord?.id || null,
+      movementFamilyName: familyRecord?.name || familySeed,
+      variationLabel: ''
+    });
+  };
+  const createLinkedVariant = async () => {
+    if (!newVariantName.trim()) return;
+    const familySeed = normalizeFamilyName(exercise.movementFamilyName || exercise.name);
+    const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
+    await markAsParent();
+    await onCreateExercise({
+      ...exercise,
+      id: generateId('ex'),
+      name: newVariantName.trim(),
+      note: '',
+      lastUsed: '',
+      createdAt: Date.now(),
+      variationOf: exercise.id,
+      movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
+      movementFamilyName: familyRecord?.name || exercise.movementFamilyName || exercise.name,
+      variationLabel: variationLabel.trim()
+    });
+  };
+  const selectedParent = parents.find(parent => parent.id === selectedParentId) || null;
+  let stepContent = null;
+  if (step === 'role') {
+    stepContent = /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'grid',
+        gap: '10px'
+      }
+    }, [{
+      key: 'parent',
+      title: 'This is the parent',
+      body: 'Use this when future versions should branch from the current activity.',
+      next: 'parent-action'
+    }, {
+      key: 'variant',
+      title: 'This is a variant',
+      body: 'Use this when the current activity belongs under a broader parent.',
+      next: 'parent-exists'
+    }].map(option => /*#__PURE__*/React.createElement("button", {
+      key: option.key,
+      onClick: () => setStep(option.next),
+      style: {
+        textAlign: 'left',
+        padding: '14px',
+        borderRadius: '12px',
+        border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+        color: 'var(--text-body)',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '13px',
+        fontWeight: '700',
+        marginBottom: '4px'
+      }
+    }, option.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '12px',
+        lineHeight: '1.5',
+        color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+      }
+    }, option.body))));
+  } else if (step === 'parent-exists') {
+    stepContent = /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: '10px'
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "btn",
+      style: {
+        flex: 1
+      },
+      onClick: () => setStep('pick-parent')
+    }, "Yes"), /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-secondary",
+      style: {
+        flex: 1
+      },
+      onClick: () => setStep('create-parent')
+    }, "No"));
+  } else if (step === 'pick-parent') {
+    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        maxHeight: '260px',
+        overflowY: 'auto',
+        marginBottom: '12px'
+      }
+    }, parents.map(parent => /*#__PURE__*/React.createElement("button", {
+      key: parent.id,
+      onClick: () => setSelectedParentId(parent.id),
+      style: {
+        width: '100%',
+        textAlign: 'left',
+        padding: '11px 12px',
+        marginBottom: '8px',
+        borderRadius: '10px',
+        border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
+        background: selectedParentId === parent.id ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'rgba(255,255,255,0.03)',
+        color: 'var(--text-body)',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '13px',
+        fontWeight: '600'
+      }
+    }, parent.name), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '11px',
+        marginTop: '3px',
+        color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+      }
+    }, parent.movementFamilyName || 'No family linked yet')))), /*#__PURE__*/React.createElement("div", {
+      className: "form-group"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "form-label"
+    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
+      className: "form-input",
+      value: variationLabel,
+      onChange: e => setVariationLabel(e.target.value),
+      placeholder: "E.g., Wide Neutral"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "modal-footer"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-secondary",
+      onClick: () => setStep('parent-exists')
+    }, "Back"), /*#__PURE__*/React.createElement("button", {
+      className: "btn",
+      disabled: !selectedParent,
+      style: {
+        opacity: selectedParent ? 1 : 0.45
+      },
+      onClick: () => selectedParent && saveVariantLink(selectedParent)
+    }, "Link Variant")));
+  } else if (step === 'create-parent') {
+    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "form-group"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "form-label"
+    }, "New Parent Name"), /*#__PURE__*/React.createElement("input", {
+      className: "form-input",
+      value: newParentName,
+      onChange: e => setNewParentName(e.target.value),
+      placeholder: "E.g., Pulldown"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "form-group"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "form-label"
+    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
+      className: "form-input",
+      value: variationLabel,
+      onChange: e => setVariationLabel(e.target.value),
+      placeholder: "E.g., Wide Neutral"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "modal-footer"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-secondary",
+      onClick: () => setStep('parent-exists')
+    }, "Back"), /*#__PURE__*/React.createElement("button", {
+      className: "btn",
+      disabled: !newParentName.trim(),
+      style: {
+        opacity: newParentName.trim() ? 1 : 0.45
+      },
+      onClick: createParentAndLink
+    }, "Create Parent")));
+  } else {
+    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "form-group"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "form-label"
+    }, "New Variant Name (optional)"), /*#__PURE__*/React.createElement("input", {
+      className: "form-input",
+      value: newVariantName,
+      onChange: e => setNewVariantName(e.target.value),
+      placeholder: "E.g., Wide Grip Pulldown"
+    })), newVariantName.trim() && /*#__PURE__*/React.createElement("div", {
+      className: "form-group"
+    }, /*#__PURE__*/React.createElement("label", {
+      className: "form-label"
+    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
+      className: "form-input",
+      value: variationLabel,
+      onChange: e => setVariationLabel(e.target.value),
+      placeholder: "E.g., Wide Grip"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "modal-footer"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-secondary",
+      onClick: () => setStep('role')
+    }, "Back"), /*#__PURE__*/React.createElement("button", {
+      className: "btn btn-secondary",
+      onClick: markAsParent
+    }, "Save as Parent"), /*#__PURE__*/React.createElement("button", {
+      className: "btn",
+      disabled: !newVariantName.trim(),
+      style: {
+        opacity: newVariantName.trim() ? 1 : 0.45
+      },
+      onClick: createLinkedVariant
+    }, "Create Variant")));
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px'
+    }
+  }, /*#__PURE__*/React.createElement("h2", null, "Activity Lineage"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "activityLineage",
+    onOpen: onOpenFieldNote,
+    ariaLabel: "Parent or variant?"
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '13px',
+      lineHeight: '1.55',
+      color: 'var(--text-body)',
+      marginBottom: '14px'
+    }
+  }, "Clarify whether ", /*#__PURE__*/React.createElement("strong", null, exercise.name), " is the umbrella activity or a linked variation."), stepContent)));
+};
 const FamilyViewModal = ({
   exercise,
   onClose,
@@ -10577,8 +11375,8 @@ function App() {
     "aria-label": "Jump to today",
     onClick: () => setCurrentDate(todayString)
   }, /*#__PURE__*/React.createElement("svg", {
-    width: "22",
-    height: "22",
+    width: "24",
+    height: "24",
     viewBox: "0 0 21 21",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg"
@@ -10586,10 +11384,10 @@ function App() {
     fill: "none",
     fillRule: "evenodd",
     stroke: "currentColor",
-    strokeWidth: "2.6",
+    strokeWidth: "6.4",
     strokeLinecap: "round",
     strokeLinejoin: "round",
-    transform: isViewingFutureDay ? "translate(5.5 6.5) scale(-1 1) translate(-11 0)" : "translate(5.5 6.5)"
+    transform: isViewingFutureDay ? "translate(15.5 6.5) scale(-1 1)" : "translate(5.5 6.5)"
   }, /*#__PURE__*/React.createElement("path", {
     d: "m0 8v-2c0-1.65685425 1.34314575-3 3-3h8"
   }), /*#__PURE__*/React.createElement("path", {
@@ -10602,6 +11400,12 @@ function App() {
       color: 'var(--accent)'
     }
   }, "Today")), /*#__PURE__*/React.createElement("button", {
+    className: "settings-btn",
+    "aria-label": "Open log coach",
+    onClick: () => setModal('aiCoach')
+  }, /*#__PURE__*/React.createElement(IconChat, {
+    size: 20
+  })), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
     "aria-label": "Settings",
     onClick: () => {
@@ -10618,7 +11422,7 @@ function App() {
     "aria-label": "Previous day",
     onClick: () => setCurrentDate(addDays(currentDate, -1))
   }, /*#__PURE__*/React.createElement(IconArrowLeft, {
-    size: 40
+    size: 52
   })), /*#__PURE__*/React.createElement("div", {
     className: "day-display",
     onClick: () => setModal('dayDetail'),
@@ -10636,7 +11440,7 @@ function App() {
     "aria-label": "Next day",
     onClick: () => setCurrentDate(addDays(currentDate, 1))
   }, /*#__PURE__*/React.createElement(IconArrowRight, {
-    size: 40
+    size: 52
   }))), /*#__PURE__*/React.createElement("div", {
     className: "content",
     ref: contentRef,
@@ -10722,6 +11526,8 @@ function App() {
   }, currentDate === getTodayString() ? /*#__PURE__*/React.createElement(React.Fragment, null, "No activities logged yet today.") : /*#__PURE__*/React.createElement(React.Fragment, null, "No activities on this day.")) : exercises.map(exercise => {
     const isExpanded = expandedExercise === exercise.exerciseId;
     const visibleSets = getVisibleSets(exercise.sets);
+    const latestVisibleSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
+    const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
       className: "exercise-group",
@@ -10769,7 +11575,15 @@ function App() {
       }
     }, exercise._pairedName.split('\n').map((line, i) => /*#__PURE__*/React.createElement(React.Fragment, {
       key: i
-    }, i > 0 && /*#__PURE__*/React.createElement("br", null), line))) : exercise._pairedName : exercise.exerciseName, !exercise._pairedName && exercise._categories && exercise._categories.length > 1 && /*#__PURE__*/React.createElement("span", {
+    }, i > 0 && /*#__PURE__*/React.createElement("br", null), line))) : exercise._pairedName : exercise.exerciseName, !exercise._pairedName && gripHeaderTag && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: '11px',
+        color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+        marginLeft: '8px',
+        fontWeight: '700',
+        letterSpacing: '0.06em'
+      }
+    }, gripHeaderTag), !exercise._pairedName && exercise._categories && exercise._categories.length > 1 && /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: '11px',
         color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)',
@@ -11257,6 +12071,10 @@ function App() {
     },
     selectedDate: currentDate,
     defaultCategory: dayLabel ? dayLabel.toLowerCase() : 'all',
+    onOpenLineage: exercise => {
+      setSelectedExercise(withNormalizedExerciseFields(exercise));
+      setModal('activityLineage', 'exercisePicker');
+    },
     onPair: (sourceEx, targetEx) => {
       // Store both exercises for paired duration logging
       setPairingExerciseId({
@@ -11329,6 +12147,13 @@ function App() {
     onCategoriesChanged: cats => setCategories(cats),
     unit: unit,
     setUnit: setUnit
+  }), modal === 'aiCoach' && /*#__PURE__*/React.createElement(AIChatModal, {
+    onClose: () => setModal(null),
+    currentDate: currentDate,
+    dayLabel: dayLabel,
+    exercises: exercises,
+    categories: categories,
+    unit: unit
   }), modal === 'sessionNote' && selectedExercise && /*#__PURE__*/React.createElement(SessionNoteModal, {
     exercise: selectedExercise,
     date: currentDate,
@@ -11369,6 +12194,21 @@ function App() {
       setSelectedExercise(null);
     },
     onOpenFieldNote: openFieldNote
+  }), modal === 'activityLineage' && selectedExercise && /*#__PURE__*/React.createElement(ActivityLineageModal, {
+    exercise: selectedExercise,
+    onClose: modalBack,
+    onOpenFieldNote: openFieldNote,
+    onSaveExercise: async updated => {
+      const ok = await safeDb(() => dbOps.exercises.update(updated), 'save activity lineage');
+      if (ok) {
+        setSelectedExercise(null);
+        modalBack();
+        loadDayData();
+      }
+    },
+    onCreateExercise: async newExercise => {
+      await safeDb(() => dbOps.exercises.add(newExercise), 'create linked activity');
+    }
   }), modal === 'changeWeightMeaning' && selectedExercise && /*#__PURE__*/React.createElement(ChangeWeightMeaningModal, {
     exercise: selectedExercise,
     onSave: async updated => {
