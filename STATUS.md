@@ -40,6 +40,7 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Activity log
 
+- 2026-07-29 (family terminology reset + reversible standalone flow + picker spec): Reframed the new activity-relationship system away from the muddier `parent / variant` language and toward `family / activity / standalone`, then pushed that directly into the live UI and docs. In `index.html`, the old `Activity Lineage` copy is now `Family Linking`, the edit action is now `Family Link`, the field note explains family as an organizational umbrella rather than a history-owning object, and linked activities can now be returned to standalone with one tap without touching logged sets. The linking modal itself was simplified around the real jobs: link to an existing family anchor, create a new family, create a related variant, or make the current activity standalone again. Added new build-facing spec [FAMILY-SYSTEM-AND-PICKER-SPEC.md](/Users/cubicleaf/Documents/Fitness-git/FAMILY-SYSTEM-AND-PICKER-SPEC.md) to pin down the actual hard part of this feature: non-destructive linking rules plus picker/search behavior that must reliably surface relevant families and activities. Rationale: the value here is flexible organization without history anxiety; if the terminology implies rigid taxonomy or the picker misses obvious matches, the whole feature will be avoided.
 - 2026-07-29 (activity lineage flow + BYO Groq coach + larger arrows): Extended `index.html` in three directions. First, the side day arrows were enlarged again and the top title/settings controls were pushed into the deeper burgundy lane Tim asked for. Second, the Add Activity picker now shows a plain flow-chart SVG on each activity row that opens a new `Activity Lineage` flow for clarifying whether that activity is the parent or a variant; the flow can link to an existing parent, create a new parent and attach the current activity beneath it, or mark the current activity as a parent and spin off a linked variant immediately, all backed by the existing movement-family model plus a new `activityLineage` field note. Third, the app now has a local-first `Log Coach` chat surface with bring-your-own Groq API key storage, model selection (`openai/gpt-oss-120b` / `qwen/qwen3.6-27b`) in Settings, and an in-app coach modal that sends current-date/split/activity context plus field-note/spec guidance directly to Groq from the browser. Rationale: this keeps the new lineage concept intentional instead of implicit, and it adds a helper layer without violating the single-file/local-first/serverless posture. Verified all 5 inline script blocks with a JavaScript syntax pass after extraction from the HTML shell.
 - 2026-07-29 (header spacing + `Today` arrow correction): Tightened the date/split stack in `index.html` so the day label sits slightly closer to the date, recolored the top-right gear into the same deep burgundy family as the rest of the header, and corrected the top `Today` affordance again so its curved SVG is visibly heavier and flips left when browsing future dates. Rationale: the previous pass only half-landed — the header still felt too vertically loose and the `Today` arrow behavior was not reading clearly enough in live use. Verified all 5 inline script blocks with a JavaScript syntax pass after extraction from the HTML shell.
 - 2026-07-29 (main-list cleanup: grip context moved to headers, `ea` removed): Tightened the main activity list in `index.html` after live rendering feedback. Per-hand/per-dumbbell set pills no longer append `ea`, and grip qualifiers are no longer printed inside the set pills on the main screen. Instead, the latest logged grip for an activity on that day now renders as a compact header tag beside the activity name (`N`, `P`, `S`, `C`, `W`, `V`, `Std`, or combinations like `N C`). Rationale: grip is activity context, not pill content, and the previous rendering made the main list feel noisy and over-explained. Verified all 5 inline script blocks with a JavaScript syntax pass after extraction from the HTML shell.
@@ -128,22 +129,23 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - First-version recommendation: activity-level setting plus a small in-app reminder surface. Avoid push notifications until usage proves they are worth the extra permission/annoyance.
 - Open question: should reminders apply to exact activities only, or to movement families/variations once those exist?
 
-### Variations, movement families, and muscle-group mapping
+### Families, variants, and retrieval reliability
 
-- Idea: connect related activities such as cable row, dumbbell row, machine row, and other row variants under a broader movement family.
+- Active direction: use `family` as the umbrella concept and keep history on the exact activity/variant the user logs.
+- Core rule set now settling:
+  - one activity can belong to zero or one family
+  - one family can contain many activities
+  - linking and unlinking must be reversible and non-destructive
+  - standalone is a valid long-term state, not an error condition
 - Product value:
-  - Preserve exact activity history while still tracking continuity in a fundamental movement pattern.
-  - Let "last time" remain precise, while offering broader context like "you trained rows recently."
-  - Enable recommendations based on muscle group or movement category rather than exact exercise name.
-- Risks:
-  - Too much taxonomy can become homework.
-  - Auto-classification mistakes could be worse than no classification if they corrupt suggestions.
-- Current recommendation: start with manual tags/families before any LLM/API automation. Let the user link variations intentionally, then later explore suggested mappings.
-- Possible model:
-  - Activity = exact thing logged.
-  - Variation = equipment/form variant.
-  - Movement family = row, squat, press, pull-up, hinge, carry, etc.
-  - Muscle-group hints = advisory metadata, not scoring gospel.
+  - Preserve exact activity history while still tracking continuity in a broader movement lane like Row or Run.
+  - Let recommendations surface the right neighborhood without flattening distinct activities into one history stream.
+  - Give the AI coach a structure it can explain and use without forcing taxonomy on every activity.
+- Main risk is no longer storage. It is retrieval trust:
+  - the Add Activity picker must surface relevant families and activities without fail
+  - search must hit family names, activity names, split/category context, and useful variation language
+  - if the picker misses obvious matches, users will stop organizing activities at all
+- Current recommendation: keep family linking manual and reversible, then use AI to explain and assist rather than silently auto-classifying. Detailed build rules now live in [FAMILY-SYSTEM-AND-PICKER-SPEC.md](/Users/cubicleaf/Documents/Fitness-git/FAMILY-SYSTEM-AND-PICKER-SPEC.md).
 
 ### IDFK workout helper
 
