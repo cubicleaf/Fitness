@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Fitness Tracker">
-    <meta name="theme-color" content="#1a0a0a">
+    <meta name="theme-color" content="#1a0a12">
     <title>Fitness Tracker</title>
     <style>
         /* ============================================================
@@ -68,6 +68,7 @@
             width: 100%;
             height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--bg-page);
             background: radial-gradient(ellipse at center, var(--bg-deep) 0%, var(--bg-page) 40%, var(--bg-page) 70%, var(--bg-edge) 100%);
             color: var(--text-body);
             overflow: hidden;
@@ -77,10 +78,23 @@
             width: 100%;
             max-width: 430px;
             height: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             position: relative;
+            background: radial-gradient(ellipse at center, var(--bg-deep) 0%, var(--bg-page) 40%, var(--bg-page) 70%, var(--bg-edge) 100%);
+            isolation: isolate;
+        }
+
+        #root::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: var(--bg-page);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Modals & Overlays */
@@ -3573,7 +3587,8 @@ const CreateExerciseModal = ({
   dayLabel,
   onOpenFieldNote
 }) => {
-  const activityRecommenderEnabled = false;
+  const activityRecommenderEnabled = true;
+  const splitRecommenderEnabled = false;
   const [name, setName] = useState('');
   const [selectedCats, setSelectedCats] = useState(dayLabel && categories.includes(dayLabel.toLowerCase()) ? [dayLabel.toLowerCase()] : []);
   const [type, setType] = useState(null);
@@ -3663,7 +3678,7 @@ const CreateExerciseModal = ({
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
   const handleRecommend = () => {
-    if (!activityRecommenderEnabled) return;
+    if (!splitRecommenderEnabled) return;
     const raw = name.trim().toLowerCase();
     if (!raw) return;
 
@@ -3954,19 +3969,19 @@ const CreateExerciseModal = ({
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setSelectedCats([]),
     style: {
-      flex: activityRecommenderEnabled ? 1 : 'unset',
-      width: activityRecommenderEnabled ? 'auto' : '100%',
+      flex: splitRecommenderEnabled ? 1 : 'unset',
+      width: splitRecommenderEnabled ? 'auto' : '100%',
       padding: '10px',
       border: 'none',
       fontSize: '11px',
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      borderRight: activityRecommenderEnabled ? '1px solid var(--surface-edge)' : 'none',
+      borderRight: splitRecommenderEnabled ? '1px solid var(--surface-edge)' : 'none',
       background: selectedCats.length === 0 ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: selectedCats.length === 0 ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
-  }, "No Split"), activityRecommenderEnabled && /*#__PURE__*/React.createElement("button", {
+  }, "No Split"), splitRecommenderEnabled && /*#__PURE__*/React.createElement("button", {
     onClick: handleRecommend,
     style: {
       flex: 1,
@@ -3979,7 +3994,7 @@ const CreateExerciseModal = ({
       background: 'rgba(255,255,255,0.03)',
       color: 'var(--text-placeholder)'
     }
-  }, "Recommend")), activityRecommenderEnabled && recommendation && /*#__PURE__*/React.createElement("div", {
+  }, "Recommend")), splitRecommenderEnabled && recommendation && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       marginTop: '6px',
@@ -6210,7 +6225,8 @@ const HistoryModal = ({
   unit,
   onUniformWeight,
   onUniformReps,
-  onBoth
+  onBoth,
+  onNavigate
 }) => {
   const [history, setHistory] = useState([]);
   const [sessionNotes, setSessionNotes] = useState({});
@@ -6321,8 +6337,20 @@ const HistoryModal = ({
         marginBottom: '12px',
         borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none'
       }
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "history-date"
+    }, /*#__PURE__*/React.createElement("button", {
+      className: "history-date",
+      onClick: () => onNavigate && onNavigate(session.date, exercise.id),
+      style: {
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        marginBottom: '8px',
+        color: 'inherit',
+        cursor: 'pointer',
+        WebkitAppearance: 'none',
+        textAlign: 'left',
+        width: '100%'
+      }
     }, formatDateShort(session.date)), /*#__PURE__*/React.createElement("div", {
       className: "set-boxes-container"
     }, session.sets.map((s, sidx) => /*#__PURE__*/React.createElement("div", {
@@ -6378,9 +6406,11 @@ const SettingsModal = ({
   onCategoriesChanged,
   categories: settingsCategories,
   unit,
-  setUnit
+  setUnit,
+  initialTab = 'weekly',
+  focusCoachConfig = false
 }) => {
-  const [activeTab, setActiveTab] = useState('weekly');
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [weeklyLabels, setWeeklyLabels] = useState({
     0: '',
     1: '',
@@ -6402,8 +6432,20 @@ const SettingsModal = ({
   const [showDupInfo, setShowDupInfo] = useState(false);
   const [groqApiKey, setGroqApiKeyState] = useState(() => getStoredGroqApiKey());
   const [groqModel, setGroqModelState] = useState(() => getStoredGroqModel());
+  const coachSectionRef = useRef(null);
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const templateOptions = ['', ...(settingsCategories || ['Push', 'Pull', 'Legs', 'Core', 'Cardio']), 'Rest'];
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+  useEffect(() => {
+    if (focusCoachConfig && activeTab === 'preferences' && coachSectionRef.current) {
+      coachSectionRef.current.scrollIntoView({
+        block: 'start',
+        behavior: 'smooth'
+      });
+    }
+  }, [focusCoachConfig, activeTab]);
   const handleSelectChange = (idx, value) => {
     if (value === '__add_new__') {
       setShowCatEditor(true);
@@ -7549,6 +7591,7 @@ const SettingsModal = ({
   }, /*#__PURE__*/React.createElement("span", null, "Configure Sounds"), /*#__PURE__*/React.createElement(IconArrowRight, {
     size: 14
   }))), /*#__PURE__*/React.createElement("div", {
+    ref: coachSectionRef,
     style: {
       marginTop: '28px'
     }
@@ -7572,7 +7615,7 @@ const SettingsModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
       marginBottom: '10px'
     }
-  }, "Bring your own Groq key. The coach uses it directly from this browser and keeps the key local to this device."), /*#__PURE__*/React.createElement("input", {
+  }, "Bring your own Groq key. The coach uses it directly from this browser and keeps the key local to this device. Changes here save immediately."), /*#__PURE__*/React.createElement("input", {
     type: "password",
     className: "form-input",
     placeholder: "Paste Groq API key",
@@ -8533,7 +8576,8 @@ const AIChatModal = ({
   dayLabel,
   exercises,
   categories,
-  unit
+  unit,
+  onOpenSettings
 }) => {
   const starterMessages = getStoredCoachMessages();
   const [messages, setMessages] = useState(starterMessages.length > 0 ? starterMessages : [{
@@ -8542,13 +8586,7 @@ const AIChatModal = ({
   }]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [draftKey, setDraftKey] = useState(() => getStoredGroqApiKey());
-  const [draftModel, setDraftModel] = useState(() => getStoredGroqModel());
-  const [coachConfigNotice, setCoachConfigNotice] = useState('');
   const threadRef = useRef(null);
-  const savedKey = getStoredGroqApiKey();
-  const savedModel = getStoredGroqModel();
-  const hasUnsavedCoachConfig = draftKey.trim() !== savedKey.trim() || draftModel !== savedModel;
   useEffect(() => {
     setStoredCoachMessages(messages);
   }, [messages]);
@@ -8556,6 +8594,10 @@ const AIChatModal = ({
     const el = threadRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
+  const savedKey = getStoredGroqApiKey().trim();
+  const savedModel = getStoredGroqModel();
+  const activeModel = FITLOGS_AI_MODELS.find(model => model.id === savedModel) || FITLOGS_AI_MODELS[0];
+  const hasSavedKey = !!savedKey;
   const summarizeExercises = () => {
     if (!exercises || exercises.length === 0) return 'No activities logged on the currently viewed date.';
     return exercises.map(item => {
@@ -8570,20 +8612,15 @@ const AIChatModal = ({
 - Available splits: ${(categories || []).join(', ')}
 - Activities on the viewed date:
 ${summarizeExercises()}`;
-  const saveCoachConfig = () => {
-    const trimmedKey = draftKey.trim();
-    setStoredGroqApiKey(trimmedKey);
-    setStoredGroqModel(draftModel);
-    setCoachConfigNotice(trimmedKey ? 'Saved to this device.' : 'Saved with no key on this device.');
-  };
   const sendMessage = async () => {
     const text = input.trim();
     if (!text || loading) return;
-    const apiKey = draftKey.trim();
+    const apiKey = getStoredGroqApiKey().trim();
+    const modelId = getStoredGroqModel();
     if (!apiKey) {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'This coach is bring-your-own-key. Add your Groq key in Settings or paste it into the key box here first.'
+        content: 'This coach is bring-your-own-key. Open Settings and add your Groq key first.'
       }]);
       return;
     }
@@ -8595,7 +8632,7 @@ ${summarizeExercises()}`;
     setInput('');
     setLoading(true);
     setStoredGroqApiKey(apiKey);
-    setStoredGroqModel(draftModel);
+    setStoredGroqModel(modelId);
     try {
       const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
@@ -8604,7 +8641,7 @@ ${summarizeExercises()}`;
           Authorization: `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: draftModel,
+          model: modelId,
           temperature: 0.4,
           messages: [{
             role: 'system',
@@ -8652,13 +8689,25 @@ ${summarizeExercises()}`;
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
-  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Log Coach"), /*#__PURE__*/React.createElement("button", {
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Log Coach"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "settings-btn",
+    "aria-label": "Open coach settings",
+    onClick: onOpenSettings
+  }, /*#__PURE__*/React.createElement(IconSettings, {
+    size: 20
+  })), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
     onClick: onClose
   }, /*#__PURE__*/React.createElement(IconX, {
     size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
+  })))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content",
     style: {
       display: 'flex',
@@ -8679,84 +8728,33 @@ ${summarizeExercises()}`;
       fontSize: '12px',
       fontWeight: '700',
       color: 'var(--text-warm)',
-      marginBottom: '8px'
+      marginBottom: '6px'
     }
-  }, "Bring your own Groq key"), /*#__PURE__*/React.createElement("input", {
-    type: "password",
-    className: "form-input",
-    placeholder: "Paste Groq API key",
-    value: draftKey,
-    onChange: e => {
-      setDraftKey(e.target.value);
-      setCoachConfigNotice('');
-    }
-  }), /*#__PURE__*/React.createElement("div", {
+  }, hasSavedKey ? "Coach Ready" : "Coach Needs Setup"), /*#__PURE__*/React.createElement("div", {
     style: {
-      marginTop: '8px',
+      fontSize: '12px',
+      lineHeight: '1.55',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
+    }
+  }, hasSavedKey ? `Using ${activeModel.label}. Key is stored locally on this device.` : "The API key and model live in Settings now so this screen can stay focused on the conversation."), /*#__PURE__*/React.createElement("div", {
+    style: {
       display: 'flex',
       gap: '8px',
-      flexWrap: 'wrap'
+      marginTop: '10px'
     }
-  }, FITLOGS_AI_MODELS.map(model => /*#__PURE__*/React.createElement("button", {
-    key: model.id,
-    onClick: () => {
-      setDraftModel(model.id);
-      setCoachConfigNotice('');
-    },
-    style: {
-      flex: '1 1 140px',
-      padding: '9px 10px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
-      background: draftModel === model.id ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'rgba(255,255,255,0.03)',
-      color: draftModel === model.id ? 'var(--text-body)' : 'var(--text-faint)',
-      fontSize: '11px',
-      fontWeight: '700',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, model.label))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '10px',
-      display: 'flex',
-      gap: '8px',
-      alignItems: 'center',
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
+  }, !hasSavedKey && /*#__PURE__*/React.createElement("button", {
     className: "btn",
-    onClick: saveCoachConfig,
-    disabled: !hasUnsavedCoachConfig,
-    style: {
-      marginBottom: 0,
-      opacity: hasUnsavedCoachConfig ? 1 : 0.45
-    }
-  }, "Save Key"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => {
-      setDraftKey('');
-      setCoachConfigNotice('');
-    },
+    onClick: onOpenSettings,
     style: {
       marginBottom: 0
     }
-  }, "Clear"), /*#__PURE__*/React.createElement("div", {
+  }, "Open Settings"), hasSavedKey && /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onOpenSettings,
     style: {
-      flex: '1 1 160px',
-      minHeight: '16px',
-      fontSize: '11px',
-      lineHeight: '1.45',
-      color: coachConfigNotice ? 'var(--text-warm)' : 'var(--text-faint)',
-      textAlign: 'right'
+      marginBottom: 0
     }
-  }, coachConfigNotice || (hasUnsavedCoachConfig ? 'Save before closing if you want this key kept here.' : 'Key already saved on this device.'))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '8px',
-      fontSize: '11px',
-      lineHeight: '1.5',
-      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
-    }
-  }, (FITLOGS_AI_MODELS.find(model => model.id === draftModel) || FITLOGS_AI_MODELS[0]).helper)), /*#__PURE__*/React.createElement("div", {
+  }, "Coach Settings"))), /*#__PURE__*/React.createElement("div", {
     ref: threadRef,
     style: {
       flex: 1,
@@ -8840,6 +8838,67 @@ const QUICK_NOTE_SECTIONS = [{
   label: 'Mental & Motivation',
   items: ['Didn\'t want to be here', 'Crushed it', 'Pushed through plateau', 'Lost focus', 'In the zone', 'Nervous about weight', 'Confident today', 'Just going through motions']
 }];
+const NoteEntryModal = ({
+  title,
+  initialText,
+  dateLabel,
+  onSave,
+  onCancel
+}) => {
+  const [value, setValue] = useState(initialText || '');
+  useEffect(() => {
+    setValue(initialText || '');
+  }, [initialText]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, title), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onCancel
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, dateLabel && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 45%, transparent)',
+      marginBottom: '10px'
+    }
+  }, dateLabel), /*#__PURE__*/React.createElement("textarea", {
+    value: value,
+    onChange: e => setValue(e.target.value),
+    placeholder: "Write your note...",
+    rows: 7,
+    autoFocus: true,
+    style: {
+      width: '100%',
+      padding: '12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: 'rgba(255,255,255,0.04)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      resize: 'vertical',
+      minHeight: '180px',
+      lineHeight: '1.5'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onCancel
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => onSave(value)
+  }, "Save"))));
+};
 const ActivityContextModal = ({
   exerciseId,
   exerciseName,
@@ -8860,13 +8919,12 @@ const ActivityContextModal = ({
   const [notesTab, setNotesTab] = useState('custom');
   const [history, setHistory] = useState([]);
   const [exercise, setExercise] = useState(null);
-  const [customNoteText, setCustomNoteText] = useState('');
   const [formCueText, setFormCueText] = useState('');
   const [pastNotes, setPastNotes] = useState([]);
   const [pastFormCues, setPastFormCues] = useState([]);
   const [quickNoteFreq, setQuickNoteFreq] = useState({});
+  const [customNoteEditor, setCustomNoteEditor] = useState(null);
   const hasLoadedNotesRef = useRef(false);
-  const latestCustomNoteRef = useRef('');
   const latestFormCueRef = useRef('');
   const latestQuickNotesRef = useRef([]);
   const [collapsedSections, setCollapsedSections] = useState(() => {
@@ -8924,7 +8982,6 @@ const ActivityContextModal = ({
       // Current note/cue
       const todayNote = exNotes.find(n => n.date === currentDate);
       if (todayNote) {
-        setCustomNoteText(todayNote.freeText || '');
         setFormCueText(todayNote.formCueText || '');
       }
 
@@ -8938,9 +8995,6 @@ const ActivityContextModal = ({
       hasLoadedNotesRef.current = true;
     })();
   }, []);
-  useEffect(() => {
-    latestCustomNoteRef.current = customNoteText;
-  }, [customNoteText]);
   useEffect(() => {
     latestFormCueRef.current = formCueText;
   }, [formCueText]);
@@ -8982,10 +9036,11 @@ const ActivityContextModal = ({
     });
   };
   const saveNote = async (type, options = {}) => {
-    const customValue = options.customText !== undefined ? options.customText : latestCustomNoteRef.current;
+    const targetDate = options.date || currentDate;
+    const customValue = options.customText !== undefined ? options.customText : '';
     const formCueValue = options.formCueText !== undefined ? options.formCueText : latestFormCueRef.current;
     const quickTags = options.quickTags !== undefined ? options.quickTags : latestQuickNotesRef.current;
-    const existing = await dbOps.sessionNotes.getByExerciseAndDate(exerciseId, currentDate);
+    const existing = await dbOps.sessionNotes.getByExerciseAndDate(exerciseId, targetDate);
     if (existing) {
       if (type === 'custom') existing.freeText = customValue;
       if (type === 'formcue') existing.formCueText = formCueValue;
@@ -8996,7 +9051,7 @@ const ActivityContextModal = ({
         id: generateId('sn'),
         exerciseId,
         exerciseName,
-        date: currentDate,
+        date: targetDate,
         mood: null,
         tags: type === 'quicknotes' ? quickTags : [],
         formCueText: type === 'formcue' ? formCueValue : '',
@@ -9004,24 +9059,26 @@ const ActivityContextModal = ({
       }), 'save note');
     }
     if (type === 'custom') {
-      setInlineNote(prev => ({
-        ...prev,
-        [exerciseId]: customValue
-      }));
+      if (targetDate === currentDate) {
+        setInlineNote(prev => ({
+          ...prev,
+          [exerciseId]: customValue
+        }));
+      }
       if (customValue.trim()) {
         setPastNotes(prev => {
-          const exists = prev.some(n => n.date === currentDate);
-          if (exists) return prev.map(n => n.date === currentDate ? {
+          const exists = prev.some(n => n.date === targetDate);
+          if (exists) return prev.map(n => n.date === targetDate ? {
             ...n,
             text: customValue
-          } : n);
+          } : n).sort((a, b) => b.date.localeCompare(a.date));
           return [{
-            date: currentDate,
+            date: targetDate,
             text: customValue
-          }, ...prev];
+          }, ...prev].sort((a, b) => b.date.localeCompare(a.date));
         });
       } else {
-        setPastNotes(prev => prev.filter(n => n.date !== currentDate));
+        setPastNotes(prev => prev.filter(n => n.date !== targetDate));
       }
     }
     if (type === 'formcue') {
@@ -9048,21 +9105,18 @@ const ActivityContextModal = ({
   };
   useEffect(() => {
     if (!hasLoadedNotesRef.current) return;
-    debounce('customnote_' + exerciseId + '_' + currentDate, () => saveNote('custom', {
-      customText: latestCustomNoteRef.current
-    }), 350);
-  }, [customNoteText, exerciseId, currentDate]);
-  useEffect(() => {
-    if (!hasLoadedNotesRef.current) return;
     debounce('formcue_' + exerciseId + '_' + currentDate, () => saveNote('formcue', {
       formCueText: latestFormCueRef.current
     }), 350);
   }, [formCueText, exerciseId, currentDate]);
+  const openCustomNoteEditor = note => {
+    setCustomNoteEditor({
+      date: note?.date || currentDate,
+      text: note?.text || ''
+    });
+  };
   const handleClose = async () => {
     if (hasLoadedNotesRef.current) {
-      await saveNote('custom', {
-        customText: latestCustomNoteRef.current
-      });
       await saveNote('formcue', {
         formCueText: latestFormCueRef.current
       });
@@ -9092,7 +9146,7 @@ const ActivityContextModal = ({
     const d = set.duration ? set.duration >= 60 ? Math.floor(set.duration / 60) + 'm' + (set.duration % 60 ? set.duration % 60 + 's' : '') : set.duration + 's' : '';
     return [w, r, d].filter(Boolean).join(' x ');
   };
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: handleClose
   }, /*#__PURE__*/React.createElement("div", {
@@ -9233,36 +9287,52 @@ const ActivityContextModal = ({
     }
   }, st.l))), notesTab === 'custom' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
+      display: 'flex',
+      justifyContent: 'flex-end',
       marginBottom: '12px'
     }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    value: customNoteText,
-    onChange: e => setCustomNoteText(e.target.value),
-    onBlur: () => saveNote('custom'),
-    placeholder: "Type a note \u2014 auto-saves...",
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => openCustomNoteEditor(),
+    "aria-label": "Add custom note",
+    style: {
+      width: '42px',
+      height: '42px',
+      borderRadius: '12px',
+      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 14%, transparent)',
+      color: 'var(--text-body)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, /*#__PURE__*/React.createElement(IconPlus, {
+    size: 18
+  }))), pastNotes.length > 0 && pastNotes.map((n, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    onClick: () => openCustomNoteEditor(n),
     style: {
       width: '100%',
-      padding: '10px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'rgba(255,255,255,0.04)',
-      color: 'var(--text-body)',
-      fontSize: '13px'
-    }
-  })), pastNotes.length > 0 && pastNotes.map((n, i) => /*#__PURE__*/React.createElement("div", {
-    key: i,
-    style: {
       display: 'flex',
       justifyContent: 'space-between',
       padding: '10px 12px',
       borderBottom: '1px solid color-mix(in srgb, var(--accent) 8%, transparent)',
-      alignItems: 'center'
+      alignItems: 'center',
+      borderTop: 'none',
+      borderLeft: 'none',
+      borderRight: 'none',
+      background: 'none',
+      textAlign: 'left',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: '13px',
-      color: 'var(--text-warm)'
+      color: 'var(--text-warm)',
+      lineHeight: '1.45',
+      whiteSpace: 'pre-wrap'
     }
   }, n.text), /*#__PURE__*/React.createElement("span", {
     style: {
@@ -9376,14 +9446,14 @@ const ActivityContextModal = ({
     style: {
       marginBottom: '12px'
     }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
+  }, /*#__PURE__*/React.createElement("textarea", {
     value: formCueText,
     onChange: e => setFormCueText(e.target.value),
     onBlur: () => {
       if (formCueText.trim()) saveNote('formcue');
     },
     placeholder: "Type a form cue \u2014 auto-saves...",
+    rows: 3,
     style: {
       width: '100%',
       padding: '10px',
@@ -9391,7 +9461,10 @@ const ActivityContextModal = ({
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       background: 'rgba(255,255,255,0.04)',
       color: 'var(--text-body)',
-      fontSize: '13px'
+      fontSize: '13px',
+      resize: 'vertical',
+      minHeight: '92px',
+      lineHeight: '1.45'
     }
   })), pastFormCues.length > 0 && pastFormCues.map((n, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -9624,7 +9697,19 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Delete")))));
+  }, "Delete"))))), customNoteEditor && /*#__PURE__*/React.createElement(NoteEntryModal, {
+    title: "Custom Note",
+    initialText: customNoteEditor.text,
+    dateLabel: formatDate(customNoteEditor.date),
+    onCancel: () => setCustomNoteEditor(null),
+    onSave: async value => {
+      await saveNote('custom', {
+        date: customNoteEditor.date,
+        customText: value
+      });
+      setCustomNoteEditor(null);
+    }
+  }));
 };
 const GripPromptModal = ({
   exercise,
@@ -10327,6 +10412,7 @@ const FamilyViewModal = ({
   }, sibling.variationLabel || 'No variation label', sibling.lastUsed ? ` · Last ${formatDateShort(sibling.lastUsed)}` : ' · Not logged yet'))))));
 };
 function App() {
+  const safariChromeColor = '#1a0a12';
   const [currentDate, setCurrentDate] = useState(() => {
     const savedDate = getPref('lastViewedDate');
     return isValidDateString(savedDate) ? savedDate : getTodayString();
@@ -10359,6 +10445,8 @@ function App() {
   const [prefilledReps, setPrefilledReps] = useState(null);
   const [categories, setCategories] = useState(['push', 'pull', 'legs', 'core', 'cardio', 'mobility', 'stretch', 'other']);
   const [unit, setUnit] = useState('lbs');
+  const [settingsInitialTab, setSettingsInitialTab] = useState('weekly');
+  const [settingsFocusCoach, setSettingsFocusCoach] = useState(false);
   const [bodyweight, setBodyweight] = useState(null);
   const [showBWEditor, setShowBWEditor] = useState(false);
   const [bwEditValue, setBWEditValue] = useState('');
@@ -10415,6 +10503,19 @@ function App() {
   const touchRef = useRef(null);
   const contentRef = useRef(null);
   const longPressRef = useRef(null);
+  const openCoachSettings = useCallback(() => {
+    setSettingsInitialTab('preferences');
+    setSettingsFocusCoach(true);
+    setModal('settings');
+  }, []);
+  useEffect(() => {
+    document.documentElement.style.backgroundColor = safariChromeColor;
+    document.body.style.backgroundColor = safariChromeColor;
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute('content', safariChromeColor);
+    }
+  }, [safariChromeColor, modal, currentDate]);
   const handleTouchStart = useCallback(e => {
     if (modal) return; // Don't swipe when a modal is open
     const touch = e.touches[0];
@@ -10591,22 +10692,13 @@ function App() {
       const daySets = await dbOps.sets.getByDate(currentDate);
       const existingNeutral = daySets.find(set => set.exerciseId === exercise.id);
       if (!existingNeutral) {
-        const shifted = [];
-        for (const set of daySets) {
-          const updated = {
-            ...set,
-            exerciseOrder: (set.exerciseOrder || 0) + 1
-          };
-          const ok = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
-          if (!ok) return;
-          shifted.push(updated);
-        }
+        const nextExerciseOrder = daySets.reduce((max, set) => Math.max(max, set.exerciseOrder || 0), 0) + 1;
         const anchorSet = {
           id: generateId('set'),
           date: currentDate,
           exerciseId: exercise.id,
           exerciseName: exercise.name,
-          exerciseOrder: 1,
+          exerciseOrder: nextExerciseOrder,
           setOrder: 1,
           weight: null,
           weightType: 'bodyweight',
@@ -10668,16 +10760,9 @@ function App() {
         existingExercise
       };
     }
-    for (const set of daySets) {
-      const updated = {
-        ...set,
-        exerciseOrder: (set.exerciseOrder || 0) + 1
-      };
-      const ok = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
-      if (!ok) return null;
-    }
+    const nextExerciseOrder = daySets.reduce((max, set) => Math.max(max, set.exerciseOrder || 0), 0) + 1;
     return {
-      exerciseOrder: 1,
+      exerciseOrder: nextExerciseOrder,
       daySets,
       existingExercise: []
     };
@@ -10955,20 +11040,13 @@ function App() {
     if (pairingExerciseId && pairingExerciseId.source && pairingExerciseId.target) {
       const pair = pairingExerciseId;
       const daySetsNow = await dbOps.sets.getByDate(currentDate);
-      for (const existingSet of daySetsNow) {
-        const updated = {
-          ...existingSet,
-          exerciseOrder: (existingSet.exerciseOrder || 0) + 1
-        };
-        const reorderOk = await safeDb(() => dbOps.sets.update(updated), 'reorder activities');
-        if (!reorderOk) return;
-      }
+      const nextExerciseOrder = daySetsNow.reduce((max, set) => Math.max(max, set.exerciseOrder || 0), 0) + 1;
       const sourceSet = {
         id: generateId('set'),
         date: currentDate,
         exerciseId: pair.source.id,
         exerciseName: pair.source.name,
-        exerciseOrder: 1,
+        exerciseOrder: nextExerciseOrder,
         setOrder: 1,
         weight: null,
         weightType: 'bodyweight',
@@ -10983,7 +11061,7 @@ function App() {
         date: currentDate,
         exerciseId: pair.target.id,
         exerciseName: pair.target.name,
-        exerciseOrder: 1,
+        exerciseOrder: nextExerciseOrder,
         setOrder: 1,
         weight: null,
         weightType: 'bodyweight',
@@ -11424,6 +11502,8 @@ function App() {
     "aria-label": "Settings",
     onClick: () => {
       setExpandedExercise(null);
+      setSettingsInitialTab('weekly');
+      setSettingsFocusCoach(false);
       setModal('settings');
     }
   }, /*#__PURE__*/React.createElement(IconSettings, {
@@ -12044,15 +12124,13 @@ function App() {
       }
     }, "Edit")))));
   }), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
+    className: "btn btn-secondary",
     "data-tour": "add-activity",
     style: {
-      background: 'var(--accent-deep)',
-      color: '#D4A853',
-      border: '1px solid color-mix(in srgb, #D4A853 38%, var(--accent-deep))'
+      marginBottom: 0
     },
     onClick: () => setModal('exercisePicker')
-  }, "+ Create New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
+  }, "+ Add New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
     exerciseId: activityContext.exerciseId,
     exerciseName: activityContext.exerciseName,
     defaultTab: activityContext.defaultTab,
@@ -12114,6 +12192,12 @@ function App() {
     onUniformWeight: handleUniformWeight,
     onUniformReps: handleUniformReps,
     onBoth: handleBoth,
+    onNavigate: (date, exId) => {
+      setCurrentDate(date);
+      setExpandedExercise(exId);
+      setSelectedExercise(null);
+      setModal(null);
+    },
     onClose: () => {
       setModal('exercisePicker');
       setSelectedExercise(null);
@@ -12155,19 +12239,26 @@ function App() {
   }), modal === 'settings' && /*#__PURE__*/React.createElement(SettingsModal, {
     onClose: () => {
       setModal(null);
+      setSettingsFocusCoach(false);
       loadDayData();
     },
     categories: categories,
     onCategoriesChanged: cats => setCategories(cats),
     unit: unit,
-    setUnit: setUnit
+    setUnit: setUnit,
+    initialTab: settingsInitialTab,
+    focusCoachConfig: settingsFocusCoach
   }), modal === 'aiCoach' && /*#__PURE__*/React.createElement(AIChatModal, {
     onClose: () => setModal(null),
     currentDate: currentDate,
     dayLabel: dayLabel,
     exercises: exercises,
     categories: categories,
-    unit: unit
+    unit: unit,
+    onOpenSettings: () => {
+      setModal(null);
+      openCoachSettings();
+    }
   }), modal === 'sessionNote' && selectedExercise && /*#__PURE__*/React.createElement(SessionNoteModal, {
     exercise: selectedExercise,
     date: currentDate,
