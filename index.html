@@ -2547,11 +2547,35 @@ const inferMovementFamilyName = activityName => {
   const found = rules.find(rule => rule.match.some(token => lower.includes(token)));
   return found ? found.family : '';
 };
-const isLikelyGripRelevant = exerciseOrName => {
-  const source = typeof exerciseOrName === 'string' ? exerciseOrName : `${exerciseOrName?.name || ''} ${exerciseOrName?.movementFamilyName || ''}`;
-  const lower = source.toLowerCase();
-  return ['pulldown', 'pull down', 'row', 'pullup', 'pull up', 'chinup', 'chin up', 'curl', 'grip', 'hang', 'farmer', 'carry'].some(token => lower.includes(token));
+const GRIP_NAME_TOKENS = ['pulldown', 'pull down', 'row', 'rows', 'pullup', 'pullups', 'pull up', 'chinup', 'chin up', 'curl', 'curls', 'grip', 'hang', 'farmer', 'farmers', 'carry', 'deadlift', 'shrug', 'shrugs', 'face pull'];
+// Whole-word matching: "lateral" must not match "lat", "narrow" must not match "row".
+const matchesGripToken = lower => GRIP_NAME_TOKENS.some(token => new RegExp(`(^|\\s)${token}(\\s|$)`).test(lower));
+const GRIP_RELEVANT_CATEGORIES = ['back', 'pull', 'arms', 'full body', 'grip'];
+const GRIP_MOOT_CATEGORIES = ['legs', 'lower', 'glutes', 'abs', 'cardio'];
+
+// Longest-key containment lookup against the split map. Returns [] when nothing matches.
+const lookupSplitCategories = nameLike => {
+  const lower = String(nameLike || '').toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+  if (!lower) return [];
+  let bestKey = null;
+  Object.keys(exerciseSplitRecommendations).forEach(key => {
+    if (lower.includes(key) && (!bestKey || key.length > bestKey.length)) bestKey = key;
+  });
+  return bestKey ? exerciseSplitRecommendations[bestKey] || [] : [];
 };
+
+// 'likely' | 'moot' | 'unknown'. This only controls how prominently the grip
+// question is offered — it never decides the answer, and never hides the option.
+const gripRelevanceLevelFor = exerciseOrName => {
+  const source = typeof exerciseOrName === 'string' ? exerciseOrName : `${exerciseOrName?.name || ''} ${exerciseOrName?.movementFamilyName || ''}`;
+  const lower = source.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (matchesGripToken(lower)) return 'likely';
+  const cats = lookupSplitCategories(source);
+  if (cats.some(c => GRIP_RELEVANT_CATEGORIES.includes(c))) return 'likely';
+  if (cats.length && cats.every(c => GRIP_MOOT_CATEGORIES.includes(c))) return 'moot';
+  return 'unknown';
+};
+const isLikelyGripRelevant = exerciseOrName => gripRelevanceLevelFor(exerciseOrName) === 'likely';
 const formatGripLabel = set => {
   if (!set) return '';
   const parts = [];
@@ -3609,7 +3633,10 @@ const CreateExerciseModal = ({
   const [movementFamilyName, setMovementFamilyName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
   const [gripTrackingEnabled, setGripTrackingEnabled] = useState(false);
+  const [showGripSection, setShowGripSection] = useState(false);
   const dupCheckRef = useRef(null);
+  const gripRelevance = gripRelevanceLevelFor(name);
+  const gripSectionCollapsed = gripRelevance === 'moot' && !showGripSection && !gripTrackingEnabled;
 
   // Load all exercises on mount for duplicate checking
   useEffect(() => {
@@ -3620,57 +3647,47 @@ const CreateExerciseModal = ({
   }, []);
 
   // Fuzzy duplicate detection
+  // A duplicate is a name that reduces to the SAME words as an existing activity,
+  // allowing only for case, punctuation, spacing, word order, and pluralization.
+  // Anything with an extra qualifier word ("Incline" Dumbbell Row) or a different
+  // number ("Incline Bench 30" vs "45") is a deliberate variant, never a duplicate.
   const checkDuplicates = input => {
-    if (!activityRecommenderEnabled) {
+    const clear = () => {
       setDupMatches([]);
       setShowDupPanel(false);
-      return;
-    }
-    if (getPref('skipDupWarning') === 'true') return;
-    if (!input || input.length < 3) {
-      setDupMatches([]);
-      setShowDupPanel(false);
-      return;
-    }
-    const normalize = s => s.toLowerCase().replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
+    };
+    if (getPref('skipDupWarning') === 'true') return clear();
+    if (!input || input.length < 3) return clear();
+
+    // Digits are preserved. Apostrophes vanish; other punctuation becomes a space
+    // so "Pull-up" and "Pull Up" reduce identically.
+    const normalize = s => String(s || '').toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const digitsOf = s => (s.match(/\d+/g) || []).sort().join(',');
+    const canon = s => normalize(s).split(' ').filter(Boolean).map(w => w.replace(/s$/, '')).sort().join(' ');
+    const squash = s => normalize(s).replace(/\s/g, '');
     const inputNorm = normalize(input);
-    const inputWords = inputNorm.split(' ').filter(w => w.length > 1);
+    if (!inputNorm) return clear();
+    const inputDigits = digitsOf(inputNorm);
+    const inputCanon = canon(input);
+    const inputSquash = squash(input);
     const matches = [];
     allExercises.forEach(ex => {
       const exNorm = normalize(ex.name);
-      const exWords = exNorm.split(' ').filter(w => w.length > 1);
+      if (!exNorm) return;
+      // Different numbers means a deliberately different variant.
+      if (digitsOf(exNorm) !== inputDigits) return;
       let score = 0;
-
-      // Exact match
-      if (inputNorm === exNorm) {
-        score = 100;
-      }
-      // One contains the other
-      else if (inputNorm.includes(exNorm) || exNorm.includes(inputNorm)) {
-        score = 70;
-      } else {
-        // Word overlap
-        inputWords.forEach(iw => {
-          exWords.forEach(ew => {
-            if (iw === ew) score += 15;else if (iw.includes(ew) || ew.includes(iw)) score += 8;else if (iw.replace(/s$/, '') === ew.replace(/s$/, '')) score += 12;
-          });
-        });
-        // Concatenated check
-        const ic = inputWords.join('');
-        const ec = exWords.join('');
-        if (ic.includes(ec) || ec.includes(ic)) score += 25;
-        if (ic.replace(/s$/, '') === ec.replace(/s$/, '')) score += 20;
-      }
-      if (score >= 15) matches.push({
+      if (exNorm === inputNorm) score = 100;                       // identical
+      else if (canon(ex.name) === inputCanon) score = 90;          // word order / plurals
+      else if (squash(ex.name) === inputSquash) score = 85;        // spacing / hyphens
+      if (score >= 85) matches.push({
         exercise: ex,
         score
       });
     });
     matches.sort((a, b) => b.score - a.score);
-    const exactMatches = matches.filter(m => m.score === 100);
-    const top = (exactMatches.length > 0 ? exactMatches : matches).slice(0, 3);
-    setDupMatches(top);
-    if (top.length > 0) setShowDupPanel(true);
+    setDupMatches(matches.slice(0, 3));
+    setShowDupPanel(matches.length > 0);
   };
   const handleNameChange = val => {
     setName(val);
@@ -3678,7 +3695,6 @@ const CreateExerciseModal = ({
       const inferredFamily = inferMovementFamilyName(val);
       if (inferredFamily) setMovementFamilyName(inferredFamily);
     }
-    if (!activityRecommenderEnabled) return;
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
@@ -4213,7 +4229,22 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginTop: '4px'
     }
-  }, weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration')), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
+  }, weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration')), type !== 'neutral' && gripSectionCollapsed && /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowGripSection(true),
+    style: {
+      width: '100%',
+      background: 'none',
+      border: 'none',
+      padding: '10px',
+      marginBottom: '4px',
+      fontSize: '11px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      color: 'var(--text-placeholder)',
+      textAlign: 'center'
+    }
+  }, "More options"), type !== 'neutral' && !gripSectionCollapsed && /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4440,8 +4471,9 @@ const WeightPickerModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
+    lockedForDay: gripLockedForDay,
     onChange: onGripChange
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4811,8 +4843,9 @@ const RepPickerModal = ({
       flex: 1,
       padding: '12px 16px'
     }
-  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
+    lockedForDay: gripLockedForDay,
     onChange: onGripChange
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -5463,8 +5496,9 @@ const TimedDurationModal = ({
       overflowY: 'auto',
       padding: '16px'
     }
-  }, gripTrackingEnabled && !gripLockedForDay && /*#__PURE__*/React.createElement(GripInlineSelector, {
+  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
+    lockedForDay: gripLockedForDay,
     onChange: onGripChange
   }), editMode ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -9787,6 +9821,50 @@ const GripPromptModal = ({
       gripWidth
     })
   }, "Continue")))));
+};
+// Once a grip is set for this activity today, collapse to a chip instead of hiding
+// the control. The chip is display, not a prompt: the common path stays at zero extra
+// taps, and changing grip mid-session costs exactly one tap.
+const GripField = ({
+  initialGrip,
+  lockedForDay,
+  onChange
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  useEffect(() => {
+    if (!lockedForDay) setExpanded(false);
+  }, [lockedForDay]);
+  if (lockedForDay && !expanded) {
+    const label = formatGripLabel(initialGrip);
+    return /*#__PURE__*/React.createElement("button", {
+      onClick: () => setExpanded(true),
+      "aria-label": label ? `Grip: ${label}. Tap to change.` : 'Set grip',
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        marginBottom: '12px',
+        padding: '6px 10px',
+        borderRadius: '999px',
+        border: '1px solid color-mix(in srgb, var(--accent) 14%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+        color: 'var(--text-faint)',
+        fontSize: '11px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
+      }
+    }, label || 'Grip', /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+        fontWeight: '500'
+      }
+    }, "change"));
+  }
+  return /*#__PURE__*/React.createElement(GripInlineSelector, {
+    initialGrip: initialGrip,
+    onChange: onChange
+  });
 };
 const GripInlineSelector = ({
   initialGrip,

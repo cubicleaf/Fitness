@@ -1,5 +1,22 @@
 # Duplicate Activity Problem Handoff
 
+**Document status: Deprecated — 2026-07-31.** Do not use this as a prompt or as a
+source of truth. It describes the activity model as "forming" and asks for a
+duplicate-prevention design that has since been built; handing it to a model will
+produce a design for a system that already exists.
+
+Superseded by the 2026-07-31 entries under `## Decisions` in
+[STATUS.md](../STATUS.md), which record the shipped duplicate rule, the grip
+relevance model, and the modifier-vs-variant test. Remaining merge work is tracked
+under `## Open → Duplicate merge flow` in the same file.
+
+Retained for the reasoning in its "UX principles," "Unacceptable outcomes," and
+"Important product nuance" sections, which still hold.
+
+---
+
+Original prompt below, for reference only.
+
 Use this as the handoff prompt when a stronger model needs to solve duplicate prevention and duplicate merge in Tim's Logbook / Fit Logs.
 
 ## Prompt
