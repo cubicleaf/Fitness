@@ -430,7 +430,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-bright);
+            color: color-mix(in srgb, var(--text-bright) 88%, var(--accent-deep) 12%);
         }
 
         .exercise-menu-btn {
@@ -1759,7 +1759,7 @@ const IconSettings = ({
   opacity: "0.45"
 }), /*#__PURE__*/React.createElement("path", {
   d: "M15.5227 12C15.5227 13.6569 14.1694 15 12.4999 15C10.8304 15 9.47705 13.6569 9.47705 12C9.47705 10.3431 10.8304 9 12.4999 9C14.1694 9 15.5227 10.3431 15.5227 12Z",
-  fill: "currentColor"
+  fill: "var(--bg-page)"
 }));
 const IconScale = ({
   size,
@@ -1771,6 +1771,30 @@ const IconScale = ({
 }, /*#__PURE__*/React.createElement("path", {
   d: "M17.25 2H6.75A4.755 4.755 0 0 0 2 6.75v10.5A4.755 4.755 0 0 0 6.75 22h10.5A4.755 4.755 0 0 0 22 17.25V6.75A4.755 4.755 0 0 0 17.25 2Zm1.697 7.5-1.561 1.838a1.958 1.958 0 0 1-1.495.695 1.985 1.985 0 0 1-1.045-.299C14.18 11.324 13.145 10.833 12 10.833s-2.18.491-2.846.901a1.963 1.963 0 0 1-2.54-.397L5.053 9.5a2.366 2.366 0 0 1 .21-3.293C6.57 5.02 8.797 3.604 12 3.604s5.43 1.416 6.737 2.603a2.366 2.366 0 0 1 .21 3.293Z",
   fill: "currentColor"
+}));
+const IconBodyweight = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none",
+  viewBox: "0 0 24 24"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M10 22H14C19 22 21 20 21 15V9C21 4 19 2 14 2H10C5 2 3 4 3 9V15C3 20 5 22 10 22Z",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
+}), /*#__PURE__*/React.createElement("path", {
+  opacity: "0.4",
+  d: "M17.25 8.28992C14.26 5.62992 9.74 5.62992 6.75 8.28992L8.93 11.7899C10.68 10.2299 13.32 10.2299 15.07 11.7899L17.25 8.28992Z",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
 }));
 const IconChevronDown = ({
   size,
@@ -1787,22 +1811,30 @@ const IconFieldNote = ({
 }) => /*#__PURE__*/React.createElement(Icon, {
   size: size,
   style: style,
-  stroke: "none"
-}, /*#__PURE__*/React.createElement("circle", {
-  cx: "12",
-  cy: "12",
-  r: "9",
+  stroke: "none",
+  viewBox: "0 0 24 24"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M8.95043 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95044 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95043C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95043 20.6471Z",
   fill: "currentColor",
-  opacity: "0.16"
+  fillOpacity: "0.15",
+  stroke: "currentColor",
+  strokeWidth: "1.5"
 }), /*#__PURE__*/React.createElement("circle", {
   cx: "12",
-  cy: "17.2",
-  r: "1.15",
+  cy: "15.5",
+  r: "1",
   fill: "currentColor"
 }), /*#__PURE__*/React.createElement("path", {
-  d: "M9.9 9.25c.15-1.78 1.58-3.02 3.63-3.02 2.08 0 3.48 1.2 3.48 2.97 0 1.15-.55 1.95-1.84 2.84-1.07.74-1.44 1.22-1.44 2.15v.28h-1.75v-.37c0-1.28.46-1.96 1.63-2.8 1.07-.76 1.47-1.3 1.47-2.09 0-.88-.7-1.49-1.73-1.49-1.05 0-1.77.62-1.9 1.53H9.9Z",
-  fill: "currentColor"
+  d: "M10 10V9.5C10 8.39543 10.8954 7.5 12 7.5V7.5V7.5C13.1046 7.5 14 8.39543 14 9.5V9.62132C14 10.1839 13.7765 10.7235 13.3787 11.1213L12 12.5",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "1.5",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
 }));
+const FIELD_NOTE_ICON = /*#__PURE__*/React.createElement(IconFieldNote, {
+  size: 24
+});
 
 // ============ DATABASE ============
 
@@ -6984,8 +7016,8 @@ const SettingsModal = ({
   }, /*#__PURE__*/React.createElement("div", {
     className: "modal",
     style: {
-      height: '100vh',
-      maxHeight: '100vh',
+      height: '100dvh',
+      maxHeight: '100dvh',
       top: 0,
       bottom: 0
     },
@@ -7004,7 +7036,9 @@ const SettingsModal = ({
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden'
+      overflowY: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      minHeight: 0
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -7056,10 +7090,10 @@ const SettingsModal = ({
     }
   }, "Preferences")), activeTab === 'weekly' && /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: 1,
+      flex: 'none',
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden'
+      overflow: 'visible'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -7103,8 +7137,8 @@ const SettingsModal = ({
     }
   }, "kg")), /*#__PURE__*/React.createElement("div", {
     style: {
-      flex: 1,
-      overflow: 'auto'
+      flex: 'none',
+      overflow: 'visible'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -7381,24 +7415,19 @@ const SettingsModal = ({
   }, "Potential Duplicate Warning"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowDupInfo(true),
     style: {
-      width: '22px',
-      height: '22px',
-      borderRadius: '50%',
-      border: '1px solid color-mix(in srgb, var(--accent) 50%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 15%, transparent)',
+      width: '30px',
+      height: '30px',
+      border: 'none',
+      background: 'none',
       color: 'var(--accent-soft)',
-      fontSize: '12px',
-      fontWeight: '700',
       cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '11px',
-      boxSizing: 'content-box',
-      lineHeight: 1,
+      padding: 0,
       WebkitAppearance: 'none'
     }
-  }, "?")), /*#__PURE__*/React.createElement("div", {
+  }, FIELD_NOTE_ICON)), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       borderRadius: '8px',
@@ -8634,9 +8663,6 @@ const AIChatModal = ({
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
   const savedKey = getStoredGroqApiKey().trim();
-  const savedModel = getStoredGroqModel();
-  const activeModel = FITLOGS_AI_MODELS.find(model => model.id === savedModel) || FITLOGS_AI_MODELS[0];
-  const hasSavedKey = !!savedKey;
   const summarizeExercises = () => {
     if (!exercises || exercises.length === 0) return 'No activities logged on the currently viewed date.';
     return exercises.map(item => {
@@ -8756,44 +8782,6 @@ ${summarizeExercises()}`;
       paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 16px)'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '12px',
-      borderRadius: '12px',
-      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '12px',
-      fontWeight: '700',
-      color: 'var(--text-warm)',
-      marginBottom: '6px'
-    }
-  }, hasSavedKey ? "Coach Ready" : "Coach Needs Setup"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '12px',
-      lineHeight: '1.55',
-      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
-    }
-  }, hasSavedKey ? `Using ${activeModel.label}. Key is stored locally on this device.` : "The API key and model live in Settings now so this screen can stay focused on the conversation."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '8px',
-      marginTop: '10px'
-    }
-  }, !hasSavedKey && /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: onOpenSettings,
-    style: {
-      marginBottom: 0
-    }
-  }, "Open Settings"), hasSavedKey && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: onOpenSettings,
-    style: {
-      marginBottom: 0
-    }
-  }, "Coach Settings"))), /*#__PURE__*/React.createElement("div", {
     ref: threadRef,
     style: {
       flex: 1,
@@ -9354,13 +9342,13 @@ const ActivityContextModal = ({
     style: {
       width: '100%',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'space-between',
       padding: '10px 12px',
-      borderBottom: '1px solid color-mix(in srgb, var(--accent) 8%, transparent)',
-      alignItems: 'center',
-      borderTop: 'none',
-      borderLeft: 'none',
-      borderRight: 'none',
+      border: '1px solid color-mix(in srgb, var(--accent) 10%, transparent)',
+      borderRadius: '8px',
+      marginBottom: '8px',
+      alignItems: 'stretch',
       background: 'none',
       textAlign: 'left',
       cursor: 'pointer',
@@ -9374,11 +9362,14 @@ const ActivityContextModal = ({
       whiteSpace: 'pre-wrap'
     }
   }, n.text), /*#__PURE__*/React.createElement("span", {
-    style: {
+      style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)',
       flexShrink: 0,
-      marginLeft: '8px'
+      marginLeft: '0',
+      marginBottom: '5px',
+      order: -1,
+      alignSelf: 'flex-start'
     }
   }, n.date))), pastNotes.length === 0 && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -11528,7 +11519,6 @@ function App() {
   };
   const todayString = getTodayString();
   const todayWeightMissing = currentDate === todayString && bodyweight === null;
-  const showWeightRecallIcon = todayWeightMissing && !showBWEditor && (weightBannerDismissed || getPref('hideWeightBanner') === 'true');
   const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
   const isViewingFutureDay = currentDate > todayString;
   return /*#__PURE__*/React.createElement("div", {
@@ -11539,11 +11529,11 @@ function App() {
     className: "nav-title"
   }, "Fitness Tracker"), /*#__PURE__*/React.createElement("div", {
     className: "top-nav-actions"
-  }, showWeightRecallIcon && /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
     className: "settings-btn",
-    "aria-label": "Log today's weight",
+    "aria-label": "Log bodyweight",
     onClick: () => openBodyweightEditor(currentDate)
-  }, /*#__PURE__*/React.createElement(IconScale, {
+  }, /*#__PURE__*/React.createElement(IconBodyweight, {
     size: 22
   })), currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
     className: "today-jump-top-btn",
@@ -11559,7 +11549,7 @@ function App() {
     fill: "none",
     fillRule: "evenodd",
     stroke: "currentColor",
-    strokeWidth: "5.1",
+    strokeWidth: "3",
     strokeLinecap: "round",
     strokeLinejoin: "round",
     transform: isViewingFutureDay ? "translate(15.5 6.5) scale(-1 1)" : "translate(5.5 6.5)"
@@ -12210,7 +12200,8 @@ function App() {
     className: "btn btn-secondary",
     "data-tour": "add-activity",
     style: {
-      marginBottom: 0
+      marginBottom: 0,
+      color: '#D4A853'
     },
     onClick: () => setModal('exercisePicker')
   }, "+ Add New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
