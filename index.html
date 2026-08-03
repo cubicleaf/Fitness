@@ -298,7 +298,12 @@
             gap: 2px;
             cursor: pointer;
             -webkit-appearance: none;
+            order: 1;
         }
+
+        .bodyweight-top-btn { order: 2; }
+        .coach-top-btn { order: 3; }
+        .settings-top-btn { order: 4; }
 
         .today-jump-top-btn:active {
             opacity: 0.7;
@@ -11530,15 +11535,19 @@ function App() {
   }, "Fitness Tracker"), /*#__PURE__*/React.createElement("div", {
     className: "top-nav-actions"
   }, /*#__PURE__*/React.createElement("button", {
-    className: "settings-btn",
+    className: "settings-btn bodyweight-top-btn",
     "aria-label": "Log bodyweight",
     onClick: () => openBodyweightEditor(currentDate)
   }, /*#__PURE__*/React.createElement(IconBodyweight, {
     size: 22
-  })), currentDate !== getTodayString() && /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React.createElement("button", {
     className: "today-jump-top-btn",
     "aria-label": "Jump to today",
-    onClick: () => setCurrentDate(todayString)
+    "aria-hidden": currentDate === getTodayString() ? "true" : undefined,
+    onClick: () => setCurrentDate(todayString),
+    style: {
+      visibility: currentDate !== getTodayString() ? 'visible' : 'hidden'
+    }
   }, /*#__PURE__*/React.createElement("svg", {
     width: "22",
     height: "22",
@@ -11565,13 +11574,13 @@ function App() {
       color: 'var(--accent-deep)'
     }
   }, "Today")), /*#__PURE__*/React.createElement("button", {
-    className: "settings-btn",
+    className: "settings-btn coach-top-btn",
     "aria-label": "Open log coach",
     onClick: () => setModal('aiCoach')
   }, /*#__PURE__*/React.createElement(IconChat, {
     size: 22
   })), /*#__PURE__*/React.createElement("button", {
-    className: "settings-btn",
+    className: "settings-btn settings-top-btn",
     "aria-label": "Settings",
     onClick: () => {
       setExpandedExercise(null);
