@@ -6,7 +6,7 @@ updated: 2026-08-02
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-08-02
+**Last updated:** 2026-08-03
 
 ## Where I left off
 
@@ -21,6 +21,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-08-03: Preserve the LLM-coach, Groq-model, duplicate-review, WTF-helper, and optional personal-record exploration as a durable design memo rather than an implementation commitment. What: added [_docs/LLM-COACH-AND-GROQ-EXPLORATION.md](/Users/cubicleaf/Documents/Fitness-git/_docs/LLM-COACH-AND-GROQ-EXPLORATION.md), covering GPT-OSS 120B vs Qwen 3.6 27B routing, screenshot-to-Groq mechanics, user-led reversible duplicate merging, the “WTF do I do?” helper, priority preferences, and opt-in PR tracking. Why: the ideas are valuable but not yet specified enough to build safely; future work needs the product reasoning preserved without letting exploratory prose become an accidental contract. How to apply: keep deterministic code authoritative for data, duplicate identity, merges, and PR calculations; use the LLM for explanation, ranking, visual interpretation, and conversational assistance; consult the memo before reviving the dormant recommender or adding background AI calls.
 
 - 2026-08-02: Header controls use fixed visual slots: Today first, bodyweight second, coach third, settings fourth. What: the Today arrow/label now owns the far-left slot and is visually hidden—but still space-preserving—when viewing the current day; the scale stays anchored beside chat instead of shifting left. Why: conditional removal of Today previously caused the scale to move positions, violating the intended stable toolbar. How to apply: keep the slot order and CSS `order` classes (`today-jump-top-btn`, `bodyweight-top-btn`, `coach-top-btn`, `settings-top-btn`) intact; only Today visibility and arrow direction should change with the viewed date.
 - 2026-08-02: Settings content scrolls as one surface, and the supplied question SVG is the standing field-note icon. What: Settings now uses `100dvh`, a scrollable modal content region, and non-clipped tab bodies so Save Weekly Splits and the full Preferences/Log Coach section remain reachable on iPhone. Replaced the old circular/question field-note control with the supplied `assets/question-field-note.svg` design, inlined through `IconFieldNote`; the duplicate-warning trigger uses the same icon. Why: the previous nested `overflow: hidden` layout clipped the weekly save button and made Preferences unreachable; field-note affordances had drifted into a custom circle/question treatment. How to apply: keep the settings header fixed and let the content region scroll; every future field note must use `IconFieldNote` / `assets/question-field-note.svg`, never a new question mark or substitute circle.
