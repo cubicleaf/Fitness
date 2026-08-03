@@ -6313,6 +6313,7 @@ const HistoryModal = ({
   exercise,
   onClose,
   onLogSet,
+  onOpenNotes,
   unit,
   onUniformWeight,
   onUniformReps,
@@ -6325,22 +6326,22 @@ const HistoryModal = ({
     const loadHistory = async () => {
       const sets = await dbOps.sets.getByExerciseId(exercise.id);
       const grouped = {};
-      sets.forEach(set => {
+      sets.filter(set => !isNeutralAnchorSet(set)).forEach(set => {
         if (!grouped[set.date]) {
           grouped[set.date] = [];
         }
         grouped[set.date].push(set);
       });
-      const dates = Object.keys(grouped).sort().reverse();
-      setHistory(dates.map(date => ({
-        date,
-        sets: grouped[date].sort((a, b) => a.setOrder - b.setOrder)
-      })));
       const notes = await dbOps.sessionNotes.getByExerciseId(exercise.id);
       const notesByDate = {};
       notes.forEach(n => {
         notesByDate[n.date] = n;
       });
+      const dates = [...new Set([...Object.keys(grouped), ...notes.map(n => n.date)])].sort().reverse();
+      setHistory(dates.map(date => ({
+        date,
+        sets: (grouped[date] || []).sort((a, b) => a.setOrder - b.setOrder)
+      })));
       setSessionNotes(notesByDate);
     };
     loadHistory();
@@ -6361,7 +6362,20 @@ const HistoryModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, onLogSet && /*#__PURE__*/React.createElement("div", {
+  }, onOpenNotes && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '16px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: onOpenNotes,
+    style: {
+      width: '100%',
+      fontSize: '12px',
+      padding: '10px 4px',
+      fontWeight: '600'
+    }
+  }, "Open Notes")), onLogSet && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px',
@@ -6442,7 +6456,7 @@ const HistoryModal = ({
         textAlign: 'left',
         width: '100%'
       }
-    }, formatDateShort(session.date)), /*#__PURE__*/React.createElement("div", {
+    }, formatDateShort(session.date)), session.sets.length > 0 && /*#__PURE__*/React.createElement("div", {
       className: "set-boxes-container"
     }, session.sets.map((s, sidx) => /*#__PURE__*/React.createElement("div", {
       key: sidx,
@@ -10818,41 +10832,37 @@ function App() {
       setModal(null);
       return;
     }
-    if (isNeutralExercise(exercise)) {
-      const daySets = await dbOps.sets.getByDate(currentDate);
-      const existingNeutral = daySets.find(set => set.exerciseId === exercise.id);
-      if (!existingNeutral) {
-        const nextExerciseOrder = daySets.reduce((max, set) => Math.max(max, set.exerciseOrder || 0), 0) + 1;
-        const anchorSet = {
-          id: generateId('set'),
-          date: currentDate,
-          exerciseId: exercise.id,
-          exerciseName: exercise.name,
-          exerciseOrder: nextExerciseOrder,
-          setOrder: 1,
-          weight: null,
-          weightType: 'bodyweight',
-          reps: null,
-          duration: null,
-          weightMeaning: 'total',
-          type: 'neutral',
-          isPlaceholder: true,
-          createdAt: Date.now()
-        };
-        const ok = await safeDb(() => dbOps.sets.add(anchorSet), 'add neutral activity');
-        if (!ok) return;
-        await safeDb(() => dbOps.exercises.update({
-          ...exercise,
-          lastUsed: currentDate
-        }), 'update exercise');
-      }
-      setExpandedExercise(exercise.id);
-      setModal(null);
-      await loadDayData();
-      return;
-    }
     setSelectedExercise(exercise);
     setModal('activityHistory');
+  };
+  const ensureNeutralActivityForDate = async exercise => {
+    const daySets = await dbOps.sets.getByDate(currentDate);
+    const existingNeutral = daySets.find(set => set.exerciseId === exercise.id);
+    if (existingNeutral) return true;
+    const nextExerciseOrder = daySets.reduce((max, set) => Math.max(max, set.exerciseOrder || 0), 0) + 1;
+    const anchorSet = {
+      id: generateId('set'),
+      date: currentDate,
+      exerciseId: exercise.id,
+      exerciseName: exercise.name,
+      exerciseOrder: nextExerciseOrder,
+      setOrder: 1,
+      weight: null,
+      weightType: 'bodyweight',
+      reps: null,
+      duration: null,
+      weightMeaning: 'total',
+      type: 'neutral',
+      isPlaceholder: true,
+      createdAt: Date.now()
+    };
+    const ok = await safeDb(() => dbOps.sets.add(anchorSet), 'add neutral activity');
+    if (!ok) return false;
+    await safeDb(() => dbOps.exercises.update({
+      ...exercise,
+      lastUsed: currentDate
+    }), 'update exercise');
+    return true;
   };
   const handleCreateExercise = async exercise => {
     if (isNeutralExercise(exercise)) {
@@ -12343,10 +12353,21 @@ function App() {
     onOpenFieldNote: openFieldNote
   }), modal === 'activityHistory' && selectedExercise && /*#__PURE__*/React.createElement(HistoryModal, {
     exercise: selectedExercise,
-    onLogSet: handleLogSet,
-    onUniformWeight: handleUniformWeight,
-    onUniformReps: handleUniformReps,
-    onBoth: handleBoth,
+    onLogSet: isNeutralExercise(selectedExercise) ? undefined : handleLogSet,
+    onOpenNotes: isNeutralExercise(selectedExercise) ? async () => {
+      const ready = await ensureNeutralActivityForDate(selectedExercise);
+      if (!ready) return;
+      await loadDayData();
+      setModal(null);
+      setActivityContext({
+        exerciseId: selectedExercise.id,
+        exerciseName: selectedExercise.name,
+        defaultTab: 'notes'
+      });
+    } : undefined,
+    onUniformWeight: isNeutralExercise(selectedExercise) ? undefined : handleUniformWeight,
+    onUniformReps: isNeutralExercise(selectedExercise) ? undefined : handleUniformReps,
+    onBoth: isNeutralExercise(selectedExercise) ? undefined : handleBoth,
     onNavigate: (date, exId) => {
       setCurrentDate(date);
       setExpandedExercise(exId);
