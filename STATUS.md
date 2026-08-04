@@ -2,7 +2,7 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-08-02
+updated: 2026-08-03
 live_url: https://fit-logs.vercel.app
 ---
 
@@ -21,6 +21,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-08-03: Replace every modal close X with the supplied hand-drawn plus SVG. What: `IconX` now uses the supplied transparent plus artwork, normalized to `currentColor` and rotated 45 degrees; the existing 44px close-button hit area remains intact and the artwork uses a muted mauve token. Why: make close controls feel intentional and consistent across every modal without sacrificing touch accessibility or introducing a second button surface. How to apply: keep `IconX` as the shared close-control component, keep the SVG artwork-only contract, and tune its color through the close-button token rather than hardcoding a new color in individual modals.
 
 - 2026-08-03: Repair family linking across existing activities and new variants. What: Edit → Family Link now exposes stored families as selectable choices; Create Variation can choose an existing family or type a family name; the picker’s related-variant path is available even for standalone activities and can choose a family; and creating a related variant now closes the modal and refreshes the activity data. Why: the prior flow relied on exact text entry, hid the variant path for standalone activities, and failed to close/refresh after creating a variant, making successful actions appear broken. How to apply: preserve family as a non-destructive umbrella, keep exact activity history separate, and ensure every future family/variant write visibly completes and refreshes the relevant picker or view.
 
