@@ -1730,6 +1730,21 @@ const IconPlus = ({
   x2: "19",
   y2: "12"
 }));
+const IconCopy = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "9",
+  y: "9",
+  width: "11",
+  height: "11",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+}));
 const IconCheck = ({
   size,
   style
@@ -1794,7 +1809,7 @@ const IconBodyweight = ({
   viewBox: "0 0 24 24"
 }, /*#__PURE__*/React.createElement("path", {
   d: "M10 22H14C19 22 21 20 21 15V9C21 4 19 2 14 2H10C5 2 3 4 3 9V15C3 20 5 22 10 22Z",
-  fill: "none",
+  fill: "var(--bg-page)",
   stroke: "currentColor",
   strokeWidth: "1.5",
   strokeLinecap: "round",
@@ -1802,7 +1817,7 @@ const IconBodyweight = ({
 }), /*#__PURE__*/React.createElement("path", {
   opacity: "0.4",
   d: "M17.25 8.28992C14.26 5.62992 9.74 5.62992 6.75 8.28992L8.93 11.7899C10.68 10.2299 13.32 10.2299 15.07 11.7899L17.25 8.28992Z",
-  fill: "none",
+  fill: "var(--bg-page)",
   stroke: "currentColor",
   strokeWidth: "1.5",
   strokeLinecap: "round",
@@ -4471,8 +4486,8 @@ const WeightPickerModal = ({
   const plateWeight = unit === 'kg' ? 20 : 45;
   const isBarExercise = exerciseWeightMeaning === 'barbell' || exerciseWeightMeaning === 'bar-custom';
   const barWeight = exerciseWeightMeaning === 'barbell' ? plateWeight : exerciseWeightMeaning === 'bar-custom' ? storedCustomBarWeight : 0;
-  const barbellCommonWeightsLbs = [0, 20, 30, 50, 70, 90, 110, 140, 160, 180, 200, 230, 270].map(increment => barWeight + increment);
-  const barbellCommonWeightsKg = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140].map(increment => barWeight + increment);
+  const barbellCommonWeightsLbs = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100].map(increment => barWeight + increment);
+  const barbellCommonWeightsKg = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50].map(increment => barWeight + increment);
   const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
   const stepperAmount = unit === 'kg' ? 2.5 : 5;
@@ -6314,6 +6329,7 @@ const HistoryModal = ({
   onClose,
   onLogSet,
   onOpenNotes,
+  onCopyLastSet,
   unit,
   onUniformWeight,
   onUniformReps,
@@ -6418,7 +6434,23 @@ const HistoryModal = ({
       padding: '10px 4px',
       fontWeight: '600'
     }
-  }, "Both")), exercise.note && /*#__PURE__*/React.createElement("div", {
+  }, "Both"), onCopyLastSet && history.some(session => session.sets.length > 0) && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": "Copy last set",
+    title: "Copy last set",
+    onClick: onCopyLastSet,
+    style: {
+      flex: '0 0 44px',
+      padding: '10px 4px',
+      fontWeight: '600',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    className: "btn btn-secondary"
+  }, /*#__PURE__*/React.createElement(IconCopy, {
+    size: 18
+  }))), exercise.note && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
       padding: '8px 12px',
@@ -10972,6 +11004,41 @@ function App() {
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     setPreviousWeight(lastSetForExercise?.weight || null);
   };
+  const handleCopyLastSet = async () => {
+    const lastSession = await dbOps.sets.getLastSession(selectedExercise.id);
+    const sourceSet = lastSession?.sets?.slice().sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0];
+    if (!sourceSet) return;
+    const orderData = await assignExerciseOrder(selectedExercise.id);
+    if (!orderData) return;
+    const maxSetOrder = orderData.existingExercise.reduce((max, s) => Math.max(max, s.setOrder || 0), 0);
+    const copiedSet = {
+      id: generateId('set'),
+      date: currentDate,
+      exerciseId: selectedExercise.id,
+      exerciseName: selectedExercise.name,
+      exerciseOrder: orderData.exerciseOrder,
+      setOrder: Math.max(orderData.existingExercise.length + 1, maxSetOrder + 1),
+      weight: sourceSet.weight,
+      weightType: sourceSet.weightType,
+      reps: sourceSet.reps,
+      duration: sourceSet.duration,
+      weightMeaning: sourceSet.weightMeaning || 'total',
+      bandedColor: sourceSet.bandedColor,
+      type: sourceSet.type || selectedExercise.type || 'reps',
+      createdAt: Date.now()
+    };
+    if (sourceSet.gripType) copiedSet.gripType = sourceSet.gripType;
+    if (sourceSet.gripWidth) copiedSet.gripWidth = sourceSet.gripWidth;
+    const ok = await safeDb(() => dbOps.sets.add(copiedSet), 'copy last set');
+    if (!ok) return;
+    await safeDb(() => dbOps.exercises.update({
+      ...selectedExercise,
+      lastUsed: currentDate
+    }), 'update exercise');
+    setModal(null);
+    setSelectedExercise(null);
+    await loadDayData();
+  };
   const handleWeightSelected = async weightData => {
     if (!weightData) {
       // Clean up ghost exercise if user backs out before logging a set
@@ -12365,6 +12432,7 @@ function App() {
         defaultTab: 'notes'
       });
     } : undefined,
+    onCopyLastSet: isNeutralExercise(selectedExercise) ? undefined : handleCopyLastSet,
     onUniformWeight: isNeutralExercise(selectedExercise) ? undefined : handleUniformWeight,
     onUniformReps: isNeutralExercise(selectedExercise) ? undefined : handleUniformReps,
     onBoth: isNeutralExercise(selectedExercise) ? undefined : handleBoth,
