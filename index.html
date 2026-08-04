@@ -10029,6 +10029,58 @@ const GripInlineSelector = ({
     style: toggleStyle(gripWidth === opt)
   }, opt === 'v-grip' ? 'V-grip' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
 };
+const ExistingFamilyChoices = ({
+  selectedFamilyId,
+  onSelect,
+  includeNone = false
+}) => {
+  const [families, setFamilies] = useState([]);
+  useEffect(() => {
+    dbOps.families.getAll().then(all => setFamilies((all || []).sort((a, b) => a.name.localeCompare(b.name))));
+  }, []);
+  if (families.length === 0 && !includeNone) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-label",
+    style: {
+      marginBottom: '6px'
+    }
+  }, "Existing Families"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '6px'
+    }
+  }, includeNone && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => onSelect(null),
+    style: {
+      padding: '8px 10px',
+      borderRadius: '8px',
+      border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+      background: !selectedFamilyId ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Standalone"), families.map(family => /*#__PURE__*/React.createElement("button", {
+    key: family.id,
+    type: "button",
+    onClick: () => onSelect(family),
+    style: {
+      padding: '8px 10px',
+      borderRadius: '8px',
+      border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+      background: selectedFamilyId === family.id ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, family.name))));
+};
 const ManageFamilyModal = ({
   exercise,
   onSave,
@@ -10036,6 +10088,7 @@ const ManageFamilyModal = ({
   onOpenFieldNote
 }) => {
   const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
+  const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
   const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
   const handleSave = async () => {
     const normalized = normalizeFamilyName(familyName);
@@ -10081,7 +10134,14 @@ const ManageFamilyModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
       marginBottom: '14px'
     }
-  }, "Link this activity into a family or clear the link and return it to standalone. Family structure is organizational only and does not rewrite history."), /*#__PURE__*/React.createElement("div", {
+  }, "Link this activity into a family or clear the link and return it to standalone. Family structure is organizational only and does not rewrite history."), /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
+    selectedFamilyId: selectedFamilyId,
+    includeNone: true,
+    onSelect: family => {
+      setSelectedFamilyId(family?.id || '');
+      setFamilyName(family?.name || '');
+    }
+  }), /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
@@ -10217,9 +10277,11 @@ const CreateVariationModal = ({
 }) => {
   const [name, setName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
+  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
+  const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
   const handleSave = async () => {
     if (!name.trim()) return;
-    const familySourceName = exercise.movementFamilyName || inferMovementFamilyName(exercise.name);
+    const familySourceName = normalizeFamilyName(familyName);
     const familyRecord = familySourceName ? await ensureMovementFamilyRecord(familySourceName) : null;
     await onSave({
       ...exercise,
@@ -10227,7 +10289,7 @@ const CreateVariationModal = ({
       name: name.trim(),
       variationOf: exercise.id,
       movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
-      movementFamilyName: familyRecord?.name || exercise.movementFamilyName || '',
+      movementFamilyName: familyRecord?.name || '',
       variationLabel: variationLabel.trim(),
       lastUsed: '',
       createdAt: Date.now()
@@ -10249,7 +10311,26 @@ const CreateVariationModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
+    selectedFamilyId: selectedFamilyId,
+    onSelect: family => {
+      setSelectedFamilyId(family?.id || '');
+      setFamilyName(family?.name || '');
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "form-label"
+  }, "Family Name"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    value: familyName,
+    onChange: e => {
+      setFamilyName(e.target.value);
+      setSelectedFamilyId('');
+    },
+    placeholder: "E.g., Chest Press"
+  })), /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
@@ -10293,6 +10374,8 @@ const ActivityLineageModal = ({
   const [newFamilyName, setNewFamilyName] = useState(inferMovementFamilyName(exercise?.name) || '');
   const [newVariantName, setNewVariantName] = useState('');
   const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
+  const [variantFamilyId, setVariantFamilyId] = useState(exercise?.movementFamilyId || '');
+  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
   useEffect(() => {
     (async () => {
       const all = (await dbOps.exercises.getAll()).filter(ex => ex.id !== exercise.id && ex.type !== 'neutral');
@@ -10324,7 +10407,7 @@ const ActivityLineageModal = ({
   };
   const createSiblingVariant = async () => {
     if (!newVariantName.trim()) return;
-    const familySeed = normalizeFamilyName(exercise.movementFamilyName || exercise.name);
+    const familySeed = normalizeFamilyName(variantFamilyName || exercise.movementFamilyName || exercise.name);
     const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
     await onCreateExercise({
       ...exercise,
@@ -10334,7 +10417,7 @@ const ActivityLineageModal = ({
       lastUsed: '',
       createdAt: Date.now(),
       movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
-      movementFamilyName: familyRecord?.name || exercise.movementFamilyName || exercise.name,
+      movementFamilyName: familyRecord?.name || variantFamilyName || exercise.movementFamilyName || exercise.name,
       variationLabel: variationLabel.trim(),
       variationOf: exercise.id
     });
@@ -10352,7 +10435,7 @@ const ActivityLineageModal = ({
     }, "Link To Existing Family"), /*#__PURE__*/React.createElement("button", {
       className: "btn btn-secondary",
       onClick: () => setStep('new-family')
-    }, "Create New Family"), exercise?.movementFamilyId && /*#__PURE__*/React.createElement("button", {
+    }, "Create New Family"), /*#__PURE__*/React.createElement("button", {
       className: "btn btn-secondary",
       onClick: () => onSaveExercise(toStandaloneActivity(exercise))
     }, "Make Standalone"), exercise?.movementFamilyId && /*#__PURE__*/React.createElement("button", {
@@ -10360,7 +10443,13 @@ const ActivityLineageModal = ({
       onClick: () => setStep('new-variant')
     }, "Create Related Variant"));
   } else if (step === 'existing') {
-    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
+      selectedFamilyId: variantFamilyId,
+      onSelect: family => {
+        setVariantFamilyId(family?.id || '');
+        setVariantFamilyName(family?.name || '');
+      }
+    }), /*#__PURE__*/React.createElement("div", {
       style: {
         maxHeight: '260px',
         overflowY: 'auto',
@@ -12556,7 +12645,12 @@ function App() {
       }
     },
     onCreateExercise: async newExercise => {
-      await safeDb(() => dbOps.exercises.add(newExercise), 'create linked activity');
+      const ok = await safeDb(() => dbOps.exercises.add(newExercise), 'create linked activity');
+      if (ok) {
+        setSelectedExercise(null);
+        modalBack();
+        await loadDayData();
+      }
     }
   }), modal === 'changeWeightMeaning' && selectedExercise && /*#__PURE__*/React.createElement(ChangeWeightMeaningModal, {
     exercise: selectedExercise,
