@@ -3125,6 +3125,9 @@ const formatSetBox = (set, previousSet, unitOverride) => {
       box += `${set.weight}${displayUnit} `;
     }
   }
+  const modifierTag = formatGripHeaderTag(set);
+  const previousModifierTag = formatGripHeaderTag(previousSet);
+  if (modifierTag && modifierTag !== previousModifierTag) box += `${modifierTag} `;
   if (set.distance !== null && set.distance !== undefined) {
     box += `${set.distance}${set.distanceUnit || 'mi'}`;
     if (set.duration !== null && set.duration !== undefined) box += ' · ';
@@ -3379,15 +3382,24 @@ const ExercisePickerModal = ({
   onCategoriesChanged,
   defaultCategory,
   onPair,
-  onOpenLineage
+  onOpenLineage,
+  pickerState,
+  onPickerStateChange
 }) => {
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState(defaultCategory || 'all');
+  const [search, setSearch] = useState(pickerState?.search || '');
+  const [category, setCategory] = useState(pickerState?.category || defaultCategory || 'all');
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [pairingSource, setPairingSource] = useState(null);
-  const [selectedFamilyId, setSelectedFamilyId] = useState(null);
+  const [selectedFamilyId, setSelectedFamilyId] = useState(pickerState?.selectedFamilyId || null);
+  useEffect(() => {
+    if (onPickerStateChange) onPickerStateChange({
+      search,
+      category,
+      selectedFamilyId
+    });
+  }, [search, category, selectedFamilyId, onPickerStateChange]);
   useEffect(() => {
     const loadExercises = async () => {
       const all = await dbOps.exercises.getByLastUsed();
@@ -9948,7 +9960,25 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Create Variation"), /*#__PURE__*/React.createElement("button", {
+  }, "Create Variation"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      onAction('mergeActivity');
+      onClose();
+    },
+    style: {
+      width: '100%',
+      padding: '14px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      fontSize: '14px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      textAlign: 'left'
+    }
+  }, "Merge Into Another Activity"), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('rename');
       onClose();
@@ -10864,6 +10894,79 @@ const FamilyViewModal = ({
     }
   }, sibling.variationLabel || 'No variation label', sibling.lastUsed ? ` · Last ${formatDateShort(sibling.lastUsed)}` : ' · Not logged yet'))))));
 };
+const MergeActivityModal = ({
+  exercise,
+  onMerge,
+  onClose
+}) => {
+  const [activities, setActivities] = useState([]);
+  const [query, setQuery] = useState('');
+  const [target, setTarget] = useState(null);
+  useEffect(() => {
+    dbOps.exercises.getAll().then(all => setActivities((all || []).filter(ex => ex.id !== exercise.id).sort((a, b) => a.name.localeCompare(b.name))));
+  }, [exercise]);
+  const visible = activities.filter(ex => ex.name.toLowerCase().includes(query.trim().toLowerCase()));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Merge Activity"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '13px',
+      lineHeight: '1.5',
+      color: 'var(--text-body)',
+      marginBottom: '12px'
+    }
+  }, "Move all sets and notes from ", /*#__PURE__*/React.createElement("strong", null, exercise.name), " into one activity. The selected activity remains; this one is removed."), /*#__PURE__*/React.createElement("input", {
+    className: "search-input",
+    type: "text",
+    placeholder: "Find the activity to keep...",
+    value: query,
+    onChange: e => setQuery(e.target.value)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxHeight: '330px',
+      overflowY: 'auto',
+      marginTop: '12px'
+    }
+  }, visible.map(ex => /*#__PURE__*/React.createElement("button", {
+    key: ex.id,
+    type: "button",
+    onClick: () => setTarget(ex),
+    style: {
+      width: '100%',
+      textAlign: 'left',
+      padding: '12px',
+      marginBottom: '8px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      background: target?.id === ex.id ? 'color-mix(in srgb, var(--accent) 20%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, ex.name))), target && /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onClose
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => onMerge(target)
+  }, "Merge into ", target.name)))));
+};
 function App() {
   const safariChromeColor = '#1a0a12';
   const [currentDate, setCurrentDate] = useState(() => {
@@ -10920,6 +11023,11 @@ function App() {
   const [showQuickNotes, setShowQuickNotes] = useState(null);
   const [selectedQuickNotes, setSelectedQuickNotes] = useState({});
   const [activityContext, setActivityContext] = useState(null); // { exerciseId, exerciseName, defaultTab: 'history'|'notes'|'edit' }
+  const [activityPickerState, setActivityPickerState] = useState({
+    search: '',
+    category: 'all',
+    selectedFamilyId: null
+  });
   const [exerciseLocks, setExerciseLocks] = useState({});
   const [pendingLockType, setPendingLockType] = useState(null);
   const [pillGlowId, setPillGlowId] = useState(null);
@@ -11777,6 +11885,49 @@ function App() {
       onCancel: () => setConfirmation(null)
     });
   };
+  const mergeActivities = async (source, target) => {
+    if (!source || !target || source.id === target.id) return;
+    const sourceSets = await dbOps.sets.getByExerciseId(source.id);
+    const targetSets = await dbOps.sets.getByExerciseId(target.id);
+    const allDates = [...new Set([...sourceSets, ...targetSets].map(set => set.date))];
+    for (const set of sourceSets) {
+      set.exerciseId = target.id;
+      set.exerciseName = target.name;
+      await safeDb(() => dbOps.sets.update(set), 'move merged set');
+    }
+    for (const date of allDates) {
+      const dateSets = [...targetSets.filter(set => set.date === date), ...sourceSets.filter(set => set.date === date)].sort((a, b) => (a.exerciseOrder || 0) - (b.exerciseOrder || 0) || (a.setOrder || 0) - (b.setOrder || 0) || (a.createdAt || 0) - (b.createdAt || 0));
+      if (dateSets.length === 0) continue;
+      const exerciseOrder = dateSets[0].exerciseOrder || 1;
+      for (let i = 0; i < dateSets.length; i++) {
+        dateSets[i].exerciseOrder = exerciseOrder;
+        dateSets[i].setOrder = i + 1;
+        await safeDb(() => dbOps.sets.update(dateSets[i]), 'renumber merged set');
+      }
+    }
+    const sourceNotes = await dbOps.sessionNotes.getByExerciseId(source.id);
+    for (const sourceNote of sourceNotes) {
+      const targetNote = await dbOps.sessionNotes.getByExerciseAndDate(target.id, sourceNote.date);
+      if (!targetNote) {
+        sourceNote.exerciseId = target.id;
+        sourceNote.exerciseName = target.name;
+        await safeDb(() => dbOps.sessionNotes.update ? dbOps.sessionNotes.update(sourceNote) : dbOps.sessionNotes.add(sourceNote), 'move merged note');
+        continue;
+      }
+      targetNote.tags = [...new Set([...(targetNote.tags || []), ...(sourceNote.tags || [])])];
+      const appendText = (existing, incoming) => existing && incoming && existing !== incoming ? `${existing}\n\n${incoming}` : existing || incoming || '';
+      targetNote.freeText = appendText(targetNote.freeText, sourceNote.freeText);
+      targetNote.formCueText = appendText(targetNote.formCueText, sourceNote.formCueText);
+      if (!targetNote.mood && sourceNote.mood) targetNote.mood = sourceNote.mood;
+      await safeDb(() => dbOps.sessionNotes.update ? dbOps.sessionNotes.update(targetNote) : dbOps.sessionNotes.add(targetNote), 'merge activity note');
+      await safeDb(() => dbOps.sessionNotes.delete(sourceNote.id), 'delete merged note');
+    }
+    await safeDb(() => dbOps.exercises.delete(source.id), 'delete merged activity');
+    setConfirmation(null);
+    setSelectedExercise(null);
+    setModal(null);
+    await loadDayData();
+  };
   const handleMenuClick = (exercise, action) => {
     if (action === 'delete') {
       handleDeleteExercise(exercise);
@@ -11865,6 +12016,11 @@ function App() {
       dbOps.exercises.get(exercise.exerciseId).then(ex => {
         setSelectedExercise(withNormalizedExerciseFields(ex));
         setModal('familyView');
+      });
+    } else if (action === 'mergeActivity') {
+      dbOps.exercises.get(exercise.exerciseId).then(ex => {
+        setSelectedExercise(withNormalizedExerciseFields(ex));
+        setModal('mergeActivity');
       });
     }
   };
@@ -12693,6 +12849,8 @@ function App() {
       setSelectedExercise(withNormalizedExerciseFields(exercise));
       setModal('activityLineage', 'exercisePicker');
     },
+    pickerState: activityPickerState,
+    onPickerStateChange: setActivityPickerState,
     onPair: (sourceEx, targetEx) => {
       // Store both exercises for paired duration logging
       setPairingExerciseId({
@@ -12741,6 +12899,22 @@ function App() {
       setSelectedExercise(null);
     },
     unit: unit
+  }), modal === 'mergeActivity' && selectedExercise && /*#__PURE__*/React.createElement(MergeActivityModal, {
+    exercise: selectedExercise,
+    onClose: () => {
+      setModal(null);
+      setSelectedExercise(null);
+    },
+    onMerge: target => {
+      setConfirmation({
+        title: `Merge ${selectedExercise.name} into ${target.name}?`,
+        message: `All sets and notes from ${selectedExercise.name} will move into ${target.name}. The histories will be kept, but ${selectedExercise.name} will be removed. This cannot be undone.`,
+        onConfirm: async () => {
+          await mergeActivities(selectedExercise, target);
+        },
+        onCancel: () => setConfirmation(null)
+      });
+    }
   }), modal === 'weightPicker' && selectedExercise && /*#__PURE__*/React.createElement(WeightPickerModal, {
     exercise: selectedExercise,
     onSelectWeight: handleWeightSelected,
