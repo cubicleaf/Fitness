@@ -2426,7 +2426,8 @@ const addDays = (dateStr, days) => {
 };
 const formatSetDisplay = set => {
   let display = `Set ${set.setOrder}: `;
-  if (set.weightType === 'bodyweight') {
+  const showBodyweight = set.weightType === 'bodyweight' && set.duration === null;
+  if (showBodyweight) {
     display += 'BW';
   } else if (set.weightType === 'banded') {
     const bandLabel = set.bandedColor && set.bandedColor !== 'undefined' ? set.bandedColor + ' Band' : 'Banded';
@@ -3102,13 +3103,13 @@ const formatSetBox = (set, previousSet, unitOverride) => {
   let box = '';
   const displayUnit = unitOverride || 'lbs';
   if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType || set.bandedColor !== previousSet.bandedColor) {
-    if (set.weightType === 'bodyweight') {
+    if (set.weightType === 'bodyweight' && set.duration === null) {
       box += 'BW ';
     } else if (set.weightType === 'banded') {
       // CHANGE 6: Display bandedColor instead of generic "Band"
       const bandLabel = set.bandedColor && set.bandedColor !== 'undefined' ? set.bandedColor : 'Band';
       box += bandLabel + ' ';
-    } else if (set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
+    } else if (set.weightType !== 'none' && set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
       box += `${set.weight}${displayUnit} `;
     }
   }
@@ -3847,7 +3848,7 @@ const CreateExerciseModal = ({
       categories: selectedCats,
       type: finalType,
       weightMeaning: finalType === 'neutral' ? 'total' : finalWeightMeaning,
-      weightDefault: finalType === 'neutral' ? 'none' : weightDefault || 'bodyweight',
+      weightDefault: finalType === 'neutral' ? 'none' : weightDefault || (finalType === 'timed' ? 'none' : 'bodyweight'),
       customBarWeight: finalType === 'neutral' ? null : weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
       variationOf: opts.variationOf || null,
       movementFamilyId: familyRecord?.id || null,
@@ -3864,8 +3865,8 @@ const CreateExerciseModal = ({
   const handleSave = async () => {
     if (!name.trim()) return;
     if (!type) return;
-    if (!weightMeaning && type === 'reps') return;
-    if (!weightDefault && type === 'reps') return;
+    if (!weightMeaning && (type === 'reps' || weightDefault === 'weight')) return;
+    if (!weightDefault && type !== 'neutral') return;
     if (weightMeaning === 'bar' && !barType) return;
     if (weightMeaning === 'bar' && barType === 'custom' && !customBarWeight.trim()) return;
 
@@ -4118,7 +4119,11 @@ const CreateExerciseModal = ({
     }
   }, ['reps', 'timed'].map((t, i) => /*#__PURE__*/React.createElement("button", {
     key: t,
-    onClick: () => setType(t),
+    onClick: () => {
+      setType(t);
+      if (t === 'timed' && !weightDefault) setWeightDefault('none');
+      if (t === 'reps' && weightDefault === 'none' && !weightMeaning) setWeightDefault(null);
+    },
     style: {
       flex: 1,
       padding: '10px',
@@ -4140,11 +4145,11 @@ const CreateExerciseModal = ({
     }
   }, /*#__PURE__*/React.createElement(IconClock, {
     size: 13
-  }), " Timed"))))), type === 'reps' && /*#__PURE__*/React.createElement("div", {
+  }), " Timed"))))), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
-  }, "Weight Style ", !weightMeaning && /*#__PURE__*/React.createElement("span", {
+  }, type === 'timed' ? 'Weight Style (optional) ' : 'Weight Style ', !weightMeaning && type !== 'timed' && /*#__PURE__*/React.createElement("span", {
     style: {
       color: '#e88a8a',
       fontSize: '11px',
@@ -4155,7 +4160,7 @@ const CreateExerciseModal = ({
       display: 'flex',
       borderRadius: '8px',
       overflow: 'hidden',
-      border: `1px solid ${!weightMeaning ? 'rgba(232,138,138,0.3)' : 'var(--surface-edge)'}`
+      border: `1px solid ${!weightMeaning && type !== 'timed' ? 'rgba(232,138,138,0.3)' : 'var(--surface-edge)'}`
     }
   }, [{
     v: 'total',
@@ -4249,7 +4254,7 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginTop: '4px'
     }
-  }, barType === 'barbell' ? '45 lbs auto-added to each set for the bar' : customBarWeight ? `${customBarWeight} lbs auto-added to each set for the bar` : 'Enter the bar weight to auto-add'))), type === 'reps' && /*#__PURE__*/React.createElement("div", {
+  }, barType === 'barbell' ? '45 lbs auto-added to each set for the bar' : customBarWeight ? `${customBarWeight} lbs auto-added to each set for the bar` : 'Enter the bar weight to auto-add'))), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
@@ -5408,7 +5413,7 @@ const TimedDurationModal = ({
     if (s >= 3600) return `${Math.floor(s / 3600)}:${String(Math.floor(s % 3600 / 60)).padStart(2, '0')}:00`;
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   };
-  const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
+  const displayWeight = weightType === 'bodyweight' || weightType === 'none' || weight == null ? 'No weight' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
 
   // Stopwatch controls
   const startStopwatch = () => {
@@ -6469,10 +6474,12 @@ const HistoryModal = ({
     const note = sessionNotes[session.date];
     return /*#__PURE__*/React.createElement("div", {
       key: idx,
+      onClick: () => onNavigate && onNavigate(session.date, exercise.id),
       style: {
         paddingBottom: '12px',
         marginBottom: '12px',
-        borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none'
+        borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+        cursor: onNavigate ? 'pointer' : 'default'
       }
     }, /*#__PURE__*/React.createElement("button", {
       className: "history-date",
@@ -11000,7 +11007,7 @@ function App() {
     if (exercise.weightDefault === 'bodyweight' || exercise.weightDefault === 'none') {
       setSelectedWeight({
         weight: null,
-        weightType: 'bodyweight'
+        weightType: exercise.weightDefault === 'bodyweight' ? 'bodyweight' : 'none'
       });
       if (exercise.type === 'timed') {
         setModal('timedDuration', 'exercisePicker');
@@ -11050,7 +11057,7 @@ function App() {
     if (fullEx?.weightDefault === 'bodyweight' || fullEx?.weightDefault === 'none') {
       setSelectedWeight({
         weight: null,
-        weightType: 'bodyweight'
+        weightType: fullEx?.weightDefault === 'bodyweight' ? 'bodyweight' : 'none'
       });
       if (fullEx.type === 'timed') {
         setModal('timedDuration', 'activityHistory');
@@ -11345,7 +11352,7 @@ function App() {
         exerciseOrder: nextExerciseOrder,
         setOrder: 1,
         weight: null,
-        weightType: 'bodyweight',
+        weightType: 'none',
         reps: null,
         duration,
         weightMeaning: 'total',
@@ -11360,7 +11367,7 @@ function App() {
         exerciseOrder: nextExerciseOrder,
         setOrder: 1,
         weight: null,
-        weightType: 'bodyweight',
+        weightType: 'none',
         reps: null,
         duration,
         weightMeaning: 'total',
@@ -12140,7 +12147,7 @@ function App() {
             if (exerciseType === 'timed') {
               setSelectedWeight({
                 weight: null,
-                weightType: 'bodyweight'
+                weightType: exerciseType === 'timed' ? 'none' : 'bodyweight'
               });
               setModal('timedDuration');
             } else {
@@ -12148,7 +12155,7 @@ function App() {
               if (wd === 'bodyweight' || wd === 'none') {
                 setSelectedWeight({
                   weight: null,
-                  weightType: 'bodyweight'
+                  weightType: wd === 'bodyweight' ? 'bodyweight' : 'none'
                 });
                 setModal('repPicker');
               } else {
@@ -12194,7 +12201,7 @@ function App() {
         } else if (lastSet?.weightType === 'bodyweight' && !lastSet?.weight) {
           setSelectedWeight({
             weight: null,
-            weightType: 'bodyweight'
+            weightType: exerciseType === 'timed' ? 'none' : 'bodyweight'
           });
           setModal('repPicker');
         } else {
@@ -12497,7 +12504,7 @@ function App() {
       setSelectedExercise(sourceEx);
       setSelectedWeight({
         weight: null,
-        weightType: 'bodyweight'
+        weightType: 'none'
       });
       setModal('timedDuration', 'exercisePicker');
     }
