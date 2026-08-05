@@ -2435,6 +2435,10 @@ const formatSetDisplay = set => {
   } else if (set.weight !== null) {
     display += `${set.weight} ${set.weightType || 'lbs'}`;
   }
+  if (set.distance !== null && set.distance !== undefined) {
+    display += `${set.distance} ${set.distanceUnit || 'mi'}`;
+    if (set.duration !== null && set.duration !== undefined) display += ' · ';
+  }
   if (set.reps !== null) {
     display += ` × ${set.reps}`;
   } else if (set.duration !== null) {
@@ -2582,7 +2586,7 @@ const formatCategories = exercise => {
 const normalizeFamilyName = name => (name || '').trim().replace(/\s+/g, ' ');
 const normalizeFamilyKey = name => normalizeFamilyName(name).toLowerCase();
 const inferMovementFamilyName = activityName => {
-  const lower = (activityName || '').toLowerCase().trim();
+  const lower = (activityName || '').toLowerCase().replace(/[–—-]/g, ' ').replace(/\s+/g, ' ').trim();
   if (!lower) return '';
   const rules = [{
     match: ['pulldown', 'pull down', 'lat pull'],
@@ -2614,6 +2618,13 @@ const inferMovementFamilyName = activityName => {
   }];
   const found = rules.find(rule => rule.match.some(token => lower.includes(token)));
   return found ? found.family : '';
+};
+const inferMeasurementModes = exercise => {
+  if (Array.isArray(exercise?.measurementModes) && exercise.measurementModes.length > 0) return exercise.measurementModes;
+  const base = exercise?.type === 'timed' ? 'timed' : exercise?.type === 'neutral' ? 'neutral' : 'reps';
+  const lower = String(exercise?.name || '').toLowerCase().replace(/[–—-]/g, ' ');
+  const distanceCapable = /treadmill|run|running|jog|walk|walking|bike|biking|cycle|cycling|rower|rowing|elliptical|stair|stepmill|ski erg/.test(lower);
+  return distanceCapable ? [base, 'distance'] : [base];
 };
 const GRIP_NAME_TOKENS = ['pulldown', 'pull down', 'row', 'rows', 'pullup', 'pullups', 'pull up', 'chinup', 'chin up', 'curl', 'curls', 'grip', 'hang', 'farmer', 'farmers', 'carry', 'deadlift', 'shrug', 'shrugs', 'face pull'];
 // Whole-word matching: "lateral" must not match "lat", "narrow" must not match "row".
@@ -2811,6 +2822,7 @@ const withNormalizedExerciseFields = exercise => ({
   movementFamilyId: exercise.movementFamilyId || null,
   movementFamilyName: exercise.movementFamilyName || '',
   variationLabel: exercise.variationLabel || '',
+  measurementModes: inferMeasurementModes(exercise),
   gripTrackingEnabled: !!exercise.gripTrackingEnabled
 });
 const ensureMovementFamilyRecord = async familyName => {
@@ -2849,7 +2861,7 @@ const migrateActivityModel = async () => {
       normalized.movementFamilyId = family.id;
       normalized.movementFamilyName = family.name;
     }
-    if (normalized.gripTrackingEnabled !== exercise.gripTrackingEnabled || normalized.movementFamilyId !== exercise.movementFamilyId || normalized.movementFamilyName !== exercise.movementFamilyName || normalized.variationLabel !== exercise.variationLabel) {
+    if (JSON.stringify(normalized.measurementModes) !== JSON.stringify(exercise.measurementModes) || normalized.gripTrackingEnabled !== exercise.gripTrackingEnabled || normalized.movementFamilyId !== exercise.movementFamilyId || normalized.movementFamilyName !== exercise.movementFamilyName || normalized.variationLabel !== exercise.variationLabel) {
       await dbOps.exercises.update(normalized);
     }
   }
@@ -3113,6 +3125,10 @@ const formatSetBox = (set, previousSet, unitOverride) => {
       box += `${set.weight}${displayUnit} `;
     }
   }
+  if (set.distance !== null && set.distance !== undefined) {
+    box += `${set.distance}${set.distanceUnit || 'mi'}`;
+    if (set.duration !== null && set.duration !== undefined) box += ' · ';
+  }
   if (set.reps !== null) {
     box += `× ${set.reps}`;
   } else if (set.duration !== null) {
@@ -3371,6 +3387,7 @@ const ExercisePickerModal = ({
   const [filtered, setFiltered] = useState([]);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [pairingSource, setPairingSource] = useState(null);
+  const [selectedFamilyId, setSelectedFamilyId] = useState(null);
   useEffect(() => {
     const loadExercises = async () => {
       const all = await dbOps.exercises.getByLastUsed();
@@ -3385,6 +3402,8 @@ const ExercisePickerModal = ({
     // In pairing mode: show ALL timed exercises except the source
     if (pairingSource) {
       result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
+    } else if (selectedFamilyId) {
+      result = result.filter(e => (e.movementFamilyId || e.movementFamilyName) === selectedFamilyId);
     } else {
       if (!q && category !== 'all') {
         result = result.filter(e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase()));
@@ -3394,7 +3413,7 @@ const ExercisePickerModal = ({
       result = result.filter(e => e.name.toLowerCase().includes(q));
     }
     setFiltered(result);
-  }, [exercises, search, category, pairingSource]);
+  }, [exercises, search, category, pairingSource, selectedFamilyId]);
   const [sortedCategories, setSortedCategories] = useState(categories);
   const [showEditCategories, setShowEditCategories] = useState(false);
 
@@ -3423,6 +3442,80 @@ const ExercisePickerModal = ({
     })();
   }, [categories]);
   const allCategories = ['all', ...sortedCategories];
+  const familyMap = {};
+  exercises.forEach(ex => {
+    const familyKey = ex.movementFamilyId || ex.movementFamilyName;
+    if (!familyKey || !ex.movementFamilyName) return;
+    if (!familyMap[familyKey]) familyMap[familyKey] = {
+      id: familyKey,
+      name: ex.movementFamilyName,
+      members: []
+    };
+    familyMap[familyKey].members.push(ex);
+  });
+  const queryText = search.trim().toLowerCase();
+  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).filter(family => family.name.toLowerCase().includes(queryText) || family.members.some(ex => ex.name.toLowerCase().includes(queryText))) : [];
+  const matchingFamilyMemberIds = new Set(matchingFamilies.flatMap(family => family.members.map(ex => ex.id)));
+  const visibleActivities = selectedFamilyId ? filtered : filtered.filter(ex => !matchingFamilyMemberIds.has(ex.id));
+  const familyBack = selectedFamilyId ? /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSelectedFamilyId(null);
+      setSearch('');
+    },
+    style: {
+      width: '100%',
+      marginBottom: '10px',
+      padding: '10px 12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+      color: 'var(--accent-soft)',
+      textAlign: 'left',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "← All matching activities") : null;
+  const familyPicker = !pairingSource && !selectedFamilyId && matchingFamilies.length > 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gap: '8px',
+      marginBottom: visibleActivities.length > 0 ? '14px' : 0
+    }
+  }, matchingFamilies.map(family => /*#__PURE__*/React.createElement("button", {
+    key: family.id,
+    type: "button",
+    onClick: () => {
+      setSelectedFamilyId(family.id);
+      setSearch('');
+    },
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      width: '100%',
+      padding: '12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 28%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 11%, transparent)',
+      color: 'var(--text-body)',
+      textAlign: 'left',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, /*#__PURE__*/React.createElement(IconFlowChart, {
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      fontWeight: '600'
+    }
+  }, family.name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--text-faint)',
+      fontSize: '12px'
+    }
+  }, family.members.length, family.members.length === 1 ? ' activity' : ' activities', " →")))) : null;
   if (showEditCategories) {
     return /*#__PURE__*/React.createElement(EditCategoriesModal, {
       categories: categories,
@@ -3564,17 +3657,17 @@ const ExercisePickerModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Cancel Pairing")), filtered.length > 0 ? /*#__PURE__*/React.createElement("div", {
+  }, "Cancel Pairing")), (visibleActivities.length > 0 || matchingFamilies.length > 0) ? /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, pairingSource ? 'Select activity to pair with' : category === 'all' ? 'All Activities' : category), !pairingSource && /*#__PURE__*/React.createElement("div", {
+  }, selectedFamilyId ? `Family: ${familyMap[selectedFamilyId]?.name || 'Selected'}` : pairingSource ? 'Select activity to pair with' : matchingFamilies.length > 0 ? 'Families first' : category === 'all' ? 'All Activities' : category), familyBack, familyPicker, !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)',
       marginBottom: '8px'
     }
-  }, "Long press to delete"), filtered.map(ex => {
+  }, "Long press to delete"), visibleActivities.map(ex => {
     const meta = /*#__PURE__*/React.createElement("div", {
       style: {
         flex: 1
@@ -3847,6 +3940,7 @@ const CreateExerciseModal = ({
       category: selectedCats.length > 0 ? selectedCats[0] : '',
       categories: selectedCats,
       type: finalType,
+      measurementModes: inferMeasurementModes({ name: name.trim(), type: finalType }),
       weightMeaning: finalType === 'neutral' ? 'total' : finalWeightMeaning,
       weightDefault: finalType === 'neutral' ? 'none' : weightDefault || (finalType === 'timed' ? 'none' : 'bodyweight'),
       customBarWeight: finalType === 'neutral' ? null : weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
@@ -5311,13 +5405,25 @@ const TimedDurationModal = ({
   weight,
   weightType,
   bandedColor,
-  onSelectDuration,
+  onSelectDuration: persistDuration,
+  distanceEnabled = false,
   setNumber,
   gripTrackingEnabled = false,
   initialGrip = null,
   gripLockedForDay = false,
   onGripChange
 }) => {
+  const [distanceValue, setDistanceValue] = useState('');
+  const [distanceUnit, setDistanceUnit] = useState('mi');
+  const onSelectDuration = value => {
+    if (value === null || !distanceEnabled) return persistDuration(value);
+    const duration = typeof value === 'object' ? value.duration : value;
+    persistDuration({
+      duration,
+      distance: distanceValue.trim() ? parseFloat(distanceValue) : null,
+      distanceUnit
+    });
+  };
   // Stopwatch
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -5572,7 +5678,59 @@ const TimedDurationModal = ({
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
     onChange: onGripChange
-  }), editMode ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }), distanceEnabled && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '8px',
+      alignItems: 'center',
+      marginBottom: '14px',
+      padding: '10px 12px',
+      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      borderRadius: '10px',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    htmlFor: "distance-input",
+    style: {
+      color: 'var(--accent-soft)',
+      fontSize: '12px',
+      fontWeight: '600',
+      whiteSpace: 'nowrap'
+    }
+  }, "Distance"), /*#__PURE__*/React.createElement("input", {
+    id: "distance-input",
+    type: "number",
+    inputMode: "decimal",
+    min: "0",
+    step: "0.01",
+    placeholder: "optional",
+    value: distanceValue,
+    onChange: e => setDistanceValue(e.target.value),
+    style: {
+      minWidth: 0,
+      flex: 1,
+      padding: '8px 10px',
+      borderRadius: '7px',
+      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
+      background: 'rgba(255,255,255,0.04)',
+      color: 'var(--text-body)',
+      fontSize: '13px'
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setDistanceUnit(distanceUnit === 'mi' ? 'km' : 'mi'),
+    style: {
+      minWidth: '44px',
+      minHeight: '40px',
+      padding: '0 8px',
+      borderRadius: '7px',
+      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 12%, transparent)',
+      color: 'var(--accent-soft)',
+      fontSize: '12px',
+      fontWeight: '700'
+    }
+  }, distanceUnit)), editMode ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -6704,7 +6862,7 @@ const SettingsModal = ({
         bwDayLines += `__BODYWEIGHT_DAY__,${bwDate},${dn.note},,,,,,, \n`;
       }
     });
-    let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Note\n';
+    let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note\n';
     // Recalculate setOrder on export to fix any stored inconsistencies
     allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder || a.createdAt - b.createdAt);
     const setOrderCounters = {};
@@ -6718,6 +6876,8 @@ const SettingsModal = ({
       const weightStr = set.weight !== null ? set.weight : '';
       const repsStr = set.reps !== null ? set.reps : '';
       const durationStr = set.duration !== null ? set.duration : '';
+      const distanceStr = set.distance !== null && set.distance !== undefined ? set.distance : '';
+      const distanceUnitStr = set.distanceUnit || '';
       let noteStr = '';
       if (set.weightType === 'banded' && set.bandedColor) {
         noteStr = set.bandedColor;
@@ -6743,7 +6903,7 @@ const SettingsModal = ({
       }
       const noteClean = noteStr.replace(/\r?\n/g, ' ').replace(/\r/g, ' ');
       const noteField = noteClean.includes(',') || noteClean.includes('"') ? `"${noteClean.replace(/"/g, '""')}"` : noteClean;
-      csv += `${set.date},${set.exerciseName},${getExCategories(ex).join(';') || ''},${ex.type || ''},${set._exportSetOrder},${weightStr},${set.weightType},${repsStr},${durationStr},${noteField}\n`;
+      csv += `${set.date},${set.exerciseName},${getExCategories(ex).join(';') || ''},${ex.type || ''},${set._exportSetOrder},${weightStr},${set.weightType},${repsStr},${durationStr},${distanceStr},${distanceUnitStr},${noteField}\n`;
     });
     // Metadata section at bottom — used for re-import, safe to ignore when reading
     csv += '\n__META__,,,,,,,,,\n';
@@ -6874,7 +7034,7 @@ const SettingsModal = ({
           const rawType = (parts[3] || 'reps').toLowerCase();
           const type = rawType === 'reps' || rawType === 'timed' ? rawType : 'reps';
           const weightType = parts[6] || 'lbs';
-          const note = parts[9] || '';
+          const note = parts[11] || '';
 
           // Create exercise record if needed
           if (!exerciseMap.has(exerciseName)) {
@@ -6903,6 +7063,8 @@ const SettingsModal = ({
             weightType,
             reps: parts[7] && parts[7] !== '' ? parseInt(parts[7]) : null,
             duration: parts[8] && parts[8] !== '' ? parseInt(parts[8]) : null,
+            distance: parts[9] && parts[9] !== '' ? parseFloat(parts[9]) : null,
+            distanceUnit: parts[10] || null,
             bandedColor: weightType === 'banded' && note ? note.split('|')[0].trim() : undefined,
             note: weightType === 'banded' && note && note.includes('|') ? note.split('|').slice(1).join('|').trim() : weightType !== 'banded' ? note : ''
           });
@@ -6943,6 +7105,8 @@ const SettingsModal = ({
             bandedColor: row.bandedColor,
             reps: row.reps,
             duration: row.duration,
+            distance: row.distance,
+            distanceUnit: row.distanceUnit,
             createdAt: Date.now()
           });
         }
@@ -10522,6 +10686,13 @@ const ActivityLineageModal = ({
     }, "Link Activity")));
   } else if (step === 'new-family') {
     stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '13px',
+        lineHeight: '1.5',
+        color: 'var(--text-body)',
+        marginBottom: '14px'
+      }
+    }, "This will add ", /*#__PURE__*/React.createElement("strong", null, exercise.name), " to the new family. Its history will stay attached to this exact activity."), /*#__PURE__*/React.createElement("div", {
       className: "form-group"
     }, /*#__PURE__*/React.createElement("label", {
       className: "form-label"
@@ -10551,7 +10722,7 @@ const ActivityLineageModal = ({
         opacity: newFamilyName.trim() ? 1 : 0.45
       },
       onClick: createFamilyFromActivity
-    }, "Create Family")));
+    }, "Create Family + Link Activity")));
   } else {
     stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
@@ -11128,6 +11299,8 @@ function App() {
       weightType: sourceSet.weightType,
       reps: sourceSet.reps,
       duration: sourceSet.duration,
+      distance: sourceSet.distance,
+      distanceUnit: sourceSet.distanceUnit,
       weightMeaning: sourceSet.weightMeaning || 'total',
       bandedColor: sourceSet.bandedColor,
       type: sourceSet.type || selectedExercise.type || 'reps',
@@ -11303,7 +11476,14 @@ function App() {
     }
   };
   const handleDurationSelected = async duration => {
-    if (duration === null) {
+    const durationData = duration && typeof duration === 'object' ? duration : {
+      duration,
+      distance: null,
+      distanceUnit: null
+    };
+    const durationSeconds = durationData.duration;
+    const distanceValue = Number.isFinite(durationData.distance) && durationData.distance > 0 ? durationData.distance : null;
+    if (durationSeconds === null) {
       if (pendingNewExerciseId) {
         const existingSets = await dbOps.sets.getByExerciseId(pendingNewExerciseId);
         if (!existingSets || existingSets.length === 0) {
@@ -11336,7 +11516,9 @@ function App() {
       weight: selectedWeight.weight || null,
       weightType: selectedWeight.weightType,
       reps: null,
-      duration,
+      duration: durationSeconds,
+      distance: distanceValue,
+      distanceUnit: distanceValue ? durationData.distanceUnit || 'mi' : null,
       weightMeaning: weightMeaningDur,
       createdAt: Date.now()
     };
@@ -11364,7 +11546,9 @@ function App() {
         weight: null,
         weightType: 'none',
         reps: null,
-        duration,
+        duration: durationSeconds,
+        distance: distanceValue,
+        distanceUnit: distanceValue ? durationData.distanceUnit || 'mi' : null,
         weightMeaning: 'total',
         pairedWith: pair.target.id,
         createdAt: Date.now()
@@ -11379,7 +11563,9 @@ function App() {
         weight: null,
         weightType: 'none',
         reps: null,
-        duration,
+        duration: durationSeconds,
+        distance: distanceValue,
+        distanceUnit: distanceValue ? durationData.distanceUnit || 'mi' : null,
         weightMeaning: 'total',
         pairedWith: pair.source.id,
         createdAt: Date.now()
@@ -12120,6 +12306,8 @@ function App() {
           weightType: lastSet.weightType,
           reps: lastSet.reps,
           duration: lastSet.duration,
+          distance: lastSet.distance,
+          distanceUnit: lastSet.distanceUnit,
           weightMeaning: lastSet.weightMeaning || 'total',
           bandedColor: lastSet.bandedColor,
           type: exerciseType,
@@ -12582,6 +12770,7 @@ function App() {
     bandedColor: selectedWeight.bandedColor,
     onSelectDuration: handleDurationSelected,
     setNumber: setNumber,
+    distanceEnabled: inferMeasurementModes(selectedExercise).includes('distance'),
     gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
