@@ -9628,8 +9628,10 @@ const ActivityContextModal = ({
       onClose();
     },
     style: {
-      width: '100%',
-      padding: '14px',
+      width: 'fit-content',
+      minWidth: '44px',
+      margin: '16px auto 0',
+      padding: '12px 18px',
       borderRadius: '10px',
       border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
       background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
@@ -9824,8 +9826,10 @@ const ActivityContextModal = ({
       onClose();
     },
     style: {
-      width: '100%',
-      padding: '14px',
+      width: 'fit-content',
+      minWidth: '44px',
+      margin: '16px auto 0',
+      padding: '12px 18px',
       borderRadius: '10px',
       border: '1px solid rgba(180,60,60,0.35)',
       background: 'rgba(180,60,60,0.09)',
@@ -9834,9 +9838,15 @@ const ActivityContextModal = ({
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      textAlign: 'left'
+      textAlign: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '8px'
     }
-  }, "Delete Permanently")))), customNoteEditor && /*#__PURE__*/React.createElement(NoteEntryModal, {
+  }, /*#__PURE__*/React.createElement(IconTrash, {
+    size: 16
+  }), "Delete Permanently")))), customNoteEditor && /*#__PURE__*/React.createElement(NoteEntryModal, {
     title: "Custom Note",
     initialText: customNoteEditor.text,
     dateLabel: formatDate(customNoteEditor.date),
