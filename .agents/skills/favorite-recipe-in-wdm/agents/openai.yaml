@@ -1,0 +1,4 @@
+interface:
+  display_name: "Favorite Recipe Recorder"
+  short_description: "Preserve approved UI effects as exact WDM recreation recipes"
+  default_prompt: "Record this approved UI direction as a complete, source-faithful favorite recipe in Web Master, including every visual and motion value needed for exact recreation."

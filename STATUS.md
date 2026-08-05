@@ -24,6 +24,8 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 - 2026-08-04: Add a restrained traveling edge pulse to the expanded activity card. What: the full expanded `.exercise-group` surface—from activity name through History / Notes / Edit—gets a 1px conic-gradient edge highlight that rotates once every 8500ms with linear timing and 0.5 opacity; reduced-motion users receive a static 0.28-opacity edge. Why: provide a subtle confirmation that the activity card is open without adding another glow, sound, or content shift. How to apply: keep the effect on `.exercise-group-expanded::before`, preserve `pointer-events: none`, `isolation: isolate`, and the reduced-motion fallback; treat the exact recipe as a candidate for the WDM Favorite Recipes shelf.
 
+- 2026-08-04: Preserve approved UI decisions as complete WDM favorite recipes. What: added the project-scoped [`favorite-recipe-in-wdm`](/Users/cubicleaf/Documents/Fitness-git/.agents/skills/favorite-recipe-in-wdm/SKILL.md) companion skill and expanded the WDM module to show the full source-faithful Fitness Tracker viewport around the pulse. Why: a future model needs exact context, tokens, dimensions, assets, timing, easing, and accessibility behavior—not just a detached screenshot or a remembered effect name. How to apply: load `mockup-in-wdm` first, use this companion when a direction is approved, and do not mark candidates as favorites without explicit user approval.
+
 - 2026-08-04: Treat the activity logger as a per-set qualifier surface, not a day-level modifier surface. What: grip/width data is saved on each set, and the main set pill shows a compact modifier tag only when it is present or changes from the previous set (`W` for wide, `V` for V-grip, with type tags when needed); full modifier controls remain in set entry and history. Why: one activity can legitimately contain a wide-bar set followed by V-grip sets, and storing only the last grip for the day loses that distinction. Keep the main screen slim because the full label is not always relevant there. How to apply: add future modifiers to the set record, compare against the previous set for compact display, and never infer that a day-level default describes every set.
 
 - 2026-08-04: Make duplicate handling a real user-directed merge workflow. What: duplicate warnings remain advisory, while Edit → Merge Into Another Activity lets the user choose the activity to keep, confirms the operation, moves source sets and notes into the target, preserves target history, renumbers the merged sets by date, and removes the duplicate activity. Why: the old system only offered “Use This” or “New Variation” during creation; it could prevent a new duplicate but could not repair duplicates already in the library. How to apply: keep identity decisions user-controlled, preserve all source records during the merge operation until confirmation, merge same-date notes conservatively, and never use an LLM as the authority for the merge.
@@ -127,10 +129,16 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ### Duplicate merge flow
 
-- Prevention is now trustworthy; there is still no merge path for duplicates that already exist.
+- Prevention is now trustworthy, and Edit → Merge Into Another Activity now provides a confirmed repair path for duplicates that already exist.
 - Scope shrank on 07-31: modifiers absorb the grip-variant pressure, so what remains is typo/spelling duplicates only.
-- Unresolved before building: is merge undoable? Sets and sessionNotes both key off `exerciseId` (indexes at ~1836–1866). Repointing `exerciseId` from B to A and keeping B as a hidden tombstone with a `mergedInto` pointer makes merge reversible and collapses most of the "what if fields conflict" design surface.
+- Open follow-up: decide whether merge should gain undo/tombstones. Sets and sessionNotes both key off `exerciseId` (indexes at ~1836–1866); a hidden `mergedInto` pointer could make the operation reversible, but the current confirmed merge is intentionally destructive.
 - Note the inverse problem has no solution: a user who logs plain "Row" for months and later wants underhand sets separated cannot split retroactively, because the data was never captured.
+
+### UI surface glossary and LLM explanation contract
+
+- [Certain] The maintained glossary is [`UI-SURFACE-GLOSSARY-AND-LLM-PLAN.md`](/Users/cubicleaf/Documents/Fitness-git/_docs/UI-SURFACE-GLOSSARY-AND-LLM-PLAN.md).
+- Open work is to keep mapping every major screen and control to its user-facing name, code name, purpose, state transitions, deterministic authority, and coach-explanation boundary as new surfaces ship.
+- Future LLM coach, field-note, and favorite-recipe work should consult this glossary instead of inventing names or treating model output as application authority.
 
 ### Naming / brand cleanup
 
