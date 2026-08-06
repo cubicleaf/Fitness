@@ -8707,6 +8707,42 @@ const BodyweightEntryModal = ({
   onClose,
   onSave
 }) => {
+  const scrubRef = React.useRef(null);
+  const [isScrubbing, setIsScrubbing] = React.useState(false);
+  const maxAdjustment = unit === 'kg' ? 2.3 : 5;
+  const formatWeightValue = raw => {
+    const parsed = Number.parseFloat(raw);
+    return Number.isFinite(parsed) ? parsed.toFixed(1) : '';
+  };
+  const updateFromScrub = event => {
+    const scrub = scrubRef.current;
+    if (!scrub) return;
+    const dy = event.clientY - scrub.startY;
+    if (Math.abs(dy) < 4) return;
+    event.preventDefault();
+    const normalizedDistance = Math.min(Math.abs(dy) / 80, 1);
+    const adjustment = maxAdjustment * (1 - Math.exp(-2.1 * normalizedDistance));
+    const nextValue = Math.min(scrub.startValue + maxAdjustment, Math.max(scrub.startValue - maxAdjustment, scrub.startValue - Math.sign(dy) * adjustment));
+    onChange(formatWeightValue(nextValue));
+  };
+  const endScrub = event => {
+    if (scrubRef.current && event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    scrubRef.current = null;
+    setIsScrubbing(false);
+  };
+  const beginScrub = event => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    const currentValue = Number.parseFloat(value);
+    if (!Number.isFinite(currentValue)) return;
+    scrubRef.current = {
+      startY: event.clientY,
+      startValue: currentValue
+    };
+    event.currentTarget.setPointerCapture?.(event.pointerId);
+    setIsScrubbing(true);
+  };
   return /*#__PURE__*/React.createElement("div", {
     onClick: onClose,
     style: {
@@ -8748,33 +8784,20 @@ const BodyweightEntryModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "\u00d7"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 24,
     style: {
-      textAlign: 'center',
-      marginBottom: '20px'
+      color: 'color-mix(in srgb, var(--accent-soft) 64%, transparent)'
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '14px',
-      color: 'color-mix(in srgb, var(--accent-soft) 54%, transparent)',
-      marginBottom: '8px',
-      letterSpacing: '0.04em',
-      textTransform: 'uppercase'
-    }
-  }, date === getTodayString() ? 'Today' : formatDateShort(date)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '26px',
-      lineHeight: '1.2',
-      color: 'var(--text-warm)',
-      fontWeight: '600'
-    }
-  }, date === getTodayString() ? "What is your weight today?" : "What was your weight this day?")), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       alignItems: 'baseline',
       justifyContent: 'center',
       gap: '10px',
-      marginBottom: '18px'
+      marginBottom: '18px',
+      touchAction: 'none',
+      userSelect: isScrubbing ? 'none' : 'text'
     }
   }, /*#__PURE__*/React.createElement("input", {
     type: "number",
@@ -8782,6 +8805,11 @@ const BodyweightEntryModal = ({
     autoFocus: true,
     value: value,
     onChange: e => onChange(e.target.value),
+    onPointerDown: beginScrub,
+    onPointerMove: updateFromScrub,
+    onPointerUp: endScrub,
+    onPointerCancel: endScrub,
+    onDoubleClick: e => e.currentTarget.select(),
     onKeyDown: e => {
       if (e.key === 'Enter' && value.trim()) onSave();
     },
@@ -8797,7 +8825,8 @@ const BodyweightEntryModal = ({
       fontWeight: '600',
       textAlign: 'center',
       letterSpacing: '-0.03em',
-      padding: 0
+      padding: 0,
+      touchAction: 'none'
     }
   }), /*#__PURE__*/React.createElement("span", {
     style: {
