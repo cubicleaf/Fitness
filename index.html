@@ -5524,7 +5524,11 @@ const TimedDurationModal = ({
   const [countdownActive, setCountdownActive] = useState(false);
   const [countdownPreset, setCountdownPreset] = useState(null);
   const [countdownFinished, setCountdownFinished] = useState(false);
+  const [preStartCountdown, setPreStartCountdown] = useState(null);
   const cdIntervalRef = useRef(null);
+  const [showDurationOverride, setShowDurationOverride] = useState(false);
+  const [overrideMinutes, setOverrideMinutes] = useState('0');
+  const [overrideSeconds, setOverrideSeconds] = useState('0');
   // Sound settings
   const [showSoundSettings, setShowSoundSettings] = useState(false);
   // Dial
@@ -5573,6 +5577,20 @@ const TimedDurationModal = ({
       if (cdIntervalRef.current) clearInterval(cdIntervalRef.current);
     };
   }, [countdownActive]);
+  // Give the user a precise, audible five-second start cue before the timed set begins.
+  useEffect(() => {
+    if (preStartCountdown === null || !countdownPreset) return;
+    if (preStartCountdown > 0) {
+      const soundsOn = getPref('timerSoundsEnabled') === 'true';
+      if (soundsOn) playTickSound(getPref('timerTickStyle', 'beep'));
+      const timeout = setTimeout(() => setPreStartCountdown(value => value === null ? null : value - 1), 1000);
+      return () => clearTimeout(timeout);
+    }
+    if (getPref('timerSoundsEnabled') === 'true') playCompletionSound();
+    setCountdownTime(countdownPreset);
+    setCountdownActive(true);
+    setPreStartCountdown(null);
+  }, [preStartCountdown, countdownPreset]);
   const formatTime = s => {
     const m = Math.floor(s / 60);
     return `${m}:${String(s % 60).padStart(2, '0')}`;
@@ -5600,8 +5618,22 @@ const TimedDurationModal = ({
     setIsRunning(false);
     setIsPaused(false);
     setTime(0);
+    setShowDurationOverride(false);
   };
   const hasStarted = isRunning || isPaused || time > 0;
+  const openDurationOverride = () => {
+    setOverrideMinutes(String(Math.floor(time / 60)));
+    setOverrideSeconds(String(time % 60).padStart(2, '0'));
+    setShowDurationOverride(true);
+  };
+  const applyDurationOverride = () => {
+    const minutes = Math.max(0, parseInt(overrideMinutes || '0', 10) || 0);
+    const seconds = Math.min(59, Math.max(0, parseInt(overrideSeconds || '0', 10) || 0));
+    setTime(minutes * 60 + seconds);
+    setIsRunning(false);
+    setIsPaused(true);
+    setShowDurationOverride(false);
+  };
 
   // Numpad
   const numpadValue = (() => {
@@ -5636,14 +5668,16 @@ const TimedDurationModal = ({
   const handlePresetClick = preset => {
     if (countdownMode) {
       setCountdownPreset(preset);
-      setCountdownTime(preset);
-      setCountdownActive(true);
+      setCountdownFinished(false);
+      setCountdownTime(null);
+      setPreStartCountdown(5);
     } else {
       onSelectDuration(preset);
     }
   };
   const cancelCountdown = () => {
     setCountdownActive(false);
+    setPreStartCountdown(null);
     setCountdownFinished(false);
     setCountdownTime(null);
     setCountdownPreset(null);
@@ -5694,7 +5728,7 @@ const TimedDurationModal = ({
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: () => {
-      if (!countdownActive) onSelectDuration(null);
+      if (!countdownActive && preStartCountdown === null) onSelectDuration(null);
     }
   }, /*#__PURE__*/React.createElement("style", null, jiggleStyle), showSoundSettings && /*#__PURE__*/React.createElement(SoundSettingsModal, {
     onClose: () => setShowSoundSettings(false)
@@ -5710,7 +5744,7 @@ const TimedDurationModal = ({
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
   }, makeSwipeDownHandlers(() => {
-    if (!countdownActive) onSelectDuration(null);
+    if (!countdownActive && preStartCountdown === null) onSelectDuration(null);
   })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
     style: {
       fontSize: '16px'
@@ -5725,7 +5759,7 @@ const TimedDurationModal = ({
     className: "close-btn",
     "aria-label": "Close",
     onClick: () => {
-      if (!countdownActive) onSelectDuration(null);
+      if (!countdownActive && preStartCountdown === null) onSelectDuration(null);
     }
   }, /*#__PURE__*/React.createElement(IconX, {
     size: 20
@@ -5844,28 +5878,25 @@ const TimedDurationModal = ({
       fontSize: '14px'
     }
   }, formatPresetTime(preset)), /*#__PURE__*/React.createElement("button", {
+    type: "button",
     onClick: () => handleDeletePreset(preset),
     style: {
       position: 'absolute',
-      top: '-14px',
-      right: '-14px',
-      width: '20px',
-      height: '20px',
-      borderRadius: '50%',
-      background: '#c0392b',
-      border: '2px solid var(--bg-page)',
-      color: '#fff',
-      fontSize: '12px',
-      fontWeight: 'bold',
+      top: '4px',
+      right: '4px',
+      width: '24px',
+      height: '24px',
+      borderRadius: '7px',
+      background: 'color-mix(in srgb, var(--accent) 14%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent-soft) 30%, transparent)',
       cursor: 'pointer',
-      padding: '12px',
-      boxSizing: 'content-box',
+      padding: '3px',
       WebkitAppearance: 'none',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
     }
-  }, "\xD7")))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(IconX, { size: 13 }))))), /*#__PURE__*/React.createElement("div", {
     style: {
       height: '1px',
       background: 'color-mix(in srgb, var(--accent) 15%, transparent)',
@@ -6111,9 +6142,9 @@ const TimedDurationModal = ({
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      background: 'linear-gradient(135deg, #c75030, #e06840)',
-      color: '#fff',
-      boxShadow: '0 0 16px rgba(224,104,64,0.4), 0 0 32px rgba(224,104,64,0.15)'
+      background: 'linear-gradient(135deg, var(--accent), var(--accent-bright))',
+      color: 'var(--text-bright)',
+      boxShadow: '0 0 16px color-mix(in srgb, var(--accent) 24%, transparent)'
     }
   }, "Use ", formatPresetTime(countdownPreset)), /*#__PURE__*/React.createElement("button", {
     onClick: cancelCountdown,
@@ -6128,7 +6159,38 @@ const TimedDurationModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Cancel"))) : countdownActive && countdownTime !== null ? /*#__PURE__*/React.createElement("div", {
+  }, "Cancel"))) : preStartCountdown !== null ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      padding: '24px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '58px',
+      fontWeight: '300',
+      color: 'var(--accent-soft)',
+      fontVariantNumeric: 'tabular-nums'
+    }
+  }, preStartCountdown), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      margin: '6px 0 18px'
+    }
+  }, "Starting in 5 seconds"), /*#__PURE__*/React.createElement("button", {
+    onClick: cancelCountdown,
+    style: {
+      padding: '10px 32px',
+      borderRadius: '10px',
+      border: '1.5px solid color-mix(in srgb, var(--accent-soft) 30%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+      color: 'var(--accent-soft)',
+      fontSize: '14px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Cancel")) : countdownActive && countdownTime !== null ? /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       padding: '24px 0'
@@ -6137,7 +6199,7 @@ const TimedDurationModal = ({
     style: {
       fontSize: '52px',
       fontWeight: '300',
-      color: countdownTime <= 5 ? '#F4A5AE' : 'var(--accent-soft)',
+      color: countdownTime <= 5 ? 'var(--text-bright)' : 'var(--accent-soft)',
       fontVariantNumeric: 'tabular-nums',
       transition: 'color 0.3s'
     }
@@ -6153,9 +6215,9 @@ const TimedDurationModal = ({
     style: {
       padding: '10px 32px',
       borderRadius: '10px',
-      border: '1.5px solid rgba(220,60,60,0.4)',
-      background: 'rgba(220,60,60,0.1)',
-      color: '#e57373',
+      border: '1.5px solid color-mix(in srgb, var(--accent-soft) 35%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      color: 'var(--accent-soft)',
       fontSize: '14px',
       fontWeight: '600',
       cursor: 'pointer',
@@ -6177,15 +6239,7 @@ const TimedDurationModal = ({
       transition: 'all 0.12s',
       position: 'relative'
     }
-  }, countdownMode && /*#__PURE__*/React.createElement("span", {
-    style: {
-      position: 'absolute',
-      top: '4px',
-      right: '6px',
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 35%, transparent)'
-    }
-  }, ">"), formatPresetTime(preset), /*#__PURE__*/React.createElement("span", {
+  }, formatPresetTime(preset), /*#__PURE__*/React.createElement("span", {
     style: {
       display: 'block',
       fontSize: '11px',
@@ -6287,7 +6341,80 @@ const TimedDurationModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Save ", formatTime(time)), /*#__PURE__*/React.createElement("button", {
+  }, "Save ", formatTime(time)), showDurationOverride && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '6px',
+      alignItems: 'center',
+      padding: '8px',
+      borderRadius: '8px',
+      background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: "0",
+    max: "99",
+    inputMode: "numeric",
+    value: overrideMinutes,
+    onChange: e => setOverrideMinutes(e.target.value),
+    "aria-label": "Minutes",
+    style: {
+      width: '48px',
+      padding: '7px 4px',
+      textAlign: 'center',
+      borderRadius: '6px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: 'rgba(255,255,255,0.03)',
+      color: 'var(--text-body)',
+      fontSize: '14px'
+    }
+  }), /*#__PURE__*/React.createElement("span", { style: { color: 'var(--accent-soft)' } }, ":"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: "0",
+    max: "59",
+    inputMode: "numeric",
+    value: overrideSeconds,
+    onChange: e => setOverrideSeconds(e.target.value),
+    "aria-label": "Seconds",
+    style: {
+      width: '48px',
+      padding: '7px 4px',
+      textAlign: 'center',
+      borderRadius: '6px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: 'rgba(255,255,255,0.03)',
+      color: 'var(--text-body)',
+      fontSize: '14px'
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: applyDurationOverride,
+    style: {
+      flex: 1,
+      height: '34px',
+      border: 'none',
+      borderRadius: '7px',
+      background: 'var(--accent)',
+      color: 'var(--text-bright)',
+      fontSize: '11px',
+      fontWeight: '600'
+    }
+  }, "Apply")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: openDurationOverride,
+    style: {
+      width: '100%',
+      height: '36px',
+      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
+      borderRadius: '8px',
+      background: 'transparent',
+      color: 'var(--accent-soft)',
+      fontSize: '11px',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Adjust actual time"), /*#__PURE__*/React.createElement("button", {
     onClick: resetStopwatch,
     style: {
       width: '100%',
@@ -6389,7 +6516,7 @@ const TimedDurationModal = ({
       cursor: 'grab'
     }
   })), dialMinutes > 0 && /*#__PURE__*/React.createElement("button", {
-    onClick: () => countdownMode ? (setCountdownPreset(dialSeconds), setCountdownTime(dialSeconds), setCountdownActive(true)) : onSelectDuration(dialSeconds),
+    onClick: () => countdownMode ? (setCountdownPreset(dialSeconds), setCountdownFinished(false), setCountdownTime(null), setPreStartCountdown(5)) : onSelectDuration(dialSeconds),
     style: {
       width: '100%',
       height: '44px',
@@ -6403,7 +6530,7 @@ const TimedDurationModal = ({
       WebkitAppearance: 'none',
       marginTop: '6px'
     }
-  }, countdownMode ? '&gt;' : 'Use', " ", dialMinutes, " min")))))));
+  }, countdownMode ? 'Start' : 'Use', " ", dialMinutes, " min")))))));
 };
 const SessionNoteModal = ({
   exercise,
