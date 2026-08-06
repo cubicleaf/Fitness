@@ -257,6 +257,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            min-height: 0;
         }
 
         /* Top Navigation */
@@ -267,6 +268,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex: 0 0 auto;
+            min-height: 68px;
         }
 
         .nav-title {
@@ -274,12 +277,16 @@
             font-weight: 600;
             color: var(--accent-deep);
             line-height: 1;
+            flex: 1 1 auto;
+            min-width: 0;
+            visibility: visible;
         }
 
         .top-nav-actions {
             display: flex;
             align-items: center;
             gap: 6px;
+            flex: 0 0 auto;
         }
 
         .today-jump-top-btn {
@@ -345,6 +352,9 @@
             align-items: center;
             justify-content: center;
             gap: 16px;
+            flex: 0 0 auto;
+            min-height: 88px;
+            visibility: visible;
         }
 
         .nav-arrow {
@@ -396,6 +406,7 @@
         /* Content Area */
         .content {
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
             overflow-x: hidden;
             padding: 0;
