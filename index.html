@@ -11271,8 +11271,41 @@ function App() {
   }, [currentDate]);
   useEffect(() => {
     if (!expandedExercise) return;
+    // Session notes are date-specific. Clear the previous day's inline values
+    // before loading this date so copying a historical set never carries over
+    // the prior day's subjective mood or note UI state.
+    setInlineMood(prev => {
+      const next = {
+        ...prev
+      };
+      delete next[expandedExercise];
+      return next;
+    });
+    setInlineFormCue(prev => {
+      const next = {
+        ...prev
+      };
+      delete next[expandedExercise];
+      return next;
+    });
+    setInlineNote(prev => {
+      const next = {
+        ...prev
+      };
+      delete next[expandedExercise];
+      return next;
+    });
+    setSelectedQuickNotes(prev => {
+      const next = {
+        ...prev
+      };
+      delete next[expandedExercise];
+      return next;
+    });
+    let cancelled = false;
     const loadExNotes = async () => {
       const note = await dbOps.sessionNotes.getByExerciseAndDate(expandedExercise, currentDate);
+      if (cancelled) return;
       if (note) {
         if (note.mood) setInlineMood(prev => ({
           ...prev,
@@ -11293,6 +11326,9 @@ function App() {
       }
     };
     loadExNotes();
+    return () => {
+      cancelled = true;
+    };
   }, [expandedExercise, currentDate]);
   const handleExerciseSelect = async exercise => {
     if (!exercise) {
