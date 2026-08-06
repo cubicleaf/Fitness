@@ -22,6 +22,8 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Decisions
 
+- 2026-08-06: Make bodyweight entry a low-friction numeric scrubber. What: removed the patronizing date/prompt copy, replaced the close glyph with the shared rotated supplied SVG, kept direct numeric editing, and added vertical pointer scrubbing with a nonlinear curve bounded to ±5 lbs (±2.3 kg) from the value at the start of the gesture. Why: the person already knows what they are logging; repeated weigh-ins should be quick to fine-tune without forcing keyboard entry. How to apply: preserve the direct input as the precision path, use the scrubber for quick adjustment, and keep the unit conversion/storage issue tracked separately until legacy records can be migrated safely.
+
 - 2026-08-06: Never carry subjective session state through historical set copying or date changes. What: copying a prior set remains limited to measurement/set fields; mood, quick-note tags, form cues, and free-text notes are cleared from inline state before the selected date loads, then rehydrated only from that date's session note. Why: “How I feel” is a report about the current session, not a property of the repeated set. Why this matters: stale in-memory mood made the control look as if the copy action had duplicated subjective state. How to apply: keep set copying and session-note copying separate, and guard asynchronous note loads so an older date cannot repopulate the current card.
 
 - 2026-08-06: Reserve the app header and date navigation in the phone layout. What: `.app-container` and `.content` now allow flex children to shrink safely, while `.top-nav` and `.day-nav` are non-shrinking rows and `.nav-title` cannot collapse away beside the four utility icons. Why: a small-viewport regression made the activity list appear without most of the top half of the app. How to apply: keep only `.content` scrollable; preserve fixed header/date rows whenever additional top-right controls are added.
@@ -124,6 +126,11 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - 2026-06-04: Resumed project. Created INTENT.md and STATUS.md. Shelved color work.
 
 ## Open
+
+### Bodyweight unit-aware storage
+
+- The bodyweight editor now follows the selected `lbs`/`kg` preference for its label and input, but existing bodyweight records are currently stored as bare numbers without the unit used at entry time.
+- Before changing the preference to perform conversions, add a dated per-record unit field and a migration rule for legacy values; otherwise an old `170.6 lbs` value can be relabeled incorrectly as `170.6 kg`.
 
 ### Modifier storage shape
 
