@@ -1,11 +1,10 @@
 /* Fit Logs service worker — added 2026-07-16.
-   Strategy: stale-while-revalidate for the app shell.
-   - First visit online caches the page.
-   - Every later visit serves the cached copy instantly (works with zero
-     signal at the gym), then refreshes the cache in the background so
-     the NEXT visit gets any newly deployed version.
+   Strategy: network-first for the app shell, stale-while-revalidate for
+   supporting assets.
+   - Online refreshes receive newly deployed HTML immediately.
+   - If the gym has no signal, the last known-good shell remains available.
    Workout data is untouched — it lives in IndexedDB, not this cache. */
-var CACHE = 'fitlogs-v1';
+var CACHE = 'fitlogs-v2';
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
@@ -27,6 +26,20 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
   if (new URL(e.request.url).origin !== location.origin) return;
+  var pathname = new URL(e.request.url).pathname;
+  var isAppShell = e.request.mode === 'navigate' || pathname === '/' || pathname === '/index.html';
+  if (isAppShell) {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).then(function (res) {
+        if (res && res.ok) {
+          var shellCopy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(e.request, shellCopy); });
+        }
+        return res;
+      }).catch(function () { return caches.match(e.request, { ignoreSearch: true }); })
+    );
+    return;
+  }
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then(function (cached) {
       var fresh = fetch(e.request).then(function (res) {
