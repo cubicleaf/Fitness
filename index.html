@@ -748,43 +748,54 @@
             margin-top: 4px;
         }
 
-        /* Expanded activity card: a restrained edge cue, not a glow flood. */
+        /* Micro Tremor: the history-jump cue belongs to the expanded card only. */
         .exercise-group-expanded {
             position: relative;
             isolation: isolate;
         }
 
-        .exercise-group-expanded::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            z-index: -1;
-            border-radius: 14px;
-            padding: 1px;
-            background: conic-gradient(from 0deg, transparent 0deg 292deg, color-mix(in srgb, var(--accent-soft) 12%, transparent) 310deg, color-mix(in srgb, var(--accent-soft) 58%, transparent) 334deg, color-mix(in srgb, var(--accent-soft) 12%, transparent) 350deg, transparent 360deg);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            mask-composite: exclude;
-            opacity: 0.5;
-            pointer-events: none;
-            animation: exerciseCardEdgeTravel 8.5s linear infinite;
-        }
-
-        @keyframes exerciseCardEdgeTravel {
-            to { transform: rotate(360deg); }
-        }
-
         .exercise-group-expanded > * {
             position: relative;
+            z-index: 2;
+        }
+
+        .exercise-group-expanded::before,
+        .exercise-group-expanded::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
             z-index: 1;
         }
 
+        .exercise-group-expanded::before {
+            inset: -2px;
+            border: 1px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
+            border-radius: 14px;
+            animation: micro-tremor var(--duration) steps(4, end) infinite;
+            opacity: var(--opacity);
+        }
+
+        .exercise-group-expanded::after {
+            inset: 0;
+            border-radius: 12px;
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .exercise-group-expanded::before {
-                animation: none;
-                opacity: 0.28;
+            .exercise-group-expanded::before,
+            .exercise-group-expanded::after {
+                animation: none !important;
             }
+
+            .exercise-group-expanded::before {
+                opacity: 0.32 !important;
+            }
+        }
+
+        @keyframes micro-tremor {
+            0%, 100% { transform: translate(0); }
+            25% { transform: translate(var(--travel), 0); }
+            50% { transform: translate(var(--travel-neg), 0); }
+            75% { transform: translate(0, var(--travel-y)); }
         }
 
         /* Weight Picker Grid */
@@ -12789,7 +12800,13 @@ function App() {
         borderRadius: '12px',
         padding: '8px',
         border: '1px solid color-mix(in srgb, var(--accent) 10%, transparent)',
-        overflow: 'visible'
+        overflow: 'visible',
+        '--duration': '1ms',
+        '--opacity': '0.45',
+        '--glow-radius': '1px',
+        '--travel': '3px',
+        '--travel-neg': '-3px',
+        '--travel-y': '3px'
       } : {},
       onTouchStart: e => {
         if (isExpanded) return;
