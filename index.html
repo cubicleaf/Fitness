@@ -2501,15 +2501,14 @@ const formatSetDisplay = set => {
     display += `${set.weight} ${set.weightType || 'lbs'}`;
   }
   if (set.distance !== null && set.distance !== undefined) {
-    display += `${set.distance} ${set.distanceUnit || 'mi'}`;
+    const distanceUnit = set.distanceUnit === 'mi' ? 'miles' : set.distanceUnit || 'km';
+    display += `${set.distance}${distanceUnit}`;
     if (set.duration !== null && set.duration !== undefined) display += ' · ';
   }
   if (set.reps !== null) {
     display += ` × ${set.reps}`;
   } else if (set.duration !== null) {
-    const mins = Math.floor(set.duration / 60);
-    const secs = set.duration % 60;
-    display += ` · ${mins}:${String(secs).padStart(2, '0')}`;
+    display += ` · ${Math.round(set.duration / 60)}min`;
   }
   return display;
 };
@@ -3194,15 +3193,14 @@ const formatSetBox = (set, previousSet, unitOverride) => {
   const previousModifierTag = formatGripHeaderTag(previousSet);
   if (modifierTag && modifierTag !== previousModifierTag) box += `${modifierTag} `;
   if (set.distance !== null && set.distance !== undefined) {
-    box += `${set.distance}${set.distanceUnit || 'mi'}`;
+    const distanceUnit = set.distanceUnit === 'mi' ? 'miles' : set.distanceUnit || 'km';
+    box += `${set.distance}${distanceUnit}`;
     if (set.duration !== null && set.duration !== undefined) box += ' · ';
   }
   if (set.reps !== null) {
     box += `× ${set.reps}`;
   } else if (set.duration !== null) {
-    const mins = Math.floor(set.duration / 60);
-    const secs = set.duration % 60;
-    box += `${mins}:${String(secs).padStart(2, '0')}`;
+    box += `${Math.round(set.duration / 60)}min`;
   }
   return box.trim();
 };
@@ -8381,6 +8379,43 @@ const getCategories = async () => {
 const saveCategories = async cats => {
   await dbOps.dayNotes.set('__categories__', JSON.stringify(cats));
 };
+const DayActivityList = ({ activities, splitLabel, onSelect }) => /*#__PURE__*/React.createElement("div", {
+  style: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    gap: '8px',
+    alignContent: 'start',
+    overflowY: 'auto',
+    flex: 1,
+    paddingBottom: '8px'
+  }
+}, activities.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  style: {
+    gridColumn: '1 / -1',
+    textAlign: 'center',
+    color: 'var(--text-placeholder)',
+    padding: '32px 16px'
+  }
+}, "No ", splitLabel.toLowerCase(), " activities found yet") : activities.map(activity => /*#__PURE__*/React.createElement("button", {
+  key: activity.id,
+  type: "button",
+  onClick: () => onSelect(activity),
+  style: {
+    minHeight: '58px',
+    padding: '12px 10px',
+    borderRadius: '10px',
+    border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+    background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+    color: 'var(--text-body)',
+    fontSize: '13px',
+    lineHeight: '1.2',
+    fontWeight: '600',
+    textAlign: 'left',
+    cursor: 'pointer',
+    WebkitAppearance: 'none'
+  }
+}, activity.name)));
+
 const DayDetailModal = ({
   date,
   onClose,
@@ -8390,7 +8425,8 @@ const DayDetailModal = ({
   unit,
   bodyweight,
   onEditBodyweight,
-  onOpenFieldNote
+  onOpenFieldNote,
+  onActivitySelect
 }) => {
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
   const [activities, setActivities] = useState([]);
@@ -8688,7 +8724,11 @@ const DayDetailModal = ({
       color: activeTab === 'split' ? '#fff' : 'var(--text-faint)',
       borderRadius: '0 8px 8px 0'
     }
-  }, "Change Split")), activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, activities.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Change Split")), activeTab === 'activities' && /*#__PURE__*/React.createElement(DayActivityList, {
+    activities: activities,
+    splitLabel: dayLabel,
+    onSelect: onActivitySelect
+  }), false && activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, activities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'center',
@@ -13339,8 +13379,8 @@ function App() {
       setModal(null);
     },
     onClose: () => {
-      setModal('exercisePicker');
       setSelectedExercise(null);
+      if (modalBackRef.current) modalBack();else setModal('exercisePicker');
     },
     unit: unit
   }), modal === 'mergeSearch' && mergeCandidates.length > 1 && /*#__PURE__*/React.createElement(MergeActivitySearchModal, {
@@ -13958,7 +13998,12 @@ function App() {
     unit: unit,
     bodyweight: bodyweight,
     onEditBodyweight: openBodyweightEditor,
-    onOpenFieldNote: openFieldNote
+    onOpenFieldNote: openFieldNote,
+    onActivitySelect: async exercise => {
+      const fullExercise = await dbOps.exercises.get(exercise.id);
+      setSelectedExercise(fullExercise || exercise);
+      setModal('activityHistory', 'dayDetail');
+    }
   }), showBWEditor && bwEditorDate && /*#__PURE__*/React.createElement(BodyweightEntryModal, {
     date: bwEditorDate,
     unit: unit,
