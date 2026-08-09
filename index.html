@@ -2438,6 +2438,7 @@ const getTodayString = () => {
   return getDateString(new Date());
 };
 const getBodyweightKey = date => `__bodyweight_${date}`;
+const getBodyweightConfirmationKey = date => `__bodyweight_confirmed_${date}`;
 const hasBodyweightValue = value => value !== null && value !== undefined && `${value}`.trim() !== '' && !Number.isNaN(parseFloat(value));
 const getStoredBodyweightForDate = async date => {
   const dated = await dbOps.dayNotes.get(getBodyweightKey(date));
@@ -2451,6 +2452,7 @@ const getStoredBodyweightForDate = async date => {
 const setStoredBodyweightForDate = async (date, value) => {
   if (!hasBodyweightValue(value)) {
     await dbOps.dayNotes.delete(getBodyweightKey(date));
+    await dbOps.dayNotes.delete(getBodyweightConfirmationKey(date));
     if (date === getTodayString()) {
       await dbOps.dayNotes.delete('__bodyweight__');
     }
@@ -2458,6 +2460,7 @@ const setStoredBodyweightForDate = async (date, value) => {
   }
   const normalized = `${value}`.trim();
   await dbOps.dayNotes.set(getBodyweightKey(date), normalized);
+  await dbOps.dayNotes.set(getBodyweightConfirmationKey(date), 'true');
   if (date === getTodayString()) {
     await dbOps.dayNotes.set('__bodyweight__', normalized);
   }
@@ -11212,6 +11215,7 @@ function App() {
   const [settingsInitialTab, setSettingsInitialTab] = useState('weekly');
   const [settingsFocusCoach, setSettingsFocusCoach] = useState(false);
   const [bodyweight, setBodyweight] = useState(null);
+  const [bodyweightEntryConfirmed, setBodyweightEntryConfirmed] = useState(false);
   const [showBWEditor, setShowBWEditor] = useState(false);
   const [bwEditValue, setBWEditValue] = useState('');
   const [bwEditorDate, setBWEditorDate] = useState(null);
@@ -11398,6 +11402,7 @@ function App() {
     await safeDb(() => setStoredBodyweightForDate(bwEditorDate, bwEditValue.trim()), 'save bodyweight');
     if (bwEditorDate === currentDate) {
       setBodyweight(parseFloat(bwEditValue.trim()));
+      setBodyweightEntryConfirmed(true);
     }
     closeBodyweightEditor();
   }, [bwEditValue, bwEditorDate, closeBodyweightEditor, currentDate]);
@@ -11416,11 +11421,14 @@ function App() {
       // Load bodyweight
       const storedBodyweight = await getStoredBodyweightForDate(currentDate);
       setBodyweight(hasBodyweightValue(storedBodyweight) ? parseFloat(storedBodyweight) : null);
+      const confirmation = await dbOps.dayNotes.get(getBodyweightConfirmationKey(currentDate));
+      setBodyweightEntryConfirmed(confirmation?.note === 'true');
     });
   }, [currentDate, loadDayData]);
   useEffect(() => {
     setWeightBannerDismissed(false);
     setBannerSlidingOut(false);
+    setBodyweightEntryConfirmed(false);
   }, [currentDate]);
   useEffect(() => {
     if (isValidDateString(currentDate)) {
@@ -12364,7 +12372,7 @@ function App() {
     }, "Save"))));
   };
   const todayString = getTodayString();
-  const todayWeightMissing = currentDate === todayString && bodyweight === null;
+  const todayWeightMissing = currentDate === todayString && !bodyweightEntryConfirmed;
   const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
   const isViewingFutureDay = currentDate > todayString;
   return /*#__PURE__*/React.createElement("div", {
