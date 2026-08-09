@@ -30,6 +30,7 @@
             --surface: #2a1520;
             --surface-edge: #3a2a30;
             --neutral-dark: #3d2e35;      /* warmed, was #333 */
+            --top-nav-surface: color-mix(in srgb, var(--accent) 8%, var(--bg-page));
             /* accent family */
             --accent: #8b3a62;
             --accent-soft: #c77da0;
@@ -112,6 +113,188 @@
             background: var(--overlay);
             z-index: 100;
             animation: fadeIn 0.2s ease-out;
+        }
+
+        /* Feedback uses the same centered, quiet focus treatment as the
+           newer focused-entry surfaces instead of occupying the whole page. */
+        .feedback-overlay {
+            background: rgba(13, 6, 10, 0.64);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+        }
+
+        .modal.feedback-modal {
+            top: 50%;
+            bottom: auto;
+            left: 12px;
+            right: 12px;
+            width: auto;
+            height: min(76dvh, 660px);
+            max-height: 76dvh;
+            border: 1px solid color-mix(in srgb, var(--accent-soft) 24%, transparent);
+            border-radius: 22px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+            overflow: hidden;
+            transform: translateY(-50%);
+            animation: feedbackPop 0.22s ease-out;
+        }
+
+        @keyframes feedbackPop {
+            from { opacity: 0; transform: translateY(calc(-50% + 12px)) scale(0.985); }
+            to { opacity: 1; transform: translateY(-50%) scale(1); }
+        }
+
+        .modal-header.feedback-header {
+            padding: 10px 12px 10px 16px;
+            min-height: 58px;
+            background: color-mix(in srgb, var(--accent) 10%, var(--bg-page));
+        }
+
+        .modal-header.feedback-header h2 {
+            font-size: 20px;
+        }
+
+        .feedback-content {
+            padding: 14px 16px 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feedback-intro {
+            color: color-mix(in srgb, var(--text-body) 72%, transparent);
+            font-size: 13px;
+            line-height: 1.35;
+        }
+
+        .feedback-label {
+            display: block;
+            margin: 0;
+            color: var(--text-body);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .feedback-category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            margin-top: 5px;
+        }
+
+        .feedback-category-option {
+            min-height: 38px;
+            padding: 5px 6px;
+            border: 1px solid color-mix(in srgb, var(--accent-soft) 22%, transparent);
+            border-radius: 9px;
+            background: color-mix(in srgb, var(--accent) 6%, transparent);
+            color: color-mix(in srgb, var(--text-body) 70%, transparent);
+            font: inherit;
+            font-size: 11px;
+            font-weight: 650;
+            line-height: 1.1;
+            cursor: pointer;
+        }
+
+        .feedback-category-option.active {
+            background: var(--accent);
+            border-color: var(--accent-soft);
+            color: #fff;
+        }
+
+        .feedback-field-trigger {
+            width: 100%;
+            min-height: 47px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            border: 1px solid color-mix(in srgb, var(--accent-soft) 22%, transparent);
+            border-radius: 10px;
+            background: color-mix(in srgb, var(--accent) 7%, transparent);
+            color: var(--text-placeholder);
+            font: inherit;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .feedback-field-trigger.has-value {
+            color: var(--text-body);
+        }
+
+        .feedback-field-trigger small {
+            flex: 0 0 auto;
+            color: var(--accent-soft);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .feedback-support-row {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 8px;
+        }
+
+        .feedback-file-button,
+        .feedback-email-input {
+            min-height: 40px;
+            padding: 9px 10px;
+            border: 1px solid color-mix(in srgb, var(--accent-soft) 20%, transparent);
+            border-radius: 9px;
+            background: color-mix(in srgb, var(--accent) 6%, transparent);
+            color: var(--text-body);
+            font: inherit;
+            font-size: 12px;
+        }
+
+        .feedback-file-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .feedback-file-button.has-file {
+            color: var(--accent-soft);
+        }
+
+        .feedback-email-input::placeholder {
+            color: var(--text-placeholder);
+        }
+
+        .modal.feedback-editor-modal {
+            height: min(80dvh, 680px);
+            max-height: 80dvh;
+        }
+
+        .feedback-editor-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .feedback-editor-textarea {
+            flex: 1;
+            min-height: 0;
+            resize: none;
+            line-height: 1.45;
+        }
+
+        .feedback-settings-btn {
+            width: auto;
+            min-height: 36px;
+            margin: 0 4px 0 auto;
+            padding: 7px 10px;
+            border-radius: 9px;
+            font-size: 12px;
         }
 
         @keyframes fadeIn {
@@ -264,7 +447,7 @@
 
         /* Top Navigation */
         .top-nav {
-            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            background: var(--top-nav-surface);
             border-bottom: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
             padding: 12px 16px;
             display: flex;
@@ -277,7 +460,8 @@
         .nav-title {
             font-size: 17px;
             font-weight: 600;
-            color: var(--accent-deep);
+            color: var(--accent);
+            opacity: 0.9;
             line-height: 1;
             flex: 1 1 auto;
             min-width: 0;
@@ -292,7 +476,7 @@
         }
 
         .today-jump-top-btn {
-            color: var(--accent-deep);
+            color: var(--accent);
             background: none;
             border: none;
             padding: 0;
@@ -317,7 +501,16 @@
         .today-jump-top-btn,
         .bodyweight-top-btn,
         .coach-top-btn {
-            opacity: 0.55;
+            opacity: 0.78;
+        }
+
+        .top-nav .settings-top-btn {
+            color: var(--accent);
+            opacity: 0.78;
+        }
+
+        .today-jump-top-btn span {
+            color: inherit !important;
         }
 
         .today-jump-top-btn:active {
@@ -327,7 +520,7 @@
         .settings-btn {
             background: none;
             border: none;
-            color: var(--accent-deep);
+            color: var(--accent);
             font-size: 22px;
             padding: 8px;
             width: 44px;
@@ -1849,7 +2042,7 @@ const IconSettings = ({
   opacity: "0.45"
 }), /*#__PURE__*/React.createElement("path", {
   d: "M15.5227 12C15.5227 13.6569 14.1694 15 12.4999 15C10.8304 15 9.47705 13.6569 9.47705 12C9.47705 10.3431 10.8304 9 12.4999 9C14.1694 9 15.5227 10.3431 15.5227 12Z",
-  fill: "var(--bg-page)"
+  fill: "var(--top-nav-surface)"
 }));
 const IconScale = ({
   size,
@@ -1872,7 +2065,7 @@ const IconBodyweight = ({
   viewBox: "0 0 24 24"
 }, /*#__PURE__*/React.createElement("path", {
   d: "M10 22H14C19 22 21 20 21 15V9C21 4 19 2 14 2H10C5 2 3 4 3 9V15C3 20 5 22 10 22Z",
-  fill: "var(--bg-page)",
+  fill: "var(--top-nav-surface)",
   stroke: "currentColor",
   strokeWidth: "1.5",
   strokeLinecap: "round",
@@ -1880,9 +2073,9 @@ const IconBodyweight = ({
 }), /*#__PURE__*/React.createElement("path", {
   opacity: "0.4",
   d: "M17.25 8.28992C14.26 5.62992 9.74 5.62992 6.75 8.28992L8.93 11.7899C10.68 10.2299 13.32 10.2299 15.07 11.7899L17.25 8.28992Z",
-  fill: "var(--bg-page)",
+  fill: "var(--top-nav-surface)",
   stroke: "currentColor",
-  strokeWidth: "1.5",
+  strokeWidth: "1.8",
   strokeLinecap: "round",
   strokeLinejoin: "round"
 }));
@@ -7082,6 +7275,24 @@ const FeedbackModal = ({
   const [screenshot, setScreenshot] = useState(null);
   const [status, setStatus] = useState(null);
   const [sending, setSending] = useState(false);
+  const [activeTextField, setActiveTextField] = useState(null);
+  const categories = ['Bug / Broken', 'Feature request', 'UX improvement', 'Confusing', 'Data / history', 'Performance', 'Accessibility', 'Something I like', 'Other'];
+  const fieldCopy = {
+    description: {
+      title: 'What would you like to tell me?',
+      placeholder: 'Describe the problem, idea, or thing you liked...',
+      value: description,
+      setValue: setDescription,
+      maxLength: 6000
+    },
+    expected: {
+      title: 'What did you expect to happen?',
+      placeholder: 'This helps separate a bug from a design request.',
+      value: expected,
+      setValue: setExpected,
+      maxLength: 3000
+    }
+  };
   const handleScreenshot = event => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
@@ -7133,89 +7344,87 @@ const FeedbackModal = ({
       setSending(false);
     }
   };
-  const fieldStyle = {
-    width: '100%',
-    boxSizing: 'border-box',
-    marginTop: '6px',
-    padding: '12px',
-    borderRadius: '8px',
-    border: '1px solid color-mix(in srgb, var(--accent-soft) 24%, transparent)',
-    background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
-    color: 'var(--text-body)',
-    font: 'inherit',
-    fontSize: '14px'
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
+  const activeEditor = activeTextField ? fieldCopy[activeTextField] : null;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay feedback-overlay",
     onClick: onClose
   }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    style: { height: '100dvh', maxHeight: '100dvh', top: 0, bottom: 0 },
+    className: "modal feedback-modal",
     onClick: event => event.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
-    className: "modal-header",
+    className: "modal-header feedback-header",
     ...makeSwipeDownHandlers(onClose)
   }, /*#__PURE__*/React.createElement("h2", null, "Feedback"), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
     onClick: onClose
   }, /*#__PURE__*/React.createElement(IconX, { size: 20 }))), /*#__PURE__*/React.createElement("form", {
-    className: "modal-content",
-    style: { overflowY: 'auto', WebkitOverflowScrolling: 'touch' },
+    className: "feedback-content",
     onSubmit: handleSubmit
-  }, /*#__PURE__*/React.createElement("p", {
-    style: { color: 'color-mix(in srgb, var(--text-body) 72%, transparent)', lineHeight: 1.45, marginTop: 0 }
-  }, "Tell me what broke, what you want added, or what would make Fit Logs easier to use."), /*#__PURE__*/React.createElement("label", {
-    style: { display: 'block', marginBottom: '14px', color: 'var(--text-body)', fontWeight: 600 }
-  }, "Category", /*#__PURE__*/React.createElement("select", {
-    value: category,
-    onChange: event => setCategory(event.target.value),
-    style: fieldStyle
-  }, ['Bug / Something is broken', 'Feature request', 'UX improvement', 'Confusing or unclear', 'Data or history problem', 'Performance problem', 'Accessibility issue', 'Something I like', 'Other'].map(option => /*#__PURE__*/React.createElement("option", { key: option, value: option }, option)))), /*#__PURE__*/React.createElement("label", {
-    style: { display: 'block', marginBottom: '14px', color: 'var(--text-body)', fontWeight: 600 }
-  }, "What would you like to tell me?", /*#__PURE__*/React.createElement("textarea", {
-    value: description,
-    onChange: event => setDescription(event.target.value),
-    rows: 6,
-    maxLength: 6000,
-    placeholder: "Describe the problem, idea, or thing you liked...",
-    style: fieldStyle
-  })), /*#__PURE__*/React.createElement("label", {
-    style: { display: 'block', marginBottom: '14px', color: 'var(--text-body)', fontWeight: 600 }
-  }, "What did you expect to happen? (optional)", /*#__PURE__*/React.createElement("textarea", {
-    value: expected,
-    onChange: event => setExpected(event.target.value),
-    rows: 3,
-    maxLength: 3000,
-    placeholder: "This helps separate a bug from a design request.",
-    style: fieldStyle
-  })), /*#__PURE__*/React.createElement("label", {
-    style: { display: 'block', marginBottom: '14px', color: 'var(--text-body)', fontWeight: 600 }
-  }, "Screenshot (optional)", /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React.createElement("p", { className: "feedback-intro" }, "Tell me what broke, what you want added, or what would make Fit Logs easier to use."), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", { className: "feedback-label" }, "Category"), /*#__PURE__*/React.createElement("div", { className: "feedback-category-grid" }, categories.map(option => /*#__PURE__*/React.createElement("button", {
+    key: option,
+    type: "button",
+    className: `feedback-category-option${category === option ? ' active' : ''}`,
+    onClick: () => setCategory(option)
+  }, option)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", { className: "feedback-label" }, "Your message"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: `feedback-field-trigger${description ? ' has-value' : ''}`,
+    onClick: () => setActiveTextField('description')
+  }, /*#__PURE__*/React.createElement("span", null, description || "Describe the problem, idea, or thing you liked..."), /*#__PURE__*/React.createElement("small", null, description ? `${description.length}/6000` : "Tap to write"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", { className: "feedback-label" }, "Expected result", /*#__PURE__*/React.createElement("span", { style: { color: 'var(--text-placeholder)', fontWeight: 500 } }, "  optional")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: `feedback-field-trigger${expected ? ' has-value' : ''}`,
+    onClick: () => setActiveTextField('expected')
+  }, /*#__PURE__*/React.createElement("span", null, expected || "What did you expect to happen?"), /*#__PURE__*/React.createElement("small", null, expected ? `${expected.length}/3000` : "Tap to write"))), /*#__PURE__*/React.createElement("div", { className: "feedback-support-row" }, /*#__PURE__*/React.createElement("label", { className: `feedback-file-button${screenshot ? ' has-file' : ''}` }, /*#__PURE__*/React.createElement("input", {
     type: "file",
     accept: "image/*",
     capture: "environment",
     onChange: handleScreenshot,
-    style: { ...fieldStyle, padding: '9px' }
-  }), screenshot && /*#__PURE__*/React.createElement("div", {
-    style: { marginTop: '6px', fontSize: '12px', color: 'var(--accent-soft)' }
-  }, screenshot.name)), /*#__PURE__*/React.createElement("label", {
-    style: { display: 'block', marginBottom: '14px', color: 'var(--text-body)', fontWeight: 600 }
-  }, "Your email (optional)", /*#__PURE__*/React.createElement("input", {
+    style: { display: 'none' }
+  }), screenshot ? "Screenshot attached" : "＋ Add screenshot"), /*#__PURE__*/React.createElement("input", {
+    className: "feedback-email-input",
     type: "email",
     value: email,
     onChange: event => setEmail(event.target.value),
-    placeholder: "Only needed if you want a reply",
-    style: fieldStyle
+    placeholder: "Email for a reply (optional)"
   })), status && /*#__PURE__*/React.createElement("div", {
     role: "status",
-    style: { marginBottom: '12px', color: status.startsWith('Sent.') ? 'var(--text-warm)' : 'var(--accent-soft)', lineHeight: 1.4 }
+    style: { color: status.startsWith('Sent.') ? 'var(--text-warm)' : 'var(--accent-soft)', fontSize: '12px', lineHeight: 1.35 }
   }, status), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
+    className: "btn feedback-submit",
     type: "submit",
     disabled: sending,
-    style: { width: '100%' }
-  }, sending ? "Sending..." : "Send Feedback"))));
+  }, sending ? "Sending..." : "Send Feedback")))), activeEditor && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay feedback-overlay",
+    onClick: () => setActiveTextField(null)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal feedback-modal feedback-editor-modal",
+    onClick: event => event.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", { className: "modal-header feedback-header" }, /*#__PURE__*/React.createElement("h2", null, activeEditor.title), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    type: "button",
+    "aria-label": "Close",
+    onClick: event => {
+      event.stopPropagation();
+      setActiveTextField(null);
+    }
+  }, /*#__PURE__*/React.createElement(IconX, { size: 20 }))), /*#__PURE__*/React.createElement("div", { className: "feedback-editor-content" }, /*#__PURE__*/React.createElement("textarea", {
+    autoFocus: true,
+    className: "form-input feedback-editor-textarea",
+    value: activeEditor.value,
+    maxLength: activeEditor.maxLength,
+    placeholder: activeEditor.placeholder,
+    onChange: event => activeEditor.setValue(event.target.value)
+  }), /*#__PURE__*/React.createElement("div", { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'var(--text-placeholder)', fontSize: '12px' } }, /*#__PURE__*/React.createElement("span", null, activeEditor.value.length, "/", activeEditor.maxLength), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    type: "button",
+    style: { width: 'auto', margin: 0, padding: '10px 18px' },
+    onMouseDown: () => setActiveTextField(null),
+    onClick: event => {
+      event.preventDefault();
+      event.stopPropagation();
+      setActiveTextField(null);
+    }
+  }, "Done"))))));
 };
 const SettingsModal = ({
   onClose,
@@ -7777,9 +7986,10 @@ const SettingsModal = ({
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
   }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Settings"), onOpenFeedback && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
+    className: "btn btn-secondary feedback-settings-btn",
     onClick: onOpenFeedback,
-    style: { marginLeft: 'auto', marginRight: '8px', minHeight: '40px', padding: '8px 12px', color: 'var(--text-warm)' }
+    type: "button",
+    style: { color: 'var(--text-warm)' }
   }, "Feedback"), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
