@@ -4335,7 +4335,8 @@ const CreateExerciseModal = ({
     onClick: () => {
       setType(t);
       if (t === 'timed' && !weightDefault) setWeightDefault('none');
-      if (t === 'reps' && weightDefault === 'none' && !weightMeaning) setWeightDefault(null);
+      if (t === 'reps' && !weightDefault) setWeightDefault('bodyweight');
+      if (t === 'reps' && weightDefault === 'none' && !weightMeaning) setWeightDefault('bodyweight');
     },
     style: {
       flex: 1,
@@ -4471,7 +4472,7 @@ const CreateExerciseModal = ({
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
-  }, "Weight Mode ", !weightDefault && /*#__PURE__*/React.createElement("span", {
+  }, "Default Load ", !weightDefault && /*#__PURE__*/React.createElement("span", {
     style: {
       color: '#e88a8a',
       fontSize: '11px',
@@ -4514,7 +4515,7 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginTop: '4px'
     }
-  }, weightDefault === 'weight' ? 'Weight picker shown each set' : weightDefault === 'bodyweight' ? 'Auto-logs as bodyweight, skip weight picker' : 'Skip weight picker entirely, just log reps/duration')), type !== 'neutral' && gripSectionCollapsed && /*#__PURE__*/React.createElement("button", {
+  }, weightDefault === 'weight' ? 'Starts weighted; bodyweight remains available per set' : weightDefault === 'bodyweight' ? 'Starts as bodyweight; added weight remains available per set' : 'Starts without a load; other load modes remain available per set')), type !== 'neutral' && gripSectionCollapsed && /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowGripSection(true),
     style: {
       width: '100%',
@@ -5084,6 +5085,8 @@ const RepPickerModal = ({
   weightType,
   bandedColor,
   onSelectReps,
+  onChangeWeight,
+  onRequestWeight,
   setNumber,
   gripTrackingEnabled = false,
   initialGrip = null,
@@ -5132,7 +5135,74 @@ const RepPickerModal = ({
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
     onChange: onGripChange
-  }), /*#__PURE__*/React.createElement("div", {
+  }), onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '6px',
+      marginBottom: '10px',
+      padding: '6px',
+      borderRadius: '9px',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px',
+      marginRight: '2px'
+    }
+  }, "Load"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onChangeWeight({
+      weight: null,
+      weightType: 'bodyweight'
+    }),
+    style: {
+      flex: 1,
+      padding: '7px 5px',
+      borderRadius: '7px',
+      border: weightType === 'bodyweight' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: weightType === 'bodyweight' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
+      color: weightType === 'bodyweight' ? 'var(--text-body)' : 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Bodyweight"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onChangeWeight({
+      weight: null,
+      weightType: 'none'
+    }),
+    style: {
+      flex: 1,
+      padding: '7px 5px',
+      borderRadius: '7px',
+      border: weightType === 'none' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: weightType === 'none' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
+      color: weightType === 'none' ? 'var(--text-body)' : 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "No load"), /*#__PURE__*/React.createElement("button", {
+    onClick: onRequestWeight,
+    style: {
+      flex: 1,
+      padding: '7px 5px',
+      borderRadius: '7px',
+      border: weightType !== 'bodyweight' && weightType !== 'none' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: weightType !== 'bodyweight' && weightType !== 'none' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
+      color: weightType !== 'bodyweight' && weightType !== 'none' ? 'var(--text-body)' : 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, weightType !== 'bodyweight' && weightType !== 'none' ? `Weighted · ${displayWeight}` : 'Add Weight')), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '6px',
@@ -5525,6 +5595,8 @@ const TimedDurationModal = ({
   weightType,
   bandedColor,
   onSelectDuration: persistDuration,
+  onChangeWeight,
+  onRequestWeight,
   distanceEnabled = false,
   setNumber,
   gripTrackingEnabled = false,
@@ -5656,7 +5728,7 @@ const TimedDurationModal = ({
     if (s >= 3600) return `${Math.floor(s / 3600)}:${String(Math.floor(s % 3600 / 60)).padStart(2, '0')}:00`;
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   };
-  const displayWeight = weightType === 'bodyweight' || weightType === 'none' || weight == null ? 'No weight' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
+  const displayWeight = weightType === 'bodyweight' ? 'Bodyweight' : weightType === 'none' || weight == null ? 'No load' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
 
   // Stopwatch controls
   const startStopwatch = () => {
@@ -5831,7 +5903,57 @@ const TimedDurationModal = ({
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
     onChange: onGripChange
-  }), distanceEnabled && /*#__PURE__*/React.createElement("div", {
+  }), onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+      marginBottom: '10px',
+      padding: '6px',
+      borderRadius: '9px',
+      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px'
+    }
+  }, "Load"), ['bodyweight', 'none'].map(mode => /*#__PURE__*/React.createElement("button", {
+    key: mode,
+    onClick: () => onChangeWeight({
+      weight: null,
+      weightType: mode
+    }),
+    style: {
+      flex: 1,
+      padding: '7px 4px',
+      borderRadius: '7px',
+      border: weightType === mode ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: weightType === mode ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
+      color: weightType === mode ? 'var(--text-body)' : 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, mode === 'bodyweight' ? 'Bodyweight' : 'No load')), /*#__PURE__*/React.createElement("button", {
+    onClick: onRequestWeight,
+    style: {
+      flex: 1,
+      padding: '7px 4px',
+      borderRadius: '7px',
+      border: weightType !== 'bodyweight' && weightType !== 'none' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
+      background: weightType !== 'bodyweight' && weightType !== 'none' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
+      color: weightType !== 'bodyweight' && weightType !== 'none' ? 'var(--text-body)' : 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, weightType !== 'bodyweight' && weightType !== 'none' ? 'Weighted' : 'Add Weight')), distanceEnabled && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '8px',
@@ -10375,7 +10497,7 @@ const ActivityContextModal = ({
       justifyContent: 'space-between',
       alignItems: 'center'
     }
-  }, /*#__PURE__*/React.createElement("span", null, "Weight Prompt"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, "Default Load"), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)'
@@ -13601,6 +13723,8 @@ function App() {
     weightType: selectedWeight.weightType,
     bandedColor: selectedWeight.bandedColor,
     onSelectReps: handleRepsSelected,
+    onChangeWeight: weightData => setSelectedWeight(weightData),
+    onRequestWeight: () => setModal('weightPicker', 'repPicker'),
     setNumber: setNumber,
     gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
@@ -13612,6 +13736,8 @@ function App() {
     weightType: selectedWeight.weightType,
     bandedColor: selectedWeight.bandedColor,
     onSelectDuration: handleDurationSelected,
+    onChangeWeight: weightData => setSelectedWeight(weightData),
+    onRequestWeight: () => setModal('weightPicker', 'timedDuration'),
     setNumber: setNumber,
     distanceEnabled: inferMeasurementModes(selectedExercise).includes('distance'),
     gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
@@ -13956,15 +14082,15 @@ function App() {
     const options = [{
       id: 'weight',
       label: 'Weight',
-      desc: 'Weight picker shown each set'
+      desc: 'Starts weighted; bodyweight remains available per set'
     }, {
       id: 'bodyweight',
       label: 'Bodyweight',
-      desc: 'Auto-logs as bodyweight, skips weight picker'
+      desc: 'Starts as bodyweight; added weight remains available per set'
     }, {
       id: 'none',
       label: 'No Weight',
-      desc: 'Skips weight picker entirely'
+      desc: 'Starts without a load; other modes remain available per set'
     }];
     const handleSelect = async newWD => {
       if (newWD === currentWD) {
@@ -14008,14 +14134,14 @@ function App() {
         marginBottom: '4px',
         textAlign: 'center'
       }
-    }, "Weight Prompt"), /*#__PURE__*/React.createElement("div", {
+      }, "Default Load"), /*#__PURE__*/React.createElement("div", {
       style: {
         fontSize: '11px',
         color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
         marginBottom: '16px',
         textAlign: 'center'
       }
-    }, selectedExercise.name), /*#__PURE__*/React.createElement("div", {
+      }, selectedExercise.name), /*#__PURE__*/React.createElement("div", {
       style: {
         display: 'flex',
         flexDirection: 'column',
