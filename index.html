@@ -3442,6 +3442,7 @@ const EditCategoriesModal = ({
 const ExercisePickerModal = ({
   onSelect,
   onCreateNew,
+  onOpenMerge,
   selectedDate,
   categories,
   onCategoriesChanged,
@@ -3534,6 +3535,38 @@ const ExercisePickerModal = ({
   const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).filter(family => family.name.toLowerCase().includes(queryText) || family.members.some(ex => ex.name.toLowerCase().includes(queryText))) : [];
   const matchingFamilyMemberIds = new Set(matchingFamilies.flatMap(family => family.members.map(ex => ex.id)));
   const visibleActivities = selectedFamilyId ? filtered : filtered.filter(ex => !matchingFamilyMemberIds.has(ex.id));
+  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered : [];
+  const mergePrompt = onOpenMerge && mergeCandidates.length >= 2 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '12px',
+      padding: '10px 12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 28%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 8%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'var(--text-body)',
+      lineHeight: '1.4',
+      marginBottom: '8px'
+    }
+  }, "Seeing multiple activities that may be the same? You can review and merge them yourself."), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => onOpenMerge(mergeCandidates),
+    style: {
+      minHeight: '44px',
+      width: '100%',
+      padding: '10px 12px',
+      borderRadius: '9px',
+      border: '1px solid color-mix(in srgb, var(--accent) 40%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 16%, transparent)',
+      color: 'var(--text-body)',
+      fontWeight: '700',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, "Merge activities")) : null;
   const familyBack = selectedFamilyId ? /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
@@ -3632,7 +3665,7 @@ const ExercisePickerModal = ({
     placeholder: "Search activities...",
     value: search,
     onChange: e => setSearch(e.target.value)
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs"
   }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
     key: cat,
@@ -8864,8 +8897,16 @@ const BodyweightEntryModal = ({
     const dy = event.clientY - scrub.startY;
     if (Math.abs(dy) < 4) return;
     event.preventDefault();
-    const normalizedDistance = Math.min(Math.abs(dy) / 80, 1);
-    const adjustment = maxAdjustment * (1 - Math.exp(-2.1 * normalizedDistance));
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
+    const edgeInset = 8;
+    const availableTravel = dy < 0
+      ? Math.max(scrub.startY - edgeInset, 1)
+      : Math.max(viewportHeight - scrub.startY - edgeInset, 1);
+    const normalizedDistance = Math.min(Math.abs(dy) / availableTravel, 1);
+    // Deliberately ease in: the center gives fine 0.1-unit control, while
+    // the same physical movement accelerates toward the screen edge.
+    const easedDistance = Math.pow(normalizedDistance, 2.35);
+    const adjustment = maxAdjustment * easedDistance;
     const nextValue = Math.min(scrub.startValue + maxAdjustment, Math.max(scrub.startValue - maxAdjustment, scrub.startValue - Math.sign(dy) * adjustment));
     onChange(formatWeightValue(nextValue));
   };
@@ -11125,6 +11166,112 @@ const FamilyViewModal = ({
     }
   }, sibling.variationLabel || 'No variation label', sibling.lastUsed ? ` · Last ${formatDateShort(sibling.lastUsed)}` : ' · Not logged yet'))))));
 };
+const MergeActivitySearchModal = ({
+  candidates,
+  onMerge,
+  onClose
+}) => {
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+  const [keepId, setKeepId] = useState(null);
+  const selected = (candidates || []).filter(ex => selectedIds.has(ex.id));
+  const toggle = id => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+        if (keepId === id) setKeepId([...next][0] || null);
+      } else next.add(id);
+      return next;
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Merge Activities"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '13px',
+      lineHeight: '1.5',
+      color: 'var(--text-body)',
+      marginBottom: '14px'
+    }
+  }, "You are in control. Select the activity histories that are truly duplicates, then choose the name to keep. Nothing changes until you confirm."), /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Activities to combine"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gap: '8px',
+      marginBottom: '16px'
+    }
+  }, (candidates || []).map(ex => /*#__PURE__*/React.createElement("button", {
+    key: ex.id,
+    type: "button",
+    onClick: () => toggle(ex.id),
+    style: {
+      width: '100%',
+      minHeight: '48px',
+      padding: '11px 12px',
+      borderRadius: '10px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: selectedIds.has(ex.id) ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      textAlign: 'left',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, selectedIds.has(ex.id) ? '✓ ' : '○ ', ex.name))), selected.length >= 2 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Keep history under"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gap: '8px',
+      marginBottom: '14px'
+    }
+  }, selected.map(ex => /*#__PURE__*/React.createElement("button", {
+    key: ex.id,
+    type: "button",
+    onClick: () => setKeepId(ex.id),
+    style: {
+      minHeight: '44px',
+      padding: '10px 12px',
+      borderRadius: '9px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: keepId === ex.id ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: 'var(--text-body)',
+      textAlign: 'left',
+      cursor: 'pointer',
+      WebkitAppearance: 'none'
+    }
+  }, keepId === ex.id ? '✓ ' : '', ex.name))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      lineHeight: '1.45',
+      color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)',
+      marginBottom: '14px'
+    }
+  }, "Sets and notes will be preserved under the name you choose. The other activity records will be removed after your final confirmation."), /*#__PURE__*/React.createElement("div", {
+    className: "modal-footer"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onClose
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    disabled: selected.length < 2 || !keepId,
+    onClick: () => onMerge(selected, keepId)
+  }, "Review merge"))))));
+};
 const MergeActivityModal = ({
   exercise,
   onMerge,
@@ -11262,6 +11409,7 @@ function App() {
     category: 'all',
     selectedFamilyId: null
   });
+  const [mergeCandidates, setMergeCandidates] = useState([]);
   const [exerciseLocks, setExerciseLocks] = useState({});
   const [pendingLockType, setPendingLockType] = useState(null);
   const [pillGlowId, setPillGlowId] = useState(null);
@@ -12166,7 +12314,7 @@ function App() {
       onCancel: () => setConfirmation(null)
     });
   };
-  const mergeActivities = async (source, target) => {
+  const mergeActivities = async (source, target, { finalize = true } = {}) => {
     if (!source || !target || source.id === target.id) return;
     const sourceSets = await dbOps.sets.getByExerciseId(source.id);
     const targetSets = await dbOps.sets.getByExerciseId(target.id);
@@ -12204,8 +12352,19 @@ function App() {
       await safeDb(() => dbOps.sessionNotes.delete(sourceNote.id), 'delete merged note');
     }
     await safeDb(() => dbOps.exercises.delete(source.id), 'delete merged activity');
+    if (!finalize) return;
     setConfirmation(null);
     setSelectedExercise(null);
+    setModal(null);
+    await loadDayData();
+  };
+  const mergeActivityGroup = async (sources, target) => {
+    for (const source of sources.filter(ex => ex.id !== target.id)) {
+      await mergeActivities(source, target, { finalize: false });
+    }
+    setConfirmation(null);
+    setSelectedExercise(null);
+    setMergeCandidates([]);
     setModal(null);
     await loadDayData();
   };
@@ -13124,6 +13283,10 @@ function App() {
     onCreateNew: () => {
       setModal('createExercise');
     },
+    onOpenMerge: candidates => {
+      setMergeCandidates(candidates);
+      setModal('mergeSearch', 'exercisePicker');
+    },
     selectedDate: currentDate,
     defaultCategory: dayLabel ? dayLabel.toLowerCase() : 'all',
     onOpenLineage: exercise => {
@@ -13180,6 +13343,23 @@ function App() {
       setSelectedExercise(null);
     },
     unit: unit
+  }), modal === 'mergeSearch' && mergeCandidates.length > 1 && /*#__PURE__*/React.createElement(MergeActivitySearchModal, {
+    candidates: mergeCandidates,
+    onClose: () => {
+      setMergeCandidates([]);
+      modalBack();
+    },
+    onMerge: (sources, targetId) => {
+      const target = sources.find(ex => ex.id === targetId);
+      setConfirmation({
+        title: `Merge ${sources.length} activities?`,
+        message: `Keep the history under ${target.name}. Sets and notes from the other selected activities will be combined into it, and their activity records will be removed. This cannot be undone.`,
+        onConfirm: async () => {
+          await mergeActivityGroup(sources, target);
+        },
+        onCancel: () => setConfirmation(null)
+      });
+    }
   }), modal === 'mergeActivity' && selectedExercise && /*#__PURE__*/React.createElement(MergeActivityModal, {
     exercise: selectedExercise,
     onClose: () => {
