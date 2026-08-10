@@ -2,11 +2,11 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-08-09
+updated: 2026-08-10
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-08-09
+**Last updated:** 2026-08-10
 
 ## Where I left off
 
@@ -21,6 +21,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-08-10: Give activity-card expansion a deliberate open/close motion. What: the expanded activity controls now reveal and retract through a 280ms ease-out using opacity, a small vertical settle, and a delayed unmount for the closing state; reduced-motion users receive the same state change without motion. Why: the previous conditional render made the card jump between collapsed and expanded layouts with no transition, which felt abrupt during the core logging loop. How to apply: keep activity-card motion restrained and reversible, avoid bounce/spring effects, preserve immediate touch feedback, and reuse the same timing/easing for future inline expansion surfaces.
 
 - 2026-08-09: Add a calendar-first weekly history surface. What: the former Today jump slot now opens a full-screen weekly calendar using the supplied inline calendar SVG; the default range is the seven days ending yesterday, each card shows weekday, date, gym/no-gym status, and distinct activity count, and arrows plus horizontal swipes move by week. Why: recent workout continuity is more useful than a hidden jump-to-today affordance, and the week should be scannable without opening individual days. How to apply: keep the seven-card grid phone-sized, anchor the initial range to the real current day rather than the currently viewed day, and let tapping a card move the main logger to that date.
 

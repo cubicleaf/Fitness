@@ -762,6 +762,41 @@
             margin-bottom: 12px;
             position: relative;
         }
+
+        /* Activity cards open with a restrained content reveal: the card stays
+           anchored while its controls gently settle into place. */
+        .exercise-expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: max-height 0.28s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        opacity 0.2s ease-out,
+                        transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .exercise-expanded-content:not(.is-closing) {
+            max-height: 900px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .exercise-expanded-content.is-closing {
+            pointer-events: none;
+        }
+
+        .exercise-expanded-content > * {
+            transform-origin: top center;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .exercise-expanded-content,
+            .exercise-expanded-content:not(.is-closing) {
+                transition: none;
+                transform: none;
+            }
+        }
+
         .exercise-group-inner {
             position: relative;
         }
@@ -12139,6 +12174,8 @@ function App() {
   const [loggedSetCount, setLoggedSetCount] = useState(0);
   const [confirmation, setConfirmation] = useState(null);
   const [expandedExercise, setExpandedExercise] = useState(null);
+  const [closingExercise, setClosingExercise] = useState(null);
+  const collapseTimerRef = useRef(null);
   const [selectedSetForEdit, setSelectedSetForEdit] = useState(null);
   const [setNumber, setSetNumber] = useState(1);
   const [prefilledReps, setPrefilledReps] = useState(null);
@@ -12174,6 +12211,21 @@ function App() {
     category: 'all',
     selectedFamilyId: null
   });
+  const toggleExpandedExercise = exerciseId => {
+    if (expandedExercise === exerciseId) {
+      if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
+      setClosingExercise(exerciseId);
+      collapseTimerRef.current = setTimeout(() => {
+        setExpandedExercise(null);
+        setClosingExercise(null);
+        collapseTimerRef.current = null;
+      }, 280);
+      return;
+    }
+    if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
+    setClosingExercise(null);
+    setExpandedExercise(exerciseId);
+  };
   const [mergeCandidates, setMergeCandidates] = useState([]);
   const [exerciseLocks, setExerciseLocks] = useState({});
   const [pendingLockType, setPendingLockType] = useState(null);
@@ -13397,7 +13449,7 @@ function App() {
     ref: contentRef,
     onTouchStart: handleTouchStart,
     onTouchEnd: handleTouchEnd
-  }, /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", {
     className: "content-padding"
   }, showWeightBanner && /*#__PURE__*/React.createElement("div", {
     onTouchStart: e => {
@@ -13476,13 +13528,14 @@ function App() {
     className: "empty-state"
   }, currentDate === getTodayString() ? /*#__PURE__*/React.createElement(React.Fragment, null, "No activities logged yet today.") : /*#__PURE__*/React.createElement(React.Fragment, null, "No activities on this day.")) : exercises.map(exercise => {
     const isExpanded = expandedExercise === exercise.exerciseId;
+    const isClosing = closingExercise === exercise.exerciseId;
     const visibleSets = getVisibleSets(exercise.sets);
     const latestVisibleSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
     const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
-      className: isExpanded ? "exercise-group exercise-group-expanded" : "exercise-group",
-      style: isExpanded ? {
+      className: isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group",
+      style: isExpanded || isClosing ? {
         background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
         borderRadius: '12px',
         padding: '8px',
@@ -13520,7 +13573,7 @@ function App() {
       }
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "exercise-collapsible",
-      onClick: () => setExpandedExercise(isExpanded ? null : exercise.exerciseId)
+      onClick: () => toggleExpandedExercise(exercise.exerciseId)
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-toggle-header"
     }, /*#__PURE__*/React.createElement("div", {
@@ -13621,7 +13674,9 @@ function App() {
       }
     }, /*#__PURE__*/React.createElement("div", {
       className: "set-box-content"
-    }, formatSetBox(set, visibleSets[idx - 1], unit)))))), isExpanded && (() => {
+    }, formatSetBox(set, visibleSets[idx - 1], unit)))))), /*#__PURE__*/React.createElement("div", {
+      className: `exercise-expanded-content${isClosing ? ' is-closing' : ''}`
+    }, isExpanded && (() => {
       const lastSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
       const hasSets = visibleSets.length > 0;
@@ -13875,7 +13930,7 @@ function App() {
         },
         onClick: () => duplicateLastSet()
       }, "Both"));
-    })(), isExpanded && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      })(), isExpanded && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: '4px',
         position: 'relative'
@@ -13987,7 +14042,7 @@ function App() {
         cursor: 'pointer',
         WebkitAppearance: 'none'
       }
-    }, "Edit")))));
+    }, "Edit"))))));
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     "data-tour": "add-activity",
