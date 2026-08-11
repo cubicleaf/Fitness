@@ -3857,13 +3857,18 @@ const ExercisePickerModal = ({
   }, [search, category, selectedFamilyId, onPickerStateChange]);
   useEffect(() => {
     const loadExercises = async () => {
-      const all = await dbOps.exercises.getByLastUsed();
-      setExercises(all || []);
+      // Search must include legacy/imported activities that predate the
+      // lastUsed field. The duplicate checker already reads the full store;
+      // using the lastUsed index here made those same activities disappear.
+      const all = await dbOps.exercises.getAll();
+      setExercises((all || []).sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '') || (b.createdAt || 0) - (a.createdAt || 0)));
     };
     loadExercises();
   }, []);
   useEffect(() => {
-    const q = search.trim().toLowerCase();
+    const normalizeSearch = value => String(value || '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    const q = normalizeSearch(search);
+    const compactQuery = q.replace(/\s/g, '');
     let result = exercises;
 
     // In pairing mode: show ALL timed exercises except the source
@@ -3877,7 +3882,10 @@ const ExercisePickerModal = ({
       }
     }
     if (q) {
-      result = result.filter(e => e.name.toLowerCase().includes(q));
+      result = result.filter(e => {
+        const normalizedName = normalizeSearch(e.name);
+        return normalizedName.includes(q) || normalizedName.replace(/\s/g, '').includes(compactQuery);
+      });
     }
     setFiltered(result);
   }, [exercises, search, category, pairingSource, selectedFamilyId]);
