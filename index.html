@@ -3845,6 +3845,8 @@ const ExercisePickerModal = ({
   const [category, setCategory] = useState(pickerState?.category || defaultCategory || 'all');
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [isLoadingExercises, setIsLoadingExercises] = useState(true);
+  const [exerciseLoadError, setExerciseLoadError] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [pairingSource, setPairingSource] = useState(null);
   const [selectedFamilyId, setSelectedFamilyId] = useState(pickerState?.selectedFamilyId || null);
@@ -3860,8 +3862,16 @@ const ExercisePickerModal = ({
       // Search must include legacy/imported activities that predate the
       // lastUsed field. The duplicate checker already reads the full store;
       // using the lastUsed index here made those same activities disappear.
-      const all = await dbOps.exercises.getAll();
-      setExercises((all || []).sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '') || (b.createdAt || 0) - (a.createdAt || 0)));
+      try {
+        const all = await dbOps.exercises.getAll();
+        setExercises((all || []).sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '') || (b.createdAt || 0) - (a.createdAt || 0)));
+        setExerciseLoadError(false);
+      } catch (error) {
+        console.error('Unable to load activities for search', error);
+        setExerciseLoadError(true);
+      } finally {
+        setIsLoadingExercises(false);
+      }
     };
     loadExercises();
   }, []);
@@ -3883,7 +3893,7 @@ const ExercisePickerModal = ({
     }
     if (q) {
       result = result.filter(e => {
-        const normalizedName = normalizeSearch(e.name);
+        const normalizedName = normalizeSearch(e.name || e.exerciseName);
         return normalizedName.includes(q) || normalizedName.replace(/\s/g, '').includes(compactQuery);
       });
     }
@@ -3917,6 +3927,7 @@ const ExercisePickerModal = ({
     })();
   }, [categories]);
   const allCategories = ['all', ...sortedCategories];
+  const getActivityName = ex => String(ex?.name || ex?.exerciseName || '');
   const familyMap = {};
   exercises.forEach(ex => {
     const familyKey = ex.movementFamilyId || ex.movementFamilyName;
@@ -3929,7 +3940,7 @@ const ExercisePickerModal = ({
     familyMap[familyKey].members.push(ex);
   });
   const queryText = search.trim().toLowerCase();
-  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).filter(family => family.name.toLowerCase().includes(queryText) || family.members.some(ex => ex.name.toLowerCase().includes(queryText))) : [];
+  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).filter(family => family.name.toLowerCase().includes(queryText) || family.members.some(ex => getActivityName(ex).toLowerCase().includes(queryText))) : [];
   const matchingFamilyMemberIds = new Set(matchingFamilies.flatMap(family => family.members.map(ex => ex.id)));
   const visibleActivities = selectedFamilyId ? filtered : filtered.filter(ex => !matchingFamilyMemberIds.has(ex.id));
   const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered : [];
@@ -4164,7 +4175,21 @@ const ExercisePickerModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Cancel Pairing")), (visibleActivities.length > 0 || matchingFamilies.length > 0) ? /*#__PURE__*/React.createElement("div", {
+  }, "Cancel Pairing")), isLoadingExercises ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      color: 'var(--text-placeholder)',
+      marginTop: 20,
+      marginBottom: 20
+    }
+  }, "Loading activities…") : exerciseLoadError ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      color: 'var(--text-placeholder)',
+      marginTop: 20,
+      marginBottom: 20
+    }
+  }, "Couldn't load activities. Close and reopen Add Activity.") : (visibleActivities.length > 0 || matchingFamilies.length > 0) ? /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
@@ -4181,7 +4206,7 @@ const ExercisePickerModal = ({
       }
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-picker-name"
-    }, ex.name), /*#__PURE__*/React.createElement("div", {
+    }, getActivityName(ex)), /*#__PURE__*/React.createElement("div", {
       className: "exercise-picker-meta"
     }, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''));
     const pairButton = !pairingSource && ex.type === 'timed' && onPair ? /*#__PURE__*/React.createElement("button", {
