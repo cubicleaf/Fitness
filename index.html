@@ -3837,35 +3837,22 @@ const ExercisePickerModal = ({
   onCategoriesChanged,
   defaultCategory,
   onPair,
-  onOpenLineage,
-  pickerState,
-  onPickerStateChange
+  onOpenLineage
 }) => {
-  const pickerStateMatchesDate = pickerState?.date === selectedDate;
-  const initialSearch = pickerStateMatchesDate ? pickerState?.search || '' : '';
-  const initialCategory = initialSearch.trim() ? 'all' : pickerStateMatchesDate ? pickerState?.category || defaultCategory || 'all' : defaultCategory || 'all';
-  const [search, setSearch] = useState(initialSearch);
-  const [category, setCategory] = useState(initialCategory);
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState(defaultCategory || 'all');
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [isLoadingExercises, setIsLoadingExercises] = useState(true);
   const [exerciseLoadError, setExerciseLoadError] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [pairingSource, setPairingSource] = useState(null);
-  const [selectedFamilyId, setSelectedFamilyId] = useState(pickerStateMatchesDate ? pickerState?.selectedFamilyId || null : null);
+  const [selectedFamilyId, setSelectedFamilyId] = useState(null);
   useEffect(() => {
-    if (onPickerStateChange) onPickerStateChange({
-      date: selectedDate,
-      search,
-      category,
-      selectedFamilyId
-    });
-  }, [selectedDate, search, category, selectedFamilyId, onPickerStateChange]);
-  useEffect(() => {
-    setSearch(initialSearch);
-    setCategory(initialSearch.trim() ? 'all' : defaultCategory || 'all');
+    setSearch('');
+    setCategory(defaultCategory || 'all');
     setSelectedFamilyId(null);
-  }, [selectedDate]);
+  }, [selectedDate, defaultCategory]);
   useEffect(() => {
     const loadExercises = async () => {
       // Search must include legacy/imported activities that predate the
@@ -12255,11 +12242,6 @@ function App() {
   const [showQuickNotes, setShowQuickNotes] = useState(null);
   const [selectedQuickNotes, setSelectedQuickNotes] = useState({});
   const [activityContext, setActivityContext] = useState(null); // { exerciseId, exerciseName, defaultTab: 'history'|'notes'|'edit' }
-  const [activityPickerState, setActivityPickerState] = useState({
-    search: '',
-    category: 'all',
-    selectedFamilyId: null
-  });
   const toggleExpandedExercise = exerciseId => {
     if (expandedExercise === exerciseId) {
       if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
@@ -14141,8 +14123,6 @@ function App() {
       setSelectedExercise(withNormalizedExerciseFields(exercise));
       setModal('activityLineage', 'exercisePicker');
     },
-    pickerState: activityPickerState,
-    onPickerStateChange: setActivityPickerState,
     onPair: (sourceEx, targetEx) => {
       // Store both exercises for paired duration logging
       setPairingExerciseId({
