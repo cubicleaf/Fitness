@@ -3841,22 +3841,31 @@ const ExercisePickerModal = ({
   pickerState,
   onPickerStateChange
 }) => {
-  const [search, setSearch] = useState(pickerState?.search || '');
-  const [category, setCategory] = useState(pickerState?.category || defaultCategory || 'all');
+  const pickerStateMatchesDate = pickerState?.date === selectedDate;
+  const initialSearch = pickerStateMatchesDate ? pickerState?.search || '' : '';
+  const initialCategory = initialSearch.trim() ? 'all' : pickerStateMatchesDate ? pickerState?.category || defaultCategory || 'all' : defaultCategory || 'all';
+  const [search, setSearch] = useState(initialSearch);
+  const [category, setCategory] = useState(initialCategory);
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [isLoadingExercises, setIsLoadingExercises] = useState(true);
   const [exerciseLoadError, setExerciseLoadError] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [pairingSource, setPairingSource] = useState(null);
-  const [selectedFamilyId, setSelectedFamilyId] = useState(pickerState?.selectedFamilyId || null);
+  const [selectedFamilyId, setSelectedFamilyId] = useState(pickerStateMatchesDate ? pickerState?.selectedFamilyId || null : null);
   useEffect(() => {
     if (onPickerStateChange) onPickerStateChange({
+      date: selectedDate,
       search,
       category,
       selectedFamilyId
     });
-  }, [search, category, selectedFamilyId, onPickerStateChange]);
+  }, [selectedDate, search, category, selectedFamilyId, onPickerStateChange]);
+  useEffect(() => {
+    setSearch(initialSearch);
+    setCategory(initialSearch.trim() ? 'all' : defaultCategory || 'all');
+    setSelectedFamilyId(null);
+  }, [selectedDate]);
   useEffect(() => {
     const loadExercises = async () => {
       // Search must include legacy/imported activities that predate the
@@ -3980,6 +3989,7 @@ const ExercisePickerModal = ({
     onClick: () => {
       setSelectedFamilyId(null);
       setSearch('');
+      setCategory(defaultCategory || 'all');
     },
     style: {
       width: '100%',
@@ -4006,6 +4016,7 @@ const ExercisePickerModal = ({
     onClick: () => {
       setSelectedFamilyId(family.id);
       setSearch('');
+      setCategory(defaultCategory || 'all');
     },
     style: {
       display: 'flex',
@@ -4072,7 +4083,12 @@ const ExercisePickerModal = ({
     className: "search-input",
     placeholder: "Search activities...",
     value: search,
-    onChange: e => setSearch(e.target.value)
+    onChange: e => {
+      const nextSearch = e.target.value;
+      setSearch(nextSearch);
+      setSelectedFamilyId(null);
+      setCategory(nextSearch.trim() ? 'all' : defaultCategory || 'all');
+    }
   }), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs"
   }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
