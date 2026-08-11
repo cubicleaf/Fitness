@@ -13409,7 +13409,7 @@ function App() {
   const todayString = getTodayString();
   const todayWeightMissing = currentDate === todayString && !bodyweightEntryConfirmed;
   const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
-  const isViewingFutureDay = currentDate > todayString;
+  const showCalendarJump = currentDate !== todayString;
   return /*#__PURE__*/React.createElement("div", {
     className: "app-container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -13426,8 +13426,13 @@ function App() {
     size: 22
   })), /*#__PURE__*/React.createElement("button", {
     className: "today-jump-top-btn",
-    "aria-label": "Open calendar",
-    onClick: () => setModal('calendar')
+    "aria-label": showCalendarJump ? "Open calendar" : undefined,
+    "aria-hidden": !showCalendarJump,
+    tabIndex: showCalendarJump ? 0 : -1,
+    onClick: showCalendarJump ? () => setModal('calendar') : undefined,
+    style: {
+      visibility: showCalendarJump ? 'visible' : 'hidden'
+    }
   }, /*#__PURE__*/React.createElement(IconCalendar, {
     size: 22
   })), /*#__PURE__*/React.createElement("button", {
