@@ -3867,6 +3867,47 @@ const EditCategoriesModal = ({
     onClick: () => onSave(cats)
   }, "Save"))));
 };
+
+// Activity discovery is deliberately local/offline, but it should still feel
+// like search rather than a brittle literal filter. Keep this normalization in
+// one place so names, families, variations, and split metadata follow the same
+// rules. Compact matching makes "benchpress" find "Bench Press"; canonical
+// tokens make word-order and simple plural differences non-fatal.
+const normalizeActivitySearch = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+const canonicalActivitySearchTokens = value => normalizeActivitySearch(value).split(' ').filter(Boolean).map(token => token.length > 3 && token.endsWith('s') && !token.endsWith('ss') ? token.slice(0, -1) : token).sort();
+const activitySearchScore = (exercise, rawQuery) => {
+  const query = normalizeActivitySearch(rawQuery);
+  if (!query) return 1;
+  const compactQuery = query.replace(/\s/g, '');
+  const queryTokens = canonicalActivitySearchTokens(query);
+  const name = normalizeActivitySearch(exercise?.name || exercise?.exerciseName);
+  const family = normalizeActivitySearch(exercise?.movementFamilyName);
+  const variation = normalizeActivitySearch(exercise?.variationLabel);
+  const categories = normalizeActivitySearch(getExCategories(exercise).join(' '));
+  const inferredCategories = normalizeActivitySearch(lookupSplitCategories(name).join(' '));
+  const type = normalizeActivitySearch(exercise?.type);
+  const compactName = name.replace(/\s/g, '');
+  const nameTokens = canonicalActivitySearchTokens(name);
+  const allFields = [name, family, variation, categories, inferredCategories, type].filter(Boolean).join(' ');
+  const allTokens = new Set(canonicalActivitySearchTokens(allFields));
+
+  if (name === query) return 1000;
+  if (compactName === compactQuery) return 975;
+  if (name.startsWith(query)) return 925;
+  if (name.includes(query)) return 875;
+  if (compactName.includes(compactQuery)) return 850;
+  if (queryTokens.length && queryTokens.every(token => nameTokens.includes(token))) return 825;
+  if (variation === query || family === query) return 775;
+  if (variation.includes(query)) return 725;
+  if (family.includes(query)) return 700;
+  if (categories.includes(query)) return 625;
+  if (inferredCategories.includes(query)) return 575;
+  if (queryTokens.length && queryTokens.every(token => allTokens.has(token))) return 525;
+  if (type.includes(query)) return 300;
+  return 0;
+};
+const compareActivitySearchResults = (a, b) => b._searchScore - a._searchScore || String(b.lastUsed || '').localeCompare(String(a.lastUsed || '')) || (b.createdAt || 0) - (a.createdAt || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
+
 const ExercisePickerModal = ({
   onSelect,
   onCreateNew,
@@ -3911,9 +3952,7 @@ const ExercisePickerModal = ({
     loadExercises();
   }, []);
   useEffect(() => {
-    const normalizeSearch = value => String(value || '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-    const q = normalizeSearch(search);
-    const compactQuery = q.replace(/\s/g, '');
+    const q = normalizeActivitySearch(search);
     let result = exercises;
 
     // In pairing mode: show ALL timed exercises except the source
@@ -3927,10 +3966,10 @@ const ExercisePickerModal = ({
       }
     }
     if (q) {
-      result = result.filter(e => {
-        const normalizedName = normalizeSearch(e.name || e.exerciseName);
-        return normalizedName.includes(q) || normalizedName.replace(/\s/g, '').includes(compactQuery);
-      });
+      result = result.map(exercise => ({
+        ...exercise,
+        _searchScore: activitySearchScore(exercise, q)
+      })).filter(exercise => exercise._searchScore > 0).sort(compareActivitySearchResults);
     }
     setFiltered(result);
   }, [exercises, search, category, pairingSource, selectedFamilyId]);
@@ -3974,11 +4013,20 @@ const ExercisePickerModal = ({
     };
     familyMap[familyKey].members.push(ex);
   });
-  const queryText = search.trim().toLowerCase();
-  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).filter(family => family.name.toLowerCase().includes(queryText) || family.members.some(ex => getActivityName(ex).toLowerCase().includes(queryText))) : [];
-  const matchingFamilyMemberIds = new Set(matchingFamilies.flatMap(family => family.members.map(ex => ex.id)));
-  const visibleActivities = selectedFamilyId ? filtered : filtered.filter(ex => !matchingFamilyMemberIds.has(ex.id));
-  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered : [];
+  const queryText = normalizeActivitySearch(search);
+  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).map(family => ({
+    ...family,
+    _searchScore: Math.max(activitySearchScore({
+      name: family.name,
+      movementFamilyName: family.name
+    }, queryText), ...family.members.map(ex => activitySearchScore(ex, queryText)))
+  })).filter(family => family._searchScore > 0).sort((a, b) => b._searchScore - a._searchScore || a.name.localeCompare(b.name)) : [];
+  // Never let a family shell swallow the exact activity that caused it to
+  // match. The family remains a useful route; the child remains selectable.
+  const visibleActivities = filtered;
+  // Category/family matches are discovery results, not evidence of a duplicate.
+  // Keep the repair prompt limited to direct activity-name matches.
+  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered.filter(ex => (ex._searchScore || 0) >= 825) : [];
   const mergePrompt = onOpenMerge && mergeCandidates.length >= 2 ? /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
@@ -4107,7 +4155,7 @@ const ExercisePickerModal = ({
   }, "+ Create New Activity"), /*#__PURE__*/React.createElement("input", {
     type: "text",
     className: "search-input",
-    placeholder: "Search activities...",
+    placeholder: "Search your activities...",
     value: search,
     onChange: e => {
       const nextSearch = e.target.value;
@@ -4342,7 +4390,7 @@ const ExercisePickerModal = ({
       marginTop: 20,
       marginBottom: 20
     }
-  }, search ? 'No activities found' : 'No activities yet. Create one above!'))));
+  }, search ? 'No saved activities match. Create a new activity above.' : 'No activities yet. Create one above!'))));
 };
 const CreateExerciseModal = ({
   onSave,
