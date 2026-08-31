@@ -13457,7 +13457,8 @@ function App() {
   const todayString = getTodayString();
   const todayWeightMissing = currentDate === todayString && !bodyweightEntryConfirmed;
   const showWeightBanner = todayWeightMissing && !weightBannerDismissed && !bannerSlidingOut && getPref('hideWeightBanner') !== 'true' && !showBWEditor;
-  const showCalendarJump = currentDate !== todayString;
+  const isViewingToday = currentDate === todayString;
+  const isViewingFutureDay = currentDate > todayString;
   return /*#__PURE__*/React.createElement("div", {
     className: "app-container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -13474,16 +13475,37 @@ function App() {
     size: 22
   })), /*#__PURE__*/React.createElement("button", {
     className: "today-jump-top-btn",
-    "aria-label": showCalendarJump ? "Open calendar" : undefined,
-    "aria-hidden": !showCalendarJump,
-    tabIndex: showCalendarJump ? 0 : -1,
-    onClick: showCalendarJump ? () => setModal('calendar') : undefined,
-    style: {
-      visibility: showCalendarJump ? 'visible' : 'hidden'
-    }
-  }, /*#__PURE__*/React.createElement(IconCalendar, {
+    "aria-label": isViewingToday ? "Open calendar" : "Jump to today",
+    onClick: isViewingToday ? () => setModal('calendar') : () => setCurrentDate(todayString)
+  }, isViewingToday ? /*#__PURE__*/React.createElement(IconCalendar, {
     size: 22
-  })), /*#__PURE__*/React.createElement("button", {
+  }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("svg", {
+    width: "22",
+    height: "22",
+    viewBox: "0 0 21 21",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("g", {
+    fill: "none",
+    fillRule: "evenodd",
+    stroke: "currentColor",
+    strokeWidth: "3",
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    transform: isViewingFutureDay ? "translate(15.5 6.5) scale(-1 1)" : "translate(5.5 6.5)"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "m0 8v-2c0-1.65685425 1.34314575-3 3-3h8"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "m7.999 6 3.001-3-3.001-3"
+  }))), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      fontWeight: '600',
+      lineHeight: 1,
+      color: 'var(--accent-deep)'
+    }
+  }, "Today"))), /*#__PURE__*/React.createElement("button", {
     className: "settings-btn coach-top-btn",
     "aria-label": "Open log coach",
     onClick: () => setModal('aiCoach')
