@@ -3149,11 +3149,12 @@ const gripRelevanceLevelFor = exerciseOrName => {
   return 'unknown';
 };
 const isLikelyGripRelevant = exerciseOrName => gripRelevanceLevelFor(exerciseOrName) === 'likely';
+const shouldOfferGripTracking = exercise => !!exercise?.gripTrackingEnabled || gripRelevanceLevelFor(exercise) === 'likely';
 const formatGripLabel = set => {
   if (!set) return '';
   const parts = [];
   if (set.gripType) parts.push(set.gripType.charAt(0).toUpperCase() + set.gripType.slice(1));
-  if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-grip' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
+  if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-bar' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
 const formatGripHeaderTag = set => {
@@ -5196,6 +5197,7 @@ const WeightPickerModal = ({
   onGripChange
 }) => {
   const [weight, setWeight] = useState(previousWeight || (unit === 'kg' ? 20 : 45));
+  const [isEditingWeight, setIsEditingWeight] = useState(false);
   const [weightType, setWeightType] = useState(unit);
   const [showBandedColors, setShowBandedColors] = useState(false);
   const [selectedBandColor, setSelectedBandColor] = useState(null);
@@ -5212,7 +5214,6 @@ const WeightPickerModal = ({
   const barbellCommonWeightsKg = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50].map(increment => barWeight + increment);
   const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
-  const stepperAmount = unit === 'kg' ? 2.5 : 5;
   useEffect(() => {
     const loadWeights = async () => {
       const lastSession = await dbOps.sets.getLastSession(exercise.id);
@@ -5267,31 +5268,51 @@ const WeightPickerModal = ({
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
-      gap: '5px',
+      gap: '4px',
       marginBottom: '10px',
       alignItems: 'stretch'
     }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setWeight(Math.max(0, parseFloat((weight - stepperAmount).toFixed(1)))),
+  }, [-5, -1].map(amount => /*#__PURE__*/React.createElement("button", {
+    key: amount,
+    onClick: () => setWeight(Math.max(0, parseFloat((weight + amount).toFixed(1)))),
     style: {
-      width: '48px',
-      minWidth: '48px',
+      width: '38px',
+      minWidth: '38px',
       height: '46px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       color: 'var(--accent-soft)',
       borderRadius: '8px',
       cursor: 'pointer',
-      fontSize: '12px',
-      fontWeight: '600',
+      fontSize: '15px',
+      fontWeight: '700',
       WebkitAppearance: 'none',
       fontFamily: 'inherit',
       padding: 0
     }
-  }, `-${stepperAmount}`), /*#__PURE__*/React.createElement("input", {
+  }, amount)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: '62px',
+      minWidth: '62px',
+      height: '46px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '1px',
+      overflow: 'hidden',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      borderRadius: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("input", {
     type: "number",
     value: weight || '',
-    onFocus: e => e.target.select(),
+    "aria-label": `Weight in ${unit}`,
+    onFocus: e => {
+      setIsEditingWeight(true);
+      e.target.select();
+    },
+    onBlur: () => setIsEditingWeight(false),
     onChange: e => {
       const v = e.target.value;
       if (v === '' || v === '-') {
@@ -5302,38 +5323,48 @@ const WeightPickerModal = ({
       if (!isNaN(n)) setWeight(n);
     },
     style: {
-      width: '56px',
-      minWidth: '56px',
-      height: '46px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      width: isEditingWeight ? '52px' : '34px',
+      minWidth: 0,
+      height: '44px',
+      background: 'transparent',
+      border: 'none',
+      outline: 'none',
       color: 'var(--text-body)',
-      textAlign: 'center',
+      textAlign: 'right',
       fontSize: '16px',
       fontWeight: '700',
-      borderRadius: '8px',
+      borderRadius: 0,
       WebkitAppearance: 'none',
       MozAppearance: 'textfield',
-      padding: '0 2px'
+      padding: 0
     }
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setWeight(parseFloat((weight + stepperAmount).toFixed(1))),
+  }), !isEditingWeight && /*#__PURE__*/React.createElement("span", {
+    "aria-hidden": "true",
     style: {
-      width: '48px',
-      minWidth: '48px',
+      color: 'var(--text-body)',
+      fontSize: '11px',
+      fontWeight: '700',
+      flexShrink: 0
+    }
+  }, unit)), [1, 5].map(amount => /*#__PURE__*/React.createElement("button", {
+    key: amount,
+    onClick: () => setWeight(parseFloat((weight + amount).toFixed(1))),
+    style: {
+      width: '38px',
+      minWidth: '38px',
       height: '46px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       color: 'var(--accent-soft)',
       borderRadius: '8px',
       cursor: 'pointer',
-      fontSize: '12px',
-      fontWeight: '600',
+      fontSize: '15px',
+      fontWeight: '700',
       WebkitAppearance: 'none',
       fontFamily: 'inherit',
       padding: 0
     }
-  }, `+${stepperAmount}`), /*#__PURE__*/React.createElement("button", {
+  }, `+${amount}`)), /*#__PURE__*/React.createElement("button", {
     onClick: () => onSelectWeight({
       weight: weight,
       weightType: unit
@@ -5343,7 +5374,7 @@ const WeightPickerModal = ({
       flex: 1,
       height: '46px',
       padding: '4px 8px',
-      fontSize: '14px',
+      fontSize: '13px',
       fontWeight: '600',
       whiteSpace: 'nowrap'
     }
@@ -10260,6 +10291,7 @@ const ActivityContextModal = ({
   onAction,
   onNavigate,
   categories,
+  unit,
   inlineFormCue,
   setInlineFormCue,
   inlineNote,
@@ -10576,56 +10608,33 @@ const ActivityContextModal = ({
       padding: '40px 0',
       fontSize: '13px'
     }
-  }, "No history yet") : history.map(day => /*#__PURE__*/React.createElement("div", {
-    key: day.date,
-    style: {
-      marginBottom: '14px',
-      cursor: 'pointer',
-      padding: '8px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 10%, transparent)'
-    },
-    onClick: () => onNavigate && onNavigate(day.date, exerciseId)
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
-      fontWeight: '600',
-      marginBottom: '6px',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("span", null, day.date), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)'
-    }
-  }, "tap to go \u2192")), getVisibleSets(day.sets).length === 0 ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '8px 10px',
-      borderRadius: '6px',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      fontSize: '12px',
-      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
-    }
-  }, "Note-only activity") : getVisibleSets(day.sets).map((set, si) => /*#__PURE__*/React.createElement("div", {
-    key: set.id,
-    style: {
-      padding: '6px 10px',
-      marginBottom: '3px',
-      borderRadius: '6px',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      fontSize: '12px',
-      color: 'var(--text-body)',
-      display: 'flex',
-      justifyContent: 'space-between'
-    }
-  }, /*#__PURE__*/React.createElement("span", null, "Set ", set.setOrder || si + 1), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'var(--accent-soft)'
-    }
-  }, formatSetDisplay(set))))))), tab === 'notes' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "No history yet") : history.map(day => {
+    const visibleDaySets = getVisibleSets(day.sets);
+    return /*#__PURE__*/React.createElement("div", {
+      key: day.date,
+      onClick: () => onNavigate && onNavigate(day.date, exerciseId),
+      style: {
+        padding: '8px 0',
+        marginBottom: '4px',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        cursor: onNavigate ? 'pointer' : 'default'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "history-session-row"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "history-session-date"
+    }, formatDateShort(day.date)), visibleDaySets.length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "history-session-note"
+    }, "Note-only activity") : /*#__PURE__*/React.createElement("div", {
+      className: "history-session-sets"
+    }, visibleDaySets.map((set, si) => /*#__PURE__*/React.createElement("div", {
+      key: set.id,
+      className: "set-box",
+      style: {
+        backgroundColor: getSetBoxColor(si)
+      }
+    }, formatSetBox(set, visibleDaySets[si - 1], unit))))));
+  })), tab === 'notes' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px',
@@ -11186,7 +11195,7 @@ const GripPromptModal = ({
     key: opt,
     onClick: () => setGripWidth(gripWidth === opt ? null : opt),
     style: buttonStyle(gripWidth === opt, true)
-  }, opt === 'v-grip' ? 'V-grip' : opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
+  }, opt === 'v-grip' ? 'V-bar' : opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
     className: "modal-footer"
   }, /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
@@ -11314,7 +11323,7 @@ const GripInlineSelector = ({
     key: opt,
     onClick: () => setGripWidth(gripWidth === opt ? null : opt),
     style: toggleStyle(gripWidth === opt)
-  }, opt === 'v-grip' ? 'V-grip' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
+  }, opt === 'v-grip' ? 'V-bar' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
 };
 const ExistingFamilyChoices = ({
   selectedFamilyId,
@@ -13908,7 +13917,6 @@ function App() {
       };
       const openSameWeightFlow = async () => {
         if (isPureTimed) return;
-        applyExerciseLock(exercise.exerciseId, 'uniformWeight');
         setPendingLockType(null);
         const fullExercise = await hydrateExerciseForLogging({
           id: exercise.exerciseId,
@@ -13931,7 +13939,6 @@ function App() {
         }
       };
       const openSameRepsFlow = async () => {
-        applyExerciseLock(exercise.exerciseId, 'uniformReps');
         setPendingLockType(null);
         const fullExercise = await hydrateExerciseForLogging({
           id: exercise.exerciseId,
@@ -14174,6 +14181,7 @@ function App() {
       }
     },
     categories: categories,
+    unit: unit,
     inlineFormCue: inlineFormCue,
     setInlineFormCue: setInlineFormCue,
     inlineNote: inlineNote,
@@ -14285,7 +14293,7 @@ function App() {
     previousWeight: previousWeight,
     setNumber: setNumber,
     unit: unit,
-    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled,
+    gripTrackingEnabled: shouldOfferGripTracking(selectedExercise),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
     onGripChange: grip => setSelectedGrip(grip)
@@ -14298,7 +14306,7 @@ function App() {
     onChangeWeight: weightData => setSelectedWeight(weightData),
     onRequestWeight: () => setModal('weightPicker', 'repPicker'),
     setNumber: setNumber,
-    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
+    gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
     onGripChange: grip => setSelectedGrip(grip)
@@ -14312,7 +14320,7 @@ function App() {
     onRequestWeight: () => setModal('weightPicker', 'timedDuration'),
     setNumber: setNumber,
     distanceEnabled: inferMeasurementModes(selectedExercise).includes('distance'),
-    gripTrackingEnabled: !!selectedExercise.gripTrackingEnabled && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
+    gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
     onGripChange: grip => setSelectedGrip(grip)
