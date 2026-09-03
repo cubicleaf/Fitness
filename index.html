@@ -2920,6 +2920,7 @@ const addDays = (dateStr, days) => {
   return getDateString(d);
 };
 const formatSetDisplay = set => {
+  if (set?.isPresenceOnly) return 'Did some';
   let display = `Set ${set.setOrder}: `;
   const showBodyweight = set.weightType === 'bodyweight' && set.duration === null;
   if (showBodyweight) {
@@ -2954,7 +2955,21 @@ const getSetType = set => {
 };
 const isNeutralExercise = exercise => exercise?.type === 'neutral';
 const isNeutralAnchorSet = set => !!set?.isPlaceholder || set?.type === 'neutral';
-const getVisibleSets = sets => (sets || []).filter(set => !isNeutralAnchorSet(set));
+const isPresenceOnlySet = set => !!set?.isPresenceOnly;
+const getVisibleSets = sets => {
+  const visible = (sets || []).filter(set => !isNeutralAnchorSet(set));
+  return visible.some(set => !isPresenceOnlySet(set)) ? visible.filter(set => !isPresenceOnlySet(set)) : visible;
+};
+const getMeasuredSets = sets => getVisibleSets(sets).filter(set => !isPresenceOnlySet(set));
+const getLastMeasuredSession = async exerciseId => {
+  const sets = (await dbOps.sets.getByExerciseId(exerciseId)).filter(set => !isPresenceOnlySet(set) && !isNeutralAnchorSet(set));
+  if (sets.length === 0) return null;
+  const lastDate = sets[0].date;
+  return {
+    date: lastDate,
+    sets: sets.filter(set => set.date === lastDate)
+  };
+};
 
 // ============ SAFE DB OPERATIONS ============
 // Wraps any async DB call in try/catch. Shows a brief error toast if it fails.
@@ -3439,6 +3454,32 @@ const getMoodLabel = val => {
   return 'Crushed It';
 };
 
+let _actionToastTimer = null;
+const showUndoToast = (message, onUndo) => {
+  document.querySelector('[data-action-toast]')?.remove();
+  if (_actionToastTimer) clearTimeout(_actionToastTimer);
+  const toast = document.createElement('div');
+  toast.dataset.actionToast = 'true';
+  toast.setAttribute('role', 'status');
+  toast.style.cssText = 'position:fixed;bottom:76px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:var(--bg-card);color:var(--text-warm);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);padding:10px 12px 10px 16px;border-radius:12px;font-size:13px;z-index:9999;box-shadow:0 12px 32px rgba(0,0,0,.35);white-space:nowrap;';
+  const label = document.createElement('span');
+  label.textContent = message;
+  const undo = document.createElement('button');
+  undo.type = 'button';
+  undo.textContent = 'Undo';
+  undo.style.cssText = 'min-width:52px;min-height:44px;border:0;background:transparent;color:var(--accent-soft);font:inherit;font-weight:700;cursor:pointer;';
+  undo.addEventListener('click', async () => {
+    clearTimeout(_actionToastTimer);
+    toast.remove();
+    await onUndo();
+  }, {
+    once: true
+  });
+  toast.append(label, undo);
+  document.body.appendChild(toast);
+  _actionToastTimer = setTimeout(() => toast.remove(), 5000);
+};
+
 // ============ WEB AUDIO SOUND ENGINE ============
 let _audioCtx = null;
 const getAudioCtx = () => {
@@ -3607,6 +3648,7 @@ const getSetBoxColor = index => {
   return colors[index % colors.length];
 };
 const formatSetBox = (set, previousSet, unitOverride) => {
+  if (isPresenceOnlySet(set)) return 'Did some';
   let box = '';
   const displayUnit = unitOverride || 'lbs';
   if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType || set.bandedColor !== previousSet.bandedColor) {
@@ -5216,7 +5258,7 @@ const WeightPickerModal = ({
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
   useEffect(() => {
     const loadWeights = async () => {
-      const lastSession = await dbOps.sets.getLastSession(exercise.id);
+      const lastSession = await getLastMeasuredSession(exercise.id);
       if (lastSession) {
         const weights = new Map();
         lastSession.sets.forEach(s => {
@@ -7395,6 +7437,7 @@ const HistoryModal = ({
   onLogSet,
   onOpenNotes,
   onCopyLastSet,
+  onLogPresence,
   unit,
   onUniformWeight,
   onUniformReps,
@@ -7421,7 +7464,7 @@ const HistoryModal = ({
       const dates = [...new Set([...Object.keys(grouped), ...notes.map(n => n.date)])].sort().reverse();
       setHistory(dates.map(date => ({
         date,
-        sets: (grouped[date] || []).sort((a, b) => a.setOrder - b.setOrder)
+        sets: getVisibleSets(grouped[date] || []).sort((a, b) => a.setOrder - b.setOrder)
       })));
       setSessionNotes(notesByDate);
     };
@@ -7499,7 +7542,7 @@ const HistoryModal = ({
       padding: '10px 4px',
       fontWeight: '600'
     }
-  }, "Both"), onCopyLastSet && history.some(session => session.sets.length > 0) && /*#__PURE__*/React.createElement("button", {
+  }, "Both"), onCopyLastSet && history.some(session => session.sets.some(set => !isPresenceOnlySet(set))) && /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": "Copy last set",
     title: "Copy last set",
@@ -7515,7 +7558,34 @@ const HistoryModal = ({
     className: "btn btn-secondary"
   }, /*#__PURE__*/React.createElement(IconCopy, {
     size: 18
-  }))), exercise.note && /*#__PURE__*/React.createElement("div", {
+  }))), onLogPresence && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-secondary",
+    onClick: onLogPresence,
+    style: {
+      width: '100%',
+      minHeight: '52px',
+      marginTop: '-8px',
+      marginBottom: '16px',
+      padding: '7px 12px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '1px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '13px',
+      fontWeight: '700'
+    }
+  }, "Did some"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      fontWeight: '500',
+      color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)'
+    }
+  }, "No sets or reps")), exercise.note && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
       padding: '8px 12px',
@@ -12659,13 +12729,13 @@ function App() {
   };
   const handleLogSet = async () => {
     const daySets = await dbOps.sets.getByDate(currentDate);
-    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
+    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id && !isPresenceOnlySet(s));
     setSetNumber(exerciseSets.length + 1);
     const lastSetForExercise = exerciseSets.sort((a, b) => b.setOrder - a.setOrder)[0];
     let suggestedWeight = lastSetForExercise?.weight || null;
     // If no sets today, use last set from last session
     if (!suggestedWeight) {
-      const lastSession = await dbOps.sets.getLastSession(selectedExercise.id);
+      const lastSession = await getLastMeasuredSession(selectedExercise.id);
       if (lastSession && lastSession.sets.length > 0) {
         const lastSessionSet = lastSession.sets.sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0];
         suggestedWeight = lastSessionSet?.weight || null;
@@ -12694,7 +12764,7 @@ function App() {
     setPendingLockType('uniformWeight');
     applyExerciseLock(selectedExercise.id, 'uniformWeight');
     const daySets = await dbOps.sets.getByDate(currentDate);
-    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
+    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id && !isPresenceOnlySet(s));
     setSetNumber(exerciseSets.length + 1);
     await primeGripSelection(selectedExercise);
     setModal('weightPicker');
@@ -12705,7 +12775,7 @@ function App() {
     setPendingLockType('uniformReps');
     applyExerciseLock(selectedExercise.id, 'uniformReps');
     const daySets = await dbOps.sets.getByDate(currentDate);
-    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
+    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id && !isPresenceOnlySet(s));
     setSetNumber(exerciseSets.length + 1);
     await primeGripSelection(selectedExercise);
     setModal('weightPicker');
@@ -12715,7 +12785,7 @@ function App() {
   const handleBoth = async () => {
     setPendingLockType(null);
     const daySets = await dbOps.sets.getByDate(currentDate);
-    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id);
+    const exerciseSets = daySets.filter(s => s.exerciseId === selectedExercise.id && !isPresenceOnlySet(s));
     setSetNumber(exerciseSets.length + 1);
     await primeGripSelection(selectedExercise);
     setModal('weightPicker');
@@ -12723,7 +12793,7 @@ function App() {
     setPreviousWeight(lastSetForExercise?.weight || null);
   };
   const handleCopyLastSet = async () => {
-    const lastSession = await dbOps.sets.getLastSession(selectedExercise.id);
+    const lastSession = await getLastMeasuredSession(selectedExercise.id);
     const sourceSet = lastSession?.sets?.slice().sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0];
     if (!sourceSet) return;
     const orderData = await assignExerciseOrder(selectedExercise.id);
@@ -12758,6 +12828,47 @@ function App() {
     setModal(null);
     setSelectedExercise(null);
     await loadDayData();
+  };
+  const handleLogPresence = async () => {
+    const orderData = await assignExerciseOrder(selectedExercise.id);
+    if (!orderData) return;
+    const existingPresence = orderData.existingExercise.find(isPresenceOnlySet);
+    if (existingPresence) {
+      setModal(null);
+      setSelectedExercise(null);
+      await loadDayData();
+      return;
+    }
+    const maxSetOrder = orderData.existingExercise.reduce((max, set) => Math.max(max, set.setOrder || 0), 0);
+    const presenceRecord = {
+      id: generateId('set'),
+      date: currentDate,
+      exerciseId: selectedExercise.id,
+      exerciseName: selectedExercise.name,
+      exerciseOrder: orderData.exerciseOrder,
+      setOrder: maxSetOrder + 1,
+      weight: null,
+      weightType: 'none',
+      reps: null,
+      duration: null,
+      distance: null,
+      type: selectedExercise.type || 'reps',
+      isPresenceOnly: true,
+      createdAt: Date.now()
+    };
+    const ok = await safeDb(() => dbOps.sets.add(presenceRecord), 'log activity');
+    if (!ok) return;
+    await safeDb(() => dbOps.exercises.update({
+      ...selectedExercise,
+      lastUsed: currentDate
+    }), 'update exercise');
+    setModal(null);
+    setSelectedExercise(null);
+    await loadDayData();
+    showUndoToast(`${presenceRecord.exerciseName} logged`, async () => {
+      const removed = await safeDb(() => dbOps.sets.delete(presenceRecord.id), 'undo activity log');
+      if (removed) await loadDayData();
+    });
   };
   const handleWeightSelected = async weightData => {
     if (!weightData) {
@@ -13644,7 +13755,8 @@ function App() {
     const isExpanded = expandedExercise === exercise.exerciseId;
     const isClosing = closingExercise === exercise.exerciseId;
     const visibleSets = getVisibleSets(exercise.sets);
-    const latestVisibleSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
+    const measuredSets = getMeasuredSets(exercise.sets);
+    const latestVisibleSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
     const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
@@ -13791,9 +13903,9 @@ function App() {
     }, formatSetBox(set, visibleSets[idx - 1], unit)))))), /*#__PURE__*/React.createElement("div", {
       className: `exercise-expanded-content${isClosing ? ' is-closing' : ''}`
     }, isExpanded && (() => {
-      const lastSet = visibleSets.length > 0 ? visibleSets[visibleSets.length - 1] : null;
+      const lastSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
-      const hasSets = visibleSets.length > 0;
+      const hasSets = measuredSets.length > 0;
       const hasWeight = lastSet && lastSet.weight !== null && lastSet.weightType !== 'bodyweight';
       if (exerciseType === 'neutral') {
         return null;
@@ -13898,7 +14010,7 @@ function App() {
         setSelectedExercise(fullExercise);
         await primeGripSelection(fullExercise);
         setPreviousWeight(lastSet?.weight || null);
-        setSetNumber(visibleSets.length + 1);
+        setSetNumber(measuredSets.length + 1);
         if (isTimed) {
           setSelectedWeight({
             weight: lastSet?.weight || null,
@@ -13931,7 +14043,7 @@ function App() {
           bandedColor: lastSet.bandedColor
         });
         setPreviousWeight(lastSet.weight);
-        setSetNumber(visibleSets.length + 1);
+        setSetNumber(measuredSets.length + 1);
         if (isTimed) {
           setModal('timedDuration');
         } else {
@@ -13948,7 +14060,7 @@ function App() {
         setSelectedExercise(fullExercise);
         await primeGripSelection(fullExercise);
         setPreviousWeight(lastSet.weight);
-        setSetNumber(visibleSets.length + 1);
+        setSetNumber(measuredSets.length + 1);
         if (isTimed) {
           if (isPureTimed) {
             duplicateLastSet();
@@ -14239,6 +14351,7 @@ function App() {
       });
     } : undefined,
     onCopyLastSet: isNeutralExercise(selectedExercise) ? undefined : handleCopyLastSet,
+    onLogPresence: isNeutralExercise(selectedExercise) ? undefined : handleLogPresence,
     onUniformWeight: isNeutralExercise(selectedExercise) ? undefined : handleUniformWeight,
     onUniformReps: isNeutralExercise(selectedExercise) ? undefined : handleUniformReps,
     onBoth: isNeutralExercise(selectedExercise) ? undefined : handleBoth,
