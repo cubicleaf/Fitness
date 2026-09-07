@@ -1,8 +1,10 @@
 # Onboarding Tour — Spec
 
-Status: DRAFT for Tim's review · 2026-06-24
+Status: PART A BUILT · spec 2026-06-24 · demo layer shipped 2026-09-04 · tour shipped 2026-09-06
+**Part A (the welcome tour) is done and wired. Part B (coachmarks) is not started.**
+**Section 3 has been superseded by what shipped — read the box at the top of it before building.**
 App: single-file workout logger (`index.html`), phone-first, renders into one `#root` div, IndexedDB storage.
-Companion data: `seed-data.csv` (the Marcus Chen demo dataset — lb-native, Oct 2025–Jun 2026).
+Companion data: `seed-data.csv` (the Marcus Chen demo dataset — lb-native, **Oct 2025 – Oct 2026, 228 training days**, 12-column format). Dates after today are intentional: the demo reveals them a day at a time.
 
 ---
 
@@ -25,6 +27,35 @@ This is the reason we spent the effort making the seed data logical. The demo is
 ---
 
 ## 3. First-run logic & re-access
+
+> **SUPERSEDED 2026-09-04 — what actually shipped.** The demo layer is built, and it
+> departs from this section in three ways. Build the tour against the shipped
+> behaviour, not the text below.
+>
+> 1. **The demo lives in a separate IndexedDB database** (`FitnessTrackerDemo`), not
+>    in the real one behind a flag. There is therefore no "demo pollution" risk and no
+>    all-or-nothing wipe to police: the real database is never opened for writing while
+>    the demo runs, and exiting deletes the demo database outright. This replaces the
+>    Section 8 "Demo pollution" risk entirely.
+> 2. **Nothing auto-loads.** The demo is *offered*, never imposed. On a first load with
+>    a completely empty log the user gets one modal (`DemoOfferModal`) with "Show me the
+>    demo" / "I'll start my own". Declining sets `wp_demo_offered` and is never asked
+>    again. Settings → Data has a permanent "Load the sample log" row.
+> 3. **The chip is a header bar, not a floating chip.** While the demo is active a
+>    full-width row sits under the top nav: "Sample log — Marcus Chen … Start my own".
+>    Tapping it deletes the demo and reloads into the user's own empty log.
+>
+> Flags in use: `wp_demo_active`, `wp_demo_offered`. Both are localStorage — they have
+> to be, because preferences are themselves stored inside IndexedDB and would follow
+> the database switch. Entering the demo also writes `lastViewedDate` into the demo
+> database so it opens on Marcus's most recent session rather than an empty today.
+>
+> **Built 2026-09-06 (Part A).** `wp_tour_seen` is in use; the tour is *offered* after
+> the demo loads (`TourOfferModal`), never auto-played, and declining marks it seen.
+> Settings → Data has a permanent "Replay the tour" row that closes settings and plays
+> over whatever log you are in. `history-tab` and `notes-tab` turned out to already
+> exist; `settings-replay`, `activity-row` and `demo-exit` were added. Step A5 now
+> drives two levels of navigation. **Part B (`wp_coach_*`) remains unbuilt.**
 
 On app load, check a device-local flag (browser `localStorage`, intentionally separate from the IndexedDB workout data so it never ends up in a CSV backup):
 
@@ -49,8 +80,8 @@ Short by design — long auto-tours get skipped. 6 steps, terse copy (matches th
 |---|---|---|
 | 1 | *centered, no spotlight* | **This is a sample log** — someone's first eight months. Have a poke around to see how things work, then clear it and make it your own. *(Chill, understated — no hype, no exclamation marks.)* |
 | 2 | `data-tour="date-nav"` (the `day-display` date navigator) | **Every workout lives on a day.** Swipe left/right to move between days. |
-| 3 | `data-tour="splits"` (`category-tabs`) | **Splits group your days** — Push, Pull, Legs. Suggestions, not rules. |
-| 4 | `data-tour="activity-card"` (first activity in the list) | **Tap any activity** to open its full history and your last numbers. |
+| 3 | `data-tour="split-label"` (the split under the date on the main screen) | **Splits group your days** — Push, Pull, Legs. Suggestions, not rules — tap the date to change one. |
+| 4 | `data-tour="activity-row"` (the first activity's collapsed row) | **Tap an activity** to open its full history and your last numbers. |
 | 5 | `data-tour="history-tab"` (the History tab *inside* an activity — tour drives navigation in) | **Last time is king.** Every past session is here, so you never guess your weight again. |
 | 6 | `data-tour="add-activity"` (the + Add-Activity button) → then *centered* close | **Add your own exercise here.** Ready? Hit "Start my own log" to clear the demo. Replay this anytime in Settings. |
 
@@ -97,8 +128,13 @@ Timing & motion (from your UX playbook — slow, deliberate, **no bounce**):
 These attributes get added to existing elements (the elements exist; they just lack stable selectors today):
 
 - `data-tour="date-nav"` → the date navigator (`day-display` region)
-- `data-tour="splits"` → `category-tabs`
-- `data-tour="activity-card"` → the first rendered activity card
+- `data-tour="split-label"` → the split label under the date on the **main screen**. The
+  original `splits` anchor sits on a tab inside the Day Detail modal, which is never on
+  screen during the tour, so step 3 silently fell through to a centered card.
+- `data-tour="activity-row"` → the first activity's collapsed row (what you actually tap)
+- `data-tour="activity-card"` → the History button *inside an expanded* card; only exists
+  once a card is open, which is why step 5 has to expand one first
+- `data-tour="demo-exit"` → the demo header bar, driven by the final step's action button
 - `data-tour="add-activity"` → the + Add-Activity trigger button
 - `data-tour="history-tab"` → the History tab button inside activity detail
 - `data-tour="log-row"` → the weight/reps logging row (Part B)
@@ -119,12 +155,15 @@ These attributes get added to existing elements (the elements exist; they just l
 
 ## 9. Build phases (proposed)
 
-1. Add the seven `data-tour` anchors to the components.
-2. Build the tour engine: scrim + spotlight cutout + tooltip card + step controller, dark-themed, reduced-motion aware.
-3. Demo seed/clear logic: import `seed-data.csv` → IndexedDB on first run; "Start my own log" wipe.
-4. First-run trigger + Settings "Replay tour" entry.
+1. ~~Add the `data-tour` anchors to the components.~~ **DONE 2026-09-06.**
+2. ~~Build the tour engine~~ **DONE 2026-06-24** — `window.WPTour` (`.start()`, `.active`),
+   dark-themed, preview via `#tour`.
+3. ~~Demo seed/clear logic~~ **DONE 2026-09-04** — separate database, offered not imposed;
+   see the box in Section 3.
+4. ~~First-run trigger + Settings "Replay tour" entry.~~ **DONE 2026-09-06** — offered
+   after the demo loads, and replayable from Settings against any log.
 5. Just-in-time coachmark system (Part B) with per-feature flags.
-6. Test on iPhone 13 Mini viewport (your 480px target): seeded path, cleared/empty path, reduced-motion, re-measure on scroll.
+6. Test on iPhone 13 Mini viewport (your 480px target): seeded path, cleared/empty path, reduced-motion, re-measure on scroll. **Browser-verified 2026-09-06 at 375×812; not yet run on hardware.**
 
 ---
 
