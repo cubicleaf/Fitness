@@ -154,39 +154,168 @@
             font-size: 20px;
         }
 
+        /* ---- Demo mode ---- */
+        .demo-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            min-height: 44px;
+            padding: 0 14px;
+            border: none;
+            border-bottom: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+            background: color-mix(in srgb, var(--accent) 14%, transparent);
+            color: var(--accent-soft);
+            font-size: 12px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            -webkit-appearance: none;
+            transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .demo-chip:active {
+            background: color-mix(in srgb, var(--accent) 24%, transparent);
+        }
+
+        .demo-chip-dot {
+            display: block;
+            width: 6px;
+            height: 6px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            box-shadow: 0 0 8px color-mix(in srgb, var(--accent-soft) 50%, transparent);
+        }
+
+        .demo-chip-label {
+            flex: 1;
+            color: var(--text-body);
+        }
+
+        .demo-chip-action {
+            color: var(--accent-soft);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* The shared .modal-overlay is display:block because sheet modals place
+           themselves; this one has to do its own centring. */
+        .demo-offer-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* A compact centred card, not a full-height sheet: this is the first
+           thing a new user sees, and the empty app should stay visible behind it. */
+        .demo-offer-card {
+            width: 100%;
+            max-width: 340px;
+            margin: 0 20px;
+            padding: 22px 20px 20px;
+            border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+            border-radius: 16px;
+            background: var(--bg-page);
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        .demo-offer-card h2 {
+            margin-bottom: 10px;
+            color: var(--text-bright);
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .demo-offer-card p {
+            margin-bottom: 12px;
+            color: var(--text-faint);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .demo-offer-points {
+            margin: 0 0 18px;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 7px;
+        }
+
+        .demo-offer-points li {
+            padding-left: 16px;
+            position: relative;
+            color: var(--text-body);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .demo-offer-points li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+        }
+
+        .demo-offer-note {
+            margin-top: 14px;
+            margin-bottom: 0;
+            color: color-mix(in srgb, var(--accent-soft) 55%, transparent);
+            font-size: 11px;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .demo-status {
+            margin-top: 12px;
+            color: var(--accent-soft);
+            font-size: 12px;
+            text-align: center;
+            min-height: 16px;
+        }
+
+        .demo-status.is-error {
+            color: #e8a0a0;
+        }
+
         .calendar-modal {
             background: var(--bg-page);
         }
 
         .calendar-content {
-            padding: 18px 14px 24px;
+            padding: 18px 14px 20px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 14px;
             min-height: 0;
-            overflow: hidden;
             touch-action: pan-y;
         }
 
-        .calendar-week-heading {
+        .calendar-month-heading {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
         }
 
-        .calendar-week-heading h3 {
-            color: var(--text-body);
-            font-size: 16px;
+        .calendar-month-heading h3 {
+            color: var(--text-bright);
+            font-size: 17px;
             font-weight: 700;
             text-align: center;
             flex: 1;
         }
 
-        .calendar-week-arrow {
-            width: 42px;
-            height: 42px;
-            min-width: 42px;
+        .calendar-nav-arrow {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
             padding: 0;
             display: flex;
             align-items: center;
@@ -197,93 +326,143 @@
             color: var(--accent-soft);
             cursor: pointer;
             -webkit-appearance: none;
+            transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
         }
 
-        .calendar-week-arrow:active {
+        .calendar-nav-arrow:active {
             background: color-mix(in srgb, var(--accent) 20%, transparent);
         }
 
-        .calendar-week-grid {
+        .calendar-weekday-row {
             display: grid;
             grid-template-columns: repeat(7, minmax(0, 1fr));
             gap: 4px;
-            width: 100%;
         }
 
-        .calendar-day-card {
-            min-width: 0;
-            min-height: 168px;
-            padding: 10px 3px 9px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .calendar-weekday {
             text-align: center;
-            border: 1px solid color-mix(in srgb, var(--accent-soft) 18%, transparent);
-            border-radius: 11px;
-            background: color-mix(in srgb, var(--accent) 5%, transparent);
-            color: var(--text-body);
-            cursor: pointer;
-            -webkit-appearance: none;
-        }
-
-        .calendar-day-card:active,
-        .calendar-day-card.is-today {
-            border-color: color-mix(in srgb, var(--accent-soft) 58%, transparent);
-            background: color-mix(in srgb, var(--accent) 13%, transparent);
-        }
-
-        .calendar-day-name {
-            color: var(--accent-soft);
+            color: color-mix(in srgb, var(--accent-soft) 55%, transparent);
             font-size: 10px;
             font-weight: 800;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
         }
 
-        .calendar-day-number {
-            margin-top: 7px;
+        .calendar-month-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 4px;
+        }
+
+        /* Padding cells keep the weekday columns honest without adding noise. */
+        .calendar-day-blank {
+            aspect-ratio: 1 / 1;
+            min-height: 44px;
+        }
+
+        .calendar-day-cell {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            min-height: 44px;
+            min-width: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background: color-mix(in srgb, var(--accent) 4%, transparent);
+            color: var(--text-body);
+            cursor: pointer;
+            -webkit-appearance: none;
+            transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+                        border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .calendar-day-cell:active {
+            transform: scale(0.95);
+        }
+
+        .calendar-day-cell.is-logged {
+            background: color-mix(in srgb, var(--accent) 13%, transparent);
+        }
+
+        .calendar-day-cell.is-today {
+            border-color: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+        }
+
+        .calendar-day-cell.is-viewing {
+            background: color-mix(in srgb, var(--accent) 30%, transparent);
+            border-color: var(--accent);
+        }
+
+        .calendar-day-cell.is-future {
+            opacity: 0.45;
+        }
+
+        .calendar-day-num {
             color: var(--text-bright);
-            font-size: 21px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 600;
             line-height: 1;
         }
 
-        .calendar-day-month {
-            margin-top: 3px;
-            color: var(--text-faint);
-            font-size: 10px;
+        .calendar-day-cell.is-logged .calendar-day-num {
+            font-weight: 800;
         }
 
-        .calendar-day-status {
-            margin-top: auto;
-            padding-top: 16px;
-            color: var(--text-faint);
-            font-size: 10px;
-            line-height: 1.25;
-        }
-
-        .calendar-day-status.is-logged {
-            color: var(--accent-soft);
-        }
-
+        /* Was a bare <span>: inline boxes ignore width/height, so the dot rendered
+           at 0x0 and gym days had no marker at all. */
         .calendar-gym-dot {
-            width: 8px;
-            height: 8px;
-            margin-bottom: 6px;
+            display: block;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
             background: var(--accent-soft);
-            box-shadow: 0 0 10px color-mix(in srgb, var(--accent-soft) 45%, transparent);
+            box-shadow: 0 0 8px color-mix(in srgb, var(--accent-soft) 45%, transparent);
         }
 
-        .calendar-empty-note {
-            margin: auto 12px;
-            padding: 14px;
-            border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
-            border-radius: 12px;
+        /* Reserved whether or not a dot is present, so numbers never shift row to row. */
+        .calendar-dot-slot {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 5px;
+        }
+
+        .calendar-month-summary {
+            padding-top: 2px;
             color: var(--text-faint);
-            font-size: 13px;
-            line-height: 1.45;
+            font-size: 12px;
             text-align: center;
+            line-height: 1.45;
+        }
+
+        .calendar-month-summary strong {
+            color: var(--accent-soft);
+            font-weight: 700;
+        }
+
+        .calendar-today-btn {
+            align-self: center;
+            min-height: 44px;
+            padding: 0 18px;
+            border-radius: 20px;
+            border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+            color: var(--accent-soft);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-appearance: none;
+            transition: background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .calendar-today-btn:active {
+            background: color-mix(in srgb, var(--accent) 20%, transparent);
+            transform: scale(0.95);
         }
 
         .feedback-content {
@@ -2278,7 +2457,7 @@ const IconCalendar = ({
 }, /*#__PURE__*/React.createElement("path", {
   fillRule: "evenodd",
   clipRule: "evenodd",
-  d: "M8 1C8.55229 1 9 1.44772 9 2V3.00228C9.29723 2.99999 9.61798 3 9.96449 3H14.0355C14.382 3 14.7028 2.99999 15 3.00228V2C15 1.44772 15.4477 1 16 1C16.5523 1 17 1.44772 17 2V3.12459C17.3192 3.17902 17.621 3.25947 17.9134 3.3806C19.1386 3.88807 20.1119 4.86144 20.6194 6.08658C20.8305 6.59628 20.9181 7.13456 20.9596 7.74331C21 8.33531 21 9.06272 21 9.96448V13.6035C21 14.7056 21 15.5944 20.9403 16.3138C20.8788 17.0547 20.7487 17.7049 20.4371 18.3049C19.9627 19.2181 19.2181 19.9627 18.3049 20.4371C17.7049 20.7487 17.0547 20.8788 16.3138C15.5944 21 14.7056 21 13.6035 21H10.3965C9.29444 21 8.40557 21 7.68616 20.9403C6.94535 20.8788 6.29513 20.7487 5.69513 20.4371C4.78191 19.9627 4.03731 19.2181 3.56293 18.3049C3.25126 17.7049 3.12125 17.0547 3.05972 16.3138C2.99998 15.5944 2.99999 14.7058 3 13.6035V9.96449C2.99999 9.06273 2.99999 8.33531 3.04038 7.74331C3.08191 7.13456 3.16948 6.59628 3.3806 6.08658C3.88807 4.86144 4.86144 3.88807 6.08658 3.3806C6.37901 3.25947 6.68085 3.17902 7 3.12459V2C7 1.44772 7.44772 1 8 1ZM7 5.17476C6.94693 5.19142 6.89798 5.20929 6.85195 5.22836C6.11687 5.53284 5.53284 6.11687 5.22836 6.85195C5.135 7.07733 5.07033 7.37254 5.03574 7.87945C5.01452 8.19046 5.0059 8.55351 5.00239 9H18.9976C18.9941 8.55351 18.9855 8.19046 18.9643 7.87945C18.9297 7.37254 18.865 7.07733 18.7716 6.85195C18.4672 6.11687 17.8831 5.53284 17.1481 5.22836C17.102 5.20929 17.0531 5.19142 17 5.17476V6C17 6.55228 16.5523 7 16 7C15.4477 7 15 6.55228 15 6V5.00239C14.7059 5.00009 14.3755 5 14 5H10C9.62448 5 9.29413 5.00009 9 5.00239V6C9 6.55228 8.55229 7 8 7C7.44772 7 7 6.55228 7 6V5.17476ZM19 11H5V13.56C5 14.7158 5.0008 15.5214 5.05286 16.1483C5.10393 16.7632 5.19909 17.116 5.33776 17.3829C5.62239 17.9309 6.06915 18.3776 6.61708 18.6622C6.88403 18.8009 7.23678 18.8961 7.85168 18.9471C8.47856 18.9992 9.28423 19 10.44 19H13.56C14.7158 19 15.5214 18.9992 16.1483 18.9471C16.7632 18.8961 17.116 18.8009 17.3829 18.6622C17.9309 18.3776 18.3776 17.9309 18.6622 17.3829C18.8009 17.116 18.8961 16.7632 18.9471 16.1483C18.9992 15.5214 19 14.7158 19 13.56V11ZM13 16C13 15.4477 13.4477 15 14 15H16C16.5523 15 17 15.4477 17 16C17 16.5523 16.5523 17 16 17H14C13.4477 17 13 16.5523 13 16Z",
+  d: "M8 1C8.55229 1 9 1.44772 9 2V3.00228C9.29723 2.99999 9.61798 3 9.96449 3H14.0355C14.382 3 14.7028 2.99999 15 3.00228V2C15 1.44772 15.4477 1 16 1C16.5523 1 17 1.44772 17 2V3.12459C17.3192 3.17902 17.621 3.25947 17.9134 3.3806C19.1386 3.88807 20.1119 4.86144 20.6194 6.08658C20.8305 6.59628 20.9181 7.13456 20.9596 7.74331C21 8.33531 21 9.06272 21 9.96448V13.6035C21 14.7056 21 15.5944 20.9403 16.3138C20.8788 17.0547 20.7487 17.7049 20.4371 18.3049C19.9627 19.2181 19.2181 19.9627 18.3049 20.4371C17.7049 20.7487 17.0547 20.8788 16.3138 20.9403C15.5944 21 14.7056 21 13.6035 21H10.3965C9.29444 21 8.40557 21 7.68616 20.9403C6.94535 20.8788 6.29513 20.7487 5.69513 20.4371C4.78191 19.9627 4.03731 19.2181 3.56293 18.3049C3.25126 17.7049 3.12125 17.0547 3.05972 16.3138C2.99998 15.5944 2.99999 14.7058 3 13.6035V9.96449C2.99999 9.06273 2.99999 8.33531 3.04038 7.74331C3.08191 7.13456 3.16948 6.59628 3.3806 6.08658C3.88807 4.86144 4.86144 3.88807 6.08658 3.3806C6.37901 3.25947 6.68085 3.17902 7 3.12459V2C7 1.44772 7.44772 1 8 1ZM7 5.17476C6.94693 5.19142 6.89798 5.20929 6.85195 5.22836C6.11687 5.53284 5.53284 6.11687 5.22836 6.85195C5.135 7.07733 5.07033 7.37254 5.03574 7.87945C5.01452 8.19046 5.0059 8.55351 5.00239 9H18.9976C18.9941 8.55351 18.9855 8.19046 18.9643 7.87945C18.9297 7.37254 18.865 7.07733 18.7716 6.85195C18.4672 6.11687 17.8831 5.53284 17.1481 5.22836C17.102 5.20929 17.0531 5.19142 17 5.17476V6C17 6.55228 16.5523 7 16 7C15.4477 7 15 6.55228 15 6V5.00239C14.7059 5.00009 14.3755 5 14 5H10C9.62448 5 9.29413 5.00009 9 5.00239V6C9 6.55228 8.55229 7 8 7C7.44772 7 7 6.55228 7 6V5.17476ZM19 11H5V13.56C5 14.7158 5.0008 15.5214 5.05286 16.1483C5.10393 16.7632 5.19909 17.116 5.33776 17.3829C5.62239 17.9309 6.06915 18.3776 6.61708 18.6622C6.88403 18.8009 7.23678 18.8961 7.85168 18.9471C8.47856 18.9992 9.28423 19 10.44 19H13.56C14.7158 19 15.5214 18.9992 16.1483 18.9471C16.7632 18.8961 17.116 18.8009 17.3829 18.6622C17.9309 18.3776 18.3776 17.9309 18.6622 17.3829C18.8009 17.116 18.8961 16.7632 18.9471 16.1483C18.9992 15.5214 19 14.7158 19 13.56V11ZM13 16C13 15.4477 13.4477 15 14 15H16C16.5523 15 17 15.4477 17 16C17 16.5523 16.5523 17 16 17H14C13.4477 17 13 16.5523 13 16Z",
   fill: "currentColor"
 }));
 const IconBodyweight = ({
@@ -2348,12 +2527,116 @@ const FIELD_NOTE_ICON = /*#__PURE__*/React.createElement(IconFieldNote, {
 // ============ DATABASE ============
 
 let db = null;
+
+// Workout history is the only copy of this data and IndexedDB is best-effort by
+// default — a browser may evict it under storage pressure without warning. This
+// asks for durable storage; for an installed home-screen app it is normally
+// granted without a prompt. Failure is non-fatal, so it never blocks startup.
+const requestPersistentStorage = async () => {
+  try {
+    if (!navigator.storage || !navigator.storage.persist) return;
+    if (navigator.storage.persisted && (await navigator.storage.persisted())) return;
+    const granted = await navigator.storage.persist();
+    if (!granted) console.warn('Persistent storage was not granted; data may be evicted under storage pressure.');
+  } catch (err) {
+    console.warn('Could not request persistent storage:', err);
+  }
+};
+// ============ DEMO ENVIRONMENT ============
+// The demo runs against a SEPARATE IndexedDB database. Nothing it writes can
+// reach the real log, and leaving the demo deletes the database outright rather
+// than trying to unpick demo records from real ones.
+//
+// The active-demo flag has to live in localStorage, not in prefs: preferences
+// are stored inside IndexedDB (`dayNotes.__preferences__`), so a flag written
+// while the demo database is open would be invisible on the next boot, which
+// reads from the real database. localStorage also keeps the flag out of CSV
+// exports.
+const REAL_DB_NAME = 'FitnessTracker';
+const DEMO_DB_NAME = 'FitnessTrackerDemo';
+const DEMO_ACTIVE_FLAG = 'wp_demo_active';
+const DEMO_OFFERED_FLAG = 'wp_demo_offered';
+const DEMO_SEED_URL = './seed-data.csv';
+// The seed runs to 2026-10-01, past "now". The demo imports only dates up to the
+// real current date and tops itself up as days pass, so Marcus's log reads as a
+// live log someone is still writing rather than a finished archive. Future days
+// are genuinely absent from the database, so they render empty exactly like any
+// other future day.
+const DEMO_SEEDED_THROUGH_KEY = '__demo_seeded_through__';
+
+// Private-mode Safari throws on localStorage access rather than returning null.
+const readLocalFlag = key => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+const writeLocalFlag = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch {/* storage unavailable; demo simply will not persist across reloads */}
+};
+const clearLocalFlag = key => {
+  try {
+    localStorage.removeItem(key);
+  } catch {/* nothing to clear */}
+};
+
+let activeDbName = readLocalFlag(DEMO_ACTIVE_FLAG) === 'true' ? DEMO_DB_NAME : REAL_DB_NAME;
+const isDemoActive = () => activeDbName === DEMO_DB_NAME;
+
+const closeActiveDb = () => {
+  if (db) {
+    try {
+      db.close();
+    } catch {/* already closing */}
+  }
+  db = null;
+};
+
+const deleteDatabaseByName = name => new Promise(resolve => {
+  let settled = false;
+  const done = () => {
+    if (settled) return;
+    settled = true;
+    resolve();
+  };
+  try {
+    const request = indexedDB.deleteDatabase(name);
+    request.onsuccess = done;
+    request.onerror = done;
+    // Another tab holding the demo database open would otherwise hang this
+    // forever. Resolving lets the reload proceed; the flag is already cleared,
+    // so the stale database is simply orphaned rather than re-entered.
+    request.onblocked = done;
+  } catch {
+    done();
+  }
+});
+
 const initDB = () => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('FitnessTracker', 3);
+    const request = indexedDB.open(activeDbName, 3);
     request.onerror = () => reject(request.error);
+    // Fires when another open tab holds a connection that blocks a version
+    // upgrade. Without this the promise never settles either way and the app
+    // hangs on a blank screen with no error. Harmless at version 3; required
+    // before the version 4 bump that bodyweight units and modifier storage need.
+    request.onblocked = () => {
+      reject(new Error('Another open tab is blocking a database upgrade. Close the app\'s other tabs and reload.'));
+    };
     request.onsuccess = () => {
       db = request.result;
+      // If a future version upgrade starts in another tab, release this
+      // connection so the upgrade is not blocked by this one.
+      db.onversionchange = () => {
+        try {
+          db.close();
+        } catch {/* already closing */}
+        db = null;
+        showDbError('stay connected — reload the app');
+      };
       resolve(db);
     };
     request.onupgradeneeded = e => {
@@ -2523,313 +2806,124 @@ const exerciseSplitRecommendations = {
   'battle ropes': ['cardio', 'upper'],
   'box jump': ['legs', 'cardio']
 };
+// Every store operation routes through this helper so that correct behavior is the
+// default rather than something each method has to remember.
+//
+// Two things it fixes versus resolving on `req.onsuccess`:
+//   1. A request succeeding does NOT mean the data is committed. Durability happens
+//      at `tx.oncomplete`. Resolving earlier means the app can report a save that a
+//      later transaction abort (quota, disk, connection close) silently discards.
+//   2. `tx.onabort` / `tx.onerror` were previously unhandled, so a failed commit
+//      produced no rejection anywhere and no error surfaced to the user.
+const idbRun = (storeName, mode, makeRequest, transform) => {
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      reject(new Error('Database is not open'));
+      return;
+    }
+    let settled = false;
+    let value;
+    const fail = err => {
+      if (settled) return;
+      settled = true;
+      reject(err || new Error(`IndexedDB ${mode} on ${storeName} failed`));
+    };
+    let tx;
+    try {
+      tx = db.transaction(storeName, mode);
+    } catch (err) {
+      fail(err);
+      return;
+    }
+    tx.onabort = () => fail(tx.error);
+    tx.onerror = () => fail(tx.error);
+    tx.oncomplete = () => {
+      if (settled) return;
+      settled = true;
+      resolve(value);
+    };
+    let req;
+    try {
+      req = makeRequest(tx.objectStore(storeName));
+    } catch (err) {
+      fail(err);
+      try {
+        tx.abort();
+      } catch {/* transaction already finishing */}
+      return;
+    }
+    req.onerror = () => fail(req.error);
+    req.onsuccess = () => {
+      // A throw inside this handler would otherwise abort the transaction and
+      // surface as a generic AbortError, hiding the real cause.
+      try {
+        value = transform ? transform(req.result) : req.result;
+      } catch (err) {
+        fail(err);
+        try {
+          tx.abort();
+        } catch {/* transaction already finishing */}
+      }
+    };
+  });
+};
 const dbOps = {
   exercises: {
-    add: exercise => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readwrite');
-        const store = tx.objectStore('exercises');
-        const req = store.add(exercise);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    update: exercise => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readwrite');
-        const store = tx.objectStore('exercises');
-        const req = store.put(exercise);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    get: id => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readonly');
-        const store = tx.objectStore('exercises');
-        const req = store.get(id);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readonly');
-        const store = tx.objectStore('exercises');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getByLastUsed: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readonly');
-        const index = tx.objectStore('exercises').index('by-lastUsed');
-        const req = index.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '')));
-      });
-    },
-    getByCategory: category => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readonly');
-        const index = tx.objectStore('exercises').index('by-category');
-        const req = index.getAll(category);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    delete: id => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readwrite');
-        const store = tx.objectStore('exercises');
-        const req = store.delete(id);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    }
+    add: exercise => idbRun('exercises', 'readwrite', store => store.add(exercise)),
+    update: exercise => idbRun('exercises', 'readwrite', store => store.put(exercise)),
+    get: id => idbRun('exercises', 'readonly', store => store.get(id)),
+    getAll: () => idbRun('exercises', 'readonly', store => store.getAll()),
+    getByLastUsed: () => idbRun('exercises', 'readonly', store => store.index('by-lastUsed').getAll(), result => result.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || ''))),
+    getByCategory: category => idbRun('exercises', 'readonly', store => store.index('by-category').getAll(category)),
+    delete: id => idbRun('exercises', 'readwrite', store => store.delete(id), () => undefined)
   },
   sets: {
-    add: set => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readwrite');
-        const store = tx.objectStore('sets');
-        const req = store.add(set);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    update: set => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readwrite');
-        const store = tx.objectStore('sets');
-        const req = store.put(set);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    delete: id => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readwrite');
-        const store = tx.objectStore('sets');
-        const req = store.delete(id);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    },
-    get: id => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readonly');
-        const store = tx.objectStore('sets');
-        const req = store.get(id);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getByDate: date => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readonly');
-        const index = tx.objectStore('sets').index('by-date');
-        const req = index.getAll(date);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result.sort((a, b) => a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder));
-      });
-    },
-    getByExerciseId: exerciseId => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readonly');
-        const index = tx.objectStore('sets').index('by-exerciseId');
-        const req = index.getAll(exerciseId);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readonly');
-        const store = tx.objectStore('sets');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getLastSession: exerciseId => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sets', 'readonly');
-        const index = tx.objectStore('sets').index('by-exerciseId');
-        const req = index.getAll(exerciseId);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => {
-          const sets = req.result.sort((a, b) => b.date.localeCompare(a.date));
-          if (sets.length === 0) {
-            resolve(null);
-          } else {
-            const lastDate = sets[0].date;
-            const lastSets = sets.filter(s => s.date === lastDate);
-            resolve({
-              date: lastDate,
-              sets: lastSets
-            });
-          }
-        };
-      });
-    }
+    add: set => idbRun('sets', 'readwrite', store => store.add(set)),
+    update: set => idbRun('sets', 'readwrite', store => store.put(set)),
+    delete: id => idbRun('sets', 'readwrite', store => store.delete(id), () => undefined),
+    get: id => idbRun('sets', 'readonly', store => store.get(id)),
+    getByDate: date => idbRun('sets', 'readonly', store => store.index('by-date').getAll(date), result => result.sort((a, b) => a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder)),
+    getByExerciseId: exerciseId => idbRun('sets', 'readonly', store => store.index('by-exerciseId').getAll(exerciseId), result => result.sort((a, b) => b.date.localeCompare(a.date))),
+    getAll: () => idbRun('sets', 'readonly', store => store.getAll()),
+    getLastSession: exerciseId => idbRun('sets', 'readonly', store => store.index('by-exerciseId').getAll(exerciseId), result => {
+      const sets = result.sort((a, b) => b.date.localeCompare(a.date));
+      if (sets.length === 0) return null;
+      const lastDate = sets[0].date;
+      return {
+        date: lastDate,
+        sets: sets.filter(s => s.date === lastDate)
+      };
+    })
   },
   dayNotes: {
-    get: date => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('dayNotes', 'readonly');
-        const store = tx.objectStore('dayNotes');
-        const req = store.get(date);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    set: (date, note) => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('dayNotes', 'readwrite');
-        const store = tx.objectStore('dayNotes');
-        const req = store.put({
-          date,
-          note
-        });
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    },
-    delete: date => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('dayNotes', 'readwrite');
-        const store = tx.objectStore('dayNotes');
-        const req = store.delete(date);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('dayNotes', 'readonly');
-        const store = tx.objectStore('dayNotes');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    }
+    get: date => idbRun('dayNotes', 'readonly', store => store.get(date)),
+    set: (date, note) => idbRun('dayNotes', 'readwrite', store => store.put({
+      date,
+      note
+    }), () => undefined),
+    delete: date => idbRun('dayNotes', 'readwrite', store => store.delete(date), () => undefined),
+    getAll: () => idbRun('dayNotes', 'readonly', store => store.getAll())
   },
   templates: {
-    get: dayOfWeek => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('templates', 'readonly');
-        const store = tx.objectStore('templates');
-        const req = store.get(dayOfWeek);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    set: (dayOfWeek, label) => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('templates', 'readwrite');
-        const store = tx.objectStore('templates');
-        const req = store.put({
-          dayOfWeek,
-          label
-        });
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('templates', 'readonly');
-        const store = tx.objectStore('templates');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    }
+    get: dayOfWeek => idbRun('templates', 'readonly', store => store.get(dayOfWeek)),
+    set: (dayOfWeek, label) => idbRun('templates', 'readwrite', store => store.put({
+      dayOfWeek,
+      label
+    }), () => undefined),
+    getAll: () => idbRun('templates', 'readonly', store => store.getAll())
   },
   sessionNotes: {
-    add: note => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sessionNotes', 'readwrite');
-        const req = tx.objectStore('sessionNotes').put(note);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getByExerciseAndDate: (exerciseId, date) => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sessionNotes', 'readonly');
-        const index = tx.objectStore('sessionNotes').index('by-exerciseId-date');
-        const req = index.getAll([exerciseId, date]);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result[0] || null);
-      });
-    },
-    getByExerciseId: exerciseId => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sessionNotes', 'readonly');
-        const index = tx.objectStore('sessionNotes').index('by-exerciseId');
-        const req = index.getAll(exerciseId);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result.sort((a, b) => b.date.localeCompare(a.date)));
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sessionNotes', 'readonly');
-        const store = tx.objectStore('sessionNotes');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    delete: id => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('sessionNotes', 'readwrite');
-        const req = tx.objectStore('sessionNotes').delete(id);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve();
-      });
-    }
+    add: note => idbRun('sessionNotes', 'readwrite', store => store.put(note)),
+    getByExerciseAndDate: (exerciseId, date) => idbRun('sessionNotes', 'readonly', store => store.index('by-exerciseId-date').getAll([exerciseId, date]), result => result[0] || null),
+    getByExerciseId: exerciseId => idbRun('sessionNotes', 'readonly', store => store.index('by-exerciseId').getAll(exerciseId), result => result.sort((a, b) => b.date.localeCompare(a.date))),
+    getAll: () => idbRun('sessionNotes', 'readonly', store => store.getAll()),
+    delete: id => idbRun('sessionNotes', 'readwrite', store => store.delete(id), () => undefined)
   },
   families: {
-    add: family => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('movementFamilies', 'readwrite');
-        const store = tx.objectStore('movementFamilies');
-        const req = store.add(family);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    update: family => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('movementFamilies', 'readwrite');
-        const store = tx.objectStore('movementFamilies');
-        const req = store.put(family);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    getAll: () => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('movementFamilies', 'readonly');
-        const store = tx.objectStore('movementFamilies');
-        const req = store.getAll();
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result.sort((a, b) => (a.name || '').localeCompare(b.name || '')));
-      });
-    },
-    findByName: name => {
-      return new Promise((resolve, reject) => {
-        const tx = db.transaction('movementFamilies', 'readonly');
-        const index = tx.objectStore('movementFamilies').index('by-name');
-        const req = index.getAll(name);
-        req.onerror = () => reject(req.error);
-        req.onsuccess = () => resolve(req.result[0] || null);
-      });
-    }
+    add: family => idbRun('movementFamilies', 'readwrite', store => store.add(family)),
+    update: family => idbRun('movementFamilies', 'readwrite', store => store.put(family)),
+    getAll: () => idbRun('movementFamilies', 'readonly', store => store.getAll(), result => result.sort((a, b) => (a.name || '').localeCompare(b.name || ''))),
+    findByName: name => idbRun('movementFamilies', 'readonly', store => store.index('by-name').getAll(name), result => result[0] || null)
   }
 };
 
@@ -2867,6 +2961,18 @@ const isValidDateString = value => {
 const getTodayString = () => {
   return getDateString(new Date());
 };
+
+// Counterpart to parseCSVLine. Every exported field must go through this.
+// Activity names are free text, so a name like "Row (Wide, Neutral)" previously
+// shifted every later column left on re-import: the row became activity
+// "Row (Wide", category "Neutral)", weight unit "135" and reps NaN — silently,
+// creating a phantom activity. Quotes were dropped rather than doubled.
+const csvField = value => {
+  if (value === null || value === undefined) return '';
+  const text = `${value}`.replace(/\r?\n/g, ' ').replace(/\r/g, ' ');
+  return /[",]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+const csvRow = fields => fields.map(csvField).join(',') + '\n';
 const getBodyweightKey = date => `__bodyweight_${date}`;
 const getBodyweightConfirmationKey = date => `__bodyweight_confirmed_${date}`;
 const hasBodyweightValue = value => value !== null && value !== undefined && `${value}`.trim() !== '' && !Number.isNaN(parseFloat(value));
@@ -2972,25 +3078,55 @@ const getLastMeasuredSession = async exerciseId => {
 };
 
 // ============ SAFE DB OPERATIONS ============
+// Shows a brief error toast. Extracted from safeDb so that read paths and the
+// global rejection handler can surface failures the same way writes already do.
+let _dbToastTimer = null;
+const _lastDbToast = {
+  message: '',
+  at: 0
+};
+const showDbError = (label = 'save') => {
+  const message = `Failed to ${label}. Please try again.`;
+  // Collapse repeats: one failing screen can reject several calls at once.
+  const now = Date.now();
+  if (_lastDbToast.message === message && now - _lastDbToast.at < 3000) return;
+  _lastDbToast.message = message;
+  _lastDbToast.at = now;
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#a03050;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:9999;pointer-events:none;';
+  document.body.appendChild(toast);
+  if (_dbToastTimer) clearTimeout(_dbToastTimer);
+  _dbToastTimer = setTimeout(() => toast.remove(), 3000);
+};
 // Wraps any async DB call in try/catch. Shows a brief error toast if it fails.
 // Returns true on success, false on failure.
-let _dbToastTimer = null;
 const safeDb = async (operation, label = 'save') => {
   try {
     await operation();
     return true;
   } catch (err) {
     console.error(`DB ${label} failed:`, err);
-    // Show a brief error indicator — create a temporary toast div
-    const toast = document.createElement('div');
-    toast.textContent = `Failed to ${label}. Please try again.`;
-    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#a03050;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:9999;pointer-events:none;';
-    document.body.appendChild(toast);
-    if (_dbToastTimer) clearTimeout(_dbToastTimer);
-    _dbToastTimer = setTimeout(() => toast.remove(), 3000);
+    showDbError(label);
     return false;
   }
 };
+
+// Last line of defence. Many database calls are still unguarded, and a rejected
+// read silently aborts the rest of its function — every setState after that point
+// never runs, so the screen holds stale or empty content with no indication that
+// anything failed. This cannot repair the aborted function, but it makes the
+// failure visible instead of presenting as a random, non-reproducible glitch.
+window.addEventListener('unhandledrejection', event => {
+  const reason = event.reason;
+  const text = `${reason && reason.name || ''} ${reason && reason.message || ''}`.trim() || String(reason || '');
+  console.error('Unhandled promise rejection:', reason);
+  const isDomException = typeof DOMException !== 'undefined' && reason instanceof DOMException;
+  const looksLikeDb = /database|transaction|objectstore|indexeddb|abort|quota|constraint|notfound|invalidstate|version|dataerror|unknownerror/i.test(text);
+  if (isDomException || looksLikeDb) {
+    showDbError('load or save data');
+  }
+});
 
 // Debounce helper — delays execution until calls stop for `ms` milliseconds
 const _debounceTimers = {};
@@ -3135,6 +3271,44 @@ const inferMeasurementModes = exercise => {
   const distanceCapable = /treadmill|run|running|jog|walk|walking|bike|biking|cycle|cycling|rower|rowing|elliptical|stair|stepmill|ski erg/.test(lower);
   return distanceCapable ? [base, 'distance'] : [base];
 };
+// Bar presets. 'barbell' resolves to the standard plate weight at log time
+// (45 lbs / 20 kg); everything else stores an explicit number so the log screen
+// can always state the bar it is adding. `barName` is additive — activities
+// saved before it existed simply fall back to a generic label.
+// Preset weights follow the existing lbs-labelled bar UI.
+const BAR_PRESETS = [{
+  v: 'barbell',
+  l: 'Barbell (45 lbs)'
+}, {
+  v: 'ez',
+  l: 'EZ Bar (20 lbs)'
+}, {
+  v: 'custom',
+  l: 'Custom Bar'
+}];
+const EZ_BAR_WEIGHT_LBS = 20;
+const resolveBarSelection = (barType, customBarWeight) => {
+  if (barType === 'ez') return {
+    weightMeaning: 'bar-custom',
+    customBarWeight: EZ_BAR_WEIGHT_LBS,
+    barName: 'EZ bar'
+  };
+  if (barType === 'custom') return {
+    weightMeaning: 'bar-custom',
+    customBarWeight: parseFloat(customBarWeight) || 0,
+    barName: 'Custom bar'
+  };
+  return {
+    weightMeaning: 'barbell',
+    customBarWeight: null,
+    barName: 'Barbell'
+  };
+};
+const barTypeFromExercise = exercise => {
+  if (exercise?.weightMeaning === 'bar-custom') return exercise?.barName === 'EZ bar' ? 'ez' : 'custom';
+  if (exercise?.weightMeaning === 'barbell') return 'barbell';
+  return null;
+};
 const GRIP_NAME_TOKENS = ['pulldown', 'pull down', 'row', 'rows', 'pullup', 'pullups', 'pull up', 'chinup', 'chin up', 'curl', 'curls', 'grip', 'hang', 'farmer', 'farmers', 'carry', 'deadlift', 'shrug', 'shrugs', 'face pull'];
 // Whole-word matching: "lateral" must not match "lat", "narrow" must not match "row".
 const matchesGripToken = lower => GRIP_NAME_TOKENS.some(token => new RegExp(`(^|\\s)${token}(\\s|$)`).test(lower));
@@ -3152,19 +3326,70 @@ const lookupSplitCategories = nameLike => {
   return bestKey ? exerciseSplitRecommendations[bestKey] || [] : [];
 };
 
-// 'likely' | 'moot' | 'unknown'. This only controls how prominently the grip
-// question is offered — it never decides the answer, and never hides the option.
-const gripRelevanceLevelFor = exerciseOrName => {
+// 'likely' | 'moot' | 'unknown' plus the evidence that produced it. The reason
+// is carried so the log screen can say WHY grip is being asked instead of the
+// guess arriving unexplained — "Nordic Curls" matching the token "curls" looked
+// like a bug until the rule was visible.
+const gripRelevanceDetailFor = exerciseOrName => {
   const source = typeof exerciseOrName === 'string' ? exerciseOrName : `${exerciseOrName?.name || ''} ${exerciseOrName?.movementFamilyName || ''}`;
   const lower = source.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (matchesGripToken(lower)) return 'likely';
+  const matchedToken = GRIP_NAME_TOKENS.find(token => new RegExp(`(^|\\s)${token}(\\s|$)`).test(lower));
+  if (matchedToken) return {
+    level: 'likely',
+    reason: `the name contains “${matchedToken}”`
+  };
   const cats = lookupSplitCategories(source);
-  if (cats.some(c => GRIP_RELEVANT_CATEGORIES.includes(c))) return 'likely';
-  if (cats.length && cats.every(c => GRIP_MOOT_CATEGORIES.includes(c))) return 'moot';
-  return 'unknown';
+  const relevantCat = cats.find(c => GRIP_RELEVANT_CATEGORIES.includes(c));
+  if (relevantCat) return {
+    level: 'likely',
+    reason: `it is categorized as “${relevantCat}”`
+  };
+  if (cats.length && cats.every(c => GRIP_MOOT_CATEGORIES.includes(c))) return {
+    level: 'moot',
+    reason: `it is categorized as “${cats[0]}”`
+  };
+  return {
+    level: 'unknown',
+    reason: ''
+  };
 };
+const gripRelevanceLevelFor = exerciseOrName => gripRelevanceDetailFor(exerciseOrName).level;
 const isLikelyGripRelevant = exerciseOrName => gripRelevanceLevelFor(exerciseOrName) === 'likely';
-const shouldOfferGripTracking = exercise => !!exercise?.gripTrackingEnabled || gripRelevanceLevelFor(exercise) === 'likely';
+
+// Grip is a three-state setting, not a boolean. 'on' and 'off' are the user's
+// own answer and always win; 'auto' defers to the name/category guess. Legacy
+// records only stored a boolean, so an explicit true reads as 'on' and anything
+// else reads as 'auto' — that keeps grip exactly where it is today for every
+// activity created before this setting existed, instead of silently switching
+// it off underneath saved workouts.
+const gripTrackingModeFor = exercise => {
+  const stored = exercise?.gripTracking;
+  if (stored === 'on' || stored === 'off') return stored;
+  if (exercise?.gripTrackingEnabled === true) return 'on';
+  return 'auto';
+};
+
+// { show, mode, reason } — `reason` is user-facing copy explaining the decision.
+const gripTrackingDecisionFor = exercise => {
+  const mode = gripTrackingModeFor(exercise);
+  if (mode === 'on') return {
+    show: true,
+    mode,
+    reason: 'Grip tracking is on for this activity.'
+  };
+  if (mode === 'off') return {
+    show: false,
+    mode,
+    reason: 'Grip tracking is off for this activity.'
+  };
+  const detail = gripRelevanceDetailFor(exercise);
+  return {
+    show: detail.level === 'likely',
+    mode,
+    reason: detail.level === 'likely' ? `Asked automatically because ${detail.reason}.` : 'Grip is not asked automatically for this activity.'
+  };
+};
+const shouldOfferGripTracking = exercise => gripTrackingDecisionFor(exercise).show;
 const formatGripLabel = set => {
   if (!set) return '';
   const parts = [];
@@ -3918,6 +4143,94 @@ const EditCategoriesModal = ({
 // tokens make word-order and simple plural differences non-fatal.
 const normalizeActivitySearch = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 const canonicalActivitySearchTokens = value => normalizeActivitySearch(value).split(' ').filter(Boolean).map(token => token.length > 3 && token.endsWith('s') && !token.endsWith('ss') ? token.slice(0, -1) : token).sort();
+// Gym shorthand. Kept deliberately small and unambiguous — these are the forms
+// people actually type, not a thesaurus.
+const ACTIVITY_SEARCH_ALIASES = {
+  db: 'dumbbell',
+  bb: 'barbell',
+  kb: 'kettlebell',
+  ez: 'ez',
+  ohp: 'overhead press',
+  rdl: 'romanian deadlift',
+  sldl: 'stiff leg deadlift',
+  bw: 'bodyweight',
+  bp: 'bench press',
+  dl: 'deadlift',
+  pullup: 'pull up',
+  chinup: 'chin up',
+  pushup: 'push up',
+  situp: 'sit up',
+  lat: 'lat',
+  tri: 'tricep',
+  bi: 'bicep',
+  quad: 'quadricep',
+  ham: 'hamstring',
+  glute: 'glute'
+};
+const expandActivityAliases = tokens => {
+  const out = [];
+  tokens.forEach(token => {
+    const alias = ACTIVITY_SEARCH_ALIASES[token];
+    if (alias) alias.split(' ').forEach(part => out.push(part));else out.push(token);
+  });
+  return out;
+};
+
+// Bounded edit distance. Returns a number greater than `max` as soon as the
+// answer cannot be within budget, so a long non-match costs almost nothing.
+const boundedEditDistance = (a, b, max) => {
+  if (a === b) return 0;
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let beforePrev = null;
+  let prev = new Array(b.length + 1);
+  let cur = new Array(b.length + 1);
+  for (let j = 0; j <= b.length; j++) prev[j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    cur[0] = i;
+    let best = cur[0];
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      let value = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        value = Math.min(value, beforePrev[j - 2] + 1);
+      }
+      cur[j] = value;
+      if (value < best) best = value;
+    }
+    if (best > max) return max + 1;
+    beforePrev = prev;
+    prev = cur;
+    cur = new Array(b.length + 1);
+  }
+  return prev[b.length];
+};
+
+// Abbreviation matching, fzf-style: every letter of the query token appears in
+// the target in order. "rw" finds "row", "db" finds "dumbbell". Deliberately the
+// lowest-ranked signal — permissive, but a stray extra row costs far less than a
+// zero-result screen that invites creating a duplicate.
+const tokenSubsequenceMatches = (queryToken, targetTokens) => {
+  if (queryToken.length < 2) return false;
+  return targetTokens.some(target => {
+    if (target.length < queryToken.length) return false;
+    let index = 0;
+    for (let i = 0; i < target.length && index < queryToken.length; i++) {
+      if (target[i] === queryToken[index]) index++;
+    }
+    return index === queryToken.length;
+  });
+};
+
+// A typo budget that scales with word length: no fuzz on very short tokens
+// (where "bar" and "back" would collide), one edit from 4 characters, two from 8.
+const typoBudgetFor = token => token.length >= 8 ? 2 : token.length >= 4 ? 1 : 0;
+const tokenPrefixMatches = (queryToken, targetTokens) => targetTokens.some(target => target.startsWith(queryToken));
+const tokenFuzzyMatches = (queryToken, targetTokens) => {
+  const budget = typoBudgetFor(queryToken);
+  if (budget === 0) return false;
+  return targetTokens.some(target => boundedEditDistance(queryToken, target, budget) <= budget);
+};
+
 const activitySearchScore = (exercise, rawQuery) => {
   const query = normalizeActivitySearch(rawQuery);
   if (!query) return 1;
@@ -3946,7 +4259,33 @@ const activitySearchScore = (exercise, rawQuery) => {
   if (categories.includes(query)) return 625;
   if (inferredCategories.includes(query)) return 575;
   if (queryTokens.length && queryTokens.every(token => allTokens.has(token))) return 525;
+
+  // Everything above needs the query to appear whole, or its tokens to match a
+  // name token exactly. That returned nothing for a partial word ("dumb should"),
+  // a single typo ("skulcrusher") or gym shorthand ("bb row") — and an empty
+  // result invites creating a duplicate of an activity that is already there.
+  // Whole-name near-match, spaces removed: catches a typo in a run-together
+  // query ("clafraises" for "Calf Raises") that no per-token rule can see,
+  // because the query is one token and the name is two.
+  if (compactQuery.length >= 5 && compactName.length >= 5) {
+    const budget = typoBudgetFor(compactQuery);
+    if (budget > 0 && boundedEditDistance(compactQuery, compactName, budget) <= budget) return 810;
+  }
+
+  const nameTokenList = Array.from(nameTokens);
+  const allTokenList = Array.from(allTokens);
+  const aliasTokens = expandActivityAliases(queryTokens);
+  const aliasChanged = aliasTokens.length !== queryTokens.length || aliasTokens.some((token, index) => token !== queryTokens[index]);
+
+  if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 800;
+  if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 780;
+  if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList) || tokenFuzzyMatches(token, nameTokenList))) return 650;
+  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 500;
+  if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 480;
+  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList) || tokenFuzzyMatches(token, allTokenList))) return 420;
+  if (queryTokens.every(token => tokenSubsequenceMatches(token, nameTokenList))) return 380;
   if (type.includes(query)) return 300;
+  if (queryTokens.every(token => tokenSubsequenceMatches(token, allTokenList))) return 250;
   return 0;
 };
 const compareActivitySearchResults = (a, b) => b._searchScore - a._searchScore || String(b.lastUsed || '').localeCompare(String(a.lastUsed || '')) || (b.createdAt || 0) - (a.createdAt || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
@@ -4003,10 +4342,13 @@ const ExercisePickerModal = ({
       result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
     } else if (selectedFamilyId) {
       result = result.filter(e => (e.movementFamilyId || e.movementFamilyName) === selectedFamilyId);
-    } else {
-      if (!q && category !== 'all') {
-        result = result.filter(e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase()));
-      }
+    } else if (!q && category !== 'all') {
+      // Was a hard filter, which is why an activity you had genuinely logged was
+      // simply absent until you searched for it: anything with no split, another
+      // split, or different capitalisation vanished. A split is a label, not a
+      // locked list — so it now sorts to the top instead of hiding the rest.
+      const inSplit = e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase());
+      result = [...result].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0));
     }
     if (q) {
       result = result.map(exercise => ({
@@ -4057,15 +4399,6 @@ const ExercisePickerModal = ({
     familyMap[familyKey].members.push(ex);
   });
   const queryText = normalizeActivitySearch(search);
-  const matchingFamilies = !pairingSource && !selectedFamilyId && queryText ? Object.values(familyMap).map(family => ({
-    ...family,
-    _searchScore: Math.max(activitySearchScore({
-      name: family.name,
-      movementFamilyName: family.name
-    }, queryText), ...family.members.map(ex => activitySearchScore(ex, queryText)))
-  })).filter(family => family._searchScore > 0).sort((a, b) => b._searchScore - a._searchScore || a.name.localeCompare(b.name)) : [];
-  // Never let a family shell swallow the exact activity that caused it to
-  // match. The family remains a useful route; the child remains selectable.
   const visibleActivities = filtered;
   // Category/family matches are discovery results, not evidence of a duplicate.
   // Keep the repair prompt limited to direct activity-name matches.
@@ -4121,47 +4454,214 @@ const ExercisePickerModal = ({
       WebkitAppearance: 'none'
     }
   }, "← All matching activities") : null;
-  const familyPicker = !pairingSource && !selectedFamilyId && matchingFamilies.length > 0 ? /*#__PURE__*/React.createElement("div", {
+  const renderActivityRow = ex => {
+    const meta = /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "exercise-picker-name"
+    }, getActivityName(ex)), /*#__PURE__*/React.createElement("div", {
+      className: "exercise-picker-meta"
+    }, ex.variationLabel ? /*#__PURE__*/React.createElement("span", null, ex.variationLabel, " · ") : null, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''));
+    const pairButton = !pairingSource && ex.type === 'timed' && onPair ? /*#__PURE__*/React.createElement("button", {
+      onClick: e => {
+        e.stopPropagation();
+        setPairingSource(ex);
+      },
+      style: {
+        padding: '4px 10px',
+        borderRadius: '6px',
+        flexShrink: 0,
+        border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+        color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
+        fontSize: '11px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
+      }
+    }, "pair") : null;
+    const lineageButton = !pairingSource ? /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      "aria-label": `Set family link for ${ex.name}`,
+      onClick: e => {
+        e.stopPropagation();
+        onOpenLineage && onOpenLineage(ex);
+      },
+      style: {
+        border: 'none',
+        background: 'none',
+        color: 'color-mix(in srgb, var(--accent-soft) 70%, transparent)',
+        width: '44px',
+        height: '44px',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        WebkitAppearance: 'none',
+        flexShrink: 0
+      }
+    }, /*#__PURE__*/React.createElement(IconFlowChart, {
+      size: 20
+    })) : null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: ex.id,
+      className: "exercise-picker-item",
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px'
+      },
+      onClick: () => {
+        if (pairingSource) {
+          if (onPair) onPair(pairingSource, ex);
+          setPairingSource(null);
+        } else {
+          onSelect(ex);
+        }
+      },
+      onTouchStart: e => {
+        if (pairingSource) return;
+        const el = e.currentTarget;
+        el._lpTimer = setTimeout(() => {
+          el._lpFired = true;
+          setDeleteConfirm(ex);
+        }, 600);
+        el._lpFired = false;
+      },
+      onTouchMove: e => {
+        const el = e.currentTarget;
+        if (el._lpTimer) {
+          clearTimeout(el._lpTimer);
+          el._lpTimer = null;
+        }
+      },
+      onTouchEnd: e => {
+        const el = e.currentTarget;
+        if (el._lpTimer) {
+          clearTimeout(el._lpTimer);
+          el._lpTimer = null;
+        }
+        if (el._lpFired) {
+          e.preventDefault();
+        }
+      }
+    }, meta, pairButton, lineageButton);
+  };
+
+  // Families are shown expanded, head plus variants, rather than as a shell you
+  // have to tap through. This applies to search results AND to a split/category
+  // tab — previously a category tab showed a flat list with no family context at
+  // all, and a search showed a family you had to open before seeing what was in
+  // it.
+  const buildSections = (list, keyPrefix) => {
+    if (pairingSource || selectedFamilyId) return list.map(renderActivityRow);
+    const order = [];
+    const byKey = {};
+    list.forEach(ex => {
+      const key = ex.movementFamilyId || ex.movementFamilyName;
+      if (!key || !ex.movementFamilyName) return;
+      if (!byKey[key]) {
+        byKey[key] = {
+          id: key,
+          name: ex.movementFamilyName,
+          members: []
+        };
+        order.push(byKey[key]);
+      }
+      byKey[key].members.push(ex);
+    });
+    const grouped = new Set(order.flatMap(family => family.members.map(ex => ex.id)));
+    const loose = list.filter(ex => !grouped.has(ex.id));
+    const familyCards = order.map(family => /*#__PURE__*/React.createElement("div", {
+      key: `${keyPrefix}-family-${family.id}`,
+      style: {
+        marginBottom: '12px',
+        borderRadius: '12px',
+        border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
+        overflow: 'hidden'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px 12px',
+        background: 'color-mix(in srgb, var(--accent) 10%, transparent)'
+      }
+    }, /*#__PURE__*/React.createElement(IconFlowChart, {
+      size: 18
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        fontWeight: '700',
+        fontSize: '13px',
+        color: 'var(--text-bright)'
+      }
+    }, family.name), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => {
+        setSelectedFamilyId(family.id);
+        setSearch('');
+        setCategory(defaultCategory || 'all');
+      },
+      "aria-label": `Show only the ${family.name} family`,
+      style: {
+        minHeight: '32px',
+        padding: '0 12px',
+        borderRadius: '20px',
+        border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)',
+        background: 'transparent',
+        color: 'var(--accent-soft)',
+        fontSize: '11px',
+        fontWeight: '700',
+        whiteSpace: 'nowrap',
+        cursor: 'pointer',
+        WebkitAppearance: 'none'
+      }
+    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants')), /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '4px 6px 6px'
+      }
+    }, family.members.map(renderActivityRow))));
+    return [...familyCards, ...loose.map(renderActivityRow)];
+  };
+
+  const sectionHeading = label => /*#__PURE__*/React.createElement("div", {
+    key: `heading-${label}`,
     style: {
-      display: 'grid',
-      gap: '8px',
-      marginBottom: visibleActivities.length > 0 ? '14px' : 0
-    }
-  }, matchingFamilies.map(family => /*#__PURE__*/React.createElement("button", {
-    key: family.id,
-    type: "button",
-    onClick: () => {
-      setSelectedFamilyId(family.id);
-      setSearch('');
-      setCategory(defaultCategory || 'all');
-    },
-    style: {
+      margin: '10px 0 8px',
       display: 'flex',
       alignItems: 'center',
-      gap: '10px',
-      width: '100%',
-      padding: '12px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 28%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 11%, transparent)',
-      color: 'var(--text-body)',
-      textAlign: 'left',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
+      gap: '8px',
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px'
     }
-  }, /*#__PURE__*/React.createElement(IconFlowChart, {
-    size: 20
-  }), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, label), /*#__PURE__*/React.createElement("span", {
     style: {
       flex: 1,
-      fontWeight: '600'
+      height: '1px',
+      background: 'color-mix(in srgb, var(--accent) 18%, transparent)'
     }
-  }, family.name), /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'var(--text-faint)',
-      fontSize: '12px'
-    }
-  }, family.members.length, family.members.length === 1 ? ' activity' : ' activities', " →")))) : null;
+  }));
+
+  // With no search and a split selected, the split's activities lead and the
+  // rest follow under a divider. Nothing is filtered out of reach.
+  const splitIsActive = !pairingSource && !selectedFamilyId && !queryText && category !== 'all';
+  const matchesActiveSplit = ex => getExCategories(ex).some(c => c.toLowerCase() === category.toLowerCase());
+  const activitySections = splitIsActive ? (() => {
+    const inSplit = visibleActivities.filter(matchesActiveSplit);
+    const others = visibleActivities.filter(ex => !matchesActiveSplit(ex));
+    const parts = [];
+    if (inSplit.length > 0) parts.push(sectionHeading(category), ...buildSections(inSplit, 'split'));
+    if (others.length > 0) parts.push(sectionHeading(inSplit.length > 0 ? 'Everything else' : `Nothing tagged ${category} yet — everything else`), ...buildSections(others, 'other'));
+    return parts;
+  })() : buildSections(visibleActivities, 'all');
+
   if (showEditCategories) {
     return /*#__PURE__*/React.createElement(EditCategoriesModal, {
       categories: categories,
@@ -4322,111 +4822,19 @@ const ExercisePickerModal = ({
       marginTop: 20,
       marginBottom: 20
     }
-  }, "Couldn't load activities. Close and reopen Add Activity.") : (visibleActivities.length > 0 || matchingFamilies.length > 0) ? /*#__PURE__*/React.createElement("div", {
+  }, "Couldn't load activities. Close and reopen Add Activity.") : visibleActivities.length > 0 ? /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-section"
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, selectedFamilyId ? `Family: ${familyMap[selectedFamilyId]?.name || 'Selected'}` : pairingSource ? 'Select activity to pair with' : matchingFamilies.length > 0 ? 'Families first' : category === 'all' ? 'All Activities' : category), familyBack, familyPicker, !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
+    // The list always holds every activity now, so the outer title no longer
+    // names the split — the split has its own heading inside the list.
+  }, selectedFamilyId ? `Family: ${familyMap[selectedFamilyId]?.name || 'Selected'}` : pairingSource ? 'Select activity to pair with' : queryText ? 'Matches' : 'All Activities'), familyBack, !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)',
       marginBottom: '8px'
     }
-  }, "Long press to delete"), visibleActivities.map(ex => {
-    const meta = /*#__PURE__*/React.createElement("div", {
-      style: {
-        flex: 1
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "exercise-picker-name"
-    }, getActivityName(ex)), /*#__PURE__*/React.createElement("div", {
-      className: "exercise-picker-meta"
-    }, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''));
-    const pairButton = !pairingSource && ex.type === 'timed' && onPair ? /*#__PURE__*/React.createElement("button", {
-      onClick: e => {
-        e.stopPropagation();
-        setPairingSource(ex);
-      },
-      style: {
-        padding: '4px 10px',
-        borderRadius: '6px',
-        flexShrink: 0,
-        border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-        background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-        color: 'color-mix(in srgb, var(--accent-soft) 60%, transparent)',
-        fontSize: '11px',
-        fontWeight: '600',
-        cursor: 'pointer',
-        WebkitAppearance: 'none'
-      }
-    }, "pair") : null;
-    const lineageButton = !pairingSource ? /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      "aria-label": `Set family link for ${ex.name}`,
-      onClick: e => {
-        e.stopPropagation();
-        onOpenLineage && onOpenLineage(ex);
-      },
-      style: {
-        border: 'none',
-        background: 'none',
-        color: 'color-mix(in srgb, var(--accent-soft) 70%, transparent)',
-        width: '44px',
-        height: '44px',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        WebkitAppearance: 'none',
-        flexShrink: 0
-      }
-    }, /*#__PURE__*/React.createElement(IconFlowChart, {
-      size: 20
-    })) : null;
-    return /*#__PURE__*/React.createElement("div", {
-      key: ex.id,
-      className: "exercise-picker-item",
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px'
-      },
-      onClick: () => {
-        if (pairingSource) {
-          if (onPair) onPair(pairingSource, ex);
-          setPairingSource(null);
-        } else {
-          onSelect(ex);
-        }
-      },
-      onTouchStart: e => {
-        if (pairingSource) return;
-        const el = e.currentTarget;
-        el._lpTimer = setTimeout(() => {
-          el._lpFired = true;
-          setDeleteConfirm(ex);
-        }, 600);
-        el._lpFired = false;
-      },
-      onTouchMove: e => {
-        const el = e.currentTarget;
-        if (el._lpTimer) {
-          clearTimeout(el._lpTimer);
-          el._lpTimer = null;
-        }
-      },
-      onTouchEnd: e => {
-        const el = e.currentTarget;
-        if (el._lpTimer) {
-          clearTimeout(el._lpTimer);
-          el._lpTimer = null;
-        }
-        if (el._lpFired) {
-          e.preventDefault();
-        }
-      }
-    }, meta, pairButton, lineageButton);
-  })) : /*#__PURE__*/React.createElement("div", {
+  }, "Long press to delete"), activitySections) : /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       color: 'var(--text-placeholder)',
@@ -4459,10 +4867,20 @@ const CreateExerciseModal = ({
   const [movementFamilyName, setMovementFamilyName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
   const [gripTrackingEnabled, setGripTrackingEnabled] = useState(false);
+  const [gripAnswered, setGripAnswered] = useState(false);
   const [showGripSection, setShowGripSection] = useState(false);
   const dupCheckRef = useRef(null);
-  const gripRelevance = gripRelevanceLevelFor(name);
+  const gripDetail = gripRelevanceDetailFor(name);
+  const gripRelevance = gripDetail.level;
   const gripSectionCollapsed = gripRelevance === 'moot' && !showGripSection && !gripTrackingEnabled;
+
+  // Track the guess until the user answers, so the Yes/No shown on screen is the
+  // value that will actually be saved. Previously the form always displayed "No"
+  // while the heuristic could still turn grip on at log time.
+  useEffect(() => {
+    if (gripAnswered) return;
+    setGripTrackingEnabled(gripRelevance === 'likely');
+  }, [gripRelevance, gripAnswered]);
 
   // Load all exercises on mount for duplicate checking
   useEffect(() => {
@@ -4595,7 +5013,8 @@ const CreateExerciseModal = ({
     setTimeout(() => setRecommendation(null), 3000);
   };
   const doSave = async (opts = {}) => {
-    const finalWeightMeaning = weightMeaning === 'bar' ? barType === 'custom' ? 'bar-custom' : 'barbell' : weightMeaning || 'total';
+    const barSelection = weightMeaning === 'bar' ? resolveBarSelection(barType, customBarWeight) : null;
+    const finalWeightMeaning = barSelection ? barSelection.weightMeaning : weightMeaning || 'total';
     const finalType = type || 'reps';
     const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName || movementFamilyName);
     const familyRecord = resolvedFamilyName ? await ensureMovementFamilyRecord(resolvedFamilyName) : null;
@@ -4608,12 +5027,15 @@ const CreateExerciseModal = ({
       measurementModes: inferMeasurementModes({ name: name.trim(), type: finalType }),
       weightMeaning: finalType === 'neutral' ? 'total' : finalWeightMeaning,
       weightDefault: finalType === 'neutral' ? 'none' : weightDefault || (finalType === 'timed' ? 'none' : 'bodyweight'),
-      customBarWeight: finalType === 'neutral' ? null : weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null,
+      customBarWeight: finalType === 'neutral' || !barSelection ? null : barSelection.customBarWeight,
+      barName: finalType === 'neutral' || !barSelection ? null : barSelection.barName,
       variationOf: opts.variationOf || null,
       movementFamilyId: familyRecord?.id || null,
       movementFamilyName: familyRecord?.name || '',
       variationLabel: (opts.variationLabel || variationLabel || '').trim(),
       gripTrackingEnabled: finalType !== 'neutral' && !!gripTrackingEnabled,
+      // Explicit answer, so the name heuristic never overrides it later.
+      gripTracking: finalType === 'neutral' ? 'off' : gripTrackingEnabled ? 'on' : 'off',
       note: '',
       lastUsed: getTodayString(),
       createdAt: Date.now()
@@ -4966,27 +5388,22 @@ const CreateExerciseModal = ({
       overflow: 'hidden',
       border: '1px solid var(--surface-edge)'
     }
-  }, [{
-    v: 'barbell',
-    l: 'Barbell (45 lbs)'
-  }, {
-    v: 'custom',
-    l: 'Custom Bar'
-  }].map((opt, i) => /*#__PURE__*/React.createElement("button", {
+  }, BAR_PRESETS.map((opt, i) => /*#__PURE__*/React.createElement("button", {
     key: opt.v,
     onClick: () => {
       setBarType(opt.v);
-      if (opt.v === 'barbell') setCustomBarWeight('');
+      if (opt.v !== 'custom') setCustomBarWeight('');
     },
     style: {
       flex: 1,
       padding: '10px',
+      minHeight: '44px',
       border: 'none',
-      fontSize: '12px',
+      fontSize: '11px',
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      borderRight: i === 0 ? '1px solid var(--surface-edge)' : 'none',
+      borderRight: i < BAR_PRESETS.length - 1 ? '1px solid var(--surface-edge)' : 'none',
       background: barType === opt.v ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: barType === opt.v ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
@@ -5014,7 +5431,7 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginTop: '4px'
     }
-  }, barType === 'barbell' ? '45 lbs auto-added to each set for the bar' : customBarWeight ? `${customBarWeight} lbs auto-added to each set for the bar` : 'Enter the bar weight to auto-add'))), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
+  }, barType === 'barbell' ? 'Each set asks for plates only; 45 lbs is added for the bar' : barType === 'ez' ? `Each set asks for plates only; ${EZ_BAR_WEIGHT_LBS} lbs is added for the bar` : customBarWeight ? `Each set asks for plates only; ${customBarWeight} lbs is added for the bar` : 'Enter the bar weight to auto-add'))), type !== 'neutral' && /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
@@ -5103,7 +5520,7 @@ const CreateExerciseModal = ({
       marginBottom: '8px',
       lineHeight: '1.45'
     }
-  }, "Default is no. Turn it on only for movements where grip actually matters."), /*#__PURE__*/React.createElement("div", {
+  }, gripAnswered ? gripTrackingEnabled ? 'Grip choices will appear on the first set of this activity.' : 'Grip will never be asked for this activity.' : gripRelevance === 'likely' ? `Suggested on because ${gripDetail.reason}. Your answer here overrides the suggestion.` : 'Suggested off. Turn it on only for movements where grip actually matters.'), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       borderRadius: '8px',
@@ -5111,7 +5528,10 @@ const CreateExerciseModal = ({
       border: '1px solid var(--surface-edge)'
     }
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setGripTrackingEnabled(false),
+    onClick: () => {
+      setGripTrackingEnabled(false);
+      setGripAnswered(true);
+    },
     style: {
       flex: 1,
       padding: '10px',
@@ -5125,7 +5545,10 @@ const CreateExerciseModal = ({
       color: !gripTrackingEnabled ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
   }, "No"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setGripTrackingEnabled(true),
+    onClick: () => {
+      setGripTrackingEnabled(true);
+      setGripAnswered(true);
+    },
     style: {
       flex: 1,
       padding: '10px',
@@ -5233,10 +5656,13 @@ const WeightPickerModal = ({
   previousWeight,
   setNumber,
   unit = 'lbs',
+  onEditWeightStyle,
   gripTrackingEnabled = false,
   initialGrip = null,
   gripLockedForDay = false,
-  onGripChange
+  onGripChange,
+  gripReason,
+  onDisableGrip
 }) => {
   const [weight, setWeight] = useState(previousWeight || (unit === 'kg' ? 20 : 45));
   const [isEditingWeight, setIsEditingWeight] = useState(false);
@@ -5247,6 +5673,7 @@ const WeightPickerModal = ({
   const [yourWeights, setYourWeights] = useState([]);
   const [exerciseWeightMeaning, setExerciseWeightMeaning] = useState('total');
   const [storedCustomBarWeight, setStoredCustomBarWeight] = useState(0);
+  const [storedBarName, setStoredBarName] = useState('');
   const commonWeightsLbs = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
   const commonWeightsKg = [2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65, 67.5, 70, 72.5, 75, 77.5, 80, 82.5, 85, 87.5, 90, 92.5, 95, 97.5, 100];
   const plateWeight = unit === 'kg' ? 20 : 45;
@@ -5256,27 +5683,48 @@ const WeightPickerModal = ({
   const barbellCommonWeightsKg = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50].map(increment => barWeight + increment);
   const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
+
+  // On a bar activity the stepper edits PLATES while `weight` stays the total.
+  // Keeping the total as the stored value is what protects old records: nothing
+  // already logged is reinterpreted when a bar is added or its weight changes.
+  const plateOnlyWeight = Math.max(0, parseFloat((weight - barWeight).toFixed(1)));
+  const stepperValue = isBarExercise ? plateOnlyWeight : weight;
+  const applyStepperValue = next => {
+    const clamped = Math.max(0, parseFloat(Number(next || 0).toFixed(1)));
+    setWeight(isBarExercise ? parseFloat((barWeight + clamped).toFixed(1)) : clamped);
+  };
+  const barName = storedBarName || (exerciseWeightMeaning === 'barbell' ? 'Barbell' : 'Custom bar');
+  // A set logged before the bar was configured can total less than the bar
+  // itself. That is real history, so it is surfaced rather than silently fixed.
+  const previousBelowBar = isBarExercise && previousWeight != null && previousWeight < barWeight;
   useEffect(() => {
     const loadWeights = async () => {
-      const lastSession = await getLastMeasuredSession(exercise.id);
-      if (lastSession) {
-        const weights = new Map();
-        lastSession.sets.forEach(s => {
-          if (s.weight && s.weightType === unit) {
-            weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
-          }
-        });
-        setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
+      try {
+        const lastSession = await getLastMeasuredSession(exercise.id);
+        if (lastSession) {
+          const weights = new Map();
+          lastSession.sets.forEach(s => {
+            if (s.weight && s.weightType === unit) {
+              weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
+            }
+          });
+          setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
+        }
+      } catch (err) {
+        console.error('DB load recent weights failed:', err);
       }
     };
     loadWeights();
-  }, [exercise]);
+    // `unit` belongs here: the filter above compares against it, so without it a
+    // lbs/kg toggle left the suggestions filtered by the previous unit.
+  }, [exercise, unit]);
   useEffect(() => {
     const loadMeaning = async () => {
       const fullEx = await dbOps.exercises.get(exercise.id);
       setExerciseWeightMeaning(fullEx?.weightMeaning || 'total');
       const customBar = fullEx?.customBarWeight ? parseFloat(fullEx.customBarWeight) || 0 : 0;
       setStoredCustomBarWeight(customBar);
+      setStoredBarName(fullEx?.barName || '');
       if (previousWeight == null) {
         if (fullEx?.weightMeaning === 'barbell') {
           setWeight(unit === 'kg' ? 20 : 45);
@@ -5284,6 +5732,11 @@ const WeightPickerModal = ({
           setWeight(customBar);
         }
       }
+      // The bare bar is the floor. Seeding from a last set logged before the bar
+      // existed (or under a lighter bar) otherwise produced a total below the
+      // bar, and the plates line contradicted itself: "0 plates + 45 bar = 20".
+      const effectiveBar = fullEx?.weightMeaning === 'barbell' ? unit === 'kg' ? 20 : 45 : fullEx?.weightMeaning === 'bar-custom' ? customBar : 0;
+      if (effectiveBar > 0) setWeight(current => current < effectiveBar ? effectiveBar : current);
     };
     loadMeaning();
   }, [exercise, previousWeight, unit]);
@@ -5306,8 +5759,95 @@ const WeightPickerModal = ({
   }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
-    onChange: onGripChange
-  }), /*#__PURE__*/React.createElement("div", {
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: onDisableGrip
+  }), isBarExercise && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '10px',
+      padding: '10px 12px',
+      borderRadius: '12px',
+      background: 'color-mix(in srgb, var(--accent) 9%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      marginBottom: '6px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px'
+    }
+  }, "Bar"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      fontSize: '14px',
+      fontWeight: '700',
+      color: 'var(--text-bright)'
+    }
+  }, barName, " · ", barWeight, " ", unit), onEditWeightStyle && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: onEditWeightStyle,
+    "aria-label": "Change how this activity's weight is set up",
+    style: {
+      minHeight: '32px',
+      padding: '0 12px',
+      borderRadius: '20px',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
+      color: 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '700',
+      whiteSpace: 'nowrap',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)'
+    }
+  }, "Change")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '11px',
+      lineHeight: '1.45',
+      color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)'
+    }
+  }, "Enter plates only — the ", barWeight, " ", unit, " bar is added for you."), previousBelowBar && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '6px',
+      fontSize: '11px',
+      lineHeight: '1.45',
+      color: 'var(--text-faint)'
+    }
+  }, "Last set here logged ", previousWeight, " ", unit, " total — below this bar, so it predates the bar setup. It has been left exactly as recorded.")), isBarExercise && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      gap: '8px',
+      marginBottom: '6px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px'
+    }
+  }, "Plates"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '12px',
+      color: 'var(--text-faint)'
+    }
+  }, plateOnlyWeight, " plates + ", barWeight, " bar = ", /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: 'var(--accent-soft)',
+      fontWeight: '700'
+    }
+  }, weight, " ", unit))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px',
@@ -5316,7 +5856,7 @@ const WeightPickerModal = ({
     }
   }, [-5, -1].map(amount => /*#__PURE__*/React.createElement("button", {
     key: amount,
-    onClick: () => setWeight(Math.max(0, parseFloat((weight + amount).toFixed(1)))),
+    onClick: () => applyStepperValue(stepperValue + amount),
     style: {
       width: '38px',
       minWidth: '38px',
@@ -5348,8 +5888,10 @@ const WeightPickerModal = ({
     }
   }, /*#__PURE__*/React.createElement("input", {
     type: "number",
-    value: weight || '',
-    "aria-label": `Weight in ${unit}`,
+    // Bar mode shows a literal 0 rather than an empty box: "no plates yet" is a
+    // real answer there, not a blank field.
+    value: isBarExercise && stepperValue === 0 ? '0' : stepperValue || '',
+    "aria-label": isBarExercise ? `Plate weight in ${unit}, on top of a ${barWeight} ${unit} bar` : `Weight in ${unit}`,
     onFocus: e => {
       setIsEditingWeight(true);
       e.target.select();
@@ -5358,11 +5900,11 @@ const WeightPickerModal = ({
     onChange: e => {
       const v = e.target.value;
       if (v === '' || v === '-') {
-        setWeight(0);
+        applyStepperValue(0);
         return;
       }
       const n = parseFloat(v);
-      if (!isNaN(n)) setWeight(n);
+      if (!isNaN(n)) applyStepperValue(n);
     },
     style: {
       width: isEditingWeight ? '52px' : '34px',
@@ -5390,7 +5932,7 @@ const WeightPickerModal = ({
     }
   }, unit)), [1, 5].map(amount => /*#__PURE__*/React.createElement("button", {
     key: amount,
-    onClick: () => setWeight(parseFloat((weight + amount).toFixed(1))),
+    onClick: () => applyStepperValue(stepperValue + amount),
     style: {
       width: '38px',
       minWidth: '38px',
@@ -5420,7 +5962,23 @@ const WeightPickerModal = ({
       fontWeight: '600',
       whiteSpace: 'nowrap'
     }
-  }, "Use ", weight, " ", unit)), /*#__PURE__*/React.createElement("div", {
+  }, "Use ", weight, " ", unit, isBarExercise ? ' total' : '')), isBarExercise && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '-4px',
+      marginBottom: '10px',
+      fontSize: '11px',
+      color: 'var(--text-faint)',
+      textAlign: 'center'
+    }
+  }, "Logged as the total, so it stays comparable with your older sets."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px',
+      marginBottom: '6px'
+    }
+  }, "Load"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '6px',
@@ -5434,6 +5992,7 @@ const WeightPickerModal = ({
     style: {
       flex: '1',
       padding: '12px',
+      minHeight: '44px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       color: 'var(--accent-soft)',
@@ -5443,10 +6002,28 @@ const WeightPickerModal = ({
       fontWeight: '600'
     }
   }, "Body Weight"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'none'
+    }),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "No Load"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowBandedColors(!showBandedColors),
     style: {
       flex: '1',
       padding: '12px',
+      minHeight: '44px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       color: 'var(--accent-soft)',
@@ -5667,13 +6244,59 @@ const RepPickerModal = ({
   gripTrackingEnabled = false,
   initialGrip = null,
   gripLockedForDay = false,
-  onGripChange
+  onGripChange,
+  gripReason,
+  onDisableGrip
 }) => {
   const reps = Array.from({
     length: 30
   }, (_, i) => i + 1);
   const [customReps, setCustomReps] = useState('');
+  const [repSuggestions, setRepSuggestions] = useState([]);
+  const [repSuggestionSource, setRepSuggestionSource] = useState('');
   const emberEnabled = getPref('disableRepEmber') !== 'true';
+
+  // Suggestions come from this activity's own history, newest session first.
+  // A brand-new activity has none, so it falls back to common rep counts —
+  // the box should always propose something rather than sit there labelled.
+  useEffect(() => {
+    let cancelled = false;
+    const loadRepSuggestions = async () => {
+      try {
+        const lastSession = await getLastMeasuredSession(exercise.id);
+        const fromLast = lastSession ? Array.from(new Set(lastSession.sets.map(set => set.reps).filter(value => Number.isFinite(value) && value > 0))).sort((a, b) => a - b) : [];
+        if (fromLast.length > 0) {
+          if (!cancelled) {
+            setRepSuggestions(fromLast.slice(0, 4));
+            setRepSuggestionSource('Last time');
+          }
+          return;
+        }
+        const allSets = await dbOps.sets.getByExerciseId(exercise.id);
+        const tally = new Map();
+        (allSets || []).forEach(set => {
+          if (isPresenceOnlySet(set) || isNeutralAnchorSet(set)) return;
+          if (!Number.isFinite(set.reps) || set.reps <= 0) return;
+          tally.set(set.reps, (tally.get(set.reps) || 0) + 1);
+        });
+        const fromHistory = Array.from(tally.entries()).sort((a, b) => b[1] - a[1] || a[0] - b[0]).slice(0, 4).map(entry => entry[0]).sort((a, b) => a - b);
+        if (!cancelled) {
+          setRepSuggestions(fromHistory.length > 0 ? fromHistory : [8, 10, 12, 15]);
+          setRepSuggestionSource(fromHistory.length > 0 ? 'Your usual' : 'Common');
+        }
+      } catch (error) {
+        console.error('Unable to load rep suggestions', error);
+        if (!cancelled) {
+          setRepSuggestions([8, 10, 12, 15]);
+          setRepSuggestionSource('Common');
+        }
+      }
+    };
+    loadRepSuggestions();
+    return () => {
+      cancelled = true;
+    };
+  }, [exercise.id]);
   const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -5710,7 +6333,9 @@ const RepPickerModal = ({
   }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
-    onChange: onGripChange
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: onDisableGrip
   }), onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -5778,7 +6403,45 @@ const RepPickerModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, weightType !== 'bodyweight' && weightType !== 'none' ? `Weighted · ${displayWeight}` : 'Add Weight')), /*#__PURE__*/React.createElement("div", {
+  }, weightType !== 'bodyweight' && weightType !== 'none' ? `Weighted · ${displayWeight}` : 'Add Weight')), repSuggestions.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '6px',
+      marginBottom: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      textTransform: 'uppercase',
+      letterSpacing: '0.6px',
+      marginRight: '2px'
+    }
+  }, repSuggestionSource), repSuggestions.map(value => {
+    const isActive = String(value) === String(customReps);
+    return /*#__PURE__*/React.createElement("button", {
+      key: value,
+      type: "button",
+      "aria-label": `Suggest ${value} reps`,
+      "aria-pressed": isActive,
+      onClick: () => setCustomReps(String(value)),
+      style: {
+        minHeight: '32px',
+        padding: '0 14px',
+        borderRadius: '20px',
+        border: isActive ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+        background: isActive ? 'color-mix(in srgb, var(--accent) 30%, transparent)' : 'color-mix(in srgb, var(--accent) 8%, transparent)',
+        color: isActive ? 'var(--text-bright)' : 'var(--accent-soft)',
+        fontSize: '13px',
+        fontWeight: '700',
+        cursor: 'pointer',
+        WebkitAppearance: 'none',
+        transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), border-color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)'
+      }
+    }, value);
+  })), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '6px',
@@ -5789,7 +6452,7 @@ const RepPickerModal = ({
     "data-tour": "log-row",
     value: customReps,
     onChange: e => setCustomReps(e.target.value),
-    placeholder: "Reps",
+    placeholder: "",
     style: {
       flex: 1,
       height: '44px',
@@ -6178,7 +6841,9 @@ const TimedDurationModal = ({
   gripTrackingEnabled = false,
   initialGrip = null,
   gripLockedForDay = false,
-  onGripChange
+  onGripChange,
+  gripReason,
+  onDisableGrip
 }) => {
   const [distanceValue, setDistanceValue] = useState('');
   const [distanceUnit, setDistanceUnit] = useState('mi');
@@ -6478,7 +7143,9 @@ const TimedDurationModal = ({
   }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
     initialGrip: initialGrip,
     lockedForDay: gripLockedForDay,
-    onChange: onGripChange
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: onDisableGrip
   }), onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -7797,8 +8464,453 @@ const FeedbackModal = ({
     }
   }, "Done"))))));
 };
+// Shared CSV importer. Extracted from the Settings file-picker so the demo
+// seeder and a manual import travel exactly the same tested path instead of
+// two parallel implementations drifting apart.
+const parseCSVLine = line => {
+  const fields = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"' && line[i + 1] === '"') {
+        current += '"';
+        i++; // skip escaped quote
+      } else if (ch === '"') {
+        inQuotes = false;
+      } else {
+        current += ch;
+      }
+    } else {
+      if (ch === '"') {
+        inQuotes = true;
+      } else if (ch === ',') {
+        fields.push(current.trim());
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+  }
+  fields.push(current.trim());
+  return fields;
+};
+const importWorkoutCSV = async (text, onStatus = () => {}) => {
+  const allLines = text.split('\n').slice(1).filter(l => l.trim());
+
+  // Check for metadata rows and extract data
+  let importedSplits = null;
+  const importedDaySplits = [];
+  let importedUnit = 'lbs';
+  let importedBodyweight = null;
+  const importedBodyweightDays = [];
+  const lines = allLines.filter(l => {
+    const parts = parseCSVLine(l);
+    if (parts[0] === '__META__') return false;
+    if (parts[0] === '__UNIT__') {
+      importedUnit = parts[1] || 'lbs';
+      return false;
+    }
+    if (parts[0] === '__BODYWEIGHT__') {
+      importedBodyweight = parts[1] || null;
+      return false;
+    }
+    if (parts[0] === '__BODYWEIGHT_DAY__') {
+      importedBodyweightDays.push({
+        date: parts[1],
+        value: parts[2] || null
+      });
+      return false;
+    }
+    if (parts[0] === '__SPLITS__') {
+      importedSplits = {
+        0: parts[1] || '',
+        1: parts[2] || '',
+        2: parts[3] || '',
+        3: parts[4] || '',
+        4: parts[5] || '',
+        5: parts[6] || '',
+        6: parts[7] || ''
+      };
+      return false;
+    }
+    if (parts[0] === '__DAYSPLIT__') {
+      importedDaySplits.push({
+        date: parts[1],
+        split: parts[2] || ''
+      });
+      return false;
+    }
+    return true;
+  });
+  const totalLines = lines.length;
+  onStatus(`Parsing ${totalLines} rows...`);
+
+  // PHASE 1: Parse all lines into structured data (no DB operations)
+  const exerciseMap = new Map(); // name -> exercise object
+  const existingExercises = await dbOps.exercises.getAll();
+  existingExercises.forEach(ex => exerciseMap.set(ex.name, ex));
+  const parsedRows = [];
+  for (const line of lines) {
+    try {
+      const parts = parseCSVLine(line);
+      const date = parts[0];
+      const exerciseName = parts[1];
+      if (!date || !exerciseName) continue;
+      const categoryRaw = (parts[2] || 'push').toLowerCase();
+      const categories_arr = categoryRaw.includes(';') ? categoryRaw.split(';').filter(Boolean) : [categoryRaw];
+      const category = categories_arr[0] || 'push';
+      const rawType = (parts[3] || 'reps').toLowerCase();
+      const type = rawType === 'reps' || rawType === 'timed' ? rawType : 'reps';
+      const weightType = parts[6] || 'lbs';
+      const note = parts[11] || '';
+
+      // Create exercise record if needed
+      if (!exerciseMap.has(exerciseName)) {
+        const newEx = {
+          id: generateId('ex'),
+          name: exerciseName,
+          category,
+          categories: categories_arr,
+          type,
+          note: '',
+          lastUsed: date,
+          createdAt: Date.now()
+        };
+        exerciseMap.set(exerciseName, newEx);
+      } else {
+        const ex = exerciseMap.get(exerciseName);
+        if (date > (ex.lastUsed || '')) {
+          ex.lastUsed = date;
+        }
+      }
+      parsedRows.push({
+        date,
+        exerciseName,
+        setOrder: parseInt(parts[4]) || 1,
+        weight: parts[5] && parts[5] !== '' ? parseFloat(parts[5]) : null,
+        weightType,
+        reps: parts[7] && parts[7] !== '' ? parseInt(parts[7]) : null,
+        duration: parts[8] && parts[8] !== '' ? parseInt(parts[8]) : null,
+        distance: parts[9] && parts[9] !== '' ? parseFloat(parts[9]) : null,
+        distanceUnit: parts[10] || null,
+        bandedColor: weightType === 'banded' && note ? note.split('|')[0].trim() : undefined,
+        note: weightType === 'banded' && note && note.includes('|') ? note.split('|').slice(1).join('|').trim() : weightType !== 'banded' ? note : ''
+      });
+    } catch (err) {
+      console.error('Parse error:', line, err);
+    }
+  }
+
+  // PHASE 2: Compute exerciseOrder for each exercise on each date
+  // Group rows by date to assign exerciseOrder
+  const byDate = new Map();
+  for (const row of parsedRows) {
+    if (!byDate.has(row.date)) byDate.set(row.date, []);
+    byDate.get(row.date).push(row);
+  }
+
+  // For each date, assign exerciseOrder based on first appearance
+  const setsToWrite = [];
+  for (const [date, rows] of byDate) {
+    const exerciseOrderMap = new Map();
+    let nextOrder = 1;
+    for (const row of rows) {
+      if (!exerciseOrderMap.has(row.exerciseName)) {
+        exerciseOrderMap.set(row.exerciseName, nextOrder++);
+      }
+    }
+    for (const row of rows) {
+      const exercise = exerciseMap.get(row.exerciseName);
+      setsToWrite.push({
+        id: generateId('set'),
+        date,
+        exerciseId: exercise.id,
+        exerciseName: exercise.name,
+        exerciseOrder: exerciseOrderMap.get(row.exerciseName),
+        setOrder: row.setOrder,
+        weight: row.weight,
+        weightType: row.weightType,
+        bandedColor: row.bandedColor,
+        reps: row.reps,
+        duration: row.duration,
+        distance: row.distance,
+        distanceUnit: row.distanceUnit,
+        createdAt: Date.now()
+      });
+    }
+  }
+
+  // PHASE 3: Write exercises to DB (batch transaction)
+  onStatus('Writing activities...');
+  const exercisesToWrite = Array.from(exerciseMap.values());
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction('exercises', 'readwrite');
+    const store = tx.objectStore('exercises');
+    for (const ex of exercisesToWrite) {
+      store.put(ex); // put = upsert
+    }
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error || new Error('Import transaction aborted'));
+  });
+
+  // PHASE 4: Write sets to DB in batches (batch transaction)
+  onStatus(`Writing ${setsToWrite.length} sets...`);
+  const BATCH_SIZE = 200;
+  for (let i = 0; i < setsToWrite.length; i += BATCH_SIZE) {
+    const batch = setsToWrite.slice(i, i + BATCH_SIZE);
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction('sets', 'readwrite');
+      const store = tx.objectStore('sets');
+      for (const set of batch) {
+        store.add(set);
+      }
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error || new Error('Import transaction aborted'));
+    });
+    onStatus(`Writing sets... ${Math.min(i + BATCH_SIZE, setsToWrite.length)}/${setsToWrite.length}`);
+  }
+
+  // PHASE 5: Write session notes
+  onStatus('Writing session notes...');
+  const sessionNotesToWrite = [];
+
+  // Helper function to map old tags to mood 1-5
+  const mapTagToMood = tag => {
+    const lowTag = tag.toLowerCase();
+    if (['felt weak', 'low energy', 'feeling sick'].some(t => lowTag.includes(t))) return 2;
+    if (['felt normal', 'fatigued'].some(t => lowTag.includes(t))) return 3;
+    if (['felt strong', 'high energy', 'good pump'].some(t => lowTag.includes(t))) return 4;
+    return null;
+  };
+  for (const row of parsedRows) {
+    if (row.note && row.setOrder === 1) {
+      const exercise = exerciseMap.get(row.exerciseName);
+      const noteParts = row.note.split('|').map(p => p.trim());
+      let mood = null;
+      const tags = [];
+      let formCueText = '';
+      let freeText = '';
+      noteParts.forEach(p => {
+        if (p.startsWith('Mood:')) {
+          mood = parseInt(p.substring(5).trim());
+        } else if (p.startsWith('Form:')) {
+          formCueText = p.substring(5).trim();
+        } else if (p.startsWith('General:')) {
+          freeText = p.substring(8).trim();
+        } else if (p) {
+          // Old-style tag - try to map it
+          const mappedMood = mapTagToMood(p);
+          if (mappedMood && !mood) mood = mappedMood;
+          tags.push(p); // Keep for backward compatibility
+        }
+      });
+      if (mood || tags.length > 0 || formCueText || freeText) {
+        sessionNotesToWrite.push({
+          id: `sn_${exercise.id}_${row.date}`,
+          exerciseId: exercise.id,
+          date: row.date,
+          mood,
+          tags: tags.length > 0 ? tags : undefined,
+          freeText,
+          formCueText,
+          updatedAt: new Date().toISOString()
+        });
+      }
+    }
+  }
+  if (sessionNotesToWrite.length > 0) {
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction('sessionNotes', 'readwrite');
+      const store = tx.objectStore('sessionNotes');
+      for (const sn of sessionNotesToWrite) {
+        store.put(sn);
+      }
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error || new Error('Import transaction aborted'));
+    });
+  }
+
+  // PHASE 6: Write metadata
+  if (importedUnit) {
+    await dbOps.dayNotes.set('__unit__', importedUnit);
+  }
+  if (importedBodyweight) {
+    await setStoredBodyweightForDate(getTodayString(), importedBodyweight);
+  }
+  for (const bw of importedBodyweightDays) {
+    if (bw.date && bw.value) {
+      await setStoredBodyweightForDate(bw.date, bw.value);
+    }
+  }
+
+  // PHASE 7: Write weekly splits if present
+  if (importedSplits) {
+    for (let i = 0; i < 7; i++) {
+      await dbOps.templates.set(i, importedSplits[i] || '');
+    }
+  }
+
+  // Write per-day splits
+  for (const ds of importedDaySplits) {
+    await dbOps.dayNotes.set(`__split_${ds.date}`, ds.split);
+  }
+  onStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} activities.`);
+  return {
+    sets: setsToWrite.length,
+    activities: exercisesToWrite.length
+  };
+};
+// Returns the seed CSV narrowed to (afterDate, throughDate]. Undated metadata is
+// always kept because the importer is idempotent for it; __BODYWEIGHT__ is the
+// exception — it writes *today's* bodyweight, so replaying it on every top-up
+// would stamp over a value the demo user had entered themselves.
+const sliceSeedCsv = (text, afterDate, throughDate, includeSeedOnlyMeta) => {
+  const lines = text.split('\n');
+  const header = lines[0];
+  const kept = [];
+  let dataRows = 0;
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    const parts = parseCSVLine(line);
+    const tag = parts[0];
+    if (tag === '__BODYWEIGHT__') {
+      if (includeSeedOnlyMeta) kept.push(line);
+      continue;
+    }
+    const isDatedMeta = tag === '__DAYSPLIT__' || tag === '__BODYWEIGHT_DAY__';
+    if (tag.startsWith('__') && !isDatedMeta) {
+      kept.push(line);
+      continue;
+    }
+    const date = isDatedMeta ? parts[1] : parts[0];
+    if (!date) continue;
+    if (date > afterDate && date <= throughDate) {
+      kept.push(line);
+      if (!isDatedMeta) dataRows++;
+    }
+  }
+  return {
+    csv: [header, ...kept].join('\n'),
+    dataRows
+  };
+};
+
+const fetchSeedCsv = async () => {
+  // Plain fetch: the service worker's stale-while-revalidate path then caches
+  // the file, so the demo stays available offline after one successful load.
+  const response = await fetch(DEMO_SEED_URL);
+  if (!response.ok) throw new Error(`seed fetch failed: ${response.status}`);
+  return response.text();
+};
+
+const getDemoSeededThrough = async () => {
+  try {
+    const record = await dbOps.dayNotes.get(DEMO_SEEDED_THROUGH_KEY);
+    return record?.note || '';
+  } catch {
+    return '';
+  }
+};
+
+// Reveals any sessions that have come due since the demo was loaded. Cheap and
+// silent on the common path: it only fetches when the date has actually rolled.
+const topUpDemoIfDue = async () => {
+  if (!isDemoActive()) return false;
+  const today = getTodayString();
+  const seededThrough = await getDemoSeededThrough();
+  if (!seededThrough || seededThrough >= today) return false;
+  try {
+    const text = await fetchSeedCsv();
+    const slice = sliceSeedCsv(text, seededThrough, today, false);
+    if (slice.dataRows > 0) await importWorkoutCSV(slice.csv);
+    await dbOps.dayNotes.set(DEMO_SEEDED_THROUGH_KEY, today);
+    return slice.dataRows > 0;
+  } catch (error) {
+    // A failed top-up is not worth interrupting anyone over — the demo simply
+    // stays where it was until the next launch.
+    console.warn('Could not top up the demo log', error);
+    return false;
+  }
+};
+
+// Loads Marcus Chen's dataset into the demo database and switches the app to it.
+// The seed CSV is fetched rather than inlined: it is 200KB, and inlining would
+// tax every cold start for a feature most sessions never touch. Same-origin, so
+// the service worker caches it after the first successful fetch.
+const enterDemoMode = async (onStatus = () => {}) => {
+  if (isDemoActive()) return;
+  onStatus('Loading sample log…');
+  const today = getTodayString();
+  let seedSlice;
+  try {
+    const text = await fetchSeedCsv();
+    // Everything up to today, nothing after it.
+    seedSlice = sliceSeedCsv(text, '', today, true);
+  } catch (error) {
+    console.error('Could not load the demo dataset', error);
+    throw new Error('Could not load the sample data. Check your connection and try again.');
+  }
+  // Switch databases only once the data is in hand, so a failed fetch leaves the
+  // user exactly where they were.
+  closeActiveDb();
+  activeDbName = DEMO_DB_NAME;
+  try {
+    await initDB();
+    // A previous demo that was never exited would otherwise be imported on top
+    // of itself, doubling every set.
+    await Promise.all(['exercises', 'sets', 'dayNotes', 'templates', 'sessionNotes', 'movementFamilies'].map(store => idbRun(store, 'readwrite', s => s.clear(), () => undefined).catch(() => undefined)));
+    await importWorkoutCSV(seedSlice.csv, onStatus);
+    await dbOps.dayNotes.set(DEMO_SEEDED_THROUGH_KEY, today);
+    // Land on the most recent training day rather than an empty "today". The
+    // whole point of the demo is opening onto a populated screen; prefs live in
+    // the (now demo) database, so this is read back by initPrefs on reload.
+    // Prefer the most recent *substantial* session. The plain latest day can be a
+    // single cardio entry, which opens the demo — and the tour's history step —
+    // on the thinnest screen in eleven months of training.
+    try {
+      const allSets = await dbOps.sets.getAll();
+      const perDay = new Map();
+      (allSets || []).forEach(set => {
+        if (!set.date || isNeutralAnchorSet(set) || !set.exerciseId) return;
+        if (!perDay.has(set.date)) perDay.set(set.date, new Set());
+        perDay.get(set.date).add(set.exerciseId);
+      });
+      const dates = Array.from(perDay.keys()).sort();
+      const substantial = dates.filter(date => perDay.get(date).size >= 3);
+      const landing = substantial.length > 0 ? substantial[substantial.length - 1] : dates[dates.length - 1];
+      if (landing) await dbOps.dayNotes.set('__preferences__', JSON.stringify({ lastViewedDate: landing }));
+    } catch (error) {
+      console.warn('Could not set the demo landing day; falling back to today.', error);
+    }
+  } catch (error) {
+    closeActiveDb();
+    activeDbName = REAL_DB_NAME;
+    await initDB().catch(() => undefined);
+    throw error;
+  }
+  writeLocalFlag(DEMO_ACTIVE_FLAG, 'true');
+  writeLocalFlag(DEMO_OFFERED_FLAG, 'true');
+};
+
+// Leaves the demo and destroys it. The real database was never opened for
+// writing during the demo, so there is nothing to restore — only to discard.
+const exitDemoMode = async () => {
+  clearLocalFlag(DEMO_ACTIVE_FLAG);
+  writeLocalFlag(DEMO_OFFERED_FLAG, 'true');
+  closeActiveDb();
+  await deleteDatabaseByName(DEMO_DB_NAME);
+  activeDbName = REAL_DB_NAME;
+};
+
 const SettingsModal = ({
   onClose,
+  onReplayTour,
   onOpenFeedback,
   onCategoriesChanged,
   categories: settingsCategories,
@@ -7896,163 +9008,133 @@ const SettingsModal = ({
     onClose();
   };
   const handleExport = async () => {
-    const allExercises = await dbOps.exercises.getAll();
-    const allSets = [];
-    const tx = db.transaction('sets', 'readonly');
-    await new Promise(resolve => {
-      const req = tx.objectStore('sets').getAll();
-      req.onsuccess = () => {
-        allSets.push(...req.result);
-        resolve();
-      };
-    });
+    try {
+      const allExercises = await dbOps.exercises.getAll();
+      // These three reads used raw transactions with no onerror handler at all, so a
+      // failed read never called resolve() and the export hung forever with no error
+      // and no file. Routed through dbOps so a failure rejects and surfaces.
+      const allSets = await dbOps.sets.getAll();
 
-    // Load all session notes for export
-    const allSessionNotes = [];
-    const snTx = db.transaction('sessionNotes', 'readonly');
-    await new Promise(resolve => {
-      const req = snTx.objectStore('sessionNotes').getAll();
-      req.onsuccess = () => {
-        allSessionNotes.push(...req.result);
-        resolve();
-      };
-    });
-    const noteMap = {};
-    allSessionNotes.forEach(sn => {
-      noteMap[`${sn.exerciseId}_${sn.date}`] = sn;
-    });
+      // Load all session notes for export
+      const allSessionNotes = await dbOps.sessionNotes.getAll();
+      const noteMap = {};
+      allSessionNotes.forEach(sn => {
+        noteMap[`${sn.exerciseId}_${sn.date}`] = sn;
+      });
 
-    // Include weekly splits as a metadata row
-    const allTemplates = await dbOps.templates.getAll();
-    const splitMap = {};
-    allTemplates.forEach(t => {
-      splitMap[t.dayOfWeek] = t.label || '';
-    });
-    const splitLine = ['__SPLITS__', splitMap[0] || '', splitMap[1] || '', splitMap[2] || '', splitMap[3] || '', splitMap[4] || '', splitMap[5] || '', splitMap[6] || '', '', ''].join(',');
+      // Include weekly splits as a metadata row
+      const allTemplates = await dbOps.templates.getAll();
+      const splitMap = {};
+      allTemplates.forEach(t => {
+        splitMap[t.dayOfWeek] = t.label || '';
+      });
+      const splitLine = ['__SPLITS__', splitMap[0] || '', splitMap[1] || '', splitMap[2] || '', splitMap[3] || '', splitMap[4] || '', splitMap[5] || '', splitMap[6] || '', '', ''].map(csvField).join(',');
 
-    // Also export per-day split overrides
-    const allDayNotes = [];
-    const dnTx = db.transaction('dayNotes', 'readonly');
-    await new Promise(resolve => {
-      const req = dnTx.objectStore('dayNotes').getAll();
-      req.onsuccess = () => {
-        allDayNotes.push(...req.result);
-        resolve();
-      };
-    });
-    let daySplitLines = '';
-    let unitLine = '';
-    let bwLine = '';
-    let bwDayLines = '';
-    allDayNotes.forEach(dn => {
-      if (dn.date.startsWith('__split_')) {
-        const splitDate = dn.date.replace('__split_', '');
-        daySplitLines += `__DAYSPLIT__,${splitDate},${dn.note},,,,,,, \n`;
-      } else if (dn.date === '__unit__') {
-        unitLine = `__UNIT__,${dn.note},,,,,,,, \n`;
-      } else if (dn.date === '__bodyweight__') {
-        bwLine = `__BODYWEIGHT__,${dn.note},,,,,,,, \n`;
-      } else if (dn.date.startsWith('__bodyweight_')) {
-        const bwDate = dn.date.replace('__bodyweight_', '');
-        bwDayLines += `__BODYWEIGHT_DAY__,${bwDate},${dn.note},,,,,,, \n`;
-      }
-    });
-    let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note\n';
-    // Recalculate setOrder on export to fix any stored inconsistencies
-    allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder || a.createdAt - b.createdAt);
-    const setOrderCounters = {};
-    allSets.forEach(set => {
-      const key = `${set.date}_${set.exerciseId}`;
-      setOrderCounters[key] = (setOrderCounters[key] || 0) + 1;
-      set._exportSetOrder = setOrderCounters[key];
-    });
-    allSets.forEach(set => {
-      const ex = allExercises.find(e => e.id === set.exerciseId) || {};
-      const weightStr = set.weight !== null ? set.weight : '';
-      const repsStr = set.reps !== null ? set.reps : '';
-      const durationStr = set.duration !== null ? set.duration : '';
-      const distanceStr = set.distance !== null && set.distance !== undefined ? set.distance : '';
-      const distanceUnitStr = set.distanceUnit || '';
-      let noteStr = '';
-      if (set.weightType === 'banded' && set.bandedColor) {
-        noteStr = set.bandedColor;
-        if (set._exportSetOrder === 1) {
+      // Also export per-day split overrides
+      const allDayNotes = await dbOps.dayNotes.getAll();
+      let daySplitLines = '';
+      let unitLine = '';
+      let bwLine = '';
+      let bwDayLines = '';
+      allDayNotes.forEach(dn => {
+        if (dn.date.startsWith('__split_')) {
+          const splitDate = dn.date.replace('__split_', '');
+          daySplitLines += csvRow(['__DAYSPLIT__', splitDate, dn.note, '', '', '', '', '', '', '']);
+        } else if (dn.date === '__unit__') {
+          unitLine = csvRow(['__UNIT__', dn.note, '', '', '', '', '', '', '', '']);
+        } else if (dn.date === '__bodyweight__') {
+          bwLine = csvRow(['__BODYWEIGHT__', dn.note, '', '', '', '', '', '', '', '']);
+        } else if (dn.date.startsWith('__bodyweight_')) {
+          const bwDate = dn.date.replace('__bodyweight_', '');
+          bwDayLines += csvRow(['__BODYWEIGHT_DAY__', bwDate, dn.note, '', '', '', '', '', '', '']);
+        }
+      });
+      let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note\n';
+      // Recalculate setOrder on export to fix any stored inconsistencies
+      allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder || a.createdAt - b.createdAt);
+      const setOrderCounters = {};
+      allSets.forEach(set => {
+        const key = `${set.date}_${set.exerciseId}`;
+        setOrderCounters[key] = (setOrderCounters[key] || 0) + 1;
+        set._exportSetOrder = setOrderCounters[key];
+      });
+      allSets.forEach(set => {
+        const ex = allExercises.find(e => e.id === set.exerciseId) || {};
+        const weightStr = set.weight !== null ? set.weight : '';
+        const repsStr = set.reps !== null ? set.reps : '';
+        const durationStr = set.duration !== null ? set.duration : '';
+        const distanceStr = set.distance !== null && set.distance !== undefined ? set.distance : '';
+        const distanceUnitStr = set.distanceUnit || '';
+        let noteStr = '';
+        if (set.weightType === 'banded' && set.bandedColor) {
+          noteStr = set.bandedColor;
+          if (set._exportSetOrder === 1) {
+            const sn = noteMap[`${set.exerciseId}_${set.date}`];
+            if (sn) {
+              const parts = [];
+              if (sn.mood) parts.push(`Mood:${sn.mood}`);
+              if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
+              if (sn.freeText) parts.push(`General:${sn.freeText}`);
+              if (parts.length > 0) noteStr += '|' + parts.join('|');
+            }
+          }
+        } else if (set._exportSetOrder === 1) {
           const sn = noteMap[`${set.exerciseId}_${set.date}`];
           if (sn) {
             const parts = [];
             if (sn.mood) parts.push(`Mood:${sn.mood}`);
             if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
             if (sn.freeText) parts.push(`General:${sn.freeText}`);
-            if (parts.length > 0) noteStr += '|' + parts.join('|');
+            noteStr = parts.join('|');
           }
         }
-      } else if (set._exportSetOrder === 1) {
-        const sn = noteMap[`${set.exerciseId}_${set.date}`];
-        if (sn) {
-          const parts = [];
-          if (sn.mood) parts.push(`Mood:${sn.mood}`);
-          if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
-          if (sn.freeText) parts.push(`General:${sn.freeText}`);
-          noteStr = parts.join('|');
-        }
-      }
-      const noteClean = noteStr.replace(/\r?\n/g, ' ').replace(/\r/g, ' ');
-      const noteField = noteClean.includes(',') || noteClean.includes('"') ? `"${noteClean.replace(/"/g, '""')}"` : noteClean;
-      csv += `${set.date},${set.exerciseName},${getExCategories(ex).join(';') || ''},${ex.type || ''},${set._exportSetOrder},${weightStr},${set.weightType},${repsStr},${durationStr},${distanceStr},${distanceUnitStr},${noteField}\n`;
-    });
-    // Metadata section at bottom — used for re-import, safe to ignore when reading
-    csv += '\n__META__,,,,,,,,,\n';
-    if (unitLine) csv += unitLine;
-    if (bwLine) csv += bwLine;
-    if (bwDayLines) csv += bwDayLines;
-    // Only include splits line if there's actual template data
-    const hasSplitData = Object.values(splitMap).some(v => v);
-    if (hasSplitData) csv += splitLine + '\n';
-    if (daySplitLines) csv += daySplitLines;
-    const blob = new Blob([csv], {
-      type: 'text/csv'
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `fitness-export-${getTodayString()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+        csv += csvRow([set.date, set.exerciseName, getExCategories(ex).join(';') || '', ex.type || '', set._exportSetOrder, weightStr, set.weightType, repsStr, durationStr, distanceStr, distanceUnitStr, noteStr]);
+      });
+      // Metadata section at bottom — used for re-import, safe to ignore when reading
+      csv += '\n__META__,,,,,,,,,\n';
+      if (unitLine) csv += unitLine;
+      if (bwLine) csv += bwLine;
+      if (bwDayLines) csv += bwDayLines;
+      // Only include splits line if there's actual template data
+      const hasSplitData = Object.values(splitMap).some(v => v);
+      if (hasSplitData) csv += splitLine + '\n';
+      if (daySplitLines) csv += daySplitLines;
+      const blob = new Blob([csv], {
+        type: 'text/csv'
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `fitness-export-${getTodayString()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('CSV export failed:', err);
+      showDbError('export your data');
+    }
   };
 
   // Proper CSV line parser that handles quoted fields
-  const parseCSVLine = line => {
-    const fields = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (inQuotes) {
-        if (ch === '"' && line[i + 1] === '"') {
-          current += '"';
-          i++; // skip escaped quote
-        } else if (ch === '"') {
-          inQuotes = false;
-        } else {
-          current += ch;
-        }
-      } else {
-        if (ch === '"') {
-          inQuotes = true;
-        } else if (ch === ',') {
-          fields.push(current.trim());
-          current = '';
-        } else {
-          current += ch;
-        }
-      }
-    }
-    fields.push(current.trim());
-    return fields;
-  };
   const [importStatus, setImportStatus] = useState(null);
+  const [demoStatus, setDemoStatus] = useState('');
+  const handleToggleDemo = async () => {
+    if (demoStatus) return;
+    try {
+      if (isDemoActive()) {
+        setDemoStatus('Clearing sample data…');
+        await exitDemoMode();
+      } else {
+        await enterDemoMode(setDemoStatus);
+      }
+      window.location.reload();
+    } catch (error) {
+      setDemoStatus('');
+      showDbError(isDemoActive() ? 'leave the sample log' : 'load the sample log');
+      console.error('Demo toggle failed', error);
+    }
+  };
   const handleImport = async () => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -8062,266 +9144,7 @@ const SettingsModal = ({
       if (!file) return;
       setImportStatus('Reading file...');
       const text = await file.text();
-      const allLines = text.split('\n').slice(1).filter(l => l.trim());
-
-      // Check for metadata rows and extract data
-      let importedSplits = null;
-      const importedDaySplits = [];
-      let importedUnit = 'lbs';
-      let importedBodyweight = null;
-      const importedBodyweightDays = [];
-      const lines = allLines.filter(l => {
-        const parts = parseCSVLine(l);
-        if (parts[0] === '__META__') return false;
-        if (parts[0] === '__UNIT__') {
-          importedUnit = parts[1] || 'lbs';
-          return false;
-        }
-        if (parts[0] === '__BODYWEIGHT__') {
-          importedBodyweight = parts[1] || null;
-          return false;
-        }
-        if (parts[0] === '__BODYWEIGHT_DAY__') {
-          importedBodyweightDays.push({
-            date: parts[1],
-            value: parts[2] || null
-          });
-          return false;
-        }
-        if (parts[0] === '__SPLITS__') {
-          importedSplits = {
-            0: parts[1] || '',
-            1: parts[2] || '',
-            2: parts[3] || '',
-            3: parts[4] || '',
-            4: parts[5] || '',
-            5: parts[6] || '',
-            6: parts[7] || ''
-          };
-          return false;
-        }
-        if (parts[0] === '__DAYSPLIT__') {
-          importedDaySplits.push({
-            date: parts[1],
-            split: parts[2] || ''
-          });
-          return false;
-        }
-        return true;
-      });
-      const totalLines = lines.length;
-      setImportStatus(`Parsing ${totalLines} rows...`);
-
-      // PHASE 1: Parse all lines into structured data (no DB operations)
-      const exerciseMap = new Map(); // name -> exercise object
-      const existingExercises = await dbOps.exercises.getAll();
-      existingExercises.forEach(ex => exerciseMap.set(ex.name, ex));
-      const parsedRows = [];
-      for (const line of lines) {
-        try {
-          const parts = parseCSVLine(line);
-          const date = parts[0];
-          const exerciseName = parts[1];
-          if (!date || !exerciseName) continue;
-          const categoryRaw = (parts[2] || 'push').toLowerCase();
-          const categories_arr = categoryRaw.includes(';') ? categoryRaw.split(';').filter(Boolean) : [categoryRaw];
-          const category = categories_arr[0] || 'push';
-          const rawType = (parts[3] || 'reps').toLowerCase();
-          const type = rawType === 'reps' || rawType === 'timed' ? rawType : 'reps';
-          const weightType = parts[6] || 'lbs';
-          const note = parts[11] || '';
-
-          // Create exercise record if needed
-          if (!exerciseMap.has(exerciseName)) {
-            const newEx = {
-              id: generateId('ex'),
-              name: exerciseName,
-              category,
-              categories: categories_arr,
-              type,
-              note: '',
-              lastUsed: date,
-              createdAt: Date.now()
-            };
-            exerciseMap.set(exerciseName, newEx);
-          } else {
-            const ex = exerciseMap.get(exerciseName);
-            if (date > (ex.lastUsed || '')) {
-              ex.lastUsed = date;
-            }
-          }
-          parsedRows.push({
-            date,
-            exerciseName,
-            setOrder: parseInt(parts[4]) || 1,
-            weight: parts[5] && parts[5] !== '' ? parseFloat(parts[5]) : null,
-            weightType,
-            reps: parts[7] && parts[7] !== '' ? parseInt(parts[7]) : null,
-            duration: parts[8] && parts[8] !== '' ? parseInt(parts[8]) : null,
-            distance: parts[9] && parts[9] !== '' ? parseFloat(parts[9]) : null,
-            distanceUnit: parts[10] || null,
-            bandedColor: weightType === 'banded' && note ? note.split('|')[0].trim() : undefined,
-            note: weightType === 'banded' && note && note.includes('|') ? note.split('|').slice(1).join('|').trim() : weightType !== 'banded' ? note : ''
-          });
-        } catch (err) {
-          console.error('Parse error:', line, err);
-        }
-      }
-
-      // PHASE 2: Compute exerciseOrder for each exercise on each date
-      // Group rows by date to assign exerciseOrder
-      const byDate = new Map();
-      for (const row of parsedRows) {
-        if (!byDate.has(row.date)) byDate.set(row.date, []);
-        byDate.get(row.date).push(row);
-      }
-
-      // For each date, assign exerciseOrder based on first appearance
-      const setsToWrite = [];
-      for (const [date, rows] of byDate) {
-        const exerciseOrderMap = new Map();
-        let nextOrder = 1;
-        for (const row of rows) {
-          if (!exerciseOrderMap.has(row.exerciseName)) {
-            exerciseOrderMap.set(row.exerciseName, nextOrder++);
-          }
-        }
-        for (const row of rows) {
-          const exercise = exerciseMap.get(row.exerciseName);
-          setsToWrite.push({
-            id: generateId('set'),
-            date,
-            exerciseId: exercise.id,
-            exerciseName: exercise.name,
-            exerciseOrder: exerciseOrderMap.get(row.exerciseName),
-            setOrder: row.setOrder,
-            weight: row.weight,
-            weightType: row.weightType,
-            bandedColor: row.bandedColor,
-            reps: row.reps,
-            duration: row.duration,
-            distance: row.distance,
-            distanceUnit: row.distanceUnit,
-            createdAt: Date.now()
-          });
-        }
-      }
-
-      // PHASE 3: Write exercises to DB (batch transaction)
-      setImportStatus('Writing activities...');
-      const exercisesToWrite = Array.from(exerciseMap.values());
-      await new Promise((resolve, reject) => {
-        const tx = db.transaction('exercises', 'readwrite');
-        const store = tx.objectStore('exercises');
-        for (const ex of exercisesToWrite) {
-          store.put(ex); // put = upsert
-        }
-        tx.oncomplete = () => resolve();
-        tx.onerror = () => reject(tx.error);
-      });
-
-      // PHASE 4: Write sets to DB in batches (batch transaction)
-      setImportStatus(`Writing ${setsToWrite.length} sets...`);
-      const BATCH_SIZE = 200;
-      for (let i = 0; i < setsToWrite.length; i += BATCH_SIZE) {
-        const batch = setsToWrite.slice(i, i + BATCH_SIZE);
-        await new Promise((resolve, reject) => {
-          const tx = db.transaction('sets', 'readwrite');
-          const store = tx.objectStore('sets');
-          for (const set of batch) {
-            store.add(set);
-          }
-          tx.oncomplete = () => resolve();
-          tx.onerror = () => reject(tx.error);
-        });
-        setImportStatus(`Writing sets... ${Math.min(i + BATCH_SIZE, setsToWrite.length)}/${setsToWrite.length}`);
-      }
-
-      // PHASE 5: Write session notes
-      setImportStatus('Writing session notes...');
-      const sessionNotesToWrite = [];
-
-      // Helper function to map old tags to mood 1-5
-      const mapTagToMood = tag => {
-        const lowTag = tag.toLowerCase();
-        if (['felt weak', 'low energy', 'feeling sick'].some(t => lowTag.includes(t))) return 2;
-        if (['felt normal', 'fatigued'].some(t => lowTag.includes(t))) return 3;
-        if (['felt strong', 'high energy', 'good pump'].some(t => lowTag.includes(t))) return 4;
-        return null;
-      };
-      for (const row of parsedRows) {
-        if (row.note && row.setOrder === 1) {
-          const exercise = exerciseMap.get(row.exerciseName);
-          const noteParts = row.note.split('|').map(p => p.trim());
-          let mood = null;
-          const tags = [];
-          let formCueText = '';
-          let freeText = '';
-          noteParts.forEach(p => {
-            if (p.startsWith('Mood:')) {
-              mood = parseInt(p.substring(5).trim());
-            } else if (p.startsWith('Form:')) {
-              formCueText = p.substring(5).trim();
-            } else if (p.startsWith('General:')) {
-              freeText = p.substring(8).trim();
-            } else if (p) {
-              // Old-style tag - try to map it
-              const mappedMood = mapTagToMood(p);
-              if (mappedMood && !mood) mood = mappedMood;
-              tags.push(p); // Keep for backward compatibility
-            }
-          });
-          if (mood || tags.length > 0 || formCueText || freeText) {
-            sessionNotesToWrite.push({
-              id: `sn_${exercise.id}_${row.date}`,
-              exerciseId: exercise.id,
-              date: row.date,
-              mood,
-              tags: tags.length > 0 ? tags : undefined,
-              freeText,
-              formCueText,
-              updatedAt: new Date().toISOString()
-            });
-          }
-        }
-      }
-      if (sessionNotesToWrite.length > 0) {
-        await new Promise((resolve, reject) => {
-          const tx = db.transaction('sessionNotes', 'readwrite');
-          const store = tx.objectStore('sessionNotes');
-          for (const sn of sessionNotesToWrite) {
-            store.put(sn);
-          }
-          tx.oncomplete = () => resolve();
-          tx.onerror = () => reject(tx.error);
-        });
-      }
-
-      // PHASE 6: Write metadata
-      if (importedUnit) {
-        await dbOps.dayNotes.set('__unit__', importedUnit);
-      }
-      if (importedBodyweight) {
-        await setStoredBodyweightForDate(getTodayString(), importedBodyweight);
-      }
-      for (const bw of importedBodyweightDays) {
-        if (bw.date && bw.value) {
-          await setStoredBodyweightForDate(bw.date, bw.value);
-        }
-      }
-
-      // PHASE 7: Write weekly splits if present
-      if (importedSplits) {
-        for (let i = 0; i < 7; i++) {
-          await dbOps.templates.set(i, importedSplits[i] || '');
-        }
-      }
-
-      // Write per-day splits
-      for (const ds of importedDaySplits) {
-        await dbOps.dayNotes.set(`__split_${ds.date}`, ds.split);
-      }
-      setImportStatus(`Done! Imported ${setsToWrite.length} sets for ${exercisesToWrite.length} activities.`);
+      await importWorkoutCSV(text, setImportStatus);
 
       // Wait briefly for UI to show success, then reload
       await new Promise(r => setTimeout(r, 1000));
@@ -8330,15 +9153,27 @@ const SettingsModal = ({
     input.click();
   };
   const handleNuclearReset = async () => {
-    const storeNames = ['exercises', 'sets', 'dayNotes', 'templates', 'sessionNotes'];
-    for (const storeName of storeNames) {
-      if (db.objectStoreNames.contains(storeName)) {
-        const tx = db.transaction(storeName, 'readwrite');
-        tx.objectStore(storeName).clear();
-        await new Promise(r => {
-          tx.oncomplete = r;
-        });
+    // 'movementFamilies' was missing from this list, so a "reset everything" left
+    // family records behind pointing at deleted exercise ids.
+    const storeNames = ['exercises', 'sets', 'dayNotes', 'templates', 'sessionNotes', 'movementFamilies'];
+    try {
+      for (const storeName of storeNames) {
+        if (db.objectStoreNames.contains(storeName)) {
+          const tx = db.transaction(storeName, 'readwrite');
+          tx.objectStore(storeName).clear();
+          // Previously only oncomplete was handled, so a failed clear never settled
+          // this promise and the reset stalled part-way through without reloading.
+          await new Promise((resolve, reject) => {
+            tx.oncomplete = () => resolve();
+            tx.onerror = () => reject(tx.error);
+            tx.onabort = () => reject(tx.error || new Error(`Could not clear ${storeName}`));
+          });
+        }
       }
+    } catch (err) {
+      console.error('Reset failed:', err);
+      showDbError('reset all data');
+      return;
     }
     window.location.reload();
   };
@@ -8655,7 +9490,45 @@ const SettingsModal = ({
     disabled: !!importStatus
   }, importStatus ? 'Importing...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconUpload, {
     size: 15
-  }), " Import Data from CSV")), importStatus && /*#__PURE__*/React.createElement("div", {
+  }), " Import Data from CSV")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: handleToggleDemo,
+    disabled: !!demoStatus || !!importStatus,
+    style: {
+      marginTop: '8px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '6px'
+    }
+  }, demoStatus || (isDemoActive() ? 'Clear sample log & start my own' : 'Load the sample log')), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '6px',
+      fontSize: '11px',
+      lineHeight: '1.5',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      textAlign: 'center'
+    }
+  }, isDemoActive() ? 'You are in the sample log. Clearing it deletes the demo and returns you to your own data, which was never touched.' : 'Eleven months of one person\u2019s training, in separate storage. Your own log stays exactly as it is.'), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    "data-tour": "settings-replay",
+    onClick: onReplayTour,
+    style: {
+      marginTop: '14px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '6px'
+    }
+  }, "Replay the tour"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '6px',
+      fontSize: '11px',
+      lineHeight: '1.5',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      textAlign: 'center'
+    }
+  }, "A short walk through the main screen. Closes settings and plays over whatever log you are in."), importStatus && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: '12px',
       padding: '12px',
@@ -9312,30 +10185,36 @@ const DayDetailModal = ({
   useEffect(() => {
     if (!dayLabel) return;
     const load = async () => {
-      // Load ALL exercises that match the split's category (lowercase match)
       const allExercises = await dbOps.exercises.getAll();
       const splitLower = dayLabel.toLowerCase();
-      const matching = allExercises.filter(ex => getExCategories(ex).includes(splitLower));
-      matching.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || ''));
+      // Two bugs lived here. This filtered the list down to the split, so an
+      // activity you had actually done was simply missing from the suggestions;
+      // and it compared raw stored categories against a lowercased split, so a
+      // category saved as "Arms" never matched the split "arms" at all. Same
+      // rule as the Add Activity list now: split first, everything still present.
+      const inSplit = ex => getExCategories(ex).some(c => String(c).toLowerCase() === splitLower);
+      const byRecency = (a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '');
+      const matching = [...allExercises].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0) || byRecency(a, b));
       setActivities(matching);
       const histMap = {};
       const noteMap = {};
-      for (const ex of matching) {
-        const allSets = await dbOps.sets.getByExerciseId(ex.id);
+      // Now that the list is no longer cut down to one split, this walks every
+      // activity — so the reads run together instead of ~70 serial round trips.
+      await Promise.all(matching.map(async ex => {
+        const [allSets, notes] = await Promise.all([dbOps.sets.getByExerciseId(ex.id), dbOps.sessionNotes.getByExerciseId(ex.id)]);
         const byDate = {};
-        allSets.forEach(s => {
-          if (!byDate[s.date]) byDate[s.date] = [];
-          byDate[s.date].push(s);
+        (allSets || []).forEach(set => {
+          if (!byDate[set.date]) byDate[set.date] = [];
+          byDate[set.date].push(set);
         });
-        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(d => ({
-          date: d,
-          sets: byDate[d].sort((a, b) => a.setOrder - b.setOrder)
+        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({
+          date,
+          sets: byDate[date].sort((a, b) => a.setOrder - b.setOrder)
         }));
-        const notes = await dbOps.sessionNotes.getByExerciseId(ex.id);
-        notes.forEach(n => {
-          noteMap[`${n.exerciseId}_${n.date}`] = n;
+        (notes || []).forEach(note => {
+          noteMap[`${note.exerciseId}_${note.date}`] = note;
         });
-      }
+      }));
       setAllHistory(histMap);
       setSessionNotes(noteMap);
     };
@@ -11097,7 +11976,7 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, exercise?.gripTrackingEnabled ? 'Grip Tracking: On' : 'Grip Tracking: Off'), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+  }, `Grip Tracking: ${shouldOfferGripTracking(exercise) ? 'On' : 'Off'}${gripTrackingModeFor(exercise) === 'auto' ? ' (auto)' : ''}`), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('createVariation');
       onClose();
@@ -11287,7 +12166,9 @@ const GripPromptModal = ({
 const GripField = ({
   initialGrip,
   lockedForDay,
-  onChange
+  onChange,
+  gripReason,
+  onDisableGrip
 }) => {
   const [expanded, setExpanded] = useState(false);
   useEffect(() => {
@@ -11322,12 +12203,16 @@ const GripField = ({
   }
   return /*#__PURE__*/React.createElement(GripInlineSelector, {
     initialGrip: initialGrip,
-    onChange: onChange
+    onChange: onChange,
+    gripReason: gripReason,
+    onDisableGrip: onDisableGrip
   });
 };
 const GripInlineSelector = ({
   initialGrip,
-  onChange
+  onChange,
+  gripReason,
+  onDisableGrip
 }) => {
   const [gripType, setGripType] = useState(initialGrip?.gripType || null);
   const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
@@ -11372,7 +12257,41 @@ const GripInlineSelector = ({
       letterSpacing: '0.06em',
       marginBottom: '8px'
     }
-  }, "Grip (Optional)"), /*#__PURE__*/React.createElement("div", {
+  }, "Grip (Optional)"), gripReason && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: '8px',
+      marginBottom: '8px'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      minWidth: '140px',
+      fontSize: '11px',
+      lineHeight: '1.45',
+      color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)'
+    }
+  }, gripReason), onDisableGrip && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: onDisableGrip,
+    "aria-label": "Stop asking about grip for this activity",
+    style: {
+      minHeight: '32px',
+      padding: '0 12px',
+      borderRadius: '20px',
+      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
+      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+      color: 'var(--accent-soft)',
+      fontSize: '11px',
+      fontWeight: '700',
+      whiteSpace: 'nowrap',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)'
+    }
+  }, "Don't ask")), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -11550,14 +12469,15 @@ const ChangeWeightMeaningModal = ({
   onCancel
 }) => {
   const [weightMeaning, setWeightMeaning] = useState(exercise?.weightMeaning === 'bar-custom' || exercise?.weightMeaning === 'barbell' ? 'bar' : exercise?.weightMeaning || 'total');
-  const [barType, setBarType] = useState(exercise?.weightMeaning === 'bar-custom' ? 'custom' : exercise?.weightMeaning === 'barbell' ? 'standard' : null);
+  const [barType, setBarType] = useState(barTypeFromExercise(exercise));
   const [customBarWeight, setCustomBarWeight] = useState(exercise?.customBarWeight ? String(exercise.customBarWeight) : '');
   const handleSave = async () => {
-    const finalWeightMeaning = weightMeaning === 'bar' ? barType === 'custom' ? 'bar-custom' : 'barbell' : weightMeaning;
+    const barSelection = weightMeaning === 'bar' ? resolveBarSelection(barType, customBarWeight) : null;
     await onSave({
       ...exercise,
-      weightMeaning: finalWeightMeaning,
-      customBarWeight: weightMeaning === 'bar' && barType === 'custom' ? parseFloat(customBarWeight) || 0 : null
+      weightMeaning: barSelection ? barSelection.weightMeaning : weightMeaning,
+      customBarWeight: barSelection ? barSelection.customBarWeight : null,
+      barName: barSelection ? barSelection.barName : null
     });
   };
   return /*#__PURE__*/React.createElement("div", {
@@ -11603,21 +12523,27 @@ const ChangeWeightMeaningModal = ({
     style: {
       marginTop: '12px'
     }
-  }, /*#__PURE__*/React.createElement("button", {
+  }, BAR_PRESETS.map(opt => /*#__PURE__*/React.createElement("button", {
+    key: opt.v,
     className: "btn",
-    onClick: () => setBarType('standard'),
+    onClick: () => {
+      setBarType(opt.v);
+      if (opt.v !== 'custom') setCustomBarWeight('');
+    },
     style: {
-      background: barType === 'standard' ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: barType === 'standard' ? 'var(--text-body)' : 'var(--text-faint)'
+      fontSize: '11px',
+      background: barType === opt.v ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
+      color: barType === opt.v ? 'var(--text-body)' : 'var(--text-faint)'
     }
-  }, "Standard Bar"), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: () => setBarType('custom'),
+  }, opt.l))), /*#__PURE__*/React.createElement("div", {
     style: {
-      background: barType === 'custom' ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: barType === 'custom' ? 'var(--text-body)' : 'var(--text-faint)'
+      marginTop: '8px',
+      fontSize: '11px',
+      lineHeight: '1.5',
+      color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)',
+      textAlign: 'center'
     }
-  }, "Custom Bar")), barType === 'custom' && /*#__PURE__*/React.createElement("input", {
+  }, "Sets you already logged keep the exact total they were recorded with. This only changes what the set screen asks you to type from now on."), barType === 'custom' && /*#__PURE__*/React.createElement("input", {
     type: "number",
     className: "form-input",
     placeholder: "Custom bar weight",
@@ -12228,33 +13154,127 @@ const MergeActivityModal = ({
     onClick: () => onMerge(target)
   }, "Merge into ", target.name)))));
 };
-const CalendarWeekModal = ({
+// Month grid. Replaces the earlier week strip (retrievable from git history if
+// a week view is wanted back later). Day cells are built from real month
+// arithmetic — first weekday, real month length, leap years — rather than a
+// rolling 7-day window, so a date is never shown under the wrong weekday.
+// Offered once, when the log has never held anything. Declining is remembered,
+// so someone who wants to start clean is never asked twice; Settings keeps a
+// permanent way back in.
+const TourOfferModal = ({
+  onAccept,
+  onDecline
+}) => /*#__PURE__*/React.createElement("div", {
+  className: "modal-overlay demo-offer-overlay"
+}, /*#__PURE__*/React.createElement("div", {
+  className: "demo-offer-card",
+  onClick: event => event.stopPropagation()
+}, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Want the quick tour?"), /*#__PURE__*/React.createElement("p", null, "A short walk through the main screen \u2014 days, splits, history, and where the numbers live. You can skip at any point."), /*#__PURE__*/React.createElement("button", {
+  className: "btn",
+  onClick: onAccept,
+  style: {
+    marginBottom: '8px'
+  }
+}, "Show me"), /*#__PURE__*/React.createElement("button", {
+  className: "btn btn-secondary",
+  onClick: onDecline
+}, "I\u2019ll look around"))));
+
+const DemoOfferModal = ({
+  onAccept,
+  onDecline
+}) => {
+  const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const handleAccept = async () => {
+    if (busy) return;
+    setBusy(true);
+    setError('');
+    try {
+      await onAccept(setStatus);
+    } catch (err) {
+      setError(err?.message || 'Something went wrong loading the sample data.');
+      setStatus('');
+      setBusy(false);
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay demo-offer-overlay"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "demo-offer-card",
+    onClick: event => event.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, "Nothing logged yet."), /*#__PURE__*/React.createElement("p", null, "Want to see this app with eleven months of real training in it first? Marcus started in October unable to do a single pull-up."), /*#__PURE__*/React.createElement("ul", {
+    className: "demo-offer-points"
+  }, /*#__PURE__*/React.createElement("li", null, "Hundreds of sessions across push, pull, legs, core, cardio and mobility"), /*#__PURE__*/React.createElement("li", null, "Every set, note and mood he logged along the way"), /*#__PURE__*/React.createElement("li", null, "The bench going 132 → 200 lbs, and the first unassisted pull-up")), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: handleAccept,
+    disabled: busy,
+    style: {
+      marginBottom: '8px',
+      opacity: busy ? 0.6 : 1
+    }
+  }, busy ? 'Loading…' : 'Show me the demo'), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: onDecline,
+    disabled: busy,
+    style: {
+      opacity: busy ? 0.4 : 1
+    }
+  }, "I'll start my own"), (status || error) && /*#__PURE__*/React.createElement("div", {
+    className: `demo-status${error ? ' is-error' : ''}`
+  }, error || status), /*#__PURE__*/React.createElement("p", {
+    className: "demo-offer-note"
+  }, "The demo runs in its own separate storage. Your own log stays empty and untouched, and leaving the demo deletes it."))));
+};
+
+const CalendarMonthModal = ({
   onClose,
   anchorDate,
   onSelectDate
 }) => {
-  const [weekOffset, setWeekOffset] = useState(0);
+  const anchor = parseLocalDate(anchorDate);
+  const [monthOffset, setMonthOffset] = useState(0);
   const [activityCounts, setActivityCounts] = useState({});
+  const [isLoadingCounts, setIsLoadingCounts] = useState(true);
   const swipeRef = useRef(null);
-  const startDate = addDays(anchorDate, -7 + weekOffset * 7);
-  const dates = Array.from({ length: 7 }, (_, index) => addDays(startDate, index));
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const weekdayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const todayString = getTodayString();
+
+  // Day 1 of the shown month. Using setMonth on a day-1 date avoids the classic
+  // overflow bug where stepping back from Mar 31 lands on Mar 3.
+  const monthStart = new Date(anchor.getFullYear(), anchor.getMonth() + monthOffset, 1);
+  const year = monthStart.getFullYear();
+  const month = monthStart.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const leadingBlanks = monthStart.getDay();
+  const monthDates = Array.from({ length: daysInMonth }, (_, index) => getDateString(new Date(year, month, index + 1)));
+  const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
 
   useEffect(() => {
     let cancelled = false;
+    setIsLoadingCounts(true);
     const loadActivityCounts = async () => {
-      const entries = await Promise.all(dates.map(async date => {
-        const sets = await dbOps.sets.getByDate(date);
-        const activities = new Set(sets.filter(set => !isNeutralAnchorSet(set) && set.exerciseId).map(set => set.exerciseId));
-        return [date, activities.size];
-      }));
-      if (!cancelled) setActivityCounts(Object.fromEntries(entries));
+      try {
+        const entries = await Promise.all(monthDates.map(async date => {
+          const sets = await dbOps.sets.getByDate(date);
+          const activities = new Set(sets.filter(set => !isNeutralAnchorSet(set) && set.exerciseId).map(set => set.exerciseId));
+          return [date, activities.size];
+        }));
+        if (!cancelled) setActivityCounts(Object.fromEntries(entries));
+      } catch (error) {
+        console.error('Unable to load calendar activity counts', error);
+        if (!cancelled) setActivityCounts({});
+      } finally {
+        if (!cancelled) setIsLoadingCounts(false);
+      }
     };
     loadActivityCounts();
     return () => {
       cancelled = true;
     };
-  }, [startDate]);
+  }, [monthKey]);
 
   const handleTouchStart = event => {
     const touch = event.touches[0];
@@ -12267,9 +13287,11 @@ const CalendarWeekModal = ({
     const dy = touch.clientY - swipeRef.current.y;
     swipeRef.current = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-      setWeekOffset(offset => offset + (dx < 0 ? 1 : -1));
+      setMonthOffset(offset => offset + (dx < 0 ? 1 : -1));
     }
   };
+
+  const gymDayCount = monthDates.filter(date => (activityCounts[date] || 0) > 0).length;
 
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -12287,25 +13309,53 @@ const CalendarWeekModal = ({
     className: "calendar-content",
     onTouchStart: handleTouchStart,
     onTouchEnd: handleTouchEnd
-  }, /*#__PURE__*/React.createElement("div", { className: "calendar-week-heading" }, /*#__PURE__*/React.createElement("button", {
-    className: "calendar-week-arrow",
-    "aria-label": "Previous week",
-    onClick: () => setWeekOffset(offset => offset - 1)
-  }, /*#__PURE__*/React.createElement(IconArrowLeft, { size: 24 })), /*#__PURE__*/React.createElement("h3", null, formatDateShort(startDate), " – ", formatDateShort(dates[6])), /*#__PURE__*/React.createElement("button", {
-    className: "calendar-week-arrow",
-    "aria-label": "Next week",
-    onClick: () => setWeekOffset(offset => offset + 1)
-  }, /*#__PURE__*/React.createElement(IconArrowRight, { size: 24 }))), /*#__PURE__*/React.createElement("div", { className: "calendar-week-grid" }, dates.map(date => {
+  }, /*#__PURE__*/React.createElement("div", { className: "calendar-month-heading" }, /*#__PURE__*/React.createElement("button", {
+    className: "calendar-nav-arrow",
+    "aria-label": "Previous month",
+    onClick: () => setMonthOffset(offset => offset - 1)
+  }, /*#__PURE__*/React.createElement(IconArrowLeft, { size: 24 })), /*#__PURE__*/React.createElement("h3", null, monthNames[month], " ", year), /*#__PURE__*/React.createElement("button", {
+    className: "calendar-nav-arrow",
+    "aria-label": "Next month",
+    onClick: () => setMonthOffset(offset => offset + 1)
+  }, /*#__PURE__*/React.createElement(IconArrowRight, { size: 24 }))), /*#__PURE__*/React.createElement("div", {
+    className: "calendar-weekday-row",
+    "aria-hidden": "true"
+  }, weekdayLabels.map((label, index) => /*#__PURE__*/React.createElement("div", {
+    key: index,
+    className: "calendar-weekday"
+  }, label))), /*#__PURE__*/React.createElement("div", {
+    className: "calendar-month-grid",
+    role: "grid",
+    "aria-label": `${monthNames[month]} ${year}`
+  }, Array.from({ length: leadingBlanks }, (_, index) => /*#__PURE__*/React.createElement("div", {
+    key: `blank-${index}`,
+    className: "calendar-day-blank",
+    "aria-hidden": "true"
+  })), monthDates.map(date => {
     const count = activityCounts[date] || 0;
-    const day = parseLocalDate(date);
-    const isToday = date === getTodayString();
+    const dayNumber = parseLocalDate(date).getDate();
+    const isToday = date === todayString;
+    const isViewing = date === anchorDate;
+    const isFuture = date > todayString;
+    const classNames = ['calendar-day-cell'];
+    if (count > 0) classNames.push('is-logged');
+    if (isToday) classNames.push('is-today');
+    if (isViewing) classNames.push('is-viewing');
+    if (isFuture) classNames.push('is-future');
     return /*#__PURE__*/React.createElement("button", {
       key: date,
-      className: `calendar-day-card${isToday ? ' is-today' : ''}`,
-      "aria-label": `${formatDate(date)}, ${count} activities logged`,
+      className: classNames.join(' '),
+      "aria-label": `${formatDate(date)}${isToday ? ', today' : ''} — ${count > 0 ? `${count} ${count === 1 ? 'activity' : 'activities'} logged` : 'no gym'}`,
+      "aria-current": isToday ? 'date' : undefined,
       onClick: () => onSelectDate(date)
-    }, /*#__PURE__*/React.createElement("div", { className: "calendar-day-name" }, dayNames[day.getDay()]), /*#__PURE__*/React.createElement("div", { className: "calendar-day-number" }, day.getDate()), /*#__PURE__*/React.createElement("div", { className: "calendar-day-month" }, formatDateShort(date).split(' ')[0]), /*#__PURE__*/React.createElement("div", { className: `calendar-day-status${count > 0 ? ' is-logged' : ''}` }, count > 0 && /*#__PURE__*/React.createElement("span", { className: "calendar-gym-dot", "aria-hidden": "true" }), count > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, "Gym", /*#__PURE__*/React.createElement("br", null), count, count === 1 ? " activity" : " activities") : /*#__PURE__*/React.createElement(React.Fragment, null, "No gym")));
-  })), dates.every(date => !activityCounts[date]) && /*#__PURE__*/React.createElement("div", { className: "calendar-empty-note" }, "Your logged gym days will show up here as you build your week."))));
+    }, /*#__PURE__*/React.createElement("span", { className: "calendar-day-num" }, dayNumber), /*#__PURE__*/React.createElement("span", { className: "calendar-dot-slot" }, count > 0 && /*#__PURE__*/React.createElement("span", {
+      className: "calendar-gym-dot",
+      "aria-hidden": "true"
+    })));
+  })), /*#__PURE__*/React.createElement("div", { className: "calendar-month-summary" }, isLoadingCounts ? 'Counting gym days…' : gymDayCount > 0 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("strong", null, gymDayCount), gymDayCount === 1 ? ' gym day' : ' gym days', ` in ${monthNames[month]}`) : `No gym days logged in ${monthNames[month]} yet.`), monthOffset !== 0 && /*#__PURE__*/React.createElement("button", {
+    className: "calendar-today-btn",
+    onClick: () => setMonthOffset(0)
+  }, "Back to ", monthNames[anchor.getMonth()]))));
 };
 function App() {
   const safariChromeColor = '#1a0a12';
@@ -12317,6 +13367,10 @@ function App() {
   const [exerciseCatsCache, setExerciseCatsCache] = useState({});
   const [dayLabel, setDayLabel] = useState('');
   const [modal, setModalRaw] = useState(null);
+  const [demoActive, setDemoActive] = useState(isDemoActive());
+  const [showDemoOffer, setShowDemoOffer] = useState(false);
+  const [showTourOffer, setShowTourOffer] = useState(false);
+  const [demoExiting, setDemoExiting] = useState(false);
   const modalBackRef = useRef(null);
   const setModal = (newModal, backTo) => {
     if (backTo !== undefined) modalBackRef.current = backTo;else if (newModal === null) modalBackRef.current = null;
@@ -12475,41 +13529,50 @@ function App() {
     }
   }, [modal]);
   const loadDayData = useCallback(async () => {
-    const sets = await dbOps.sets.getByDate(currentDate);
-    setDaySets(sets);
+    // This runs on every date change. Previously unguarded: a single rejected
+    // read aborted the rest of the function, so none of the setState calls below
+    // ran and the screen silently kept the previous day's content.
+    try {
+      const sets = await dbOps.sets.getByDate(currentDate);
+      setDaySets(sets);
 
-    // Cache exercise categories for split tag display
-    const uniqueExIds = [...new Set(sets.map(s => s.exerciseId))];
-    const catsMap = {};
-    for (const exId of uniqueExIds) {
-      const fullEx = await dbOps.exercises.get(exId);
-      if (fullEx) {
-        catsMap[exId] = getExCategories(fullEx);
-        catsMap[exId + '_wd'] = fullEx.weightDefault || 'weight';
-        catsMap[exId + '_type'] = fullEx.type || 'reps';
+      // Cache exercise categories for split tag display.
+      // One read for the whole store rather than one transaction per exercise —
+      // the previous loop was N+1 sequential round-trips on every date tap.
+      const uniqueExIds = new Set(sets.map(s => s.exerciseId));
+      const allExercises = await dbOps.exercises.getAll();
+      const catsMap = {};
+      for (const fullEx of allExercises) {
+        if (!uniqueExIds.has(fullEx.id)) continue;
+        catsMap[fullEx.id] = getExCategories(fullEx);
+        catsMap[fullEx.id + '_wd'] = fullEx.weightDefault || 'weight';
+        catsMap[fullEx.id + '_type'] = fullEx.type || 'reps';
       }
-    }
-    setExerciseCatsCache(catsMap);
+      setExerciseCatsCache(catsMap);
 
-    // Check for per-day split first
-    const splitRecord = await dbOps.dayNotes.get(`__split_${currentDate}`);
-    if (splitRecord && splitRecord.note) {
-      if (splitRecord.note === '__none__') {
-        setDayLabel('');
+      // Check for per-day split first
+      const splitRecord = await dbOps.dayNotes.get(`__split_${currentDate}`);
+      if (splitRecord && splitRecord.note) {
+        if (splitRecord.note === '__none__') {
+          setDayLabel('');
+        } else {
+          setDayLabel(splitRecord.note);
+        }
       } else {
-        setDayLabel(splitRecord.note);
+        // No per-day split stored — derive from weekly template
+        const d = parseLocalDate(currentDate);
+        const dayOfWeek = d.getDay();
+        const template = await dbOps.templates.get(dayOfWeek);
+        const templateLabel = template?.label || '';
+        setDayLabel(templateLabel);
+        // Bake the template split into per-day storage for today and past days
+        if (templateLabel && currentDate <= getTodayString()) {
+          await dbOps.dayNotes.set(`__split_${currentDate}`, templateLabel);
+        }
       }
-    } else {
-      // No per-day split stored — derive from weekly template
-      const d = parseLocalDate(currentDate);
-      const dayOfWeek = d.getDay();
-      const template = await dbOps.templates.get(dayOfWeek);
-      const templateLabel = template?.label || '';
-      setDayLabel(templateLabel);
-      // Bake the template split into per-day storage for today and past days
-      if (templateLabel && currentDate <= getTodayString()) {
-        await dbOps.dayNotes.set(`__split_${currentDate}`, templateLabel);
-      }
+    } catch (err) {
+      console.error('DB load day failed:', err);
+      showDbError('load this day');
     }
   }, [currentDate]);
   const setDaySplit = async (date, split) => {
@@ -12557,11 +13620,46 @@ function App() {
     }
     closeBodyweightEditor();
   }, [bwEditValue, bwEditorDate, closeBodyweightEditor, currentDate]);
+  // Offer the demo only when the log has never held anything and the offer has
+  // not been made before. Runs once per mount, after the database is open.
+  const demoOfferCheckedRef = useRef(false);
+  const tourOfferCheckedRef = useRef(false);
+  const maybeOfferTour = useCallback(() => {
+    if (tourOfferCheckedRef.current) return;
+    tourOfferCheckedRef.current = true;
+    if (!isDemoActive()) return;
+    if (!window.WPTour || window.WPTour.seen()) return;
+    // Let the first day's activities paint before offering to point at them.
+    setTimeout(() => setShowTourOffer(true), 700);
+  }, []);
+
+  const maybeOfferDemo = useCallback(async () => {
+    if (demoOfferCheckedRef.current) return;
+    demoOfferCheckedRef.current = true;
+    if (isDemoActive()) return;
+    if (readLocalFlag(DEMO_OFFERED_FLAG) === 'true') return;
+    try {
+      const all = await dbOps.exercises.getAll();
+      if (!all || all.length === 0) setShowDemoOffer(true);
+    } catch (error) {
+      console.error('Could not check whether the log is empty', error);
+    }
+  }, []);
+
+  // Reveal any demo sessions that have come due since the log was loaded. Guarded
+  // by a ref because the boot effect re-runs on every date change.
+  const demoTopUpRef = useRef(false);
   useEffect(() => {
     initDB().then(async () => {
       await migrateActivityModel();
       await migrateLegacyBodyweightIfNeeded();
+      if (!demoTopUpRef.current) {
+        demoTopUpRef.current = true;
+        await topUpDemoIfDue();
+      }
       await loadDayData();
+      await maybeOfferDemo();
+      maybeOfferTour();
       const cats = await getCategories();
       setCategories(cats);
       // Load unit preference
@@ -12870,6 +13968,44 @@ function App() {
       if (removed) await loadDayData();
     });
   };
+  // The grip guess is a suggestion, so the log screen offers a one-tap override.
+  // Writing 'off' makes the user's answer authoritative from then on, instead of
+  // the name heuristic re-enabling grip on the next set.
+  const disableGripForSelectedExercise = async () => {
+    if (!selectedExercise) return;
+    const updated = {
+      ...selectedExercise,
+      gripTracking: 'off',
+      gripTrackingEnabled: false
+    };
+    const ok = await safeDb(() => dbOps.exercises.update(updated), 'turn off grip tracking');
+    if (ok) {
+      setSelectedExercise(updated);
+      setSelectedGrip(null);
+      loadDayData();
+    }
+  };
+  // Entering and leaving both end in a full reload: the preference cache is
+  // itself stored in IndexedDB, so it must be re-read from whichever database
+  // is now active rather than carried across the switch.
+  const handleEnterDemo = async onStatus => {
+    await enterDemoMode(onStatus);
+    onStatus('Opening the sample log…');
+    window.location.reload();
+  };
+
+  const handleDeclineDemo = () => {
+    writeLocalFlag(DEMO_OFFERED_FLAG, 'true');
+    setShowDemoOffer(false);
+  };
+
+  const handleExitDemo = async () => {
+    if (demoExiting) return;
+    setDemoExiting(true);
+    await exitDemoMode();
+    window.location.reload();
+  };
+
   const handleWeightSelected = async weightData => {
     if (!weightData) {
       // Clean up ghost exercise if user backs out before logging a set
@@ -13642,7 +14778,20 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement(IconSettings, {
     size: 24
-  })))), /*#__PURE__*/React.createElement("div", {
+  })))), demoActive && /*#__PURE__*/React.createElement("button", {
+    className: "demo-chip",
+    "data-tour": "demo-exit",
+    onClick: handleExitDemo,
+    disabled: demoExiting,
+    "aria-label": "This is sample data. Tap to clear it and start your own log."
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "demo-chip-dot",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "demo-chip-label"
+  }, "Sample log \u2014 Marcus Chen"), /*#__PURE__*/React.createElement("span", {
+    className: "demo-chip-action"
+  }, demoExiting ? 'Clearing\u2026' : 'Start my own')), /*#__PURE__*/React.createElement("div", {
     className: "day-nav",
     "data-tour": "date-nav"
   }, /*#__PURE__*/React.createElement("button", {
@@ -13662,7 +14811,8 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "day-date"
   }, formatDate(currentDate)), dayLabel && /*#__PURE__*/React.createElement("div", {
-    className: "day-label"
+    className: "day-label",
+    "data-tour": "split-label"
   }, dayLabel))), /*#__PURE__*/React.createElement("button", {
     className: "nav-arrow",
     "aria-label": "Next day",
@@ -13799,6 +14949,7 @@ function App() {
       }
     }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "exercise-collapsible",
+      "data-tour": "activity-row",
       onClick: () => toggleExpandedExercise(exercise.exerciseId)
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-toggle-header"
@@ -14406,10 +15557,13 @@ function App() {
     previousWeight: previousWeight,
     setNumber: setNumber,
     unit: unit,
+    onEditWeightStyle: () => setModal('changeWeightMeaning', 'weightPicker'),
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip)
+    onGripChange: grip => setSelectedGrip(grip),
+    gripReason: gripTrackingDecisionFor(selectedExercise).reason,
+    onDisableGrip: disableGripForSelectedExercise
   }), modal === 'repPicker' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(RepPickerModal, {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
@@ -14422,7 +15576,9 @@ function App() {
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip)
+    onGripChange: grip => setSelectedGrip(grip),
+    gripReason: gripTrackingDecisionFor(selectedExercise).reason,
+    onDisableGrip: disableGripForSelectedExercise
   }), modal === 'timedDuration' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(TimedDurationModal, {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
@@ -14436,9 +15592,28 @@ function App() {
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip)
-  }), modal === 'calendar' && /*#__PURE__*/React.createElement(CalendarWeekModal, {
-    anchorDate: getTodayString(),
+    onGripChange: grip => setSelectedGrip(grip),
+    gripReason: gripTrackingDecisionFor(selectedExercise).reason,
+    onDisableGrip: disableGripForSelectedExercise
+  }), showDemoOffer && /*#__PURE__*/React.createElement(DemoOfferModal, {
+    onAccept: handleEnterDemo,
+    onDecline: handleDeclineDemo
+  }), showTourOffer && /*#__PURE__*/React.createElement(TourOfferModal, {
+    onAccept: () => {
+      setShowTourOffer(false);
+      setTimeout(() => window.WPTour && window.WPTour.start(), 260);
+    },
+    onDecline: () => {
+      setShowTourOffer(false);
+      // Declining counts as seen: it is an offer, not a nag.
+      try {
+        localStorage.setItem('wp_tour_seen', '1');
+      } catch (error) {
+        /* private mode — the offer simply returns next launch */
+      }
+    }
+  }), modal === 'calendar' && /*#__PURE__*/React.createElement(CalendarMonthModal, {
+    anchorDate: currentDate,
     onClose: () => setModal(null),
     onSelectDate: date => {
       setCurrentDate(date);
@@ -14449,6 +15624,13 @@ function App() {
       setModal(null);
       setSettingsFocusCoach(false);
       loadDayData();
+    },
+    onReplayTour: () => {
+      setModal(null);
+      setSettingsFocusCoach(false);
+      loadDayData();
+      // Let the settings modal finish unmounting before the spotlight measures.
+      setTimeout(() => window.WPTour && window.WPTour.start(), 380);
     },
     onOpenFeedback: () => setModal('feedback', 'settings'),
     categories: categories,
@@ -14538,12 +15720,23 @@ function App() {
     onSave: async updated => {
       const ok = await safeDb(() => dbOps.exercises.update(updated), 'save weight style');
       if (ok) {
-        setModal(null);
-        setSelectedExercise(null);
+        const returningToSet = !!modalBackRef.current;
+        // Re-seat the exercise so the set screen re-reads the new bar setup.
+        setSelectedExercise(updated);
+        if (returningToSet) {
+          modalBack();
+        } else {
+          setModal(null);
+          setSelectedExercise(null);
+        }
         loadDayData();
       }
     },
     onCancel: () => {
+      if (modalBackRef.current) {
+        modalBack();
+        return;
+      }
       setModal(null);
       setSelectedExercise(null);
     }
@@ -14593,6 +15786,15 @@ function App() {
     }
   }, "When enabled, the first set screen shows optional grip choices until you pick one for that activity that day."), /*#__PURE__*/React.createElement("div", {
     style: {
+      fontSize: '11px',
+      color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)',
+      textAlign: 'center',
+      marginTop: '-10px',
+      marginBottom: '18px',
+      lineHeight: '1.5'
+    }
+  }, gripTrackingDecisionFor(selectedExercise).reason), /*#__PURE__*/React.createElement("div", {
+    style: {
       display: 'flex',
       gap: '10px'
     }
@@ -14600,7 +15802,8 @@ function App() {
     onClick: async () => {
       const ok = await safeDb(() => dbOps.exercises.update({
         ...selectedExercise,
-        gripTrackingEnabled: false
+        gripTrackingEnabled: false,
+        gripTracking: 'off'
       }), 'disable grip tracking');
       if (ok) {
         setModal(null);
@@ -14613,8 +15816,8 @@ function App() {
       padding: '12px',
       borderRadius: '10px',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: selectedExercise.gripTrackingEnabled ? 'color-mix(in srgb, var(--accent) 4%, transparent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
-      color: selectedExercise.gripTrackingEnabled ? 'var(--text-faint)' : 'var(--text-body)',
+      background: shouldOfferGripTracking(selectedExercise) ? 'color-mix(in srgb, var(--accent) 4%, transparent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
+      color: shouldOfferGripTracking(selectedExercise) ? 'var(--text-faint)' : 'var(--text-body)',
       fontSize: '13px',
       fontWeight: '600',
       cursor: 'pointer',
@@ -14624,7 +15827,8 @@ function App() {
     onClick: async () => {
       const ok = await safeDb(() => dbOps.exercises.update({
         ...selectedExercise,
-        gripTrackingEnabled: true
+        gripTrackingEnabled: true,
+        gripTracking: 'on'
       }), 'enable grip tracking');
       if (ok) {
         setModal(null);
@@ -14637,7 +15841,7 @@ function App() {
       padding: '12px',
       borderRadius: '10px',
       border: 'none',
-      background: selectedExercise.gripTrackingEnabled ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
+      background: shouldOfferGripTracking(selectedExercise) ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 16%, transparent)',
       color: '#fff',
       fontSize: '13px',
       fontWeight: '600',
@@ -15058,6 +16262,10 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
+// Ask for durable storage as early as possible. Fire-and-forget: it must never
+// delay or block the first render.
+requestPersistentStorage();
+
 // Initialize preferences from IndexedDB before rendering
 initPrefs().then(() => {
   ReactDOM.render(/*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(App, null)), document.getElementById('root'));
@@ -15073,9 +16281,13 @@ initPrefs().then(() => {
 <style id="wp-tour-styles">
 .wp-tour-overlay{position:fixed;inset:0;z-index:2147483000;pointer-events:auto;}
 .wp-tour-overlay[hidden]{display:none;}
-.wp-tour-scrim{position:absolute;inset:0;background:rgba(12,6,10,0.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;transition:opacity .30s ease;}
+.wp-tour-scrim{position:absolute;inset:0;background:rgba(12,6,10,0.72);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;transition:opacity .30s ease;}
 .wp-tour-overlay.is-open .wp-tour-scrim{opacity:1;}
-.wp-tour-hilite{position:fixed;top:0;left:0;width:0;height:0;border-radius:12px;box-shadow:0 0 0 100vmax rgba(12,6,10,0.45);opacity:0;pointer-events:none;
+/* The scrim and the cutout both dim, so running them together left the "lit"
+   element as dark as everything else — no spotlight at all. The scrim now only
+   dims on centered steps; when something is spotlit the cutout's ring does it. */
+.wp-tour-overlay.has-spot .wp-tour-scrim{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;}
+.wp-tour-hilite{position:fixed;top:0;left:0;width:0;height:0;border-radius:12px;box-shadow:0 0 0 100vmax rgba(12,6,10,0.72);opacity:0;pointer-events:none;
   transition:top .70s cubic-bezier(.4,0,.2,1),left .70s cubic-bezier(.4,0,.2,1),width .70s cubic-bezier(.4,0,.2,1),height .70s cubic-bezier(.4,0,.2,1),opacity .40s ease;}
 .wp-tour-tip{position:fixed;width:clamp(280px,88vw,360px);box-sizing:border-box;padding:1.2rem 1.35rem;background:var(--surface);border:1px solid color-mix(in srgb, var(--accent) 55%, transparent);border-radius:12px;
   box-shadow:0 14px 44px rgba(12, 6, 10, 0.5);color:var(--text-body);opacity:0;transform:translateY(8px) scale(.96);
@@ -15094,6 +16306,12 @@ initPrefs().then(() => {
 .wp-tour-next{background:var(--accent);color:#ffe9f1;}
 .wp-tour-ghost{background:transparent;color:var(--accent-soft);}
 .wp-tour-skip{position:absolute;top:-2.5rem;right:0;background:transparent;color:color-mix(in srgb, var(--text-body) 70%, transparent);border:none;font-size:.8rem;cursor:pointer;min-height:40px;-webkit-appearance:none;}
+/* Final-step action. Full width and below the footer so it reads as the next
+   step rather than as a third navigation button. */
+.wp-tour-finish{margin-top:.75rem;padding-top:.75rem;border-top:1px solid color-mix(in srgb, var(--accent) 22%, transparent);display:flex;}
+/* A display declaration beats the UA [hidden] rule, so hiding needs to be explicit. */
+.wp-tour-finish[hidden]{display:none;}
+.wp-tour-finish .wp-tour-btn{flex:1;}
 @media (prefers-reduced-motion: reduce){
   .wp-tour-hilite,.wp-tour-tip,.wp-tour-scrim{transition:opacity .12s ease !important;}
 }
@@ -15102,19 +16320,49 @@ initPrefs().then(() => {
 (function(){
   "use strict";
   var SEEN_KEY='wp_tour_seen';
-  // step-5 navigation: open an activity to reveal its History tab, then close it on leave
-  function openActivity(){var b=document.querySelector('[data-tour="activity-card"]');if(b)b.click();}
-  function closeActivity(){var m=document.querySelector('.modal .close-btn, .close-btn');if(m)m.click();}
+  function inDemo(){try{return localStorage.getItem('wp_demo_active')==='true';}catch(e){return false;}}
+  function q(sel){return document.querySelector(sel);}
+  function hasActivity(){return !!q('[data-tour="activity-row"]');}
+  function isRowExpanded(){var r=q('[data-tour="activity-row"]');var g=r&&r.closest?r.closest('.exercise-group'):null;return !!(g&&g.classList.contains('exercise-group-expanded'));}
+
+  // Step 5 needs the activity-history modal on screen, which is two taps deep:
+  // expand the day's first activity, then open its History. The previous single
+  // click pointed at a control that only exists once a card is already expanded,
+  // so on a fresh tour steps 4 and 5 silently fell through to centered cards.
+  function openActivityHistory(){
+    var row=q('[data-tour="activity-row"]');
+    if(!row)return;
+    if(!isRowExpanded())row.click();
+    setTimeout(function(){var h=q('[data-tour="activity-card"]');if(h)h.click();},450);
+  }
+  function closeActivityHistory(){
+    var tab=q('[data-tour="history-tab"]');
+    var card=tab&&tab.closest?tab.closest('.modal'):null;
+    var close=card?card.querySelector('.close-btn'):null;
+    if(close)close.click();
+    setTimeout(function(){if(isRowExpanded())q('[data-tour="activity-row"]').click();},320);
+  }
+
   var STEPS=[
-    {t:null,h:'This is a sample log',b:"Someone's first eight months. Have a poke around to see how things work — then clear it and make it your own."},
+    {t:null,
+     h:function(){return inDemo()?'This is a sample log':'Quick tour';},
+     b:function(){return inDemo()
+        ?"Someone's first year of training. Have a poke around to see how things work — then clear it and make it your own."
+        :'A short walk through the main screen. You can skip at any point.';}},
     {t:'[data-tour="date-nav"]',h:'Every workout lives on a day',b:'Swipe left or right to move between days.'},
-    {t:'[data-tour="splits"]',h:'Splits group your days',b:'Push, Pull, Legs. Suggestions, not rules.'},
-    {t:'[data-tour="activity-card"]',h:'Tap an activity',b:'Open any exercise to see its full history and your last numbers.'},
-    {t:'[data-tour="history-tab"]',h:'Last time is king',b:'Every past session is here — so you never guess your weight again.',before:openActivity,beforeWait:440,after:closeActivity},
+    {t:'[data-tour="split-label"]',h:'Splits group your days',b:'Push, Pull, Legs. Suggestions, not rules — tap the date to change one.',skipIf:function(){return !q('[data-tour="split-label"]');}},
+    {t:'[data-tour="activity-row"]',h:'Tap an activity',b:'Open any exercise to see its full history and your last numbers.',skipIf:function(){return !hasActivity();}},
+    {t:'[data-tour="history-tab"]',h:'Last time is king',b:'Every past session is here — so you never guess your weight again.',
+     before:openActivityHistory,beforeWait:1050,after:closeActivityHistory,skipIf:function(){return !hasActivity();}},
     {t:'[data-tour="add-activity"]',h:'Add your own',b:'Tap here to log a new exercise.'},
-    {t:null,h:"That's the tour",b:'Clear the sample log to start your own. Replay this anytime in Settings.'}
+    {t:null,
+     h:function(){return inDemo()?"That's the tour":'That’s it';},
+     b:function(){return inDemo()
+        ?'Start your own log whenever you are ready — that deletes the sample data, and nothing of yours was ever touched.'
+        :'Replay this anytime from Settings.';},
+     isLast:true}
   ];
-  var ov,scrim,hi,tip,tipH,tipB,dots,btnNext,btnBack,btnSkip,foot,btnsWrap,curTarget=null;
+  var ov,scrim,hi,tip,tipH,tipB,dots,btnNext,btnBack,btnSkip,foot,btnsWrap,finishWrap,btnOwn,curTarget=null;
   var i=0,active=false,hiShown=false;
   function mk(tag,cls,parent){var e=document.createElement(tag);if(cls)e.className=cls;if(parent)parent.appendChild(e);return e;}
   function build(){
@@ -15129,6 +16377,12 @@ initPrefs().then(() => {
     btnsWrap=mk('div','wp-tour-btns',foot);
     btnBack=mk('button','wp-tour-btn wp-tour-ghost',btnsWrap);btnBack.textContent='Back';
     btnNext=mk('button','wp-tour-btn wp-tour-next',btnsWrap);btnNext.textContent='Next';
+    // Final-step action. Rather than telling someone to go and find the control,
+    // this drives the app's own demo-exit button so there is one code path.
+    finishWrap=mk('div','wp-tour-finish',tip);
+    btnOwn=mk('button','wp-tour-btn wp-tour-next',finishWrap);btnOwn.textContent='Start my own log';
+    finishWrap.hidden=true;
+    btnOwn.addEventListener('click',startOwnLog);
     STEPS.forEach(function(){mk('div','wp-tour-dot',dots);});
     document.body.appendChild(ov);
     btnNext.addEventListener('click',next);
@@ -15139,6 +16393,7 @@ initPrefs().then(() => {
   }
   function inView(el){var r=el.getBoundingClientRect();return r.width>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}
   function positionHi(t){
+    if(ov)ov.classList.toggle('has-spot',!!t);
     if(!t){hi.style.opacity='0';hi.style.width='0';hi.style.height='0';hiShown=false;return;}
     var r=t.getBoundingClientRect(),P=8,top=r.top-P,left=r.left-P,w=r.width+2*P,h=r.height+2*P;
     if(!hiShown){var pv=hi.style.transition;hi.style.transition='none';hi.style.top=top+'px';hi.style.left=left+'px';hi.style.width=w+'px';hi.style.height=h+'px';void hi.offsetWidth;hi.style.transition=pv;hi.style.opacity='1';hiShown=true;}
@@ -15152,12 +16407,20 @@ initPrefs().then(() => {
   }
   function place(t){curTarget=t;positionHi(t);positionTip(t);}
   function reposition(){if(!active)return;if(curTarget&&!document.body.contains(curTarget))return;positionHi(curTarget);positionTip(curTarget);}
+  function txt(v){return typeof v==='function'?v():v;}
   function render(){
     var s=STEPS[i];
-    tipH.textContent=s.h;tipB.textContent=s.b;
-    Array.prototype.forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===i);});
+    tipH.textContent=txt(s.h);tipB.textContent=txt(s.b);
+    Array.prototype.forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===i);d.hidden=!!(STEPS[n].skipIf&&STEPS[n].skipIf());});
     btnBack.style.visibility=i===0?'hidden':'visible';
-    btnNext.textContent=i===STEPS.length-1?'Done':'Next';
+    var last=i===STEPS.length-1;
+    btnNext.textContent=last?'Done':'Next';
+    // Only offer the destructive action where it is true: inside the sample log.
+    if(finishWrap){
+      var offerOwn=last&&s.isLast&&inDemo();
+      finishWrap.hidden=!offerOwn;
+      btnNext.textContent=last?(offerOwn?'Keep looking':'Done'):'Next';
+    }
     var go=function(){
       var t=s.t?document.querySelector(s.t):null; // graceful: missing target -> centered
       if(t&&!inView(t)){t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){place(t);},360);}
@@ -15167,13 +16430,30 @@ initPrefs().then(() => {
   }
   function runAfter(){var s=STEPS[i];if(s&&s.after){try{s.after();}catch(e){}}}
   function resetIfCentered(){if(!STEPS[i].t)hiShown=false;}
-  function next(){if(i>=STEPS.length-1){finish();return;}runAfter();i++;resetIfCentered();render();}
-  function back(){if(i<=0)return;runAfter();i--;resetIfCentered();render();}
-  function start(){if(active)return;if(!ov)build();try{localStorage.setItem(SEEN_KEY,'1');}catch(e){}active=true;i=0;ov.hidden=false;void ov.offsetWidth;ov.classList.add('is-open');render();}
+  function shouldSkip(n){var s=STEPS[n];return !!(s&&s.skipIf&&s.skipIf());}
+  function seek(from,dir){var n=from;while(n>=0&&n<STEPS.length&&shouldSkip(n))n+=dir;return n;}
+  function next(){
+    var n=seek(i+1,1);
+    if(n>=STEPS.length){finish();return;}
+    runAfter();i=n;resetIfCentered();render();
+  }
+  function back(){
+    var n=seek(i-1,-1);
+    if(n<0)return;
+    runAfter();i=n;resetIfCentered();render();
+  }
+  // Hands the app its own exit path; the tour closes first so the reload is clean.
+  function startOwnLog(){
+    var btn=document.querySelector('[data-tour="demo-exit"]');
+    finish();
+    setTimeout(function(){if(btn)btn.click();},280);
+  }
+  function start(){if(active)return;if(!ov)build();try{localStorage.setItem(SEEN_KEY,'1');}catch(e){}active=true;i=seek(0,1);if(i>=STEPS.length)i=0;ov.hidden=false;void ov.offsetWidth;ov.classList.add('is-open');render();}
   function finish(){if(!active)return;runAfter();active=false;ov.classList.add('is-closing');ov.classList.remove('is-open');setTimeout(function(){ov.hidden=true;ov.classList.remove('is-closing');hiShown=false;curTarget=null;},260);}
   function onKey(e){if(!active)return;if(e.key==='Escape'){e.stopPropagation();finish();}else if(e.key==='ArrowRight'||e.key==='Enter'){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();back();}}
   document.addEventListener('keydown',onKey,true);
-  window.WPTour={start:start,get active(){return active;}};
+  function seen(){try{return localStorage.getItem(SEEN_KEY)==='1';}catch(e){return true;}}
+  window.WPTour={start:start,seen:seen,get active(){return active;}};
   // TEMPORARY phase-2 preview: visit with #tour. Remove when phase 4 wires first-run/Settings.
   function maybePreview(){if(location.hash==='#tour')setTimeout(start,700);}
   if(document.readyState!=='loading')setTimeout(maybePreview,300);else window.addEventListener('load',maybePreview);
