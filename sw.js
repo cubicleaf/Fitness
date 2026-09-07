@@ -4,7 +4,10 @@
    - Online refreshes receive newly deployed HTML immediately.
    - If the gym has no signal, the last known-good shell remains available.
    Workout data is untouched — it lives in IndexedDB, not this cache. */
-var CACHE = 'fitlogs-v3';
+/* Bump this whenever a cached supporting asset changes (e.g. seed-data.csv).
+   Supporting assets are served stale-while-revalidate, so without a bump an old
+   copy can outlive the deploy that replaced it. */
+var CACHE = 'fitlogs-v4';
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
