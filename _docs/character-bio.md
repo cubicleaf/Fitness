@@ -1,5 +1,16 @@
 # Marcus Chen — The Seed Data Character
 
+**Dataset currency:** the seed CSV runs **2025-10-13 → 2026-10-01** (228 training
+days). Phases 1–9 below describe the story up to 1 May 2026; Phase 10 covers
+May–October. When the dataset is extended again, extend this document in the
+same change — a stale bio is how the May/June extension went undocumented for
+three months.
+
+**Note on the dates past "now":** sessions dated after the current real date are
+deliberate. The demo imports only dates up to today and tops itself up as days
+pass, so Marcus's log reads as one someone is still writing. See STATUS.md,
+2026-09-04.
+
 ## The Basics
 
 Marcus Chen, 29, software developer at a mid-size fintech company in East London. Born in Manchester to a Cantonese-speaking father and a Welsh mother. 5'10", currently 81kg/178lbs (down from 87kg seven months ago). Lives alone in a one-bedroom flat in Hackney. His gym is a no-frills basement place called "Iron Church" — ten-minute walk from his flat, open 24 hours, no classes, no smoothie bar. Just racks, dumbbells, and a few cable machines. He pays £35/month.
@@ -142,6 +153,60 @@ By mid-April, Marcus is doing unassisted pullups at the start of every pull sess
 
 **May 1:** A working push session. Bench at 165 (working weight, not PR), all accessories at their highest numbers yet. His final note of the dataset: "Seven months tomorrow. Started at 132lbs bench and zero pullups. Now benching bodyweight and doing sets of three unassisted."
 
+## Phase 10 — May to September 2026: The Long Middle
+
+The dramatic months are over. What follows is the part most training stories skip:
+eleven weeks of a man who simply keeps turning up.
+
+**May (16 sessions).** Consolidation. Pullups go from three to four on the top set;
+bench working weight creeps 165 → 170. His May 2nd note — *"Nearly seven months.
+Bodyweight bench done. Pullups real. What else."* — is the sound of someone who has
+run out of original goals and has to invent new ones.
+
+**June (22 sessions).** His most consistent month ever, and he sets the target that
+carries him through the summer: *"200 is the number."* Pullups reach five, bench
+hits a 185 PR. He stops skipping legs.
+
+**July (18 sessions).** The sixth pullup lands on July 14th — *"Held the last one at
+the top just to prove it. Nine months ago I could not do one."* On July 27th he
+benches 190, ten pounds over bodyweight.
+
+**August (21 sessions).** The seventh pullup on August 8th. Three days later he quietly
+retires the resistance bands after seven months — *"the band is not teaching me
+anything now"* — and Banded Pullups simply stop appearing in the data. A 195 PR on
+the 17th. The eighth pullup on the 29th.
+
+**September 3rd, 2026: 200 pounds.** Both stretch goals from the April bio are closed.
+His note: *"Eleven months ago it was 132 and I could not carry a sofa up two flights.
+Both stretch goals done. Next: ten pullups and a 10K."*
+
+**September (19 sessions), chasing exactly those two things.** He starts running
+outdoors properly for the first time — 6.2K on the 6th, then 8K, 9K, and on the 27th
+**10.2 kilometres in sixty-three minutes without walking**: *"In October I could not
+run eight."* The pull-ups go nine on the 15th, nines on both top sets by the 22nd. On
+the 18th he benches 200 for a triple rather than a grind, and it becomes the working
+weight rather than a peak.
+
+**October 1st, 2026: ten unassisted pull-ups.** *"Both October goals done inside a
+month. A year ago today I had never done one."* Almost exactly a year after his first
+session at Iron Church.
+
+Squat finishes at 250lbs (from 154), Barbell Rows at 270 (from 132), and his treadmill
+runs reach 40 unbroken minutes. Bodyweight has settled around 183 — he is heavier than
+his April bodyweight-bench day, and it is all the good kind.
+
+### What this stretch adds to the demo
+
+Deliberately undramatic for most of it, and that is the point: it shows the app across
+a long, ordinary, successful stretch rather than only at milestone moments. It also
+puts an exercise through its full lifecycle — Banded Pullups start in January, carry
+the progression for seven months, and are dropped in August — which is the kind of
+history only a real log accumulates.
+
+September adds the one thing the dataset had never contained: **distance**. Outdoor Run
+is the only activity in eleven months that logs kilometres, and it is also a brand-new
+activity appearing near the end of a long history, which is worth seeing.
+
 ## The Banded Pullup Journey (Complete Summary)
 
 - Jan 5: Green band, 8-7-6 (first session with bands)
@@ -169,7 +234,7 @@ By mid-April, Marcus is doing unassisted pullups at the start of every pull sess
 - Apr 25: 3-2-2 ("Consistent threes")
 - Apr 28: 3-3-2 ("Four is the next target")
 
-## Progressive Overload (Final Numbers — May 1, 2026)
+## Progressive Overload (as at May 1, 2026 — see Phase 10 for the final figures)
 
 - Bench Press: 132lbs → **180lbs PR** (bodyweight!) / 165lbs working weight
 - Squat: 154lbs → **222lbs** (+44%)
@@ -185,11 +250,27 @@ By mid-April, Marcus is doing unassisted pullups at the start of every pull sess
 - Pullups: zero → **3 reps unassisted** (from green band 8 reps)
 - Treadmill: 480 seconds (8 min) → **2400 seconds (40 min)**
 
-The seed data covers the full journey from October 13, 2025 to May 1, 2026 — nearly seven months of consistent training across 127 training days.
+Phases 1–9 cover October 13, 2025 to May 1, 2026 — nearly seven months across 127 training days. The dataset continues past that point; see Phase 10.
+
+## Final Numbers — October 1, 2026
+
+- Bench Press: 132lbs → **200lbs PR** / 190-195lbs working weight
+- Squat: 154lbs → **260lbs**
+- Barbell Rows: 132lbs → **285lbs**
+- Overhead Press: 88lbs → **150lbs**
+- Romanian Deadlift: 154lbs → **245lbs**
+- Outdoor Run: nothing → **10.2km in 63 minutes**
+- Incline Dumbbell Press: 46lbs → **90lbs**
+- Pullups: zero → **10 unassisted** (bands retired August 11)
+- Dips: 7 reps → **31**
+- Push Ups: 16 reps → **47**
+- Plank: 25 seconds → **115 seconds**
+- Treadmill: 8 minutes → **40 minutes**
+- Bodyweight: ~191lbs → **183lbs**
 
 ## Strengths
 
-- **Consistent enough**: 3-4 sessions per week across 127 training days (7 months). Not perfect, but enough to make serious progress.
+- **Consistent enough**: 3-4 sessions per week early on, rising to roughly 5 by the summer, across 209 training days (11 months). Not perfect, but enough to make serious progress.
 - **Patient with the process**: Doesn't ego-lift. Adds weight in small increments (2-3lbs per week on compounds). Accepts that he's rebuilding from zero.
 - **Good at logging**: The act of tracking every set keeps him honest and motivated. He loves seeing the numbers tick up. His consistency with the app is unshakeable.
 - **Willing to do the boring stuff**: Face pulls, dead hangs, stretching. He doesn't enjoy them, but he does them.
@@ -224,8 +305,10 @@ The seed data covers the full journey from October 13, 2025 to May 1, 2026 — n
 
 1. **One unassisted pullup by April 2026** — ACHIEVED April 7. Now doing sets of 3.
 2. **Bench press his bodyweight (82kg/180lbs)** — ACHIEVED April 27.
-3. **Five unassisted pullups** — the new pullup target
-4. **Bench 200lbs** — new stretch goal
+3. **Five unassisted pullups** — ACHIEVED June 2026. Now at eight.
+4. **Bench 200lbs** — ACHIEVED September 3, 2026.
+5. **Ten unassisted pullups** — ACHIEVED October 1, 2026.
+6. **Run 5K without stopping** — long since passed; ran 10.2K on September 27, 2026.
 5. **Visible muscle definition** — not bodybuilder lean, just "obviously works out." Getting there.
 6. **Fix his posture** — dramatically improved from physio work and pulling exercises
 7. **Run 5K without stopping** — up to 40 minutes continuous running. Very close.
@@ -258,4 +341,4 @@ Marcus doesn't want to be a powerlifter or a bodybuilder. He wants to be the ver
 
 Seven months in, he's accomplished more than he expected. Both of his original goals — the unassisted pullup and the bodyweight bench — are done. Not "almost" or "working toward." Done. The pullup came first (April 7), the bench three weeks later (April 27). He's now doing sets of three on pullups and thinking about five. He's squatting over 100kg and running for 40 minutes.
 
-The data in his app — over 2,200 rows across 127 sessions over seven months — is the proof that he's actually showing up. And more importantly, it shows that consistency works. Even with setbacks (the cold in January, the construction noise in early March), the trend line goes up. That's all he needs.
+The data in his app — over 3,800 sets across 228 sessions over a full year — is the proof that he's actually showing up. And more importantly, it shows that consistency works. Even with setbacks (the cold in January, the construction noise in early March), the trend line goes up. That's all he needs.
