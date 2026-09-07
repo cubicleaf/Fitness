@@ -35,4 +35,11 @@ Done means Tim uses it for real workouts and stops thinking about it as a projec
 - One HTML file + one service worker (sw.js, for offline at the gym). No build step, no npm at runtime, no server code. The single-file rule's purpose was zero deploy complexity; sw.js preserves that purpose. (Amended 2026-07-16.)
 - No external dependencies at runtime — truly, as of 2026-07-16: React 18.3.1 is vendored inline, nothing loads from a CDN. (The June 2026 outage was caused by violating this rule.)
 - IndexedDB for all persistence. CSV export for portability.
-- Deployed on Vercel. No environment variables, no server-side code.
+- Deployed on Vercel. One server-side endpoint only: `api/feedback.js`, which forwards
+  in-app feedback to email via Resend and requires the `RESEND_API_KEY` and
+  `FEEDBACK_TO_EMAIL` environment variables (`FEEDBACK_FROM_EMAIL` optional). Nothing
+  else runs on a server and no user workout data ever leaves the device. The original
+  rule was "no environment variables, no server-side code"; the exception exists because
+  a feedback path needs a destination the user cannot see or spoof, and a mailto: link
+  fails on phones without a configured mail client. Any further server code needs the
+  same explicit justification. (Amended 2026-08-13.)
