@@ -2,11 +2,11 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-07
+updated: 2026-09-14
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-07
+**Last updated:** 2026-09-14
 
 ## Where I left off
 
@@ -14,7 +14,7 @@ Working product name is now **Tim's Logbook** until further notice. Treat this a
 
 The app is feature-complete enough to use, but the next useful work is no longer "add features." It is: centralize the loose product ideas, fix obvious experience breaks, and evaluate which helpers actually reduce workout friction versus creating a little fitness command center nobody wants to operate between sets.
 
-The 2026-09-03 pass cleared four reported breaks (calendar icon/view, grip opacity, bar weight not being added, families hidden behind a tap). 2026-09-04 added demo mode over a refreshed Marcus Chen dataset. Next useful work is the spotlight tour over that demo — and a real device session, which is now two passes overdue.
+The 2026-09-03 pass cleared four reported breaks (calendar icon/view, grip opacity, bar weight not being added, families hidden behind a tap). 2026-09-04 added demo mode over a refreshed Marcus Chen dataset. 2026-09-06 shipped the spotlight tour over that demo. The 2026-09-14 pass worked the set screen itself: a first set of the day now leaves its card open with the vibe dial asking to be answered, Load and Grip moved behind bubble buttons so the picker reaches its first number immediately, the picker states where its seeded weight came from, and the carry-over buttons wear a lock glyph. A real device session is now several passes overdue and is the blocking item.
 
 Standing priority: desktop should remain phone-constrained across the entire app flow. The main screen already behaves like a phone on desktop, which is intentional, but the "Add New Activity" flow appears to expand into widescreen desktop layout. That violates the app's sanity constraint: every screen, modal, and creation/edit flow should preserve the phone-sized app frame.
 
@@ -23,6 +23,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-14: A first set of the day opens its card; the vibe dial asks for an answer. What: logging the first set of an activity on a given day now leaves that card **expanded** on the main screen instead of dropping back to a collapsed row (`revealFirstLogOfDay`, wired into `handleRepsSelected`, `handleDurationSelected`, `handleCopyLastSet` and `handleLogPresence` — each fires only when the activity had no sets on that date). The open card arms one hint, held in `firstLogHintId`: the mood slider's thumb breathes a soft accent ring (`.mood-slider.is-hinting`, 1.8s), a `How did that feel?` line fades in beneath it, and the card wears a halo that runs twice and stops (`.exercise-group-firstlog::after`). All three retire the instant the dial is touched, and collapsing the card clears them too. Why: the one moment the card is both new and unread is right after its first set — the vibe dial is blank, no note exists, and the app was answering by closing the card. How to apply: the hint is *persistent until answered*, not a one-shot flash; that is deliberate, since the point is to hold a beat for the question. Every guard is under `prefers-reduced-motion`.
+
+- 2026-09-14: Load and Grip moved out of the weight picker's body and behind bubble buttons. What: the weight picker's two top blocks — `GripField` and the full-width `LOAD` row (Body Weight / No Load / Band Assisted plus the band-colour grid) — are replaced by two small buttons in a `.picker-chip-row`, each a supplied bubble container (`IconBubble`, the check icon with the check removed) wrapping a glyph, with a one-word caption underneath. Each opens its own bottom sheet (`PickerSheet`, z-index 200 over the picker, dismissed by backdrop or swipe-down). The band-colour grid and custom-name field now live inside the Load sheet, which needs no confirm step because every button in it is terminal. `GripInlineSelector` gained an `embedded` prop that drops its own box and heading inside a sheet. Icons `IconDumbbell` and `IconLock` are Tim's supplied Solar two-tone assets, recoloured to `currentColor`; `IconGrip` is a placeholder knurled-bar glyph awaiting a supplied asset. Why: two full-width blocks stood between opening the picker and reaching the first number, on the screen whose whole job is two taps. How to apply: the bubble is the shared container for anything hidden behind a small icon button — reuse `IconBubble` rather than inventing a second shape. `RepPickerModal` and `TimedDurationModal` still render the old inline `GripField`; extending the sheet pattern to them is open work.
+
+- 2026-09-14: The weight picker states where its seeded number came from. What: a `LAST` strip sits directly under the bubble row reading the load, the date, and the age — `LAST  225 lbs        Sep 12 · 2 days ago`. It reports the **final set of the last measured session** (not the heaviest), because that is the set the stepper is seeded from. New helpers `daysSince`/`formatDaysSince` normalize both sides to local midnight and read `today` / `yesterday` / `N days ago`; `formatLoadSummary` renders the load half of a set with no `Set N:` prefix. Why: the picker opened on a number with no provenance — you could not tell whether 225 was last week's working weight or a stale default. How to apply: if the strip ever disagrees with the stepper, the strip is the one telling the truth about history; fix the seed, not the label.
+
+- 2026-09-14: `Same Wt` / `Same Reps` carry a lock glyph instead of the word "Same". What: the expanded card's segmented row now reads `[lock] Wt` and `[lock] Reps`, using Tim's supplied padlock asset at 14px, with `aria-label`s carrying the full meaning for screen readers. `segStyle` gained flex centring so icon and text sit together. The `lockMode` variants (`New Wt` / `New Reps` / `New Dur`) stay plain text — they name the *unlocked* variable and a lock there would invert the meaning. Why: "Same" spent horizontal room on a four-button row at 11px to say what a padlock says instantly. How to apply: lock-only buttons were rejected — two identical glyphs side by side are indistinguishable, so the unit word stays.
 
 - 2026-09-07: Activity retrieval was hiding activities that exist. Three surfaces, one disease. What: (1) the **Add Activity picker** hard-filtered its default list to the current split, so on a push day it showed 7 of 34 activities and anything with no split, a different split, or different capitalisation was simply absent until you searched — the filter is now a **priority sort**, with the split's activities under a heading and the rest under "Everything else". (2) The **date-tap Day Detail suggestions** used the same hard filter *and* compared raw stored categories against a lowercased split (`getExCategories(ex).includes('arms')`), so a category saved as `Arms` never matched at all; it now uses the same split-first-nothing-hidden rule as the picker, case-insensitively. (3) See the search decision below. Why: INTENT says "Suggestions, not mandates. Named splits are labels, not locked lists" — the picker was treating them as locked lists, and STATUS has flagged retrieval trust as the real risk in this area since July. How to apply: no discovery surface may remove an activity from reach. Narrowing is the search box's job; a split is a sort key.
 
@@ -223,6 +231,13 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - 2026-06-04: Resumed project. Created INTENT.md and STATUS.md. Shelved color work.
 
 ## Open
+
+### Set-screen follow-ups from the 09-14 pass
+
+- **The grip glyph is a placeholder.** `IconGrip` is a knurled-bar shape drawn in-file; the Load and lock icons are Tim's supplied Solar two-tone assets. Swap in a supplied grip asset when there is one — it is a single component body.
+- **Only the weight picker got the bubble treatment.** `RepPickerModal` and `TimedDurationModal` still render the inline `GripField`, and the rep picker keeps its own inline `LOAD` switcher (which is a different control — it reports current state rather than offering an escape hatch). Decide whether the three set screens should share one pattern.
+- **The `LAST` strip has no bar-activity variant.** On a barbell activity it reports the stored total, which is correct, but it does not say "total" the way the stepper's confirm button does. Worth a word if it ever reads ambiguously next to the plates line.
+- **Not exercised on a phone.** Verified in a desktop browser at a 375×812 viewport against the demo dataset: first-log auto-expand, the vibe hint arming and retiring on first touch, both sheets opening and dismissing, and the `LAST` strip reading `Sep 12 · 2 days ago`. Fold into the standing device-verification pass.
 
 ### Demo follow-ups
 

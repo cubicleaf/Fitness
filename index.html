@@ -693,6 +693,65 @@
             border: 2px solid rgba(255,255,255,0.15);
         }
 
+        /* First-log hint: the vibe dial breathes until the dial is actually
+           touched. Persistent rather than one-shot on purpose — the point is to
+           hold a beat for the question, not to flash once and vanish. */
+        .mood-slider.is-hinting::-webkit-slider-thumb {
+            animation: vibeThumbBreathe 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes vibeThumbBreathe {
+            0%, 100% {
+                box-shadow: 0 1px 6px rgba(12, 6, 10, 0.3),
+                            0 0 0 0 color-mix(in srgb, var(--accent-soft) 40%, transparent);
+            }
+            50% {
+                box-shadow: 0 1px 6px rgba(12, 6, 10, 0.3),
+                            0 0 0 7px color-mix(in srgb, var(--accent-soft) 0%, transparent);
+            }
+        }
+
+        .vibe-hint-prompt {
+            font-size: 11px;
+            letter-spacing: 0.02em;
+            color: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+            text-align: center;
+            margin-top: 6px;
+            pointer-events: none;
+            animation: vibePromptIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s both;
+        }
+
+        @keyframes vibePromptIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Companion cue for the card as a whole: a slow halo that runs twice and
+           then retires on its own, so the outline reads as new without competing
+           with the dial for attention. */
+        .exercise-group-firstlog::after {
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-soft) 55%, transparent),
+                        0 0 18px color-mix(in srgb, var(--accent-soft) 26%, transparent);
+            opacity: 0;
+            animation: firstLogHalo 1.6s cubic-bezier(0.4, 0, 0.2, 1) 2 both;
+        }
+
+        @keyframes firstLogHalo {
+            0%, 100% { opacity: 0; }
+            45%      { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mood-slider.is-hinting::-webkit-slider-thumb,
+            .exercise-group-firstlog::after,
+            .vibe-hint-prompt {
+                animation: none !important;
+            }
+            .exercise-group-firstlog::after {
+                opacity: 0.6;
+            }
+        }
+
         .sound-slider {
             -webkit-appearance: none;
             width: 100%;
@@ -1335,6 +1394,111 @@
             25% { transform: translate(var(--travel), 0); }
             50% { transform: translate(var(--travel-neg), 0); }
             75% { transform: translate(0, var(--travel-y)); }
+        }
+
+        /* Picker chips: Load and Grip used to occupy two full-width blocks at
+           the top of the weight picker before the first number was reachable.
+           They are now two bubble buttons that open a sheet. */
+        .picker-chip-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .picker-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            min-width: 48px;
+            min-height: 44px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: var(--accent-soft);
+            font-family: inherit;
+            cursor: pointer;
+            -webkit-appearance: none;
+            transition: color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .picker-chip:active {
+            transform: scale(0.95);
+        }
+
+        .picker-chip.is-set {
+            color: var(--text-bright);
+        }
+
+        .picker-chip-label {
+            display: block;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+        }
+
+        /* A sheet that opens on top of a picker modal. Bottom-anchored and only
+           as tall as its content, so the picker stays visible behind it. */
+        .picker-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            background: rgba(13, 6, 10, 0.5);
+            z-index: 200;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .picker-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: 80dvh;
+            overflow-y: auto;
+            background: var(--bg-page);
+            border-top: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+            border-radius: 18px 18px 0 0;
+            padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+            box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.42);
+            animation: pickerSheetIn 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        @keyframes pickerSheetIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .picker-sheet-grip {
+            width: 36px;
+            height: 4px;
+            border-radius: 2px;
+            margin: 4px auto 12px;
+            background: color-mix(in srgb, var(--accent) 30%, transparent);
+        }
+
+        .picker-sheet-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--accent-soft) 58%, transparent);
+            margin-bottom: 10px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .picker-sheet,
+            .picker-sheet-overlay {
+                animation: none;
+            }
+            .picker-chip:active {
+                transform: none;
+            }
         }
 
         /* Weight Picker Grid */
@@ -2493,6 +2657,122 @@ const IconChevronDown = ({
 }, /*#__PURE__*/React.createElement("polyline", {
   points: "6 9 12 15 18 9"
 }));
+// A knurled handle seen end-on: the bar plus the grooves your hand sits in.
+// Placeholder until a supplied grip asset replaces it — the rest of this row
+// uses Tim's Solar two-tone set.
+const IconGrip = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "2.5",
+  y: "8.5",
+  width: "19",
+  height: "7",
+  rx: "3.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "8.5",
+  y1: "10.5",
+  x2: "8.5",
+  y2: "13.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "10.5",
+  x2: "12",
+  y2: "13.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "15.5",
+  y1: "10.5",
+  x2: "15.5",
+  y2: "13.5"
+}));
+// Supplied asset (Solar two-tone dumbbell), recolored to currentColor. The
+// half-opacity path is the bar between the bells.
+const IconDumbbell = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  fillRule: "evenodd",
+  clipRule: "evenodd",
+  d: "M22 10V14C22 14.9319 22 15.3978 21.8478 15.7654C21.6448 16.2554 21.2554 16.6448 20.7654 16.8478C20.3978 17 19.9319 17 19 17C18.0681 17 17.6022 17 17.2346 16.8478C16.7446 16.6448 16.3552 16.2554 16.1522 15.7654C16 15.3978 16 14.4319 16 13.5V10.5C16 9.56812 16 8.60218 16.1522 8.23463C16.3552 7.74458 16.7446 7.35523 17.2346 7.15224C17.6022 7 18.0681 7 19 7C19.9319 7 20.3978 7 20.7654 7.15224C21.2554 7.35523 21.6448 7.74458 21.8478 8.23463C22 8.60218 22 9.06812 22 10ZM8 10.5V13.5C8 14.4319 8 15.3978 7.84776 15.7654C7.64477 16.2554 7.25542 16.6448 6.76537 16.8478C6.39782 17 5.93188 17 5 17C4.06812 17 3.60218 17 3.23463 16.8478C2.74458 16.6448 2.35523 16.2554 2.15224 15.7654C2 15.3978 2 14.9319 2 14V10C2 9.06812 2 8.60218 2.15224 8.23463C2.35523 7.74458 2.74458 7.35523 3.23463 7.15224C3.60218 7 4.06812 7 5 7C5.93188 7 6.39782 7 6.76537 7.15224C7.25542 7.35523 7.64477 7.74458 7.84776 8.23463C8 8.60218 8 9.56812 8 10.5Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  opacity: "0.5",
+  d: "M16 10.5H8V13.5H16V10.5Z",
+  fill: "currentColor"
+}));
+// Supplied asset (Solar two-tone padlock), recolored to currentColor.
+const IconLock = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  opacity: "0.5",
+  d: "M4.03532 11.5733C4.4971 9.2644 4.72799 8.10995 5.55742 7.42997C6.38686 6.75 7.56417 6.75 9.9188 6.75H14.0812C16.4358 6.75 17.6131 6.75 18.4425 7.42997C19.272 8.10995 19.5029 9.2644 19.9646 11.5733L20.5646 14.5733C21.2287 17.8937 21.5608 19.5539 20.6606 20.652C19.7604 21.75 18.0673 21.75 14.6812 21.75H9.3188C5.93263 21.75 4.23954 21.75 3.33936 20.652C2.43919 19.5539 2.77123 17.8937 3.43532 14.5733L4.03532 11.5733Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "15",
+  cy: "9.75",
+  r: "1",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "9.75",
+  r: "1",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9.75 5.75C9.75 4.50736 10.7574 3.5 12 3.5C13.2426 3.5 14.25 4.50736 14.25 5.75V6.75H14.6812C15.058 6.75 15.4139 6.75 15.75 6.75151L15.75 5.75C15.75 3.67893 14.0711 2 12 2C9.92893 2 8.25 3.67893 8.25 5.75L8.25 6.75151C8.58613 6.75 8.94198 6.75 9.3188 6.75H9.75V5.75Z",
+  fill: "currentColor"
+}));
+// Supplied asset: the bubble from the check icon, with the check removed. Every
+// icon-only button that hides a section behind it wears this, so they read as
+// one family rather than as unrelated glyphs.
+const IconBubble = ({
+  size = 40,
+  filled = false,
+  children
+}) => /*#__PURE__*/React.createElement("span", {
+  style: {
+    position: 'relative',
+    width: size,
+    height: size,
+    flexShrink: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}, /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  "aria-hidden": "true",
+  style: {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  }
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z",
+  fill: "currentColor",
+  fillOpacity: filled ? 0.3 : 0.12,
+  stroke: "currentColor",
+  strokeWidth: "1.5"
+})), /*#__PURE__*/React.createElement("span", {
+  style: {
+    position: 'relative',
+    display: 'inline-flex'
+  }
+}, children));
 const IconFieldNote = ({
   size,
   style
@@ -3024,6 +3304,34 @@ const addDays = (dateStr, days) => {
   const d = typeof dateStr === 'string' ? parseLocalDate(dateStr) : new Date(dateStr);
   d.setDate(d.getDate() + days);
   return getDateString(d);
+};
+// Whole calendar days between a logged date and today. Both sides are
+// normalized to local midnight first, so a set logged last night and read this
+// morning is 1 day old rather than a rounded fraction of one.
+const daysSince = dateStr => {
+  if (!dateStr) return null;
+  const then = parseLocalDate(dateStr);
+  const now = parseLocalDate(getTodayString());
+  if (Number.isNaN(then.getTime())) return null;
+  return Math.round((now - then) / 86400000);
+};
+const formatDaysSince = dateStr => {
+  const days = daysSince(dateStr);
+  if (days === null) return '';
+  if (days <= 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days} days ago`;
+};
+// Just the load half of a set, with no "Set N:" prefix and no reps. Used by the
+// weight picker's last-measured strip and its Load chip.
+const formatLoadSummary = set => {
+  if (!set) return '';
+  if (set.weightType === 'bodyweight') return 'Bodyweight';
+  if (set.weightType === 'banded') {
+    return set.bandedColor && set.bandedColor !== 'undefined' ? `${set.bandedColor} band` : 'Band';
+  }
+  if (set.weightType === 'none' || set.weight === null || set.weight === undefined) return 'No load';
+  return `${set.weight} ${set.weightType || 'lbs'}`;
 };
 const formatSetDisplay = set => {
   if (set?.isPresenceOnly) return 'Did some';
@@ -5649,6 +5957,44 @@ const CreateExerciseModal = ({
     }
   }), "Do not ask me this again")));
 };
+// Bottom sheet stacked over a picker modal. Closing is the only thing it owns;
+// what it holds decides for itself when a choice is final.
+const PickerSheet = ({
+  title,
+  onClose,
+  children
+}) => /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-overlay",
+  onClick: onClose
+}, /*#__PURE__*/React.createElement("div", _extends({
+  className: "picker-sheet",
+  onClick: e => e.stopPropagation()
+}, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-grip",
+  "aria-hidden": "true"
+}), /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-title"
+}, title), children));
+// The button that stands in for a sheet: Tim's bubble container with a glyph
+// inside and a one-word caption under it. Small on purpose — reclaiming the two
+// full-width blocks Load and Grip used to take at the top of the picker.
+const PickerChip = ({
+  icon,
+  label,
+  isSet,
+  onClick,
+  ariaLabel
+}) => /*#__PURE__*/React.createElement("button", {
+  type: "button",
+  onClick: onClick,
+  "aria-label": ariaLabel,
+  className: isSet ? "picker-chip is-set" : "picker-chip"
+}, /*#__PURE__*/React.createElement(IconBubble, {
+  size: 38,
+  filled: isSet
+}, icon), /*#__PURE__*/React.createElement("span", {
+  className: "picker-chip-label"
+}, label));
 const WeightPickerModal = ({
   exercise,
   onSelectWeight,
@@ -5671,6 +6017,10 @@ const WeightPickerModal = ({
   const [selectedBandColor, setSelectedBandColor] = useState(null);
   const [bandedCustomName, setBandedCustomName] = useState('');
   const [yourWeights, setYourWeights] = useState([]);
+  // 'load' | 'grip' | null — which secondary sheet is open over the picker.
+  const [openSheet, setOpenSheet] = useState(null);
+  // { date, label } for the most recent measured session of this activity.
+  const [lastMeasured, setLastMeasured] = useState(null);
   const [exerciseWeightMeaning, setExerciseWeightMeaning] = useState('total');
   const [storedCustomBarWeight, setStoredCustomBarWeight] = useState(0);
   const [storedBarName, setStoredBarName] = useState('');
@@ -5709,6 +6059,16 @@ const WeightPickerModal = ({
             }
           });
           setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
+          // The strip reports the set the session ended on, because that is the
+          // one the box is seeded from — not the heaviest of the session.
+          const finalSet = lastSession.sets.slice().sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0)).pop();
+          setLastMeasured(finalSet ? {
+            date: lastSession.date,
+            label: formatLoadSummary(finalSet)
+          } : null);
+        } else {
+          setYourWeights([]);
+          setLastMeasured(null);
         }
       } catch (err) {
         console.error('DB load recent weights failed:', err);
@@ -5740,6 +6100,180 @@ const WeightPickerModal = ({
     };
     loadMeaning();
   }, [exercise, previousWeight, unit]);
+  // Load lives in a sheet now rather than inline. Each button here is terminal:
+  // choosing bodyweight, no load, or a band logs the set and closes the picker,
+  // so the sheet never needs its own confirm step.
+  const loadSheetContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '6px',
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'bodyweight'
+    }),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "Body Weight"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'none'
+    }),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "No Load"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowBandedColors(!showBandedColors),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "Band Assisted")), showBandedColors && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "banded-colors-grid"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-red",
+    onClick: () => {
+      setSelectedBandColor('Red');
+    }
+  }, "Red"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-black",
+    onClick: () => {
+      setSelectedBandColor('Black');
+    }
+  }, "Black"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-purple",
+    onClick: () => {
+      setSelectedBandColor('Purple');
+    }
+  }, "Purple"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-green",
+    onClick: () => {
+      setSelectedBandColor('Green');
+    }
+  }, "Green"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-blue",
+    onClick: () => {
+      setSelectedBandColor('Blue');
+    }
+  }, "Blue"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-orange",
+    onClick: () => {
+      setSelectedBandColor('Orange');
+    }
+  }, "Orange"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-yellow",
+    onClick: () => {
+      setSelectedBandColor('Yellow');
+    }
+  }, "Yellow"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-gray",
+    onClick: () => {
+      setSelectedBandColor('Gray');
+    }
+  }, "Gray")), selectedBandColor && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Thickness"), /*#__PURE__*/React.createElement("div", {
+    className: "button-row",
+    style: {
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: selectedBandColor
+    })
+  }, "Just ", selectedBandColor), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Thin`
+    })
+  }, "Thin"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Medium`
+    })
+  }, "Medium"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Thick`
+    })
+  }, "Thick"))), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "Custom band name",
+    value: bandedCustomName,
+    onChange: e => setBandedCustomName(e.target.value),
+    style: {
+      marginBottom: '16px',
+      marginTop: '12px'
+    }
+  }), bandedCustomName && /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => {
+      onSelectWeight({
+        weight: null,
+        weightType: 'banded',
+        bandedColor: bandedCustomName
+      });
+    }
+  }, "Use ", bandedCustomName)));
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: () => onSelectWeight(null)
@@ -5756,13 +6290,62 @@ const WeightPickerModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
-    initialGrip: initialGrip,
-    lockedForDay: gripLockedForDay,
-    onChange: onGripChange,
-    gripReason: gripReason,
-    onDisableGrip: onDisableGrip
-  }), isBarExercise && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "picker-chip-row"
+  }, /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconDumbbell, {
+      size: 20
+    }),
+    label: "Load",
+    isSet: false,
+    ariaLabel: "Change how this set is loaded",
+    onClick: () => setOpenSheet('load')
+  }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconGrip, {
+      size: 20
+    }),
+    label: "Grip",
+    isSet: !!formatGripLabel(initialGrip),
+    ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
+    onClick: () => setOpenSheet('grip')
+  })), lastMeasured && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '8px',
+      marginBottom: '10px',
+      padding: '8px 12px',
+      borderRadius: '10px',
+      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 16%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '9px',
+      fontWeight: '600',
+      letterSpacing: '0.06em',
+      textTransform: 'uppercase',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      flexShrink: 0
+    }
+  }, "Last"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '14px',
+      fontWeight: '700',
+      color: 'var(--text-bright)',
+      flexShrink: 0
+    }
+  }, lastMeasured.label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      textAlign: 'right',
+      fontSize: '11px',
+      color: 'var(--text-faint)',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }, formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), isBarExercise && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '10px',
       padding: '10px 12px',
@@ -5972,184 +6555,6 @@ const WeightPickerModal = ({
     }
   }, "Logged as the total, so it stays comparable with your older sets."), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: '10px',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      textTransform: 'uppercase',
-      letterSpacing: '0.6px',
-      marginBottom: '6px'
-    }
-  }, "Load"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '6px',
-      marginBottom: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'bodyweight'
-    }),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "Body Weight"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'none'
-    }),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "No Load"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowBandedColors(!showBandedColors),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "Band Assisted")), showBandedColors && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "banded-colors-grid"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-red",
-    onClick: () => {
-      setSelectedBandColor('Red');
-    }
-  }, "Red"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-black",
-    onClick: () => {
-      setSelectedBandColor('Black');
-    }
-  }, "Black"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-purple",
-    onClick: () => {
-      setSelectedBandColor('Purple');
-    }
-  }, "Purple"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-green",
-    onClick: () => {
-      setSelectedBandColor('Green');
-    }
-  }, "Green"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-blue",
-    onClick: () => {
-      setSelectedBandColor('Blue');
-    }
-  }, "Blue"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-orange",
-    onClick: () => {
-      setSelectedBandColor('Orange');
-    }
-  }, "Orange"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-yellow",
-    onClick: () => {
-      setSelectedBandColor('Yellow');
-    }
-  }, "Yellow"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-gray",
-    onClick: () => {
-      setSelectedBandColor('Gray');
-    }
-  }, "Gray")), selectedBandColor && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-title"
-  }, "Thickness"), /*#__PURE__*/React.createElement("div", {
-    className: "button-row",
-    style: {
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: selectedBandColor
-    })
-  }, "Just ", selectedBandColor), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Thin`
-    })
-  }, "Thin"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Medium`
-    })
-  }, "Medium"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Thick`
-    })
-  }, "Thick"))), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "Custom band name",
-    value: bandedCustomName,
-    onChange: e => setBandedCustomName(e.target.value),
-    style: {
-      marginBottom: '16px',
-      marginTop: '12px'
-    }
-  }), bandedCustomName && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => {
-      onSelectWeight({
-        weight: null,
-        weightType: 'banded',
-        bandedColor: bandedCustomName
-      });
-    }
-  }, "Use ", bandedCustomName)), /*#__PURE__*/React.createElement("div", {
-    style: {
       marginBottom: '12px'
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -6230,7 +6635,22 @@ const WeightPickerModal = ({
       weight: w,
       weightType: unit
     })
-  }, w)))))));
+  }, w))))), openSheet === 'load' && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Load",
+    onClose: () => setOpenSheet(null)
+  }, loadSheetContent), openSheet === 'grip' && gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Grip",
+    onClose: () => setOpenSheet(null)
+  }, /*#__PURE__*/React.createElement(GripInlineSelector, {
+    embedded: true,
+    initialGrip: initialGrip,
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: () => {
+      setOpenSheet(null);
+      if (onDisableGrip) onDisableGrip();
+    }
+  }))));
 };
 const RepPickerModal = ({
   exercise,
@@ -12212,7 +12632,10 @@ const GripInlineSelector = ({
   initialGrip,
   onChange,
   gripReason,
-  onDisableGrip
+  onDisableGrip,
+  // Inside a sheet the surrounding card and title already exist, so the
+  // selector drops its own box and heading rather than nesting a second one.
+  embedded = false
 }) => {
   const [gripType, setGripType] = useState(initialGrip?.gripType || null);
   const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
@@ -12242,14 +12665,16 @@ const GripInlineSelector = ({
     WebkitAppearance: 'none'
   });
   return /*#__PURE__*/React.createElement("div", {
-    style: {
+    style: embedded ? {
+      marginBottom: '4px'
+    } : {
       marginBottom: '12px',
       padding: '10px',
       borderRadius: '10px',
       background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 14%, transparent)'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, !embedded && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)',
@@ -13422,10 +13847,15 @@ function App() {
   const [showQuickNotes, setShowQuickNotes] = useState(null);
   const [selectedQuickNotes, setSelectedQuickNotes] = useState({});
   const [activityContext, setActivityContext] = useState(null); // { exerciseId, exerciseName, defaultTab: 'history'|'notes'|'edit' }
+  // Holds the activity whose card just opened itself after its first set of the
+  // day. Drives the vibe-dial prompt and the card halo, and is cleared the
+  // moment the dial is touched or the card is closed.
+  const [firstLogHintId, setFirstLogHintId] = useState(null);
   const toggleExpandedExercise = exerciseId => {
     if (expandedExercise === exerciseId) {
       if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
       setClosingExercise(exerciseId);
+      setFirstLogHintId(current => current === exerciseId ? null : current);
       collapseTimerRef.current = setTimeout(() => {
         setExpandedExercise(null);
         setClosingExercise(null);
@@ -13435,7 +13865,21 @@ function App() {
     }
     if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
     setClosingExercise(null);
+    setFirstLogHintId(null);
     setExpandedExercise(exerciseId);
+  };
+  // The first set of an activity on a given day is the one moment the card is
+  // both new and unread: the vibe dial is blank and nothing has been noted yet.
+  // So the card opens itself instead of dropping back to a collapsed row.
+  const revealFirstLogOfDay = exerciseId => {
+    if (!exerciseId) return;
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current);
+      collapseTimerRef.current = null;
+    }
+    setClosingExercise(null);
+    setExpandedExercise(exerciseId);
+    setFirstLogHintId(exerciseId);
   };
   const [mergeCandidates, setMergeCandidates] = useState([]);
   const [exerciseLocks, setExerciseLocks] = useState({});
@@ -13923,9 +14367,12 @@ function App() {
       ...selectedExercise,
       lastUsed: currentDate
     }), 'update exercise');
+    const wasFirstOfDayCopy = orderData.existingExercise.length === 0;
+    const copiedExerciseId = selectedExercise.id;
     setModal(null);
     setSelectedExercise(null);
     await loadDayData();
+    if (wasFirstOfDayCopy) revealFirstLogOfDay(copiedExerciseId);
   };
   const handleLogPresence = async () => {
     const orderData = await assignExerciseOrder(selectedExercise.id);
@@ -13960,9 +14407,12 @@ function App() {
       ...selectedExercise,
       lastUsed: currentDate
     }), 'update exercise');
+    const wasFirstOfDayPresence = orderData.existingExercise.length === 0;
+    const presenceExerciseId = selectedExercise.id;
     setModal(null);
     setSelectedExercise(null);
     await loadDayData();
+    if (wasFirstOfDayPresence) revealFirstLogOfDay(presenceExerciseId);
     showUndoToast(`${presenceRecord.exerciseName} logged`, async () => {
       const removed = await safeDb(() => dbOps.sets.delete(presenceRecord.id), 'undo activity log');
       if (removed) await loadDayData();
@@ -14141,6 +14591,8 @@ function App() {
       lastUsed: currentDate
     };
     await safeDb(() => dbOps.exercises.update(exCopy), 'update exercise');
+    const wasFirstOfDay = existingExercise.length === 0;
+    const loggedExerciseId = selectedExercise.id;
     setPendingNewExerciseId(null);
     setLoggedSetCount(loggedSetCount + 1);
     setModal(null);
@@ -14155,6 +14607,7 @@ function App() {
       setGripLockedForDay(false);
     }
     await loadDayData();
+    if (wasFirstOfDay) revealFirstLogOfDay(loggedExerciseId);
     if (pendingLockType) {
       setExerciseLocks(prev => ({
         ...prev,
@@ -14289,6 +14742,8 @@ function App() {
       lastUsed: currentDate
     };
     await safeDb(() => dbOps.exercises.update(exCopy), 'update exercise');
+    const wasFirstOfDayDur = existingExercise.length === 0;
+    const loggedExerciseIdDur = selectedExercise.id;
     setPendingNewExerciseId(null);
     setLoggedSetCount(loggedSetCount + 1);
     setModal(null);
@@ -14303,6 +14758,7 @@ function App() {
       setGripLockedForDay(false);
     }
     await loadDayData();
+    if (wasFirstOfDayDur) revealFirstLogOfDay(loggedExerciseIdDur);
     if (pendingLockType) {
       setExerciseLocks(prev => ({
         ...prev,
@@ -14908,9 +15364,10 @@ function App() {
     const measuredSets = getMeasuredSets(exercise.sets);
     const latestVisibleSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
     const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
+    const isFirstLogHint = firstLogHintId === exercise.exerciseId;
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
-      className: isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group",
+      className: `${isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group"}${isFirstLogHint ? ' exercise-group-firstlog' : ''}`,
       style: isExpanded || isClosing ? {
         background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
         borderRadius: '12px',
@@ -15147,6 +15604,12 @@ function App() {
         fontSize: '11px',
         fontWeight: '600',
         cursor: 'pointer',
+        // The carry-over buttons pair a lock glyph with their unit word, so the
+        // row centres icon and text together rather than text alone.
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '4px',
         borderRight: isLast ? 'none' : '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
         WebkitAppearance: 'none'
       });
@@ -15294,11 +15757,17 @@ function App() {
           ...segStyle(!lockMode),
           opacity: isPureTimed ? 0.3 : 1
         },
-        onClick: lockMode ? openLockedVariableFlow : openSameWeightFlow
-      }, lockMode ? lockMode === 'uniformWeight' ? isTimed ? 'New Dur' : 'New Reps' : 'New Wt' : "Same Wt"), !lockMode && /*#__PURE__*/React.createElement("button", {
+        onClick: lockMode ? openLockedVariableFlow : openSameWeightFlow,
+        "aria-label": lockMode ? undefined : 'Same weight as last set'
+      }, lockMode ? lockMode === 'uniformWeight' ? isTimed ? 'New Dur' : 'New Reps' : 'New Wt' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconLock, {
+        size: 14
+      }), "Wt")), !lockMode && /*#__PURE__*/React.createElement("button", {
         style: segStyle(false),
-        onClick: openSameRepsFlow
-      }, isTimed ? 'Same Dur' : 'Same Reps'), /*#__PURE__*/React.createElement("button", {
+        onClick: openSameRepsFlow,
+        "aria-label": isTimed ? 'Same duration as last set' : 'Same reps as last set'
+      }, /*#__PURE__*/React.createElement(IconLock, {
+        size: 14
+      }), isTimed ? 'Dur' : 'Reps'), /*#__PURE__*/React.createElement("button", {
         style: {
           ...segStyle(true),
           background: 'color-mix(in srgb, var(--accent) 15%, transparent)'
@@ -15315,13 +15784,16 @@ function App() {
       min: "1",
       max: "100",
       value: inlineMood[exercise.exerciseId] || 50,
-      className: "mood-slider",
+      // The hint only survives while the dial is still unanswered: touching it
+      // is the answer, so the glow and the prompt both retire on first input.
+      className: isFirstLogHint && inlineMood[exercise.exerciseId] == null ? "mood-slider is-hinting" : "mood-slider",
       style: {
         '--mood-thumb-color': inlineMood[exercise.exerciseId] != null ? getMoodColor(inlineMood[exercise.exerciseId]) : 'color-mix(in srgb, var(--accent) 30%, transparent)',
-        opacity: inlineMood[exercise.exerciseId] != null ? 1 : 0.4
+        opacity: inlineMood[exercise.exerciseId] != null || isFirstLogHint ? 1 : 0.4
       },
       onInput: e => {
         const newMood = parseInt(e.target.value);
+        setFirstLogHintId(current => current === exercise.exerciseId ? null : current);
         setInlineMood(prev => ({
           ...prev,
           [exercise.exerciseId]: newMood
@@ -15356,7 +15828,9 @@ function App() {
           }, 'save mood');
         }, 300);
       }
-    })), /*#__PURE__*/React.createElement("div", {
+    }), isFirstLogHint && inlineMood[exercise.exerciseId] == null && /*#__PURE__*/React.createElement("div", {
+      className: "vibe-hint-prompt"
+    }, "How did that feel?")), /*#__PURE__*/React.createElement("div", {
       style: {
         display: 'flex',
         gap: '4px',
