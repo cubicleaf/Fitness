@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import {classify} from './classifier.mjs';
+const read=f=>JSON.parse(fs.readFileSync(new URL(f,import.meta.url),'utf8'));
+const catalog=read('catalog.json'), rows=read('real-log-cases.json');
+const categories=['push','pull','legs','core','cardio','mobility','stretch','other','kettlebs'];
+const results=rows.map(row=>({...row,result:classify({name:row.name,categories},catalog)}));
+const suggested=results.filter(r=>r.result.status==='suggest');
+const comparable=suggested.filter(r=>r.historicalCategories.some(Boolean));
+const disagreements=comparable.filter(r=>!r.result.splits.every(s=>r.historicalCategories.includes(s)));
+const report={qualification:'Historical labels are observational, not reviewed ground truth. Real names were inspected before catalog authoring; this is not a holdout.',total:rows.length,suggestions:suggested.length,coverage:suggested.length/rows.length,comparable:comparable.length,disagreements:disagreements.length,results};
+fs.writeFileSync(new URL('real-log-results.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+console.log(JSON.stringify({...report,results:undefined},null,2));

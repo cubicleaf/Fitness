@@ -1,0 +1,1077 @@
+[
+  {
+    "id": "Barbell_Bench_Press_-_Medium_Grip",
+    "name": "Barbell Bench Press - Medium Grip",
+    "aliases": [
+      "bench press",
+      "barbell bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Bench_Press",
+    "name": "Dumbbell Bench Press",
+    "aliases": [
+      "dumbbell bench",
+      "dumbbell bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Bench_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+    "name": "Barbell Incline Bench Press - Medium Grip",
+    "aliases": [
+      "incline bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Decline_Barbell_Bench_Press",
+    "name": "Decline Barbell Bench Press",
+    "aliases": [
+      "decline bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Barbell_Bench_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Shoulder_Press",
+    "name": "Dumbbell Shoulder Press",
+    "aliases": [
+      "dumbbell shoulder press"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "triceps"
+    ],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Shoulder_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Shoulder_Press",
+    "name": "Barbell Shoulder Press",
+    "aliases": [
+      "overhead press",
+      "shoulder press",
+      "military press"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "chest",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Shoulder_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Pushups",
+    "name": "Pushups",
+    "aliases": [
+      "push up",
+      "pushup"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "body only",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pushups.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Triceps_Pushdown",
+    "name": "Triceps Pushdown",
+    "aliases": [
+      "tricep pushdown",
+      "triceps pushdown"
+    ],
+    "primaryMuscles": [
+      "triceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "cable",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Triceps_Pushdown.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Lying_Triceps_Press",
+    "name": "Lying Triceps Press",
+    "aliases": [
+      "skull crusher",
+      "lying triceps press"
+    ],
+    "primaryMuscles": [
+      "triceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "e-z curl bar",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Lying_Triceps_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Side_Lateral_Raise",
+    "name": "Side Lateral Raise",
+    "aliases": [
+      "lateral raise",
+      "side lateral raise"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Side_Lateral_Raise.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Flyes",
+    "name": "Dumbbell Flyes",
+    "aliases": [
+      "dumbbell fly",
+      "dumbbell flye"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Flyes.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Bent_Over_Barbell_Row",
+    "name": "Bent Over Barbell Row",
+    "aliases": [
+      "barbell row",
+      "bent over barbell row"
+    ],
+    "primaryMuscles": [
+      "middle back"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "lats",
+      "shoulders"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bent_Over_Barbell_Row.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Seated_Cable_Rows",
+    "name": "Seated Cable Rows",
+    "aliases": [
+      "cable row",
+      "seated cable row"
+    ],
+    "primaryMuscles": [
+      "middle back"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "lats",
+      "shoulders"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Cable_Rows.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Wide-Grip_Lat_Pulldown",
+    "name": "Wide-Grip Lat Pulldown",
+    "aliases": [
+      "lat pulldown",
+      "wide grip lat pulldown"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "middle back",
+      "shoulders"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Wide-Grip_Lat_Pulldown.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Chin-Up",
+    "name": "Chin-Up",
+    "aliases": [
+      "chin up",
+      "chinup"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "forearms",
+      "middle back"
+    ],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Chin-Up.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Pullups",
+    "name": "Pullups",
+    "aliases": [
+      "pull up",
+      "pullup"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "middle back"
+    ],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pullups.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Curl",
+    "name": "Barbell Curl",
+    "aliases": [
+      "barbell curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Hammer_Curls",
+    "name": "Hammer Curls",
+    "aliases": [
+      "hammer curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Hammer_Curls.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Preacher_Curl",
+    "name": "Preacher Curl",
+    "aliases": [
+      "preacher curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Preacher_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Face_Pull",
+    "name": "Face Pull",
+    "aliases": [
+      "face pull"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "middle back"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Face_Pull.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Reverse_Flyes",
+    "name": "Reverse Flyes",
+    "aliases": [
+      "reverse fly",
+      "reverse flye"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Reverse_Flyes.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Goblet_Squat",
+    "name": "Goblet Squat",
+    "aliases": [
+      "goblet squat"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings",
+      "shoulders"
+    ],
+    "equipment": "kettlebells",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Goblet_Squat.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Leg_Press",
+    "name": "Leg Press",
+    "aliases": [
+      "leg press"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Leg_Extensions",
+    "name": "Leg Extensions",
+    "aliases": [
+      "leg extension"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Extensions.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Seated_Leg_Curl",
+    "name": "Seated Leg Curl",
+    "aliases": [
+      "leg curl",
+      "hamstring curl",
+      "seated leg curl"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "pull",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Leg_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Standing_Calf_Raises",
+    "name": "Standing Calf Raises",
+    "aliases": [
+      "calf raise",
+      "standing calf raise"
+    ],
+    "primaryMuscles": [
+      "calves"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Standing_Calf_Raises.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Hip_Thrust",
+    "name": "Barbell Hip Thrust",
+    "aliases": [
+      "hip thrust",
+      "barbell hip thrust"
+    ],
+    "primaryMuscles": [
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower",
+      "glutes"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Hip_Thrust.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Squat",
+    "name": "Barbell Squat",
+    "aliases": [
+      "back squat",
+      "barbell squat",
+      "squat"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings",
+      "lower back"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Squat.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Plank",
+    "name": "Plank",
+    "aliases": [
+      "plank"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "body only",
+    "force": "static",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Plank.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dead_Bug",
+    "name": "Dead Bug",
+    "aliases": [
+      "deadbug",
+      "dead bug"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dead_Bug.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Cable_Crunch",
+    "name": "Cable Crunch",
+    "aliases": [
+      "cable crunch"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Crunch.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Rowing_Stationary",
+    "name": "Rowing, Stationary",
+    "aliases": [
+      "rowing machine",
+      "stationary rowing"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "calves",
+      "glutes",
+      "hamstrings",
+      "lower back",
+      "middle back"
+    ],
+    "equipment": "machine",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Rowing_Stationary.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Running_Treadmill",
+    "name": "Running, Treadmill",
+    "aliases": [
+      "treadmill run",
+      "running treadmill"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "machine",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Running_Treadmill.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Bicycling",
+    "name": "Bicycling",
+    "aliases": [
+      "cycling",
+      "bicycling"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "other",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bicycling.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Deadlift",
+    "name": "Barbell Deadlift",
+    "aliases": [
+      "deadlift",
+      "barbell deadlift"
+    ],
+    "primaryMuscles": [
+      "lower back"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "forearms",
+      "glutes",
+      "hamstrings",
+      "lats",
+      "middle back",
+      "quadriceps",
+      "traps"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Deadlift.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Program-dependent hinge: ask user; no automatic split."
+  },
+  {
+    "id": "Romanian_Deadlift",
+    "name": "Romanian Deadlift",
+    "aliases": [
+      "romanian deadlift"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "lower back"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Romanian_Deadlift.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Program-dependent hinge: ask user; no automatic split."
+  },
+  {
+    "id": "Decline_Push-Up",
+    "name": "Decline Push-Up",
+    "aliases": [
+      "decline pushup",
+      "decline push up"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": null,
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Push-Up.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.nasm.org/resource-center/exercise-library/decline-push-up"
+    ]
+  },
+  {
+    "id": "Machine_Preacher_Curls",
+    "name": "Machine Preacher Curls",
+    "aliases": [
+      "preacher curl machine",
+      "machine preacher curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Machine_Preacher_Curls.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.acefitness.org/continuing-education/prosource/august-2014/4933/ace-study-reveals-best-biceps-exercises/"
+    ]
+  },
+  {
+    "id": "Cable_Chest_Press",
+    "name": "Cable Chest Press",
+    "aliases": [
+      "seated cable chest press",
+      "cable chest press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "cable",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Chest_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Cable chest pressing supports the chest/push family. Alias establishes split equivalence only, not identical setup or progress history.",
+    "corroboration": []
+  },
+  {
+    "id": "Leverage_Decline_Chest_Press",
+    "name": "Leverage Decline Chest Press",
+    "aliases": [
+      "MTS decline press",
+      "machine decline chest press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leverage_Decline_Chest_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.lifefitness.com.au/wp-content/uploads/2015/02/MTS_Manual_11_08a_1_354.pdf"
+    ]
+  },
+  {
+    "id": "Farmers_Walk",
+    "name": "Farmer's Walk",
+    "aliases": [
+      "farmer carry",
+      "farmers carry",
+      "farmer walk"
+    ],
+    "primaryMuscles": [
+      "forearms"
+    ],
+    "secondaryMuscles": [
+      "abdominals",
+      "glutes",
+      "hamstrings",
+      "lower back",
+      "quadriceps",
+      "traps"
+    ],
+    "equipment": "other",
+    "force": null,
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Farmers_Walk.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Loaded carry recognized; pull, grip, full-body and conditioning placement depend on program.",
+    "corroboration": []
+  },
+  {
+    "id": "Hyperextensions_Back_Extensions",
+    "name": "Hyperextensions (Back Extensions)",
+    "aliases": [
+      "back extension",
+      "hyperextension"
+    ],
+    "primaryMuscles": [
+      "lower back"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "other",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Hyperextensions_Back_Extensions.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Back extension recognized; program placement needs a user decision. Do not import historical Push as a universal rule.",
+    "corroboration": []
+  },
+  {
+    "id": "family_dip",
+    "name": "Dip family",
+    "aliases": [
+      "dip"
+    ],
+    "splits": [
+      "push",
+      "upper"
+    ],
+    "source": "https://www.nasm.org/resource-center/exercise-library/bench-dips",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Pressing family only; Chest vs Arms depends on dip variation.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_outdoor_run",
+    "name": "Outdoor running",
+    "aliases": [
+      "outdoor run",
+      "outdoor running",
+      "trail run",
+      "trail running"
+    ],
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://www.acefitness.org/continuing-education/certified/may-2024/8633/how-to-improve-athletic-performance-using-the-ace-integrated-fitness-training-model/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Activity-kind classification; no claim of specific running technique.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "machine_glute_drive",
+    "name": "Glute drive",
+    "aliases": [
+      "glute drive"
+    ],
+    "splits": [
+      "legs",
+      "lower",
+      "glutes"
+    ],
+    "source": "https://shop.lifefitness.com/products/hammer-strength-plate-loaded-glute-drive",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Manufacturer identifies a hip-extension machine. Name does not identify a precise brand/model.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_kettlebell_swing",
+    "name": "Kettlebell swing",
+    "aliases": [
+      "kettlebell swing"
+    ],
+    "splits": [],
+    "source": "https://www.acefitness.org/continuing-education/certified/january-2025/8788/the-ace-do-it-better-series-the-two-handed-kettlebell-swing/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Hip-driven kettlebell activity recognized; requires program mapping rather than inferring an equipment split.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_kettlebell_halo",
+    "name": "Kettlebell halo",
+    "aliases": [
+      "kettlebell halo"
+    ],
+    "splits": [],
+    "source": "https://www.acefitness.org/continuing-education/certified/october-2022/8147/kettlebells-kick-butt-in-more-ways-than-one/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Recognized kettlebell movement; placement depends on program.",
+    "scope": "split-family-only"
+  }
+]

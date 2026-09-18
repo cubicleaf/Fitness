@@ -2,13 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-14
+updated: 2026-09-18
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-14
+**Last updated:** 2026-09-18
 
 ## Where I left off
+
+2026-09-18: The split helper is integrated into `index.html` and deployed to https://fit-logs.vercel.app (Vercel deployment `dpl_AXybxFks6C1hzDyAzhpmszuPtzTV`). User explicitly authorized live use before independent accuracy validation. All 47 catalog records and classifier code are inline/offline-safe. Suggestions require acceptance, explicit name-specific choices persist, unknown activities can save unassigned, and required-field errors now explain why Create Activity cannot proceed. Rapid duplicate saves are guarded. Service-worker cache is v5. Browser checks include 122 classifier fixtures, creation/acceptance/manual protection, preference persistence, logging a set, day navigation, and CSV export/import in a separate browser profile. Physical-phone testing and independent accuracy measurement remain open.
 
 Working product name is now **Tim's Logbook** until further notice. Treat this as a conservative working name, not a legal clearance result or permanent brand commitment. The old Fit Logs / Fitness Tracker labels may still appear in code, deployment URLs, docs, and repository metadata until a deliberate rename pass happens.
 
@@ -23,6 +25,12 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-18: **What:** Ship the split helper in the actual app now, replacing the disabled recommendation code and removing the no-split confirmation interruption. Add explicit missing-field feedback and a duplicate-save guard. **Why:** Tim authorized iterating live as the sole current user; the old Create Activity button silently returned on incomplete fields. **How to apply:** Require acceptance of suggestions; preserve manual choices; remember exact normalized-name choices after successful save; abstain on unsupported names. Do not claim validated 95% accuracy. Production was deployed from a runtime-files-only staging folder, excluding local workout research fixtures. **Evidence strength:** Tim-directed release; classification mappings remain provisional.
+
+- 2026-09-17: **What:** Build the split helper into a generated local copy of the existing creation flow for usability review. **Why:** Test interaction while independent classification validation remains unfinished. **How to apply:** Suggestions require acceptance; manual selections win; remember only explicit saved name-specific choices; preserve uncertain unassigned saves. Keep the preview on a separate local origin, with no deployment or production data changes. **Evidence strength:** User-authorized preview; physical-phone review pending.
+
+- 2026-09-17: **What:** Split classification now has an isolated, source-pinned offline prototype; the live recommender remains disabled. **Why:** Measure recognition, conventional split mapping, and abstention separately before integrating suggestions. **How to apply:** Preserve explicit user choices; unknown names or custom labels ask rather than guess. Never interpret fixture pass rates as production confidence. Evidence and evaluation live in [`_docs/split-classifier/README.md`](./_docs/split-classifier/README.md). **Evidence strength:** User-authorized prototype; mappings remain provisional.
 
 - 2026-09-14: A first set of the day opens its card; the vibe dial asks for an answer. What: logging the first set of an activity on a given day now leaves that card **expanded** on the main screen instead of dropping back to a collapsed row (`revealFirstLogOfDay`, wired into `handleRepsSelected`, `handleDurationSelected`, `handleCopyLastSet` and `handleLogPresence` — each fires only when the activity had no sets on that date). The open card arms one hint, held in `firstLogHintId`: the mood slider's thumb breathes a soft accent ring (`.mood-slider.is-hinting`, 1.8s), a `How did that feel?` line fades in beneath it, and the card wears a halo that runs twice and stops (`.exercise-group-firstlog::after`). All three retire the instant the dial is touched, and collapsing the card clears them too. Why: the one moment the card is both new and unread is right after its first set — the vibe dial is blank, no note exists, and the app was answering by closing the card. How to apply: the hint is *persistent until answered*, not a one-shot flash; that is deliberate, since the point is to hold a beat for the question. Every guard is under `prefers-reduced-motion`.
 
@@ -397,16 +405,12 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
   - "Repeat a recent good workout"
 - Dependency: needs enough real workout history, or a seeded demo persona, to feel credible.
 
-### Split recommender overhaul or removal
+### Activity-to-split classification
 
-- Problem: current split recommender feels obnoxious and may pop up at the wrong times.
-- 2026-07-22 note: duplicate detection/search had a related trust bug: exact existing activities with "No split" were hidden when the picker was filtered to a split. Search now ignores the split filter while text is entered, and exact duplicate matches suppress weaker similar-match clutter. Still need broader recommender review.
-- Options:
-  - Improve trigger conditions and copy.
-  - Move it behind the IDFK/helper flow.
-  - Remove it entirely until real usage proves the need.
-- Advisor note: if the app interrupts at the wrong moment, it loses trust fast. A bad recommender is worse than no recommender because it makes the app feel presumptuous.
-- Open question: is the split recommender trying to teach planning, choose today's workout, or correct the user's behavior? Those are different jobs.
+- Try the live creation flow on a physical phone; browser checks cover selection protection, persistence, layout, logging, and export/import.
+
+- Finish source review and resolve the prototype’s 20 remaining real-log abstentions using its name-review report, then evaluate a frozen version against fresh independently labeled cases while the user-authorized helper is live. See [`_docs/split-classifier/README.md`](./_docs/split-classifier/README.md).
+- Scope is assigning an activity to user-defined splits during creation, not choosing today's workout or correcting workout behavior. Explicit user choices remain authoritative.
 
 ### Warm-up adjuster
 
