@@ -1,0 +1,2015 @@
+{
+  "date": "2026-09-17",
+  "qualification": "Development fixtures authored by the same agent as the classifier; not independent validation or a measured production confidence.",
+  "catalogSize": 47,
+  "total": 122,
+  "passed": 122,
+  "suggestions": 47,
+  "correctSuggestions": 47,
+  "precision": 1,
+  "coverage": 0.41228070175438597,
+  "answerableCoverage": 1,
+  "descriptiveWilsonLower95": 0.9244398288016114,
+  "failures": [],
+  "results": [
+    {
+      "name": "Bench Press",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Barbell_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "DB bench",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Dumbbell_Bench_Press",
+        "reason": "Split classification based on Dumbbell Bench Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Bench_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "benchpress",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Barbell_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Incline Benchpress",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Incline Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Decline Bench press",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Decline_Barbell_Bench_Press",
+        "reason": "Split classification based on Decline Barbell Bench Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Barbell_Bench_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dumbbell shoulder press",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Dumbbell_Shoulder_Press",
+        "reason": "Split classification based on Dumbbell Shoulder Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Shoulder_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "OHP",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Barbell_Shoulder_Press",
+        "reason": "Split classification based on Barbell Shoulder Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Shoulder_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "push-ups",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Pushups",
+        "reason": "Split classification based on Pushups; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pushups.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "triceps pushdown",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Triceps_Pushdown",
+        "reason": "Split classification based on Triceps Pushdown; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Triceps_Pushdown.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "skull crushers",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Lying_Triceps_Press",
+        "reason": "Split classification based on Lying Triceps Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Lying_Triceps_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "lateral raises",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Side_Lateral_Raise",
+        "reason": "Split classification based on Side Lateral Raise; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Side_Lateral_Raise.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dumbbell fly",
+      "expected": [
+        "push"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Dumbbell_Flyes",
+        "reason": "Split classification based on Dumbbell Flyes; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Flyes.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "BB row",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Bent_Over_Barbell_Row",
+        "reason": "Split classification based on Bent Over Barbell Row; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bent_Over_Barbell_Row.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Cable Row",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Seated_Cable_Rows",
+        "reason": "Split classification based on Seated Cable Rows; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Cable_Rows.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "lat pulldown",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Wide-Grip_Lat_Pulldown",
+        "reason": "Split classification based on Wide-Grip Lat Pulldown; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Wide-Grip_Lat_Pulldown.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Chin-ups",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Chin-Up",
+        "reason": "Split classification based on Chin-Up; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Chin-Up.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "pullups",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Pullups",
+        "reason": "Split classification based on Pullups; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pullups.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Barbell Curl",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Barbell_Curl",
+        "reason": "Split classification based on Barbell Curl; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Curl.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Hammer Curls",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Hammer_Curls",
+        "reason": "Split classification based on Hammer Curls; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Hammer_Curls.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Preacher curls",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Preacher_Curl",
+        "reason": "Split classification based on Preacher Curl; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Preacher_Curl.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "face pulls",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Face_Pull",
+        "reason": "Split classification based on Face Pull; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Face_Pull.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "reverse fly",
+      "expected": [
+        "pull"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Reverse_Flyes",
+        "reason": "Split classification based on Reverse Flyes; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Reverse_Flyes.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Goblet Squat",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Goblet_Squat",
+        "reason": "Split classification based on Goblet Squat; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Goblet_Squat.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Leg_Press",
+        "reason": "Split classification based on Leg Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg extensions",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Leg_Extensions",
+        "reason": "Split classification based on Leg Extensions; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Extensions.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "hamstring curls",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Seated_Leg_Curl",
+        "reason": "Split classification based on Seated Leg Curl; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Leg_Curl.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "calf raises",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Standing_Calf_Raises",
+        "reason": "Split classification based on Standing Calf Raises; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Standing_Calf_Raises.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "hip thrust",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Barbell_Hip_Thrust",
+        "reason": "Split classification based on Barbell Hip Thrust; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Hip_Thrust.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "back squat",
+      "expected": [
+        "legs"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "Barbell_Squat",
+        "reason": "Split classification based on Barbell Squat; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Squat.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank",
+      "expected": [
+        "core"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "core"
+        ],
+        "exerciseId": "Plank",
+        "reason": "Split classification based on Plank; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Plank.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadbugs",
+      "expected": [
+        "core"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "core"
+        ],
+        "exerciseId": "Dead_Bug",
+        "reason": "Split classification based on Dead Bug; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dead_Bug.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "cable crunch",
+      "expected": [
+        "core"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "core"
+        ],
+        "exerciseId": "Cable_Crunch",
+        "reason": "Split classification based on Cable Crunch; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Crunch.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "rowing machine",
+      "expected": [
+        "cardio"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "cardio"
+        ],
+        "exerciseId": "Rowing_Stationary",
+        "reason": "Split classification based on Rowing, Stationary; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Rowing_Stationary.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "treadmill run",
+      "expected": [
+        "cardio"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "cardio"
+        ],
+        "exerciseId": "Running_Treadmill",
+        "reason": "Split classification based on Running, Treadmill; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Running_Treadmill.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "cycling",
+      "expected": [
+        "cardio"
+      ],
+      "group": "common",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "cardio"
+        ],
+        "exerciseId": "Bicycling",
+        "reason": "Split classification based on Bicycling; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bicycling.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "press",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "curl",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "row",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadlift",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "Barbell_Deadlift",
+            "name": "Barbell Deadlift"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "RDL",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "Romanian_Deadlift",
+            "name": "Romanian Deadlift"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "clean and press",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "squat to press",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank row",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press with band pull apart",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not bench press",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "reverse bench press",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg crul",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "skulcrusher",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Lying_Triceps_Press",
+            "name": "Lying Triceps Press",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "cable rw",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Seated_Cable_Rows",
+            "name": "Seated Cable Rows",
+            "distance": 1
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "custom exercise 123",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "45° chinups",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Ab/Adductors",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Kneeling Swings",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Plank Pullthru",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Meditation",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Sauna",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Decompression",
+      "expected": null,
+      "group": "abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Upper Body",
+        "Lower Body"
+      ],
+      "expected": [
+        "Upper Body"
+      ],
+      "group": "mapping",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "Upper Body"
+        ],
+        "exerciseId": "Barbell_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press",
+      "categories": [
+        "Push",
+        "Pull",
+        "Legs"
+      ],
+      "expected": [
+        "Legs"
+      ],
+      "group": "mapping",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "Legs"
+        ],
+        "exerciseId": "Leg_Press",
+        "reason": "Split classification based on Leg Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Chest",
+        "Arms",
+        "Back"
+      ],
+      "expected": [
+        "Chest"
+      ],
+      "group": "mapping",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "Chest"
+        ],
+        "exerciseId": "Barbell_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Workout A",
+        "Workout B"
+      ],
+      "expected": null,
+      "group": "mapping",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; your split labels need a mapping.",
+        "candidates": [
+          {
+            "id": "Barbell_Bench_Press_-_Medium_Grip",
+            "name": "Barbell Bench Press - Medium Grip"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Push",
+        "Upper",
+        "Chest"
+      ],
+      "expected": [
+        "Push",
+        "Upper",
+        "Chest"
+      ],
+      "group": "mapping",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "Push",
+          "Upper",
+          "Chest"
+        ],
+        "exerciseId": "Barbell_Bench_Press_-_Medium_Grip",
+        "reason": "Split classification based on Barbell Bench Press - Medium Grip; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Rest"
+      ],
+      "expected": null,
+      "group": "mapping",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; your split labels need a mapping.",
+        "candidates": [
+          {
+            "id": "Barbell_Bench_Press_-_Medium_Grip",
+            "name": "Barbell Bench Press - Medium Grip"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "mystery move",
+      "categories": [
+        "Workout A"
+      ],
+      "confirmedSplits": [
+        "Workout A"
+      ],
+      "expected": [
+        "Workout A"
+      ],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [
+          "Workout A"
+        ],
+        "reason": "Your explicit choice for this activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "confirmedSplits": [],
+      "expected": [],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [],
+        "reason": "Your explicit choice for this activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "categories": [
+        "Push"
+      ],
+      "confirmedSplits": [
+        "Deleted split"
+      ],
+      "expected": null,
+      "group": "override",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "A saved split no longer exists; review the assignment.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Decline Pushups",
+      "expected": [
+        "push"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Decline_Push-Up",
+        "reason": "Split classification based on Decline Push-Up; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Push-Up.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Preacher Curl Machine",
+      "expected": [
+        "pull"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "pull"
+        ],
+        "exerciseId": "Machine_Preacher_Curls",
+        "reason": "Split classification based on Machine Preacher Curls; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Machine_Preacher_Curls.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Seated Cable Chest Press",
+      "expected": [
+        "push"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Cable_Chest_Press",
+        "reason": "Split classification based on Cable Chest Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Chest_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "MTS Decline Press",
+      "expected": [
+        "push"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Leverage_Decline_Chest_Press",
+        "reason": "Split classification based on Leverage Decline Chest Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leverage_Decline_Chest_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Glute Drive",
+      "expected": [
+        "legs"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "legs"
+        ],
+        "exerciseId": "machine_glute_drive",
+        "reason": "Split classification based on Glute drive; exact setup is not inferred.",
+        "source": "https://shop.lifefitness.com/products/hammer-strength-plate-loaded-glute-drive",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips",
+      "expected": [
+        "push"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "family_dip",
+        "reason": "Split classification based on Dip family; exact setup is not inferred.",
+        "source": "https://www.nasm.org/resource-center/exercise-library/bench-dips",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Outdoor Run",
+      "expected": [
+        "cardio"
+      ],
+      "group": "expansion",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "cardio"
+        ],
+        "exerciseId": "family_outdoor_run",
+        "reason": "Split classification based on Outdoor running; exact setup is not inferred.",
+        "source": "https://www.acefitness.org/continuing-education/certified/may-2024/8633/how-to-improve-athletic-performance-using-the-ace-integrated-fitness-training-model/",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Farmer's Carry",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "Farmers_Walk",
+            "name": "Farmer's Walk"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Back Extension",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "Hyperextensions_Back_Extensions",
+            "name": "Hyperextensions (Back Extensions)"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "KB Swings",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "family_kettlebell_swing",
+            "name": "Kettlebell swing"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "KB Halos",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; its split depends on your program.",
+        "candidates": [
+          {
+            "id": "family_kettlebell_halo",
+            "name": "Kettlebell halo"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "greenway run",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Bosu Leg Raises",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Ab/Adductors",
+      "expected": null,
+      "group": "expansion-abstention",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not bench press",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Barbell_Bench_Press_-_Medium_Grip",
+            "name": "Barbell Bench Press - Medium Grip",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not leg press",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Leg_Press",
+            "name": "Leg Press",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "leg press +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not barbell curl",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "barbell curl and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "barbell curl rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "barbell curl 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Barbell_Curl",
+            "name": "Barbell Curl",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "barbell curl +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not plank",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "plank +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not deadlift",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadlift and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadlift rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadlift 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "Barbell_Deadlift",
+            "name": "Barbell Deadlift",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "deadlift +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not dips",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "not outdoor run",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "outdoor run and burpees",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "outdoor run rehab mystery",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "outdoor run 不",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [
+          {
+            "id": "family_outdoor_run",
+            "name": "Outdoor running",
+            "distance": 2
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "outdoor run +",
+      "expected": null,
+      "group": "adversarial",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "No verified exact name or alias; confirm the activity.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "KB Swings",
+      "categories": [
+        "kettlebs",
+        "legs"
+      ],
+      "exerciseSplitOverrides": {
+        "family_kettlebell_swing": [
+          "kettlebs"
+        ]
+      },
+      "expected": [
+        "kettlebs"
+      ],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [
+          "kettlebs"
+        ],
+        "exerciseId": "family_kettlebell_swing",
+        "reason": "Your saved split mapping for this recognized activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "Back Extension",
+      "categories": [
+        "push",
+        "pull"
+      ],
+      "exerciseSplitOverrides": {
+        "Hyperextensions_Back_Extensions": [
+          "push"
+        ]
+      },
+      "expected": [
+        "push"
+      ],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [
+          "push"
+        ],
+        "exerciseId": "Hyperextensions_Back_Extensions",
+        "reason": "Your saved split mapping for this recognized activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "KB Swings",
+      "exerciseSplitOverrides": {
+        "family_kettlebell_swing": []
+      },
+      "expected": [],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [],
+        "exerciseId": "family_kettlebell_swing",
+        "reason": "Your saved split mapping for this recognized activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "KB Swings",
+      "exerciseSplitOverrides": {
+        "family_kettlebell_swing": [
+          "deleted"
+        ]
+      },
+      "expected": null,
+      "group": "override",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "A saved split no longer exists; review the assignment.",
+        "candidates": [],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "bench press",
+      "confirmedSplits": [],
+      "exerciseSplitOverrides": {
+        "Barbell_Bench_Press_-_Medium_Grip": [
+          "pull"
+        ]
+      },
+      "expected": [],
+      "group": "override",
+      "result": {
+        "status": "confirmed",
+        "splits": [],
+        "reason": "Your explicit choice for this activity.",
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "dips",
+      "categories": [
+        "Chest",
+        "Arms"
+      ],
+      "expected": null,
+      "group": "mapping",
+      "result": {
+        "status": "ask",
+        "splits": [],
+        "reason": "Recognized exercise; your split labels need a mapping.",
+        "candidates": [
+          {
+            "id": "family_dip",
+            "name": "Dip family"
+          }
+        ],
+        "confidence": null
+      },
+      "correct": true
+    },
+    {
+      "name": "DB Bench Press",
+      "categories": [
+        "PUSH DAY"
+      ],
+      "expected": [
+        "PUSH DAY"
+      ],
+      "group": "mapping",
+      "result": {
+        "status": "suggest",
+        "splits": [
+          "PUSH DAY"
+        ],
+        "exerciseId": "Dumbbell_Bench_Press",
+        "reason": "Split classification based on Dumbbell Bench Press; exact setup is not inferred.",
+        "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Bench_Press.json",
+        "confidence": null
+      },
+      "correct": true
+    }
+  ]
+}

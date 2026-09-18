@@ -11,3 +11,7 @@ _archive/
 
 # HTML experiments
 learning htmls/
+
+# Local classifier research derived from personal workout history
+_docs/split-classifier/real-log-*.json
+_docs/split-classifier/NAME-REVIEW.md

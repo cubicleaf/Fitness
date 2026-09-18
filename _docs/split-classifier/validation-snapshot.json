@@ -1,0 +1,47 @@
+{
+  "version": "prototype-2",
+  "date": "2026-09-17",
+  "independentReview": "pending; no independent reviewer has labeled a fresh holdout",
+  "sha256": {
+    "classifier.mjs": "c13b7aa90f36d89d7b477f20e5716e92c3aa8659653a4106b1d668d3982deb2a",
+    "catalog.json": "be824cb328f4a7bc66693e607f30ff8dea7ac005d459a6e576924bfd74a49e30",
+    "cases.json": "600d71ee3b8a082be47de0c66f0e87796894e22eaa3ac7dc30a7ea52ba05e68d"
+  },
+  "groups": {
+    "common": {
+      "cases": 35,
+      "pass": 35,
+      "suggestions": 35
+    },
+    "abstention": {
+      "cases": 22,
+      "pass": 22,
+      "suggestions": 0
+    },
+    "mapping": {
+      "cases": 8,
+      "pass": 8,
+      "suggestions": 5
+    },
+    "override": {
+      "cases": 8,
+      "pass": 8,
+      "suggestions": 0
+    },
+    "expansion": {
+      "cases": 7,
+      "pass": 7,
+      "suggestions": 7
+    },
+    "expansion-abstention": {
+      "cases": 7,
+      "pass": 7,
+      "suggestions": 0
+    },
+    "adversarial": {
+      "cases": 35,
+      "pass": 35,
+      "suggestions": 0
+    }
+  }
+}

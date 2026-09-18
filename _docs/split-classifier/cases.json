@@ -1,0 +1,792 @@
+[
+  {
+    "name": "Bench Press",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "DB bench",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "benchpress",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Incline Benchpress",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Decline Bench press",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "dumbbell shoulder press",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "OHP",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "push-ups",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "triceps pushdown",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "skull crushers",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "lateral raises",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "dumbbell fly",
+    "expected": [
+      "push"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "BB row",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Cable Row",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "lat pulldown",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Chin-ups",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "pullups",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Barbell Curl",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Hammer Curls",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Preacher curls",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "face pulls",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "reverse fly",
+    "expected": [
+      "pull"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "Goblet Squat",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "leg press",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "leg extensions",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "hamstring curls",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "calf raises",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "hip thrust",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "back squat",
+    "expected": [
+      "legs"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "plank",
+    "expected": [
+      "core"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "deadbugs",
+    "expected": [
+      "core"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "cable crunch",
+    "expected": [
+      "core"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "rowing machine",
+    "expected": [
+      "cardio"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "treadmill run",
+    "expected": [
+      "cardio"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "cycling",
+    "expected": [
+      "cardio"
+    ],
+    "group": "common"
+  },
+  {
+    "name": "press",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "curl",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "row",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "deadlift",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "RDL",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "clean and press",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "squat to press",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "plank row",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "bench press with band pull apart",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "not bench press",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "reverse bench press",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "leg crul",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "skulcrusher",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "cable rw",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "custom exercise 123",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "45\u00b0 chinups",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Ab/Adductors",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Kneeling Swings",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Plank Pullthru",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Meditation",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Sauna",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "Decompression",
+    "expected": null,
+    "group": "abstention"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Upper Body",
+      "Lower Body"
+    ],
+    "expected": [
+      "Upper Body"
+    ],
+    "group": "mapping"
+  },
+  {
+    "name": "leg press",
+    "categories": [
+      "Push",
+      "Pull",
+      "Legs"
+    ],
+    "expected": [
+      "Legs"
+    ],
+    "group": "mapping"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Chest",
+      "Arms",
+      "Back"
+    ],
+    "expected": [
+      "Chest"
+    ],
+    "group": "mapping"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Workout A",
+      "Workout B"
+    ],
+    "expected": null,
+    "group": "mapping"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Push",
+      "Upper",
+      "Chest"
+    ],
+    "expected": [
+      "Push",
+      "Upper",
+      "Chest"
+    ],
+    "group": "mapping"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Rest"
+    ],
+    "expected": null,
+    "group": "mapping"
+  },
+  {
+    "name": "mystery move",
+    "categories": [
+      "Workout A"
+    ],
+    "confirmedSplits": [
+      "Workout A"
+    ],
+    "expected": [
+      "Workout A"
+    ],
+    "group": "override"
+  },
+  {
+    "name": "bench press",
+    "confirmedSplits": [],
+    "expected": [],
+    "group": "override"
+  },
+  {
+    "name": "bench press",
+    "categories": [
+      "Push"
+    ],
+    "confirmedSplits": [
+      "Deleted split"
+    ],
+    "expected": null,
+    "group": "override"
+  },
+  {
+    "name": "Decline Pushups",
+    "expected": [
+      "push"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "Preacher Curl Machine",
+    "expected": [
+      "pull"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "Seated Cable Chest Press",
+    "expected": [
+      "push"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "MTS Decline Press",
+    "expected": [
+      "push"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "Glute Drive",
+    "expected": [
+      "legs"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "dips",
+    "expected": [
+      "push"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "Outdoor Run",
+    "expected": [
+      "cardio"
+    ],
+    "group": "expansion"
+  },
+  {
+    "name": "Farmer's Carry",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "Back Extension",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "KB Swings",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "KB Halos",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "greenway run",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "Bosu Leg Raises",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "Ab/Adductors",
+    "expected": null,
+    "group": "expansion-abstention"
+  },
+  {
+    "name": "not bench press",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "bench press and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "bench press rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "bench press \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "bench press +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not leg press",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "leg press and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "leg press rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "leg press \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "leg press +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not barbell curl",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "barbell curl and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "barbell curl rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "barbell curl \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "barbell curl +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not plank",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "plank and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "plank rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "plank \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "plank +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not deadlift",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "deadlift and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "deadlift rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "deadlift \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "deadlift +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not dips",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "dips and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "dips rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "dips \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "dips +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "not outdoor run",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "outdoor run and burpees",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "outdoor run rehab mystery",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "outdoor run \u4e0d",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "outdoor run +",
+    "expected": null,
+    "group": "adversarial"
+  },
+  {
+    "name": "KB Swings",
+    "categories": [
+      "kettlebs",
+      "legs"
+    ],
+    "exerciseSplitOverrides": {
+      "family_kettlebell_swing": [
+        "kettlebs"
+      ]
+    },
+    "expected": [
+      "kettlebs"
+    ],
+    "group": "override"
+  },
+  {
+    "name": "Back Extension",
+    "categories": [
+      "push",
+      "pull"
+    ],
+    "exerciseSplitOverrides": {
+      "Hyperextensions_Back_Extensions": [
+        "push"
+      ]
+    },
+    "expected": [
+      "push"
+    ],
+    "group": "override"
+  },
+  {
+    "name": "KB Swings",
+    "exerciseSplitOverrides": {
+      "family_kettlebell_swing": []
+    },
+    "expected": [],
+    "group": "override"
+  },
+  {
+    "name": "KB Swings",
+    "exerciseSplitOverrides": {
+      "family_kettlebell_swing": [
+        "deleted"
+      ]
+    },
+    "expected": null,
+    "group": "override"
+  },
+  {
+    "name": "bench press",
+    "confirmedSplits": [],
+    "exerciseSplitOverrides": {
+      "Barbell_Bench_Press_-_Medium_Grip": [
+        "pull"
+      ]
+    },
+    "expected": [],
+    "group": "override"
+  },
+  {
+    "name": "dips",
+    "categories": [
+      "Chest",
+      "Arms"
+    ],
+    "expected": null,
+    "group": "mapping"
+  },
+  {
+    "name": "DB Bench Press",
+    "categories": [
+      "PUSH DAY"
+    ],
+    "expected": [
+      "PUSH DAY"
+    ],
+    "group": "mapping"
+  }
+]

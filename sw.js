@@ -7,7 +7,7 @@
 /* Bump this whenever a cached supporting asset changes (e.g. seed-data.csv).
    Supporting assets are served stale-while-revalidate, so without a bump an old
    copy can outlive the deploy that replaced it. */
-var CACHE = 'fitlogs-v4';
+var CACHE = 'fitlogs-v5';
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
