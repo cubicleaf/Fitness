@@ -11,3 +11,6 @@ _archive/
 
 # HTML experiments
 learning htmls/
+
+# Local screenshot archive — kept on disk, never deployed or pushed
+old images/
