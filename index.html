@@ -3624,40 +3624,6 @@ const formatCategories = exercise => {
 };
 const normalizeFamilyName = name => (name || '').trim().replace(/\s+/g, ' ');
 const normalizeFamilyKey = name => normalizeFamilyName(name).toLowerCase();
-const inferMovementFamilyName = activityName => {
-  const lower = (activityName || '').toLowerCase().replace(/[–—-]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (!lower) return '';
-  const rules = [{
-    match: ['pulldown', 'pull down', 'lat pull'],
-    family: 'Pulldown'
-  }, {
-    match: ['pull up', 'pullup', 'chin up', 'chinup'],
-    family: 'Pull-up'
-  }, {
-    match: ['row'],
-    family: 'Row'
-  }, {
-    match: ['bench', 'press'],
-    family: 'Press'
-  }, {
-    match: ['squat'],
-    family: 'Squat'
-  }, {
-    match: ['deadlift', 'rdl', 'romanian deadlift', 'hinge'],
-    family: 'Hinge'
-  }, {
-    match: ['curl'],
-    family: 'Curl'
-  }, {
-    match: ['run', 'running'],
-    family: 'Run'
-  }, {
-    match: ['sauna'],
-    family: 'Sauna'
-  }];
-  const found = rules.find(rule => rule.match.some(token => lower.includes(token)));
-  return found ? found.family : '';
-};
 const inferMeasurementModes = exercise => {
   if (Array.isArray(exercise?.measurementModes) && exercise.measurementModes.length > 0) return exercise.measurementModes;
   const base = exercise?.type === 'timed' ? 'timed' : exercise?.type === 'neutral' ? 'neutral' : 'reps';
@@ -3978,26 +3944,10 @@ const ensureMovementFamilyRecord = async familyName => {
 };
 const migrateActivityModel = async () => {
   const exercises = await dbOps.exercises.getAll();
-  const existingFamilies = await dbOps.families.getAll();
-  const familyMap = new Map(existingFamilies.map(f => [normalizeFamilyKey(f.name), f]));
   for (const exercise of exercises) {
     const normalized = withNormalizedExerciseFields(exercise);
-    const inferredFamily = normalized.movementFamilyName || inferMovementFamilyName(normalized.name);
-    if (!normalized.movementFamilyId && inferredFamily) {
-      const key = normalizeFamilyKey(inferredFamily);
-      let family = familyMap.get(key);
-      if (!family) {
-        family = {
-          id: generateId('fam'),
-          name: normalizeFamilyName(inferredFamily),
-          createdAt: Date.now()
-        };
-        await dbOps.families.add(family);
-        familyMap.set(key, family);
-      }
-      normalized.movementFamilyId = family.id;
-      normalized.movementFamilyName = family.name;
-    }
+    // Do not infer, repair, merge, or create family links here. Existing links
+    // remain intact for the person to review one activity at a time.
     if (JSON.stringify(normalized.measurementModes) !== JSON.stringify(exercise.measurementModes) || normalized.gripTrackingEnabled !== exercise.gripTrackingEnabled || normalized.movementFamilyId !== exercise.movementFamilyId || normalized.movementFamilyName !== exercise.movementFamilyName || normalized.variationLabel !== exercise.variationLabel) {
       await dbOps.exercises.update(normalized);
     }
@@ -4639,15 +4589,8 @@ const activitySearchScore = (exercise, rawQuery) => {
   const compactQuery = query.replace(/\s/g, '');
   const queryTokens = canonicalActivitySearchTokens(query);
   const name = normalizeActivitySearch(exercise?.name || exercise?.exerciseName);
-  const family = normalizeActivitySearch(exercise?.movementFamilyName);
-  const variation = normalizeActivitySearch(exercise?.variationLabel);
-  const categories = normalizeActivitySearch(getExCategories(exercise).join(' '));
-  const inferredCategories = normalizeActivitySearch(lookupSplitCategories(name).join(' '));
-  const type = normalizeActivitySearch(exercise?.type);
   const compactName = name.replace(/\s/g, '');
   const nameTokens = canonicalActivitySearchTokens(name);
-  const allFields = [name, family, variation, categories, inferredCategories, type].filter(Boolean).join(' ');
-  const allTokens = new Set(canonicalActivitySearchTokens(allFields));
 
   if (name === query) return 1000;
   if (compactName === compactQuery) return 975;
@@ -4655,17 +4598,9 @@ const activitySearchScore = (exercise, rawQuery) => {
   if (name.includes(query)) return 875;
   if (compactName.includes(compactQuery)) return 850;
   if (queryTokens.length && queryTokens.every(token => nameTokens.includes(token))) return 825;
-  if (variation === query || family === query) return 775;
-  if (variation.includes(query)) return 725;
-  if (family.includes(query)) return 700;
-  if (categories.includes(query)) return 625;
-  if (inferredCategories.includes(query)) return 575;
-  if (queryTokens.length && queryTokens.every(token => allTokens.has(token))) return 525;
-
-  // Everything above needs the query to appear whole, or its tokens to match a
-  // name token exactly. That returned nothing for a partial word ("dumb should"),
-  // a single typo ("skulcrusher") or gym shorthand ("bb row") — and an empty
-  // result invites creating a duplicate of an activity that is already there.
+  // Search is intentionally name-only. A family, split, or label must not
+  // cause an unrelated activity to appear just because it shares a word.
+  // We still retain small typo/abbreviation help for the activity name itself.
   // Whole-name near-match, spaces removed: catches a typo in a run-together
   // query ("clafraises" for "Calf Raises") that no per-token rule can see,
   // because the query is one token and the name is two.
@@ -4675,22 +4610,16 @@ const activitySearchScore = (exercise, rawQuery) => {
   }
 
   const nameTokenList = Array.from(nameTokens);
-  const allTokenList = Array.from(allTokens);
   const aliasTokens = expandActivityAliases(queryTokens);
   const aliasChanged = aliasTokens.length !== queryTokens.length || aliasTokens.some((token, index) => token !== queryTokens[index]);
 
   if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 800;
   if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 780;
   if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList) || tokenFuzzyMatches(token, nameTokenList))) return 650;
-  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 500;
-  if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 480;
-  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList) || tokenFuzzyMatches(token, allTokenList))) return 420;
   if (queryTokens.every(token => tokenSubsequenceMatches(token, nameTokenList))) return 380;
-  if (type.includes(query)) return 300;
-  if (queryTokens.every(token => tokenSubsequenceMatches(token, allTokenList))) return 250;
   return 0;
 };
-const compareActivitySearchResults = (a, b) => b._searchScore - a._searchScore || String(b.lastUsed || '').localeCompare(String(a.lastUsed || '')) || (b.createdAt || 0) - (a.createdAt || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
+const compareActivitySearchResults = (a, b) => (b._usageCount || 0) - (a._usageCount || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
 
 const ExercisePickerModal = ({
   onSelect,
@@ -4707,6 +4636,7 @@ const ExercisePickerModal = ({
   const [category, setCategory] = useState(defaultCategory || 'all');
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [usageByExerciseId, setUsageByExerciseId] = useState({});
   const [isLoadingExercises, setIsLoadingExercises] = useState(true);
   const [exerciseLoadError, setExerciseLoadError] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -4723,8 +4653,20 @@ const ExercisePickerModal = ({
       // lastUsed field. The duplicate checker already reads the full store;
       // using the lastUsed index here made those same activities disappear.
       try {
-        const all = await dbOps.exercises.getAll();
-        setExercises((all || []).sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '') || (b.createdAt || 0) - (a.createdAt || 0)));
+        const [all, allSets] = await Promise.all([dbOps.exercises.getAll(), dbOps.sets.getAll()]);
+        const usage = (allSets || []).reduce((counts, set) => {
+          // Count actual logged work, not neutral placeholders or a temporary
+          // presence marker. This is the number the picker uses everywhere.
+          if (set?.exerciseId && !isNeutralAnchorSet(set) && !isPresenceOnlySet(set)) {
+            counts[set.exerciseId] = (counts[set.exerciseId] || 0) + 1;
+          }
+          return counts;
+        }, {});
+        setUsageByExerciseId(usage);
+        setExercises((all || []).map(exercise => ({
+          ...exercise,
+          _usageCount: usage[exercise.id] || 0
+        })));
         setExerciseLoadError(false);
       } catch (error) {
         console.error('Unable to load activities for search', error);
@@ -4742,24 +4684,23 @@ const ExercisePickerModal = ({
     // In pairing mode: show ALL timed exercises except the source
     if (pairingSource) {
       result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
-    } else if (selectedFamilyId) {
-      result = result.filter(e => (e.movementFamilyId || e.movementFamilyName) === selectedFamilyId);
-    } else if (!q && category !== 'all') {
-      // Was a hard filter, which is why an activity you had genuinely logged was
-      // simply absent until you searched for it: anything with no split, another
-      // split, or different capitalisation vanished. A split is a label, not a
-      // locked list — so it now sorts to the top instead of hiding the rest.
+    } else if (category !== 'all') {
+      // A chosen split is a true picker boundary. It applies both before and
+      // during a search: when today is Push, only activities explicitly tagged
+      // Push belong in this list.
       const inSplit = e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase());
-      result = [...result].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0));
+      result = result.filter(inSplit);
     }
     if (q) {
       result = result.map(exercise => ({
         ...exercise,
         _searchScore: activitySearchScore(exercise, q)
       })).filter(exercise => exercise._searchScore > 0).sort(compareActivitySearchResults);
+    } else {
+      result = [...result].sort(compareActivitySearchResults);
     }
     setFiltered(result);
-  }, [exercises, search, category, pairingSource, selectedFamilyId]);
+  }, [exercises, search, category, pairingSource, selectedFamilyId, usageByExerciseId]);
   const [sortedCategories, setSortedCategories] = useState(categories);
   const [showEditCategories, setShowEditCategories] = useState(false);
 
@@ -4804,7 +4745,10 @@ const ExercisePickerModal = ({
   const visibleActivities = filtered;
   // Category/family matches are discovery results, not evidence of a duplicate.
   // Keep the repair prompt limited to direct activity-name matches.
-  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered.filter(ex => (ex._searchScore || 0) >= 825) : [];
+  // A broad search like "press" is a discovery query, never evidence that
+  // every press is a duplicate. Only an exact normalized activity name earns
+  // the optional merge repair prompt.
+  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered.filter(ex => normalizeActivitySearch(getActivityName(ex)) === queryText) : [];
   const mergePrompt = onOpenMerge && mergeCandidates.length >= 2 ? /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
@@ -4836,26 +4780,6 @@ const ExercisePickerModal = ({
       WebkitAppearance: 'none'
     }
   }, "Merge activities")) : null;
-  const familyBack = selectedFamilyId ? /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: () => {
-      setSelectedFamilyId(null);
-      setSearch('');
-      setCategory(defaultCategory || 'all');
-    },
-    style: {
-      width: '100%',
-      marginBottom: '10px',
-      padding: '10px 12px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-      color: 'var(--accent-soft)',
-      textAlign: 'left',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "← All matching activities") : null;
   const renderActivityRow = ex => {
     const meta = /*#__PURE__*/React.createElement("div", {
       style: {
@@ -4952,13 +4876,10 @@ const ExercisePickerModal = ({
     }, meta, pairButton, lineageButton);
   };
 
-  // Families are shown expanded, head plus variants, rather than as a shell you
-  // have to tap through. This applies to search results AND to a split/category
-  // tab — previously a category tab showed a flat list with no family context at
-  // all, and a search showed a family you had to open before seeing what was in
-  // it.
+  // Families are compact doors, not expanded stacks. One row per family keeps
+  // the main scroll useful; the explicit button opens the variants in a modal.
   const buildSections = (list, keyPrefix) => {
-    if (pairingSource || selectedFamilyId) return list.map(renderActivityRow);
+    if (pairingSource) return list.map(renderActivityRow);
     const order = [];
     const byKey = {};
     list.forEach(ex => {
@@ -4976,7 +4897,7 @@ const ExercisePickerModal = ({
     });
     const grouped = new Set(order.flatMap(family => family.members.map(ex => ex.id)));
     const loose = list.filter(ex => !grouped.has(ex.id));
-    const familyCards = order.map(family => /*#__PURE__*/React.createElement("div", {
+    const familyCards = order.sort((a, b) => Math.max(...b.members.map(ex => ex._usageCount || 0)) - Math.max(...a.members.map(ex => ex._usageCount || 0)) || a.name.localeCompare(b.name)).map(family => /*#__PURE__*/React.createElement("div", {
       key: `${keyPrefix}-family-${family.id}`,
       style: {
         marginBottom: '12px',
@@ -5006,10 +4927,8 @@ const ExercisePickerModal = ({
       type: "button",
       onClick: () => {
         setSelectedFamilyId(family.id);
-        setSearch('');
-        setCategory(defaultCategory || 'all');
       },
-      "aria-label": `Show only the ${family.name} family`,
+      "aria-label": `Show ${family.members.length} variants in the ${family.name} family`,
       style: {
         minHeight: '32px',
         padding: '0 12px',
@@ -5023,11 +4942,7 @@ const ExercisePickerModal = ({
         cursor: 'pointer',
         WebkitAppearance: 'none'
       }
-    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants')), /*#__PURE__*/React.createElement("div", {
-      style: {
-        padding: '4px 6px 6px'
-      }
-    }, family.members.map(renderActivityRow))));
+    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants'))));
     return [...familyCards, ...loose.map(renderActivityRow)];
   };
 
@@ -5051,18 +4966,9 @@ const ExercisePickerModal = ({
     }
   }));
 
-  // With no search and a split selected, the split's activities lead and the
-  // rest follow under a divider. Nothing is filtered out of reach.
-  const splitIsActive = !pairingSource && !selectedFamilyId && !queryText && category !== 'all';
-  const matchesActiveSplit = ex => getExCategories(ex).some(c => c.toLowerCase() === category.toLowerCase());
-  const activitySections = splitIsActive ? (() => {
-    const inSplit = visibleActivities.filter(matchesActiveSplit);
-    const others = visibleActivities.filter(ex => !matchesActiveSplit(ex));
-    const parts = [];
-    if (inSplit.length > 0) parts.push(sectionHeading(category), ...buildSections(inSplit, 'split'));
-    if (others.length > 0) parts.push(sectionHeading(inSplit.length > 0 ? 'Everything else' : `Nothing tagged ${category} yet — everything else`), ...buildSections(others, 'other'));
-    return parts;
-  })() : buildSections(visibleActivities, 'all');
+  const activitySections = buildSections(visibleActivities, 'all');
+  const selectedFamily = selectedFamilyId ? familyMap[selectedFamilyId] : null;
+  const selectedFamilyVariants = selectedFamily ? visibleActivities.filter(ex => (ex.movementFamilyId || ex.movementFamilyName) === selectedFamilyId).sort(compareActivitySearchResults) : [];
 
   if (showEditCategories) {
     return /*#__PURE__*/React.createElement(EditCategoriesModal, {
@@ -5230,7 +5136,7 @@ const ExercisePickerModal = ({
     className: "section-title"
     // The list always holds every activity now, so the outer title no longer
     // names the split — the split has its own heading inside the list.
-  }, selectedFamilyId ? `Family: ${familyMap[selectedFamilyId]?.name || 'Selected'}` : pairingSource ? 'Select activity to pair with' : queryText ? 'Matches' : 'All Activities'), familyBack, !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, pairingSource ? 'Select activity to pair with' : queryText ? 'Matches' : category !== 'all' ? category : 'All Activities'), !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)',
@@ -5243,7 +5149,29 @@ const ExercisePickerModal = ({
       marginTop: 20,
       marginBottom: 20
     }
-  }, search ? 'No saved activities match. Create a new activity above.' : 'No activities yet. Create one above!'))));
+  }, search ? 'No saved activities match. Create a new activity above.' : category !== 'all' ? `No activities are assigned to ${category}.` : 'No activities yet. Create one above!'), selectedFamily && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: () => setSelectedFamilyId(null)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(() => setSelectedFamilyId(null))), /*#__PURE__*/React.createElement("h2", null, selectedFamily.name), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close variants",
+    onClick: () => setSelectedFamilyId(null)
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      marginBottom: '12px'
+    }
+  }, selectedFamilyVariants.length, selectedFamilyVariants.length === 1 ? ' variant' : ' variants · most logged first'), selectedFamilyVariants.map(renderActivityRow)))))));
 };
 const ActivitySplitHelper = (() => {
 // Pure offline prototype. Catalog is injected so the eventual app can inline it.
@@ -6404,8 +6332,6 @@ const CreateExerciseModal = ({
   const [dupMatches, setDupMatches] = useState([]);
   const [showDupPanel, setShowDupPanel] = useState(false);
   const [allExercises, setAllExercisesLocal] = useState([]);
-  const [movementFamilyName, setMovementFamilyName] = useState('');
-  const [variationLabel, setVariationLabel] = useState('');
   const [gripTrackingEnabled, setGripTrackingEnabled] = useState(false);
   const [gripAnswered, setGripAnswered] = useState(false);
   const [showGripSection, setShowGripSection] = useState(false);
@@ -6479,10 +6405,6 @@ const CreateExerciseModal = ({
     // person's manual selection intact, but close the old explanation while
     // they type a different activity.
     setSplitHelperOpen(false);
-    if (!movementFamilyName.trim()) {
-      const inferredFamily = inferMovementFamilyName(val);
-      if (inferredFamily) setMovementFamilyName(inferredFamily);
-    }
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
@@ -6493,7 +6415,9 @@ const CreateExerciseModal = ({
     const barSelection = weightMeaning === 'bar' ? resolveBarSelection(barType, customBarWeight) : null;
     const finalWeightMeaning = barSelection ? barSelection.weightMeaning : weightMeaning || 'total';
     const finalType = type || 'reps';
-    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName || movementFamilyName);
+    // New activities start standalone unless this exact user action explicitly
+    // supplied a family. Names are never used to manufacture a relationship.
+    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName);
     const familyRecord = resolvedFamilyName ? await ensureMovementFamilyRecord(resolvedFamilyName) : null;
     const exercise = {
       id: generateId('ex'),
@@ -6509,7 +6433,7 @@ const CreateExerciseModal = ({
       variationOf: opts.variationOf || null,
       movementFamilyId: familyRecord?.id || null,
       movementFamilyName: familyRecord?.name || '',
-      variationLabel: (opts.variationLabel || variationLabel || '').trim(),
+      variationLabel: (opts.variationLabel || '').trim(),
       gripTrackingEnabled: finalType !== 'neutral' && !!gripTrackingEnabled,
       // Explicit answer, so the name heuristic never overrides it later.
       gripTracking: finalType === 'neutral' ? 'off' : gripTrackingEnabled ? 'on' : 'off',
@@ -11774,19 +11698,16 @@ const DayDetailModal = ({
     const load = async () => {
       const allExercises = await dbOps.exercises.getAll();
       const splitLower = dayLabel.toLowerCase();
-      // Two bugs lived here. This filtered the list down to the split, so an
-      // activity you had actually done was simply missing from the suggestions;
-      // and it compared raw stored categories against a lowercased split, so a
-      // category saved as "Arms" never matched the split "arms" at all. Same
-      // rule as the Add Activity list now: split first, everything still present.
+      // The Day Detail activity tab belongs to its selected split. Keep the
+      // comparison case-insensitive for imported/legacy category spelling, but
+      // do not carry unrelated activities into this list as lower-priority rows.
       const inSplit = ex => getExCategories(ex).some(c => String(c).toLowerCase() === splitLower);
       const byRecency = (a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '');
-      const matching = [...allExercises].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0) || byRecency(a, b));
+      const matching = allExercises.filter(inSplit).sort(byRecency);
       setActivities(matching);
       const histMap = {};
       const noteMap = {};
-      // Now that the list is no longer cut down to one split, this walks every
-      // activity — so the reads run together instead of ~70 serial round trips.
+      // Fetch each matching activity's context concurrently.
       await Promise.all(matching.map(async ex => {
         const [allSets, notes] = await Promise.all([dbOps.sets.getByExerciseId(ex.id), dbOps.sessionNotes.getByExerciseId(ex.id)]);
         const byDate = {};
@@ -14169,7 +14090,7 @@ const CreateVariationModal = ({
 }) => {
   const [name, setName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
-  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
+  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
   const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
   const handleSave = async () => {
     if (!name.trim()) return;
@@ -14263,11 +14184,11 @@ const ActivityLineageModal = ({
   const [step, setStep] = useState('menu');
   const [familyAnchors, setFamilyAnchors] = useState([]);
   const [selectedAnchorId, setSelectedAnchorId] = useState('');
-  const [newFamilyName, setNewFamilyName] = useState(inferMovementFamilyName(exercise?.name) || '');
+  const [newFamilyName, setNewFamilyName] = useState('');
   const [newVariantName, setNewVariantName] = useState('');
   const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
   const [variantFamilyId, setVariantFamilyId] = useState(exercise?.movementFamilyId || '');
-  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
+  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || '');
   useEffect(() => {
     (async () => {
       const all = (await dbOps.exercises.getAll()).filter(ex => ex.id !== exercise.id && ex.type !== 'neutral');
