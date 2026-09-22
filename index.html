@@ -154,6 +154,84 @@
             font-size: 20px;
         }
 
+        /* Settings keeps binary choices as two distinct, equally weighted
+           controls. The fixed-corner SVG plate makes their corners read the
+           same at phone and desktop widths. */
+        .settings-segmented {
+            display: flex;
+            gap: 6px;
+        }
+
+        .settings-segment-option,
+        .coach-model-option {
+            --svg-plate-fill: rgba(255,255,255,0.045);
+            --svg-plate-stroke: color-mix(in srgb, var(--accent) 24%, transparent);
+            --svg-plate-r: 12px;
+            border: none !important;
+            border-radius: 12px;
+            background: var(--svg-plate-fill);
+            transition: color 0.2s ease, transform 0.15s ease;
+        }
+
+        .settings-segment-option.is-selected,
+        .coach-model-option.is-selected {
+            --svg-plate-fill: color-mix(in srgb, var(--accent) 76%, var(--accent-bright));
+            --svg-plate-stroke: color-mix(in srgb, var(--accent-soft) 44%, transparent);
+        }
+
+        .coach-model-option.is-selected {
+            --svg-plate-fill: color-mix(in srgb, var(--accent) 28%, var(--surface));
+        }
+
+        .settings-segment-option:active,
+        .coach-model-option:active {
+            transform: scale(0.985);
+        }
+
+        .svg-plate-control {
+            position: relative;
+            isolation: isolate;
+            background: transparent !important;
+        }
+
+        .svg-corner-plate {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .svg-corner-plate-fill {
+            fill: var(--svg-plate-fill);
+            transition: fill 0.22s ease;
+        }
+
+        .svg-corner-plate-stroke {
+            fill: none;
+            stroke: var(--svg-plate-stroke);
+            stroke-width: 1;
+            transition: stroke 0.22s ease;
+        }
+
+        .feedback-settings-btn {
+            min-height: 36px;
+            padding: 0 10px;
+            border: none;
+            background: transparent;
+            color: var(--accent-soft);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .feedback-settings-btn:active {
+            color: var(--text-bright);
+        }
+
         /* ---- Demo mode ---- */
         .demo-chip {
             display: flex;
@@ -691,6 +769,65 @@
             box-shadow: 0 1px 6px rgba(12, 6, 10, 0.3);
             cursor: pointer;
             border: 2px solid rgba(255,255,255,0.15);
+        }
+
+        /* First-log hint: the vibe dial breathes until the dial is actually
+           touched. Persistent rather than one-shot on purpose — the point is to
+           hold a beat for the question, not to flash once and vanish. */
+        .mood-slider.is-hinting::-webkit-slider-thumb {
+            animation: vibeThumbBreathe 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes vibeThumbBreathe {
+            0%, 100% {
+                box-shadow: 0 1px 6px rgba(12, 6, 10, 0.3),
+                            0 0 0 0 color-mix(in srgb, var(--accent-soft) 40%, transparent);
+            }
+            50% {
+                box-shadow: 0 1px 6px rgba(12, 6, 10, 0.3),
+                            0 0 0 7px color-mix(in srgb, var(--accent-soft) 0%, transparent);
+            }
+        }
+
+        .vibe-hint-prompt {
+            font-size: 11px;
+            letter-spacing: 0.02em;
+            color: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+            text-align: center;
+            margin-top: 6px;
+            pointer-events: none;
+            animation: vibePromptIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.35s both;
+        }
+
+        @keyframes vibePromptIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Companion cue for the card as a whole: a slow halo that runs twice and
+           then retires on its own, so the outline reads as new without competing
+           with the dial for attention. */
+        .exercise-group-firstlog::after {
+            box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-soft) 55%, transparent),
+                        0 0 18px color-mix(in srgb, var(--accent-soft) 26%, transparent);
+            opacity: 0;
+            animation: firstLogHalo 1.6s cubic-bezier(0.4, 0, 0.2, 1) 2 both;
+        }
+
+        @keyframes firstLogHalo {
+            0%, 100% { opacity: 0; }
+            45%      { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mood-slider.is-hinting::-webkit-slider-thumb,
+            .exercise-group-firstlog::after,
+            .vibe-hint-prompt {
+                animation: none !important;
+            }
+            .exercise-group-firstlog::after {
+                opacity: 0.6;
+            }
         }
 
         .sound-slider {
@@ -1337,6 +1474,111 @@
             75% { transform: translate(0, var(--travel-y)); }
         }
 
+        /* Picker chips: Load and Grip used to occupy two full-width blocks at
+           the top of the weight picker before the first number was reachable.
+           They are now two bubble buttons that open a sheet. */
+        .picker-chip-row {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .picker-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            min-width: 48px;
+            min-height: 44px;
+            padding: 0;
+            border: none;
+            background: none;
+            color: var(--accent-soft);
+            font-family: inherit;
+            cursor: pointer;
+            -webkit-appearance: none;
+            transition: color 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .picker-chip:active {
+            transform: scale(0.95);
+        }
+
+        .picker-chip.is-set {
+            color: var(--text-bright);
+        }
+
+        .picker-chip-label {
+            display: block;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: color-mix(in srgb, var(--accent-soft) 62%, transparent);
+        }
+
+        /* A sheet that opens on top of a picker modal. Bottom-anchored and only
+           as tall as its content, so the picker stays visible behind it. */
+        .picker-sheet-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            background: rgba(13, 6, 10, 0.5);
+            z-index: 200;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .picker-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: 80dvh;
+            overflow-y: auto;
+            background: var(--bg-page);
+            border-top: 1px solid color-mix(in srgb, var(--accent) 24%, transparent);
+            border-radius: 18px 18px 0 0;
+            padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+            box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.42);
+            animation: pickerSheetIn 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        @keyframes pickerSheetIn {
+            from { opacity: 0; transform: translateY(8px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .picker-sheet-grip {
+            width: 36px;
+            height: 4px;
+            border-radius: 2px;
+            margin: 4px auto 12px;
+            background: color-mix(in srgb, var(--accent) 30%, transparent);
+        }
+
+        .picker-sheet-title {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: color-mix(in srgb, var(--accent-soft) 58%, transparent);
+            margin-bottom: 10px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .picker-sheet,
+            .picker-sheet-overlay {
+                animation: none;
+            }
+            .picker-chip:active {
+                transform: none;
+            }
+        }
+
         /* Weight Picker Grid */
         .weight-grid {
             display: grid;
@@ -1345,10 +1587,15 @@
             margin-bottom: 16px;
         }
 
-        .weight-btn {
-            background: color-mix(in srgb, var(--accent) 8%, transparent);
-            border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-            border-radius: 8px;
+        .weight-btn,
+        .rep-btn,
+        .rep-suggestion {
+            --svg-plate-fill: color-mix(in srgb, var(--accent) 8%, transparent);
+            --svg-plate-stroke: color-mix(in srgb, var(--accent) 20%, transparent);
+            --svg-plate-r: 12px;
+            background: var(--svg-plate-fill);
+            border: none;
+            border-radius: 12px;
             padding: 12px;
             font-size: 14px;
             font-weight: 600;
@@ -1361,9 +1608,11 @@
             justify-content: center;
         }
 
-        .weight-btn:active {
-            background: var(--accent);
-            border-color: var(--accent);
+        .weight-btn:active,
+        .rep-btn:active,
+        .rep-suggestion:active {
+            --svg-plate-fill: var(--accent);
+            --svg-plate-stroke: var(--accent);
             color: white;
         }
 
@@ -1424,27 +1673,10 @@
         }
 
         .rep-btn {
-            background: color-mix(in srgb, var(--accent) 8%, transparent);
-            border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-            border-radius: 8px;
             padding: 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-bright);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             min-height: 44px;
             height: calc((100vh - 260px) / 6 - 5px);
             max-height: 52px;
-        }
-
-        .rep-btn:active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
         }
 
         /* Warm ember animation for reps 8-12 */
@@ -1459,14 +1691,12 @@
             96% { background: rgba(160, 50, 50, 0.06); }
         }
         .rep-btn-ember {
-            background: rgba(160, 50, 50, 0.06);
-            border-color: rgba(180,60,60,0.15);
+            --svg-plate-fill: rgba(160, 50, 50, 0.06);
+            --svg-plate-stroke: rgba(180,60,60,0.15);
             color: var(--text-bright);
             animation: repEmberShift 3s ease-in-out 3, repEmberShiftSlow 10s ease-in-out 9s infinite;
         }
         .rep-btn-ember:active {
-            background: var(--accent);
-            border-color: var(--accent);
             color: white;
             animation: none;
         }
@@ -2493,6 +2723,142 @@ const IconChevronDown = ({
 }, /*#__PURE__*/React.createElement("polyline", {
   points: "6 9 12 15 18 9"
 }));
+// A knurled handle seen end-on: the bar plus the grooves your hand sits in.
+// Placeholder until a supplied grip asset replaces it — the rest of this row
+// uses Tim's Solar two-tone set.
+const IconGrip = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style
+}, /*#__PURE__*/React.createElement("rect", {
+  x: "2.5",
+  y: "8.5",
+  width: "19",
+  height: "7",
+  rx: "3.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "8.5",
+  y1: "10.5",
+  x2: "8.5",
+  y2: "13.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "10.5",
+  x2: "12",
+  y2: "13.5"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "15.5",
+  y1: "10.5",
+  x2: "15.5",
+  y2: "13.5"
+}));
+// Supplied asset (Solar two-tone dumbbell), recolored to currentColor. The
+// half-opacity path is the bar between the bells.
+const IconDumbbell = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  fillRule: "evenodd",
+  clipRule: "evenodd",
+  d: "M22 10V14C22 14.9319 22 15.3978 21.8478 15.7654C21.6448 16.2554 21.2554 16.6448 20.7654 16.8478C20.3978 17 19.9319 17 19 17C18.0681 17 17.6022 17 17.2346 16.8478C16.7446 16.6448 16.3552 16.2554 16.1522 15.7654C16 15.3978 16 14.4319 16 13.5V10.5C16 9.56812 16 8.60218 16.1522 8.23463C16.3552 7.74458 16.7446 7.35523 17.2346 7.15224C17.6022 7 18.0681 7 19 7C19.9319 7 20.3978 7 20.7654 7.15224C21.2554 7.35523 21.6448 7.74458 21.8478 8.23463C22 8.60218 22 9.06812 22 10ZM8 10.5V13.5C8 14.4319 8 15.3978 7.84776 15.7654C7.64477 16.2554 7.25542 16.6448 6.76537 16.8478C6.39782 17 5.93188 17 5 17C4.06812 17 3.60218 17 3.23463 16.8478C2.74458 16.6448 2.35523 16.2554 2.15224 15.7654C2 15.3978 2 14.9319 2 14V10C2 9.06812 2 8.60218 2.15224 8.23463C2.35523 7.74458 2.74458 7.35523 3.23463 7.15224C3.60218 7 4.06812 7 5 7C5.93188 7 6.39782 7 6.76537 7.15224C7.25542 7.35523 7.64477 7.74458 7.84776 8.23463C8 8.60218 8 9.56812 8 10.5Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  opacity: "0.5",
+  d: "M16 10.5H8V13.5H16V10.5Z",
+  fill: "currentColor"
+}));
+// Supplied asset (Solar two-tone padlock), recolored to currentColor.
+const IconLock = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  opacity: "0.5",
+  d: "M4.03532 11.5733C4.4971 9.2644 4.72799 8.10995 5.55742 7.42997C6.38686 6.75 7.56417 6.75 9.9188 6.75H14.0812C16.4358 6.75 17.6131 6.75 18.4425 7.42997C19.272 8.10995 19.5029 9.2644 19.9646 11.5733L20.5646 14.5733C21.2287 17.8937 21.5608 19.5539 20.6606 20.652C19.7604 21.75 18.0673 21.75 14.6812 21.75H9.3188C5.93263 21.75 4.23954 21.75 3.33936 20.652C2.43919 19.5539 2.77123 17.8937 3.43532 14.5733L4.03532 11.5733Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "15",
+  cy: "9.75",
+  r: "1",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "9.75",
+  r: "1",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9.75 5.75C9.75 4.50736 10.7574 3.5 12 3.5C13.2426 3.5 14.25 4.50736 14.25 5.75V6.75H14.6812C15.058 6.75 15.4139 6.75 15.75 6.75151L15.75 5.75C15.75 3.67893 14.0711 2 12 2C9.92893 2 8.25 3.67893 8.25 5.75L8.25 6.75151C8.58613 6.75 8.94198 6.75 9.3188 6.75H9.75V5.75Z",
+  fill: "currentColor"
+}));
+// Supplied asset (Solar two-tone bag check), recolored to currentColor. It is
+// artwork only: the action button remains responsible for its own surface.
+const IconBagCheck = ({
+  size,
+  style
+}) => /*#__PURE__*/React.createElement(Icon, {
+  size: size,
+  style: style,
+  stroke: "none"
+}, /*#__PURE__*/React.createElement("path", {
+  opacity: "0.5",
+  d: "M4.0828 10.8943C4.52171 8.55339 4.74117 7.38295 5.57434 6.69147C6.40752 6 7.59835 6 9.98003 6H14.0209C16.4026 6 17.5934 6 18.4266 6.69147C19.2598 7.38295 19.4792 8.55339 19.9181 10.8943L20.6681 14.8943C21.2853 18.186 21.5939 19.8318 20.6942 20.9159C19.7945 22 18.12 22 14.7709 22H9.23003C5.88097 22 4.20644 22 3.30672 20.9159C2.40701 19.8318 2.7156 18.186 3.3328 14.8943L4.0828 10.8943Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M9.75 5C9.75 3.75736 10.7574 2.75 12 2.75C13.2426 2.75 14.25 3.75736 14.25 5V6C14.25 5.99999 14.25 6.00001 14.25 6C14.816 6.00018 15.3119 6.00174 15.7499 6.01488C15.75 6.00993 15.75 6.00497 15.75 6V5C15.75 2.92893 14.0711 1.25 12 1.25C9.92893 1.25 8.25 2.92893 8.25 5V6C8.25 6.00498 8.25005 6.00995 8.25015 6.01491C8.68814 6.00175 9.18397 6.00021 9.75 6.00002C9.75 6.00002 9.75 6.00003 9.75 6.00002V5Z",
+  fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M15.5857 11.9685C15.8444 11.6451 15.792 11.1731 15.4685 10.9144C15.1451 10.6556 14.6731 10.7081 14.4143 11.0315L10.9375 15.3769L9.53033 13.9697C9.23744 13.6768 8.76256 13.6768 8.46967 13.9697C8.17678 14.2626 8.17678 14.7375 8.46967 15.0304L10.4697 17.0304C10.6205 17.1812 10.8285 17.2607 11.0415 17.2489C11.2545 17.2371 11.4524 17.1351 11.5857 16.9685L15.5857 11.9685Z",
+  fill: "currentColor"
+}));
+// Supplied asset: the bubble from the check icon, with the check removed. Every
+// icon-only button that hides a section behind it wears this, so they read as
+// one family rather than as unrelated glyphs.
+const IconBubble = ({
+  size = 40,
+  filled = false,
+  children
+}) => /*#__PURE__*/React.createElement("span", {
+  style: {
+    position: 'relative',
+    width: size,
+    height: size,
+    flexShrink: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}, /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  "aria-hidden": "true",
+  style: {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  }
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95044C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z",
+  fill: "currentColor",
+  fillOpacity: filled ? 0.3 : 0.12,
+  stroke: "currentColor",
+  strokeWidth: "1.5"
+})), /*#__PURE__*/React.createElement("span", {
+  style: {
+    position: 'relative',
+    display: 'inline-flex'
+  }
+}, children));
 const IconFieldNote = ({
   size,
   style
@@ -3025,6 +3391,34 @@ const addDays = (dateStr, days) => {
   d.setDate(d.getDate() + days);
   return getDateString(d);
 };
+// Whole calendar days between a logged date and today. Both sides are
+// normalized to local midnight first, so a set logged last night and read this
+// morning is 1 day old rather than a rounded fraction of one.
+const daysSince = dateStr => {
+  if (!dateStr) return null;
+  const then = parseLocalDate(dateStr);
+  const now = parseLocalDate(getTodayString());
+  if (Number.isNaN(then.getTime())) return null;
+  return Math.round((now - then) / 86400000);
+};
+const formatDaysSince = dateStr => {
+  const days = daysSince(dateStr);
+  if (days === null) return '';
+  if (days <= 0) return 'today';
+  if (days === 1) return 'yesterday';
+  return `${days} days ago`;
+};
+// Just the load half of a set, with no "Set N:" prefix and no reps. Used by the
+// weight picker's last-measured strip and its Load chip.
+const formatLoadSummary = set => {
+  if (!set) return '';
+  if (set.weightType === 'bodyweight') return 'Bodyweight';
+  if (set.weightType === 'banded') {
+    return set.bandedColor && set.bandedColor !== 'undefined' ? `${set.bandedColor} band` : 'Band';
+  }
+  if (set.weightType === 'none' || set.weight === null || set.weight === undefined) return 'No load';
+  return `${set.weight} ${set.weightType || 'lbs'}`;
+};
 const formatSetDisplay = set => {
   if (set?.isPresenceOnly) return 'Did some';
   let display = `Set ${set.setOrder}: `;
@@ -3230,40 +3624,6 @@ const formatCategories = exercise => {
 };
 const normalizeFamilyName = name => (name || '').trim().replace(/\s+/g, ' ');
 const normalizeFamilyKey = name => normalizeFamilyName(name).toLowerCase();
-const inferMovementFamilyName = activityName => {
-  const lower = (activityName || '').toLowerCase().replace(/[–—-]/g, ' ').replace(/\s+/g, ' ').trim();
-  if (!lower) return '';
-  const rules = [{
-    match: ['pulldown', 'pull down', 'lat pull'],
-    family: 'Pulldown'
-  }, {
-    match: ['pull up', 'pullup', 'chin up', 'chinup'],
-    family: 'Pull-up'
-  }, {
-    match: ['row'],
-    family: 'Row'
-  }, {
-    match: ['bench', 'press'],
-    family: 'Press'
-  }, {
-    match: ['squat'],
-    family: 'Squat'
-  }, {
-    match: ['deadlift', 'rdl', 'romanian deadlift', 'hinge'],
-    family: 'Hinge'
-  }, {
-    match: ['curl'],
-    family: 'Curl'
-  }, {
-    match: ['run', 'running'],
-    family: 'Run'
-  }, {
-    match: ['sauna'],
-    family: 'Sauna'
-  }];
-  const found = rules.find(rule => rule.match.some(token => lower.includes(token)));
-  return found ? found.family : '';
-};
 const inferMeasurementModes = exercise => {
   if (Array.isArray(exercise?.measurementModes) && exercise.measurementModes.length > 0) return exercise.measurementModes;
   const base = exercise?.type === 'timed' ? 'timed' : exercise?.type === 'neutral' ? 'neutral' : 'reps';
@@ -3488,9 +3848,17 @@ const setStoredGroqApiKey = value => {
     if (value) localStorage.setItem(GROQ_API_KEY_STORAGE, value);else localStorage.removeItem(GROQ_API_KEY_STORAGE);
   } catch (error) {}
 };
+// The stored id is checked against the offered list, not just against being
+// absent. Groq retires models on its own schedule, so the day an id changes
+// here, every browser that already picked the old one would keep sending a dead
+// name forever — the plain `|| default` only rescues a *missing* key, never a
+// stale one. Settings would mislead too: neither model pill matches, so none
+// highlights, and the helper line falls back to describing the first model
+// while a different one is actually being sent.
 const getStoredGroqModel = () => {
   try {
-    return localStorage.getItem(GROQ_MODEL_STORAGE) || FITLOGS_AI_MODELS[0].id;
+    const stored = localStorage.getItem(GROQ_MODEL_STORAGE);
+    return FITLOGS_AI_MODELS.some(model => model.id === stored) ? stored : FITLOGS_AI_MODELS[0].id;
   } catch (error) {
     return FITLOGS_AI_MODELS[0].id;
   }
@@ -3576,26 +3944,10 @@ const ensureMovementFamilyRecord = async familyName => {
 };
 const migrateActivityModel = async () => {
   const exercises = await dbOps.exercises.getAll();
-  const existingFamilies = await dbOps.families.getAll();
-  const familyMap = new Map(existingFamilies.map(f => [normalizeFamilyKey(f.name), f]));
   for (const exercise of exercises) {
     const normalized = withNormalizedExerciseFields(exercise);
-    const inferredFamily = normalized.movementFamilyName || inferMovementFamilyName(normalized.name);
-    if (!normalized.movementFamilyId && inferredFamily) {
-      const key = normalizeFamilyKey(inferredFamily);
-      let family = familyMap.get(key);
-      if (!family) {
-        family = {
-          id: generateId('fam'),
-          name: normalizeFamilyName(inferredFamily),
-          createdAt: Date.now()
-        };
-        await dbOps.families.add(family);
-        familyMap.set(key, family);
-      }
-      normalized.movementFamilyId = family.id;
-      normalized.movementFamilyName = family.name;
-    }
+    // Do not infer, repair, merge, or create family links here. Existing links
+    // remain intact for the person to review one activity at a time.
     if (JSON.stringify(normalized.measurementModes) !== JSON.stringify(exercise.measurementModes) || normalized.gripTrackingEnabled !== exercise.gripTrackingEnabled || normalized.movementFamilyId !== exercise.movementFamilyId || normalized.movementFamilyName !== exercise.movementFamilyName || normalized.variationLabel !== exercise.variationLabel) {
       await dbOps.exercises.update(normalized);
     }
@@ -4237,15 +4589,8 @@ const activitySearchScore = (exercise, rawQuery) => {
   const compactQuery = query.replace(/\s/g, '');
   const queryTokens = canonicalActivitySearchTokens(query);
   const name = normalizeActivitySearch(exercise?.name || exercise?.exerciseName);
-  const family = normalizeActivitySearch(exercise?.movementFamilyName);
-  const variation = normalizeActivitySearch(exercise?.variationLabel);
-  const categories = normalizeActivitySearch(getExCategories(exercise).join(' '));
-  const inferredCategories = normalizeActivitySearch(lookupSplitCategories(name).join(' '));
-  const type = normalizeActivitySearch(exercise?.type);
   const compactName = name.replace(/\s/g, '');
   const nameTokens = canonicalActivitySearchTokens(name);
-  const allFields = [name, family, variation, categories, inferredCategories, type].filter(Boolean).join(' ');
-  const allTokens = new Set(canonicalActivitySearchTokens(allFields));
 
   if (name === query) return 1000;
   if (compactName === compactQuery) return 975;
@@ -4253,17 +4598,9 @@ const activitySearchScore = (exercise, rawQuery) => {
   if (name.includes(query)) return 875;
   if (compactName.includes(compactQuery)) return 850;
   if (queryTokens.length && queryTokens.every(token => nameTokens.includes(token))) return 825;
-  if (variation === query || family === query) return 775;
-  if (variation.includes(query)) return 725;
-  if (family.includes(query)) return 700;
-  if (categories.includes(query)) return 625;
-  if (inferredCategories.includes(query)) return 575;
-  if (queryTokens.length && queryTokens.every(token => allTokens.has(token))) return 525;
-
-  // Everything above needs the query to appear whole, or its tokens to match a
-  // name token exactly. That returned nothing for a partial word ("dumb should"),
-  // a single typo ("skulcrusher") or gym shorthand ("bb row") — and an empty
-  // result invites creating a duplicate of an activity that is already there.
+  // Search is intentionally name-only. A family, split, or label must not
+  // cause an unrelated activity to appear just because it shares a word.
+  // We still retain small typo/abbreviation help for the activity name itself.
   // Whole-name near-match, spaces removed: catches a typo in a run-together
   // query ("clafraises" for "Calf Raises") that no per-token rule can see,
   // because the query is one token and the name is two.
@@ -4273,22 +4610,16 @@ const activitySearchScore = (exercise, rawQuery) => {
   }
 
   const nameTokenList = Array.from(nameTokens);
-  const allTokenList = Array.from(allTokens);
   const aliasTokens = expandActivityAliases(queryTokens);
   const aliasChanged = aliasTokens.length !== queryTokens.length || aliasTokens.some((token, index) => token !== queryTokens[index]);
 
   if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 800;
   if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, nameTokenList))) return 780;
   if (queryTokens.every(token => tokenPrefixMatches(token, nameTokenList) || tokenFuzzyMatches(token, nameTokenList))) return 650;
-  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 500;
-  if (aliasChanged && aliasTokens.every(token => tokenPrefixMatches(token, allTokenList))) return 480;
-  if (queryTokens.every(token => tokenPrefixMatches(token, allTokenList) || tokenFuzzyMatches(token, allTokenList))) return 420;
   if (queryTokens.every(token => tokenSubsequenceMatches(token, nameTokenList))) return 380;
-  if (type.includes(query)) return 300;
-  if (queryTokens.every(token => tokenSubsequenceMatches(token, allTokenList))) return 250;
   return 0;
 };
-const compareActivitySearchResults = (a, b) => b._searchScore - a._searchScore || String(b.lastUsed || '').localeCompare(String(a.lastUsed || '')) || (b.createdAt || 0) - (a.createdAt || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
+const compareActivitySearchResults = (a, b) => (b._usageCount || 0) - (a._usageCount || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
 
 const ExercisePickerModal = ({
   onSelect,
@@ -4305,6 +4636,7 @@ const ExercisePickerModal = ({
   const [category, setCategory] = useState(defaultCategory || 'all');
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [usageByExerciseId, setUsageByExerciseId] = useState({});
   const [isLoadingExercises, setIsLoadingExercises] = useState(true);
   const [exerciseLoadError, setExerciseLoadError] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
@@ -4321,8 +4653,20 @@ const ExercisePickerModal = ({
       // lastUsed field. The duplicate checker already reads the full store;
       // using the lastUsed index here made those same activities disappear.
       try {
-        const all = await dbOps.exercises.getAll();
-        setExercises((all || []).sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '') || (b.createdAt || 0) - (a.createdAt || 0)));
+        const [all, allSets] = await Promise.all([dbOps.exercises.getAll(), dbOps.sets.getAll()]);
+        const usage = (allSets || []).reduce((counts, set) => {
+          // Count actual logged work, not neutral placeholders or a temporary
+          // presence marker. This is the number the picker uses everywhere.
+          if (set?.exerciseId && !isNeutralAnchorSet(set) && !isPresenceOnlySet(set)) {
+            counts[set.exerciseId] = (counts[set.exerciseId] || 0) + 1;
+          }
+          return counts;
+        }, {});
+        setUsageByExerciseId(usage);
+        setExercises((all || []).map(exercise => ({
+          ...exercise,
+          _usageCount: usage[exercise.id] || 0
+        })));
         setExerciseLoadError(false);
       } catch (error) {
         console.error('Unable to load activities for search', error);
@@ -4337,27 +4681,28 @@ const ExercisePickerModal = ({
     const q = normalizeActivitySearch(search);
     let result = exercises;
 
-    // In pairing mode: show ALL timed exercises except the source
+    // Pairing narrows by type, but it does not override the selected split.
+    // A split-specific picker must stay a hard boundary in every sub-flow.
     if (pairingSource) {
       result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
-    } else if (selectedFamilyId) {
-      result = result.filter(e => (e.movementFamilyId || e.movementFamilyName) === selectedFamilyId);
-    } else if (!q && category !== 'all') {
-      // Was a hard filter, which is why an activity you had genuinely logged was
-      // simply absent until you searched for it: anything with no split, another
-      // split, or different capitalisation vanished. A split is a label, not a
-      // locked list — so it now sorts to the top instead of hiding the rest.
+    }
+    if (category !== 'all') {
+      // A chosen split is a true picker boundary. It applies both before and
+      // during a search: when today is Push, only activities explicitly tagged
+      // Push belong in this list.
       const inSplit = e => getExCategories(e).some(c => c.toLowerCase() === category.toLowerCase());
-      result = [...result].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0));
+      result = result.filter(inSplit);
     }
     if (q) {
       result = result.map(exercise => ({
         ...exercise,
         _searchScore: activitySearchScore(exercise, q)
       })).filter(exercise => exercise._searchScore > 0).sort(compareActivitySearchResults);
+    } else {
+      result = [...result].sort(compareActivitySearchResults);
     }
     setFiltered(result);
-  }, [exercises, search, category, pairingSource, selectedFamilyId]);
+  }, [exercises, search, category, pairingSource, selectedFamilyId, usageByExerciseId]);
   const [sortedCategories, setSortedCategories] = useState(categories);
   const [showEditCategories, setShowEditCategories] = useState(false);
 
@@ -4402,7 +4747,10 @@ const ExercisePickerModal = ({
   const visibleActivities = filtered;
   // Category/family matches are discovery results, not evidence of a duplicate.
   // Keep the repair prompt limited to direct activity-name matches.
-  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered.filter(ex => (ex._searchScore || 0) >= 825) : [];
+  // A broad search like "press" is a discovery query, never evidence that
+  // every press is a duplicate. Only an exact normalized activity name earns
+  // the optional merge repair prompt.
+  const mergeCandidates = !pairingSource && !selectedFamilyId && queryText ? filtered.filter(ex => normalizeActivitySearch(getActivityName(ex)) === queryText) : [];
   const mergePrompt = onOpenMerge && mergeCandidates.length >= 2 ? /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
@@ -4434,26 +4782,6 @@ const ExercisePickerModal = ({
       WebkitAppearance: 'none'
     }
   }, "Merge activities")) : null;
-  const familyBack = selectedFamilyId ? /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: () => {
-      setSelectedFamilyId(null);
-      setSearch('');
-      setCategory(defaultCategory || 'all');
-    },
-    style: {
-      width: '100%',
-      marginBottom: '10px',
-      padding: '10px 12px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-      color: 'var(--accent-soft)',
-      textAlign: 'left',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "← All matching activities") : null;
   const renderActivityRow = ex => {
     const meta = /*#__PURE__*/React.createElement("div", {
       style: {
@@ -4550,13 +4878,10 @@ const ExercisePickerModal = ({
     }, meta, pairButton, lineageButton);
   };
 
-  // Families are shown expanded, head plus variants, rather than as a shell you
-  // have to tap through. This applies to search results AND to a split/category
-  // tab — previously a category tab showed a flat list with no family context at
-  // all, and a search showed a family you had to open before seeing what was in
-  // it.
+  // Families are compact doors, not expanded stacks. One row per family keeps
+  // the main scroll useful; the explicit button opens the variants in a modal.
   const buildSections = (list, keyPrefix) => {
-    if (pairingSource || selectedFamilyId) return list.map(renderActivityRow);
+    if (pairingSource) return list.map(renderActivityRow);
     const order = [];
     const byKey = {};
     list.forEach(ex => {
@@ -4574,7 +4899,7 @@ const ExercisePickerModal = ({
     });
     const grouped = new Set(order.flatMap(family => family.members.map(ex => ex.id)));
     const loose = list.filter(ex => !grouped.has(ex.id));
-    const familyCards = order.map(family => /*#__PURE__*/React.createElement("div", {
+    const familyCards = order.sort((a, b) => Math.max(...b.members.map(ex => ex._usageCount || 0)) - Math.max(...a.members.map(ex => ex._usageCount || 0)) || a.name.localeCompare(b.name)).map(family => /*#__PURE__*/React.createElement("div", {
       key: `${keyPrefix}-family-${family.id}`,
       style: {
         marginBottom: '12px',
@@ -4604,10 +4929,8 @@ const ExercisePickerModal = ({
       type: "button",
       onClick: () => {
         setSelectedFamilyId(family.id);
-        setSearch('');
-        setCategory(defaultCategory || 'all');
       },
-      "aria-label": `Show only the ${family.name} family`,
+      "aria-label": `Show ${family.members.length} variants in the ${family.name} family`,
       style: {
         minHeight: '32px',
         padding: '0 12px',
@@ -4621,11 +4944,7 @@ const ExercisePickerModal = ({
         cursor: 'pointer',
         WebkitAppearance: 'none'
       }
-    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants')), /*#__PURE__*/React.createElement("div", {
-      style: {
-        padding: '4px 6px 6px'
-      }
-    }, family.members.map(renderActivityRow))));
+    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants'))));
     return [...familyCards, ...loose.map(renderActivityRow)];
   };
 
@@ -4649,18 +4968,9 @@ const ExercisePickerModal = ({
     }
   }));
 
-  // With no search and a split selected, the split's activities lead and the
-  // rest follow under a divider. Nothing is filtered out of reach.
-  const splitIsActive = !pairingSource && !selectedFamilyId && !queryText && category !== 'all';
-  const matchesActiveSplit = ex => getExCategories(ex).some(c => c.toLowerCase() === category.toLowerCase());
-  const activitySections = splitIsActive ? (() => {
-    const inSplit = visibleActivities.filter(matchesActiveSplit);
-    const others = visibleActivities.filter(ex => !matchesActiveSplit(ex));
-    const parts = [];
-    if (inSplit.length > 0) parts.push(sectionHeading(category), ...buildSections(inSplit, 'split'));
-    if (others.length > 0) parts.push(sectionHeading(inSplit.length > 0 ? 'Everything else' : `Nothing tagged ${category} yet — everything else`), ...buildSections(others, 'other'));
-    return parts;
-  })() : buildSections(visibleActivities, 'all');
+  const activitySections = buildSections(visibleActivities, 'all');
+  const selectedFamily = selectedFamilyId ? familyMap[selectedFamilyId] : null;
+  const selectedFamilyVariants = selectedFamily ? visibleActivities.filter(ex => (ex.movementFamilyId || ex.movementFamilyName) === selectedFamilyId).sort(compareActivitySearchResults) : [];
 
   if (showEditCategories) {
     return /*#__PURE__*/React.createElement(EditCategoriesModal, {
@@ -4704,7 +5014,6 @@ const ExercisePickerModal = ({
       const nextSearch = e.target.value;
       setSearch(nextSearch);
       setSelectedFamilyId(null);
-      setCategory(nextSearch.trim() ? 'all' : defaultCategory || 'all');
     }
   }), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs"
@@ -4828,7 +5137,7 @@ const ExercisePickerModal = ({
     className: "section-title"
     // The list always holds every activity now, so the outer title no longer
     // names the split — the split has its own heading inside the list.
-  }, selectedFamilyId ? `Family: ${familyMap[selectedFamilyId]?.name || 'Selected'}` : pairingSource ? 'Select activity to pair with' : queryText ? 'Matches' : 'All Activities'), familyBack, !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, pairingSource ? 'Select activity to pair with' : queryText ? 'Matches' : category !== 'all' ? category : 'All Activities'), !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 30%, transparent)',
@@ -4841,8 +5150,1160 @@ const ExercisePickerModal = ({
       marginTop: 20,
       marginBottom: 20
     }
-  }, search ? 'No saved activities match. Create a new activity above.' : 'No activities yet. Create one above!'))));
+  }, search ? 'No saved activities match. Create a new activity above.' : category !== 'all' ? `No activities are assigned to ${category}.` : 'No activities yet. Create one above!'), selectedFamily && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: () => setSelectedFamilyId(null)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", _extends({
+    className: "modal-header"
+  }, makeSwipeDownHandlers(() => setSelectedFamilyId(null))), /*#__PURE__*/React.createElement("h2", null, selectedFamily.name), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close variants",
+    onClick: () => setSelectedFamilyId(null)
+  }, /*#__PURE__*/React.createElement(IconX, {
+    size: 20
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
+      marginBottom: '12px'
+    }
+  }, selectedFamilyVariants.length, selectedFamilyVariants.length === 1 ? ' variant' : ' variants · most logged first'), selectedFamilyVariants.map(renderActivityRow)))))));
 };
+const ActivitySplitHelper = (() => {
+// Pure offline prototype. Catalog is injected so the eventual app can inline it.
+const defaultCategories = ['push', 'pull', 'legs', 'core', 'cardio'];
+const abbreviations = { kb: 'kettlebell', db: 'dumbbell', bb: 'barbell', ohp: 'overhead press', rdl: 'romanian deadlift' };
+function normalize(value) {
+  return String(value ?? '').toLowerCase().replace(/benchpress/g, 'bench press')
+    .replace(/[’']/g, '').replace(/[+&/]/g, ' combination ').replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(/\s+/)
+    .map(t => abbreviations[t] || t).join(' ').split(' ')
+    .map(t => t === 'ups' ? 'up' : t.length > 3 && t.endsWith('s') && !t.endsWith('ss') ? t.slice(0, -1) : t).join(' ');
+}
+const categoryKey = value => ({ 'upper body': 'upper', 'lower body': 'lower', 'push day': 'push', 'pull day': 'pull', 'leg day': 'legs', leg: 'legs', arm: 'arms', shoulder: 'shoulders', ab: 'abs' }[normalize(value)] || normalize(value));
+function distance(a, b) {
+  let prev = Array.from({length:b.length+1}, (_,i)=>i);
+  for(let i=1;i<=a.length;i++) {
+    const next=[i];
+    for(let j=1;j<=b.length;j++) next[j]=Math.min(next[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]!==b[j-1]));
+    prev=next;
+  }
+  return prev[b.length];
+}
+function classify({name, categories=defaultCategories, confirmedSplits, exerciseSplitOverrides={}}, catalog) {
+  const abstain = (reason, candidates=[]) => ({status:'ask', splits:[], reason, candidates, confidence:null});
+  // Caller must supply an explicit saved choice for THIS activity, never inferred history.
+  if (confirmedSplits !== undefined) {
+    if (!Array.isArray(confirmedSplits)) throw new TypeError('confirmedSplits must be an array');
+    if (confirmedSplits.some(s=>!categories.includes(s))) return abstain('A saved split no longer exists; review the assignment.');
+    return {status:'confirmed',splits:[...confirmedSplits],reason:'Your explicit choice for this activity.',confidence:null};
+  }
+  const input=normalize(name);
+  if (!input) return abstain('Enter an activity name.');
+  const matches=catalog.filter(e=>[e.name,...e.aliases].some(a=>normalize(a)===input));
+  if (matches.length !== 1) {
+    const candidates=catalog.map(e=>({id:e.id,name:e.name,distance:Math.min(...[e.name,...e.aliases].map(a=>distance(input,normalize(a))))}))
+      .filter(e=>e.distance<=Math.max(1,Math.floor(input.length*0.2))).sort((a,b)=>a.distance-b.distance).slice(0,3);
+    return abstain(matches.length ? 'Multiple catalog matches; confirm the activity.' : 'No verified exact name or alias; confirm the activity.', candidates);
+  }
+  const exercise=matches[0];
+  // Explicit per-user mapping, keyed by stable catalog ID. Empty means intentionally unassigned.
+  if (Object.hasOwn(exerciseSplitOverrides, exercise.id)) {
+    const saved=exerciseSplitOverrides[exercise.id];
+    if (!Array.isArray(saved)) throw new TypeError('Exercise override must be an array');
+    if (saved.some(s=>!categories.includes(s))) return abstain('A saved split no longer exists; review the assignment.');
+    return {status:'confirmed',splits:[...saved],exerciseId:exercise.id,reason:'Your saved split mapping for this recognized activity.',confidence:null};
+  }
+  if (!exercise.splits.length) return abstain('Recognized exercise; its split depends on your program.',[{id:exercise.id,name:exercise.name}]);
+  const splits=categories.filter(c=>exercise.splits.some(s=>categoryKey(s)===categoryKey(c)));
+  if (!splits.length) return abstain('Recognized exercise; your split labels need a mapping.',[{id:exercise.id,name:exercise.name}]);
+  return {status:'suggest',splits,exerciseId:exercise.id,reason:`Split classification based on ${exercise.name}; exact setup is not inferred.`,source:exercise.source,confidence:null};
+}
+
+const catalog=[
+  {
+    "id": "Barbell_Bench_Press_-_Medium_Grip",
+    "name": "Barbell Bench Press - Medium Grip",
+    "aliases": [
+      "bench press",
+      "barbell bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Bench_Press_-_Medium_Grip.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Bench_Press",
+    "name": "Dumbbell Bench Press",
+    "aliases": [
+      "dumbbell bench",
+      "dumbbell bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Bench_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+    "name": "Barbell Incline Bench Press - Medium Grip",
+    "aliases": [
+      "incline bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Incline_Bench_Press_-_Medium_Grip.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Decline_Barbell_Bench_Press",
+    "name": "Decline Barbell Bench Press",
+    "aliases": [
+      "decline bench press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Barbell_Bench_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Shoulder_Press",
+    "name": "Dumbbell Shoulder Press",
+    "aliases": [
+      "dumbbell shoulder press"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "triceps"
+    ],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Shoulder_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Shoulder_Press",
+    "name": "Barbell Shoulder Press",
+    "aliases": [
+      "overhead press",
+      "shoulder press",
+      "military press"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "chest",
+      "triceps"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Shoulder_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Pushups",
+    "name": "Pushups",
+    "aliases": [
+      "push up",
+      "pushup"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "body only",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pushups.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Triceps_Pushdown",
+    "name": "Triceps Pushdown",
+    "aliases": [
+      "tricep pushdown",
+      "triceps pushdown"
+    ],
+    "primaryMuscles": [
+      "triceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "cable",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Triceps_Pushdown.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Lying_Triceps_Press",
+    "name": "Lying Triceps Press",
+    "aliases": [
+      "skull crusher",
+      "lying triceps press"
+    ],
+    "primaryMuscles": [
+      "triceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "e-z curl bar",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Lying_Triceps_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Side_Lateral_Raise",
+    "name": "Side Lateral Raise",
+    "aliases": [
+      "lateral raise",
+      "side lateral raise"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Side_Lateral_Raise.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dumbbell_Flyes",
+    "name": "Dumbbell Flyes",
+    "aliases": [
+      "dumbbell fly",
+      "dumbbell flye"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dumbbell_Flyes.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Bent_Over_Barbell_Row",
+    "name": "Bent Over Barbell Row",
+    "aliases": [
+      "barbell row",
+      "bent over barbell row"
+    ],
+    "primaryMuscles": [
+      "middle back"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "lats",
+      "shoulders"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bent_Over_Barbell_Row.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Seated_Cable_Rows",
+    "name": "Seated Cable Rows",
+    "aliases": [
+      "cable row",
+      "seated cable row"
+    ],
+    "primaryMuscles": [
+      "middle back"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "lats",
+      "shoulders"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Cable_Rows.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Wide-Grip_Lat_Pulldown",
+    "name": "Wide-Grip Lat Pulldown",
+    "aliases": [
+      "lat pulldown",
+      "wide grip lat pulldown"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "middle back",
+      "shoulders"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Wide-Grip_Lat_Pulldown.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Chin-Up",
+    "name": "Chin-Up",
+    "aliases": [
+      "chin up",
+      "chinup"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "forearms",
+      "middle back"
+    ],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Chin-Up.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Pullups",
+    "name": "Pullups",
+    "aliases": [
+      "pull up",
+      "pullup"
+    ],
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "middle back"
+    ],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "back"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Pullups.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Curl",
+    "name": "Barbell Curl",
+    "aliases": [
+      "barbell curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [
+      "forearms"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Hammer_Curls",
+    "name": "Hammer Curls",
+    "aliases": [
+      "hammer curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Hammer_Curls.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Preacher_Curl",
+    "name": "Preacher Curl",
+    "aliases": [
+      "preacher curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Preacher_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Face_Pull",
+    "name": "Face Pull",
+    "aliases": [
+      "face pull"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [
+      "middle back"
+    ],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Face_Pull.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Reverse_Flyes",
+    "name": "Reverse Flyes",
+    "aliases": [
+      "reverse fly",
+      "reverse flye"
+    ],
+    "primaryMuscles": [
+      "shoulders"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "dumbbell",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "shoulders"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Reverse_Flyes.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Goblet_Squat",
+    "name": "Goblet Squat",
+    "aliases": [
+      "goblet squat"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings",
+      "shoulders"
+    ],
+    "equipment": "kettlebells",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Goblet_Squat.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Leg_Press",
+    "name": "Leg Press",
+    "aliases": [
+      "leg press"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Leg_Extensions",
+    "name": "Leg Extensions",
+    "aliases": [
+      "leg extension"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leg_Extensions.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Seated_Leg_Curl",
+    "name": "Seated Leg Curl",
+    "aliases": [
+      "leg curl",
+      "hamstring curl",
+      "seated leg curl"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "pull",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Seated_Leg_Curl.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Standing_Calf_Raises",
+    "name": "Standing Calf Raises",
+    "aliases": [
+      "calf raise",
+      "standing calf raise"
+    ],
+    "primaryMuscles": [
+      "calves"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Standing_Calf_Raises.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Hip_Thrust",
+    "name": "Barbell Hip Thrust",
+    "aliases": [
+      "hip thrust",
+      "barbell hip thrust"
+    ],
+    "primaryMuscles": [
+      "glutes"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "hamstrings"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower",
+      "glutes"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Hip_Thrust.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Squat",
+    "name": "Barbell Squat",
+    "aliases": [
+      "back squat",
+      "barbell squat",
+      "squat"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings",
+      "lower back"
+    ],
+    "equipment": "barbell",
+    "force": "push",
+    "splits": [
+      "legs",
+      "lower"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Squat.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Plank",
+    "name": "Plank",
+    "aliases": [
+      "plank"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "body only",
+    "force": "static",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Plank.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Dead_Bug",
+    "name": "Dead Bug",
+    "aliases": [
+      "deadbug",
+      "dead bug"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "body only",
+    "force": "pull",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Dead_Bug.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Cable_Crunch",
+    "name": "Cable Crunch",
+    "aliases": [
+      "cable crunch"
+    ],
+    "primaryMuscles": [
+      "abdominals"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "cable",
+    "force": "pull",
+    "splits": [
+      "core",
+      "abs"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Crunch.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Rowing_Stationary",
+    "name": "Rowing, Stationary",
+    "aliases": [
+      "rowing machine",
+      "stationary rowing"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "calves",
+      "glutes",
+      "hamstrings",
+      "lower back",
+      "middle back"
+    ],
+    "equipment": "machine",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Rowing_Stationary.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Running_Treadmill",
+    "name": "Running, Treadmill",
+    "aliases": [
+      "treadmill run",
+      "running treadmill"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "machine",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Running_Treadmill.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Bicycling",
+    "name": "Bicycling",
+    "aliases": [
+      "cycling",
+      "bicycling"
+    ],
+    "primaryMuscles": [
+      "quadriceps"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "other",
+    "force": null,
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Bicycling.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional PPL/upper-lower/body-part mapping; not supplied by source."
+  },
+  {
+    "id": "Barbell_Deadlift",
+    "name": "Barbell Deadlift",
+    "aliases": [
+      "deadlift",
+      "barbell deadlift"
+    ],
+    "primaryMuscles": [
+      "lower back"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "forearms",
+      "glutes",
+      "hamstrings",
+      "lats",
+      "middle back",
+      "quadriceps",
+      "traps"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Barbell_Deadlift.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Program-dependent hinge: ask user; no automatic split."
+  },
+  {
+    "id": "Romanian_Deadlift",
+    "name": "Romanian Deadlift",
+    "aliases": [
+      "romanian deadlift"
+    ],
+    "primaryMuscles": [
+      "hamstrings"
+    ],
+    "secondaryMuscles": [
+      "calves",
+      "glutes",
+      "lower back"
+    ],
+    "equipment": "barbell",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Romanian_Deadlift.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Program-dependent hinge: ask user; no automatic split."
+  },
+  {
+    "id": "Decline_Push-Up",
+    "name": "Decline Push-Up",
+    "aliases": [
+      "decline pushup",
+      "decline push up"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": null,
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Decline_Push-Up.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.nasm.org/resource-center/exercise-library/decline-push-up"
+    ]
+  },
+  {
+    "id": "Machine_Preacher_Curls",
+    "name": "Machine Preacher Curls",
+    "aliases": [
+      "preacher curl machine",
+      "machine preacher curl"
+    ],
+    "primaryMuscles": [
+      "biceps"
+    ],
+    "secondaryMuscles": [],
+    "equipment": "machine",
+    "force": "pull",
+    "splits": [
+      "pull",
+      "upper",
+      "arms"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Machine_Preacher_Curls.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.acefitness.org/continuing-education/prosource/august-2014/4933/ace-study-reveals-best-biceps-exercises/"
+    ]
+  },
+  {
+    "id": "Cable_Chest_Press",
+    "name": "Cable Chest Press",
+    "aliases": [
+      "seated cable chest press",
+      "cable chest press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "cable",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Cable_Chest_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Cable chest pressing supports the chest/push family. Alias establishes split equivalence only, not identical setup or progress history.",
+    "corroboration": []
+  },
+  {
+    "id": "Leverage_Decline_Chest_Press",
+    "name": "Leverage Decline Chest Press",
+    "aliases": [
+      "MTS decline press",
+      "machine decline chest press"
+    ],
+    "primaryMuscles": [
+      "chest"
+    ],
+    "secondaryMuscles": [
+      "shoulders",
+      "triceps"
+    ],
+    "equipment": "machine",
+    "force": "push",
+    "splits": [
+      "push",
+      "upper",
+      "chest"
+    ],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Leverage_Decline_Chest_Press.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Conventional split mapping; anatomy evidence does not prescribe program placement.",
+    "corroboration": [
+      "https://www.lifefitness.com.au/wp-content/uploads/2015/02/MTS_Manual_11_08a_1_354.pdf"
+    ]
+  },
+  {
+    "id": "Farmers_Walk",
+    "name": "Farmer's Walk",
+    "aliases": [
+      "farmer carry",
+      "farmers carry",
+      "farmer walk"
+    ],
+    "primaryMuscles": [
+      "forearms"
+    ],
+    "secondaryMuscles": [
+      "abdominals",
+      "glutes",
+      "hamstrings",
+      "lower back",
+      "quadriceps",
+      "traps"
+    ],
+    "equipment": "other",
+    "force": null,
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Farmers_Walk.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Loaded carry recognized; pull, grip, full-body and conditioning placement depend on program.",
+    "corroboration": []
+  },
+  {
+    "id": "Hyperextensions_Back_Extensions",
+    "name": "Hyperextensions (Back Extensions)",
+    "aliases": [
+      "back extension",
+      "hyperextension"
+    ],
+    "primaryMuscles": [
+      "lower back"
+    ],
+    "secondaryMuscles": [
+      "glutes",
+      "hamstrings"
+    ],
+    "equipment": "other",
+    "force": "pull",
+    "splits": [],
+    "source": "https://github.com/yuhonas/free-exercise-db/blob/a859101d633a01c4a1a920d6a8ce41dabba0705f/exercises/Hyperextensions_Back_Extensions.json",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Back extension recognized; program placement needs a user decision. Do not import historical Push as a universal rule.",
+    "corroboration": []
+  },
+  {
+    "id": "family_dip",
+    "name": "Dip family",
+    "aliases": [
+      "dip"
+    ],
+    "splits": [
+      "push",
+      "upper"
+    ],
+    "source": "https://www.nasm.org/resource-center/exercise-library/bench-dips",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Pressing family only; Chest vs Arms depends on dip variation.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_outdoor_run",
+    "name": "Outdoor running",
+    "aliases": [
+      "outdoor run",
+      "outdoor running",
+      "trail run",
+      "trail running"
+    ],
+    "splits": [
+      "cardio"
+    ],
+    "source": "https://www.acefitness.org/continuing-education/certified/may-2024/8633/how-to-improve-athletic-performance-using-the-ace-integrated-fitness-training-model/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Activity-kind classification; no claim of specific running technique.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "machine_glute_drive",
+    "name": "Glute drive",
+    "aliases": [
+      "glute drive"
+    ],
+    "splits": [
+      "legs",
+      "lower",
+      "glutes"
+    ],
+    "source": "https://shop.lifefitness.com/products/hammer-strength-plate-loaded-glute-drive",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Manufacturer identifies a hip-extension machine. Name does not identify a precise brand/model.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_kettlebell_swing",
+    "name": "Kettlebell swing",
+    "aliases": [
+      "kettlebell swing"
+    ],
+    "splits": [],
+    "source": "https://www.acefitness.org/continuing-education/certified/january-2025/8788/the-ace-do-it-better-series-the-two-handed-kettlebell-swing/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Hip-driven kettlebell activity recognized; requires program mapping rather than inferring an equipment split.",
+    "scope": "split-family-only"
+  },
+  {
+    "id": "family_kettlebell_halo",
+    "name": "Kettlebell halo",
+    "aliases": [
+      "kettlebell halo"
+    ],
+    "splits": [],
+    "source": "https://www.acefitness.org/continuing-education/certified/october-2022/8147/kettlebells-kick-butt-in-more-ways-than-one/",
+    "review": "provisional-agent-reviewed",
+    "mappingNote": "Recognized kettlebell movement; placement depends on program.",
+    "scope": "split-family-only"
+  }
+]
+;
+return {classify:input=>classify(input,catalog),normalize};
+})();
 const CreateExerciseModal = ({
   onSave,
   onCancel,
@@ -4851,21 +6312,27 @@ const CreateExerciseModal = ({
   onOpenFieldNote
 }) => {
   const activityRecommenderEnabled = true;
-  const splitRecommenderEnabled = false;
   const [name, setName] = useState('');
-  const [selectedCats, setSelectedCats] = useState(dayLabel && categories.includes(dayLabel.toLowerCase()) ? [dayLabel.toLowerCase()] : []);
+  const [formError, setFormError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const saveInFlight = useRef(false);
+  const [selectedCats, setSelectedCats] = useState([]);
+  const [splitChoiceMade, setSplitChoiceMade] = useState(false);
+  const [splitHelperOpen, setSplitHelperOpen] = useState(false);
+  const [settledName, setSettledName] = useState('');
+  useEffect(() => { const timer=setTimeout(()=>setSettledName(name),350); return ()=>clearTimeout(timer); },[name]);
+  const savedSplitChoices = (() => { try { return JSON.parse(getPref('activitySplitChoices','{}')) || {}; } catch { return {}; } })();
+  const savedChoice = savedSplitChoices[ActivitySplitHelper.normalize(settledName)];
+  const splitSuggestion = ActivitySplitHelper.classify({name:settledName,categories, ...(Array.isArray(savedChoice)?{confirmedSplits:savedChoice}:{})});
+  const chooseSplits = next => {setSplitChoiceMade(true);setSelectedCats(next);};
   const [type, setType] = useState(null);
   const [weightMeaning, setWeightMeaning] = useState(null);
   const [barType, setBarType] = useState(null);
   const [customBarWeight, setCustomBarWeight] = useState('');
   const [weightDefault, setWeightDefault] = useState(null);
-  const [showSplitWarning, setShowSplitWarning] = useState(false);
-  const [recommendation, setRecommendation] = useState(null);
   const [dupMatches, setDupMatches] = useState([]);
   const [showDupPanel, setShowDupPanel] = useState(false);
   const [allExercises, setAllExercisesLocal] = useState([]);
-  const [movementFamilyName, setMovementFamilyName] = useState('');
-  const [variationLabel, setVariationLabel] = useState('');
   const [gripTrackingEnabled, setGripTrackingEnabled] = useState(false);
   const [gripAnswered, setGripAnswered] = useState(false);
   const [showGripSection, setShowGripSection] = useState(false);
@@ -4935,88 +6402,23 @@ const CreateExerciseModal = ({
   };
   const handleNameChange = val => {
     setName(val);
-    if (!movementFamilyName.trim()) {
-      const inferredFamily = inferMovementFamilyName(val);
-      if (inferredFamily) setMovementFamilyName(inferredFamily);
-    }
+    // A recommendation belongs to the name that was just checked. Keep a
+    // person's manual selection intact, but close the old explanation while
+    // they type a different activity.
+    setSplitHelperOpen(false);
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
-  const handleRecommend = () => {
-    if (!splitRecommenderEnabled) return;
-    const raw = name.trim().toLowerCase();
-    if (!raw) return;
-
-    // Normalize: strip numbers, special chars, extra spaces
-    const normalize = s => s.toLowerCase().replace(/[0-9°'"]+/g, '').replace(/[^a-z\s]/g, '').replace(/\s+/g, ' ').trim();
-    const searchNorm = normalize(raw);
-    const searchWords = searchNorm.split(' ').filter(w => w.length > 1);
-    let bestMatch = null;
-    let bestScore = 0;
-    Object.keys(exerciseSplitRecommendations).forEach(key => {
-      const keyNorm = normalize(key);
-      const keyWords = keyNorm.split(' ').filter(w => w.length > 1);
-
-      // Exact normalized match
-      if (searchNorm === keyNorm) {
-        bestMatch = key;
-        bestScore = 100;
-        return;
-      }
-
-      // Check if search contains key or key contains search
-      if (searchNorm.includes(keyNorm) || keyNorm.includes(searchNorm)) {
-        if (keyNorm.length > bestScore) {
-          bestMatch = key;
-          bestScore = keyNorm.length + 50;
-        }
-        return;
-      }
-
-      // Word overlap scoring
-      let wordScore = 0;
-      searchWords.forEach(sw => {
-        keyWords.forEach(kw => {
-          if (sw === kw) wordScore += 10;else if (sw.includes(kw) || kw.includes(sw)) wordScore += 5;
-          // Handle plural/singular: "chinups" vs "chin ups", "chinup" vs "chin up"
-          else if (sw.replace(/s$/, '') === kw.replace(/s$/, '')) wordScore += 8;
-        });
-      });
-
-      // Also check concatenated words: "chinups" should match "chin ups"
-      const searchConcat = searchWords.join('');
-      const keyConcat = keyWords.join('');
-      if (searchConcat.includes(keyConcat) || keyConcat.includes(searchConcat)) {
-        wordScore += 30;
-      }
-      // Check without 's': "chinups" -> "chinup" vs "chinup"
-      if (searchConcat.replace(/s$/, '').includes(keyConcat.replace(/s$/, '')) || keyConcat.replace(/s$/, '').includes(searchConcat.replace(/s$/, ''))) {
-        wordScore += 25;
-      }
-      if (wordScore > bestScore) {
-        bestMatch = key;
-        bestScore = wordScore;
-      }
-    });
-    if (bestMatch && bestScore >= 5) {
-      const matches = exerciseSplitRecommendations[bestMatch];
-      const validMatches = matches.filter(m => categories.includes(m));
-      if (validMatches.length > 0) {
-        setSelectedCats(validMatches);
-        setRecommendation(validMatches.join(', '));
-      } else {
-        setRecommendation('no-match');
-      }
-    } else {
-      setRecommendation('unknown');
-    }
-    setTimeout(() => setRecommendation(null), 3000);
-  };
   const doSave = async (opts = {}) => {
+    if (saveInFlight.current) return;
+    saveInFlight.current = true; setSaving(true); setFormError('');
+    try {
     const barSelection = weightMeaning === 'bar' ? resolveBarSelection(barType, customBarWeight) : null;
     const finalWeightMeaning = barSelection ? barSelection.weightMeaning : weightMeaning || 'total';
     const finalType = type || 'reps';
-    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName || movementFamilyName);
+    // New activities start standalone unless this exact user action explicitly
+    // supplied a family. Names are never used to manufacture a relationship.
+    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName);
     const familyRecord = resolvedFamilyName ? await ensureMovementFamilyRecord(resolvedFamilyName) : null;
     const exercise = {
       id: generateId('ex'),
@@ -5032,7 +6434,7 @@ const CreateExerciseModal = ({
       variationOf: opts.variationOf || null,
       movementFamilyId: familyRecord?.id || null,
       movementFamilyName: familyRecord?.name || '',
-      variationLabel: (opts.variationLabel || variationLabel || '').trim(),
+      variationLabel: (opts.variationLabel || '').trim(),
       gripTrackingEnabled: finalType !== 'neutral' && !!gripTrackingEnabled,
       // Explicit answer, so the name heuristic never overrides it later.
       gripTracking: finalType === 'neutral' ? 'off' : gripTrackingEnabled ? 'on' : 'off',
@@ -5041,26 +6443,26 @@ const CreateExerciseModal = ({
       createdAt: Date.now()
     };
     await dbOps.exercises.add(exercise);
+    if (splitChoiceMade) {
+      const choices={...savedSplitChoices,[ActivitySplitHelper.normalize(name)]:selectedCats};
+      setPref('activitySplitChoices',JSON.stringify(choices));
+      await _savePrefs();
+    }
     onSave(exercise);
+    } catch (error) {
+      console.error('Activity creation failed:', error);
+      setFormError('Could not create the activity. Please try again.');
+    } finally { saveInFlight.current = false; setSaving(false); }
   };
   const handleSave = async () => {
-    if (!name.trim()) return;
-    if (!type) return;
-    if (!weightMeaning && (type === 'reps' || weightDefault === 'weight')) return;
-    if (!weightDefault && type !== 'neutral') return;
-    if (weightMeaning === 'bar' && !barType) return;
-    if (weightMeaning === 'bar' && barType === 'custom' && !customBarWeight.trim()) return;
-
-    // Check if user needs split warning
-    if (selectedCats.length === 0) {
-      const pref = getPref('skipSplitWarning');
-      if (pref === 'true') {
-        await doSave();
-        return;
-      }
-      setShowSplitWarning(true);
-      return;
-    }
+    const missing = [];
+    if (!name.trim()) missing.push('activity name');
+    if (!type) missing.push('type (Reps, Timed, or Neutral)');
+    if (!weightMeaning && (type === 'reps' || weightDefault === 'weight')) missing.push('weight style');
+    if (!weightDefault && type !== 'neutral') missing.push('default load');
+    if (weightMeaning === 'bar' && !barType) missing.push('bar type');
+    if (weightMeaning === 'bar' && barType === 'custom' && !(Number(customBarWeight) > 0)) missing.push('a positive custom bar weight');
+    if (missing.length) { setFormError('Choose ' + missing.join(', ') + ' to create this activity.'); return; }
     await doSave();
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -5237,50 +6639,58 @@ const CreateExerciseModal = ({
       marginTop: '8px'
     }
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => setSelectedCats([]),
+    onClick: () => chooseSplits([]),
     style: {
-      flex: splitRecommenderEnabled ? 1 : 'unset',
-      width: splitRecommenderEnabled ? 'auto' : '100%',
+      flex: 1,
       padding: '10px',
       border: 'none',
+      borderRight: '1px solid var(--surface-edge)',
       fontSize: '11px',
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      borderRight: splitRecommenderEnabled ? '1px solid var(--surface-edge)' : 'none',
+      minHeight: 44,
       background: selectedCats.length === 0 ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: selectedCats.length === 0 ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
-  }, "No Split"), splitRecommenderEnabled && /*#__PURE__*/React.createElement("button", {
-    onClick: handleRecommend,
+  }, "No Split"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    disabled: !name.trim(),
+    onClick: () => setSplitHelperOpen(true),
     style: {
       flex: 1,
       padding: '10px',
       border: 'none',
       fontSize: '11px',
       fontWeight: '600',
-      cursor: 'pointer',
+      cursor: name.trim() ? 'pointer' : 'not-allowed',
       WebkitAppearance: 'none',
-      background: 'rgba(255,255,255,0.03)',
-      color: 'var(--text-placeholder)'
+      minHeight: 44,
+      opacity: name.trim() ? 1 : 0.45,
+      background: splitHelperOpen ? 'color-mix(in srgb, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.03)',
+      color: splitHelperOpen ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
-  }, "Recommend")), splitRecommenderEnabled && recommendation && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      marginTop: '6px',
-      textAlign: 'center',
-      color: recommendation === 'no-match' ? 'var(--text-faint)' : recommendation === 'unknown' ? 'var(--text-faint)' : '#90ee90'
-    }
-  }, recommendation === 'no-match' ? 'Recommended splits not in your categories' : recommendation === 'unknown' ? 'Exercise not in database' : `* Recommended: ${recommendation.charAt(0).toUpperCase() + recommendation.slice(1)}`)), /*#__PURE__*/React.createElement("div", {
+  }, "Recommend split")), /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
     className: "form-label"
-  }, "Splits (select multiple)"), /*#__PURE__*/React.createElement("div", {
+  }, "Splits (select multiple)"),
+  splitHelperOpen && React.createElement('div', {'data-testid':'split-helper',role:'status',style:{fontSize:13,lineHeight:1.5,marginBottom:12,color:'var(--text-secondary)'}},
+    splitChoiceMade ? 'Your selection is kept. Change it below anytime.' :
+    name !== settledName ? 'Checking the activity name…' :
+    ['suggest','confirmed'].includes(splitSuggestion.status) ? React.createElement(React.Fragment,null,
+      React.createElement('div',null,splitSuggestion.status==='confirmed' ? 'You chose this split for this activity before.' : 'Suggested from a recognized activity. You are always free to change it.'),
+      React.createElement('button',{type:'button','data-testid':'accept-split',className:'btn',style:{marginTop:8,minHeight:44},onClick:()=>chooseSplits([...splitSuggestion.splits])},
+        'Use '+(splitSuggestion.splits.length?splitSuggestion.splits.join(' + '):'No Split'))) :
+    React.createElement(React.Fragment,null,
+      splitSuggestion.candidates?.length ? React.createElement('div',null,'Possible match: ',splitSuggestion.candidates.map(candidate=>candidate.name).join(', '),'. Your program decides the split.') : null,
+      React.createElement('div',null,splitSuggestion.candidates?.length ? 'Choose the split that fits your routine below, or leave it unassigned.' : 'I do not recognize this activity confidently enough to suggest a split. Choose below, or leave it unassigned.'))),
+  /*#__PURE__*/React.createElement("div", {
     className: "button-grid"
   }, categories.map(cat => /*#__PURE__*/React.createElement("button", {
     key: cat,
     className: `btn ${selectedCats.includes(cat) ? 'active' : ''}`,
-    onClick: () => setSelectedCats(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat])
+    onClick: () => chooseSplits(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat])
   }, cat.charAt(0).toUpperCase() + cat.slice(1))))), /*#__PURE__*/React.createElement("div", {
     className: "form-group"
   }, /*#__PURE__*/React.createElement("label", {
@@ -5560,95 +6970,58 @@ const CreateExerciseModal = ({
       background: gripTrackingEnabled ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: gripTrackingEnabled ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
-  }, "Yes"))), /*#__PURE__*/React.createElement("button", {
+  }, "Yes"))), formError && React.createElement('div', {role:'alert',style:{color:'var(--text-body)',fontSize:13,lineHeight:1.5,marginTop:12}}, formError), /*#__PURE__*/React.createElement("button", {
     className: "btn",
+    disabled: saving,
     onClick: handleSave,
     style: {
       opacity: name.trim() ? 1 : 0.4,
       marginBottom: '8px',
       marginTop: '8px'
     }
-  }, "Create Activity"), /*#__PURE__*/React.createElement("button", {
+  }, saving ? "Creating…" : "Create Activity"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: onCancel
-  }, "Cancel")))), showSplitWarning && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(12, 6, 10, 0.85)',
-      zIndex: 300,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      animation: 'fadeIn 0.5s',
-      flexDirection: 'column',
-      padding: '32px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      color: 'var(--text-body)',
-      fontSize: '16px',
-      textAlign: 'center',
-      marginBottom: '24px',
-      lineHeight: '1.5'
-    }
-  }, "Are you sure you don't want to assign to a split?"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '12px',
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: async () => {
-      setShowSplitWarning(false);
-      await doSave();
-    },
-    style: {
-      padding: '12px 24px',
-      borderRadius: '8px',
-      border: 'none',
-      background: 'var(--accent)',
-      color: '#fff',
-      fontSize: '14px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Proceed"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowSplitWarning(false),
-    style: {
-      padding: '12px 24px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'none',
-      color: 'var(--accent-soft)',
-      fontSize: '14px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Go back")), /*#__PURE__*/React.createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
-      fontSize: '12px',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "checkbox",
-    onChange: e => {
-      if (e.target.checked) setPref('skipSplitWarning', 'true');else removePref('skipSplitWarning');
-    },
-    style: {
-      accentColor: 'var(--accent)'
-    }
-  }), "Do not ask me this again")));
+  }, "Cancel"))))));
 };
+// Bottom sheet stacked over a picker modal. Closing is the only thing it owns;
+// what it holds decides for itself when a choice is final.
+const PickerSheet = ({
+  title,
+  onClose,
+  children
+}) => /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-overlay",
+  onClick: onClose
+}, /*#__PURE__*/React.createElement("div", _extends({
+  className: "picker-sheet",
+  onClick: e => e.stopPropagation()
+}, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-grip",
+  "aria-hidden": "true"
+}), /*#__PURE__*/React.createElement("div", {
+  className: "picker-sheet-title"
+}, title), children));
+// The button that stands in for a sheet: Tim's bubble container with a glyph
+// inside and a one-word caption under it. Small on purpose — reclaiming the two
+// full-width blocks Load and Grip used to take at the top of the picker.
+const PickerChip = ({
+  icon,
+  label,
+  isSet,
+  onClick,
+  ariaLabel
+}) => /*#__PURE__*/React.createElement("button", {
+  type: "button",
+  onClick: onClick,
+  "aria-label": ariaLabel,
+  className: isSet ? "picker-chip is-set" : "picker-chip"
+}, /*#__PURE__*/React.createElement(IconBubble, {
+  size: 38,
+  filled: isSet
+}, icon), /*#__PURE__*/React.createElement("span", {
+  className: "picker-chip-label"
+}, label));
 const WeightPickerModal = ({
   exercise,
   onSelectWeight,
@@ -5671,9 +7044,16 @@ const WeightPickerModal = ({
   const [selectedBandColor, setSelectedBandColor] = useState(null);
   const [bandedCustomName, setBandedCustomName] = useState('');
   const [yourWeights, setYourWeights] = useState([]);
+  // 'load' | 'grip' | null — which secondary sheet is open over the picker.
+  const [openSheet, setOpenSheet] = useState(null);
+  // { date, label } for the most recent measured session of this activity.
+  const [lastMeasured, setLastMeasured] = useState(null);
   const [exerciseWeightMeaning, setExerciseWeightMeaning] = useState('total');
   const [storedCustomBarWeight, setStoredCustomBarWeight] = useState(0);
   const [storedBarName, setStoredBarName] = useState('');
+  useEffect(() => {
+    updateSvgCornerPlates();
+  }, []);
   const commonWeightsLbs = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225];
   const commonWeightsKg = [2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50, 52.5, 55, 57.5, 60, 62.5, 65, 67.5, 70, 72.5, 75, 77.5, 80, 82.5, 85, 87.5, 90, 92.5, 95, 97.5, 100];
   const plateWeight = unit === 'kg' ? 20 : 45;
@@ -5709,6 +7089,16 @@ const WeightPickerModal = ({
             }
           });
           setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
+          // The strip reports the set the session ended on, because that is the
+          // one the box is seeded from — not the heaviest of the session.
+          const finalSet = lastSession.sets.slice().sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0)).pop();
+          setLastMeasured(finalSet ? {
+            date: lastSession.date,
+            label: formatLoadSummary(finalSet)
+          } : null);
+        } else {
+          setYourWeights([]);
+          setLastMeasured(null);
         }
       } catch (err) {
         console.error('DB load recent weights failed:', err);
@@ -5740,6 +7130,180 @@ const WeightPickerModal = ({
     };
     loadMeaning();
   }, [exercise, previousWeight, unit]);
+  // Load lives in a sheet now rather than inline. Each button here is terminal:
+  // choosing bodyweight, no load, or a band logs the set and closes the picker,
+  // so the sheet never needs its own confirm step.
+  const loadSheetContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '6px',
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'bodyweight'
+    }),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "Body Weight"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'none'
+    }),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "No Load"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowBandedColors(!showBandedColors),
+    style: {
+      flex: '1',
+      padding: '12px',
+      minHeight: '44px',
+      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
+      color: 'var(--accent-soft)',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      fontWeight: '600'
+    }
+  }, "Band Assisted")), showBandedColors && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "banded-colors-grid"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-red",
+    onClick: () => {
+      setSelectedBandColor('Red');
+    }
+  }, "Red"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-black",
+    onClick: () => {
+      setSelectedBandColor('Black');
+    }
+  }, "Black"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-purple",
+    onClick: () => {
+      setSelectedBandColor('Purple');
+    }
+  }, "Purple"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-green",
+    onClick: () => {
+      setSelectedBandColor('Green');
+    }
+  }, "Green"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-blue",
+    onClick: () => {
+      setSelectedBandColor('Blue');
+    }
+  }, "Blue"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-orange",
+    onClick: () => {
+      setSelectedBandColor('Orange');
+    }
+  }, "Orange"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-yellow",
+    onClick: () => {
+      setSelectedBandColor('Yellow');
+    }
+  }, "Yellow"), /*#__PURE__*/React.createElement("button", {
+    className: "banded-color-btn banded-gray",
+    onClick: () => {
+      setSelectedBandColor('Gray');
+    }
+  }, "Gray")), selectedBandColor && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: '12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Thickness"), /*#__PURE__*/React.createElement("div", {
+    className: "button-row",
+    style: {
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: selectedBandColor
+    })
+  }, "Just ", selectedBandColor), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Thin`
+    })
+  }, "Thin"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Medium`
+    })
+  }, "Medium"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    style: {
+      flex: '1'
+    },
+    onClick: () => onSelectWeight({
+      weight: null,
+      weightType: 'banded',
+      bandedColor: `${selectedBandColor} Thick`
+    })
+  }, "Thick"))), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "form-input",
+    placeholder: "Custom band name",
+    value: bandedCustomName,
+    onChange: e => setBandedCustomName(e.target.value),
+    style: {
+      marginBottom: '16px',
+      marginTop: '12px'
+    }
+  }), bandedCustomName && /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => {
+      onSelectWeight({
+        weight: null,
+        weightType: 'banded',
+        bandedColor: bandedCustomName
+      });
+    }
+  }, "Use ", bandedCustomName)));
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: () => onSelectWeight(null)
@@ -5756,13 +7320,62 @@ const WeightPickerModal = ({
     size: 20
   }))), /*#__PURE__*/React.createElement("div", {
     className: "modal-content"
-  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
-    initialGrip: initialGrip,
-    lockedForDay: gripLockedForDay,
-    onChange: onGripChange,
-    gripReason: gripReason,
-    onDisableGrip: onDisableGrip
-  }), isBarExercise && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "picker-chip-row"
+  }, /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconDumbbell, {
+      size: 20
+    }),
+    label: "Load",
+    isSet: false,
+    ariaLabel: "Change how this set is loaded",
+    onClick: () => setOpenSheet('load')
+  }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconGrip, {
+      size: 20
+    }),
+    label: "Grip",
+    isSet: !!formatGripLabel(initialGrip),
+    ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
+    onClick: () => setOpenSheet('grip')
+  })), lastMeasured && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '8px',
+      marginBottom: '10px',
+      padding: '8px 12px',
+      borderRadius: '10px',
+      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
+      border: '1px solid color-mix(in srgb, var(--accent) 16%, transparent)'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '9px',
+      fontWeight: '600',
+      letterSpacing: '0.06em',
+      textTransform: 'uppercase',
+      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
+      flexShrink: 0
+    }
+  }, "Last"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '14px',
+      fontWeight: '700',
+      color: 'var(--text-bright)',
+      flexShrink: 0
+    }
+  }, lastMeasured.label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      flex: 1,
+      textAlign: 'right',
+      fontSize: '11px',
+      color: 'var(--text-faint)',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }, formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), isBarExercise && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '10px',
       padding: '10px 12px',
@@ -5972,184 +7585,6 @@ const WeightPickerModal = ({
     }
   }, "Logged as the total, so it stays comparable with your older sets."), /*#__PURE__*/React.createElement("div", {
     style: {
-      fontSize: '10px',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      textTransform: 'uppercase',
-      letterSpacing: '0.6px',
-      marginBottom: '6px'
-    }
-  }, "Load"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '6px',
-      marginBottom: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'bodyweight'
-    }),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "Body Weight"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'none'
-    }),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "No Load"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowBandedColors(!showBandedColors),
-    style: {
-      flex: '1',
-      padding: '12px',
-      minHeight: '44px',
-      backgroundColor: 'color-mix(in srgb, var(--accent) 10%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      color: 'var(--accent-soft)',
-      borderRadius: '8px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, "Band Assisted")), showBandedColors && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "banded-colors-grid"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-red",
-    onClick: () => {
-      setSelectedBandColor('Red');
-    }
-  }, "Red"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-black",
-    onClick: () => {
-      setSelectedBandColor('Black');
-    }
-  }, "Black"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-purple",
-    onClick: () => {
-      setSelectedBandColor('Purple');
-    }
-  }, "Purple"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-green",
-    onClick: () => {
-      setSelectedBandColor('Green');
-    }
-  }, "Green"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-blue",
-    onClick: () => {
-      setSelectedBandColor('Blue');
-    }
-  }, "Blue"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-orange",
-    onClick: () => {
-      setSelectedBandColor('Orange');
-    }
-  }, "Orange"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-yellow",
-    onClick: () => {
-      setSelectedBandColor('Yellow');
-    }
-  }, "Yellow"), /*#__PURE__*/React.createElement("button", {
-    className: "banded-color-btn banded-gray",
-    onClick: () => {
-      setSelectedBandColor('Gray');
-    }
-  }, "Gray")), selectedBandColor && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-title"
-  }, "Thickness"), /*#__PURE__*/React.createElement("div", {
-    className: "button-row",
-    style: {
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: selectedBandColor
-    })
-  }, "Just ", selectedBandColor), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Thin`
-    })
-  }, "Thin"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Medium`
-    })
-  }, "Medium"), /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    style: {
-      flex: '1'
-    },
-    onClick: () => onSelectWeight({
-      weight: null,
-      weightType: 'banded',
-      bandedColor: `${selectedBandColor} Thick`
-    })
-  }, "Thick"))), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "Custom band name",
-    value: bandedCustomName,
-    onChange: e => setBandedCustomName(e.target.value),
-    style: {
-      marginBottom: '16px',
-      marginTop: '12px'
-    }
-  }), bandedCustomName && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => {
-      onSelectWeight({
-        weight: null,
-        weightType: 'banded',
-        bandedColor: bandedCustomName
-      });
-    }
-  }, "Use ", bandedCustomName)), /*#__PURE__*/React.createElement("div", {
-    style: {
       marginBottom: '12px'
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -6230,13 +7665,29 @@ const WeightPickerModal = ({
       weight: w,
       weightType: unit
     })
-  }, w)))))));
+  }, w))))), openSheet === 'load' && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Load",
+    onClose: () => setOpenSheet(null)
+  }, loadSheetContent), openSheet === 'grip' && gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Grip",
+    onClose: () => setOpenSheet(null)
+  }, /*#__PURE__*/React.createElement(GripInlineSelector, {
+    embedded: true,
+    initialGrip: initialGrip,
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: () => {
+      setOpenSheet(null);
+      if (onDisableGrip) onDisableGrip();
+    }
+  }))));
 };
 const RepPickerModal = ({
   exercise,
   weight,
   weightType,
   bandedColor,
+  selectedDate,
   onSelectReps,
   onChangeWeight,
   onRequestWeight,
@@ -6254,7 +7705,12 @@ const RepPickerModal = ({
   const [customReps, setCustomReps] = useState('');
   const [repSuggestions, setRepSuggestions] = useState([]);
   const [repSuggestionSource, setRepSuggestionSource] = useState('');
+  const [repSuggestionDate, setRepSuggestionDate] = useState(null);
   const emberEnabled = getPref('disableRepEmber') !== 'true';
+  const [openSheet, setOpenSheet] = useState(null);
+  useEffect(() => {
+    updateSvgCornerPlates();
+  }, []);
 
   // Suggestions come from this activity's own history, newest session first.
   // A brand-new activity has none, so it falls back to common rep counts —
@@ -6268,7 +7724,8 @@ const RepPickerModal = ({
         if (fromLast.length > 0) {
           if (!cancelled) {
             setRepSuggestions(fromLast.slice(0, 4));
-            setRepSuggestionSource('Last time');
+            setRepSuggestionSource('Last');
+            setRepSuggestionDate(lastSession.date || null);
           }
           return;
         }
@@ -6283,12 +7740,14 @@ const RepPickerModal = ({
         if (!cancelled) {
           setRepSuggestions(fromHistory.length > 0 ? fromHistory : [8, 10, 12, 15]);
           setRepSuggestionSource(fromHistory.length > 0 ? 'Your usual' : 'Common');
+          setRepSuggestionDate(null);
         }
       } catch (error) {
         console.error('Unable to load rep suggestions', error);
         if (!cancelled) {
           setRepSuggestions([8, 10, 12, 15]);
           setRepSuggestionSource('Common');
+          setRepSuggestionDate(null);
         }
       }
     };
@@ -6297,7 +7756,11 @@ const RepPickerModal = ({
       cancelled = true;
     };
   }, [exercise.id]);
+  useEffect(() => {
+    updateSvgCornerPlates();
+  }, [repSuggestions]);
   const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
+  const repSuggestionLabel = repSuggestionDate ? repSuggestionDate === selectedDate ? 'Today' : `${formatDateShort(repSuggestionDate)} \xB7 ${formatDaysSince(repSuggestionDate)}` : repSuggestionSource;
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: () => onSelectReps(null)
@@ -6330,80 +7793,21 @@ const RepPickerModal = ({
       flex: 1,
       padding: '12px 16px'
     }
-  }, gripTrackingEnabled && /*#__PURE__*/React.createElement(GripField, {
-    initialGrip: initialGrip,
-    lockedForDay: gripLockedForDay,
-    onChange: onGripChange,
-    gripReason: gripReason,
-    onDisableGrip: onDisableGrip
-  }), onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px',
-      marginBottom: '10px',
-      padding: '6px',
-      borderRadius: '9px',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 12%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '10px',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      textTransform: 'uppercase',
-      letterSpacing: '0.6px',
-      marginRight: '2px'
-    }
-  }, "Load"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => onChangeWeight({
-      weight: null,
-      weightType: 'bodyweight'
-    }),
-    style: {
-      flex: 1,
-      padding: '7px 5px',
-      borderRadius: '7px',
-      border: weightType === 'bodyweight' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
-      background: weightType === 'bodyweight' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
-      color: weightType === 'bodyweight' ? 'var(--text-body)' : 'var(--accent-soft)',
-      fontSize: '11px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Bodyweight"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => onChangeWeight({
-      weight: null,
-      weightType: 'none'
-    }),
-    style: {
-      flex: 1,
-      padding: '7px 5px',
-      borderRadius: '7px',
-      border: weightType === 'none' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
-      background: weightType === 'none' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
-      color: weightType === 'none' ? 'var(--text-body)' : 'var(--accent-soft)',
-      fontSize: '11px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "No load"), /*#__PURE__*/React.createElement("button", {
-    onClick: onRequestWeight,
-    style: {
-      flex: 1,
-      padding: '7px 5px',
-      borderRadius: '7px',
-      border: weightType !== 'bodyweight' && weightType !== 'none' ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
-      background: weightType !== 'bodyweight' && weightType !== 'none' ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'transparent',
-      color: weightType !== 'bodyweight' && weightType !== 'none' ? 'var(--text-body)' : 'var(--accent-soft)',
-      fontSize: '11px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, weightType !== 'bodyweight' && weightType !== 'none' ? `Weighted · ${displayWeight}` : 'Add Weight')), repSuggestions.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "picker-chip-row"
+  }, onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconDumbbell, { size: 20 }),
+    label: weightType === 'bodyweight' ? 'BW' : weightType === 'none' ? 'No load' : 'Load',
+    isSet: weightType !== 'bodyweight' && weightType !== 'none',
+    ariaLabel: `Load: ${displayWeight}. Tap to change.`,
+    onClick: () => setOpenSheet('load')
+  }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
+    icon: /*#__PURE__*/React.createElement(IconGrip, { size: 20 }),
+    label: "Grip",
+    isSet: !!formatGripLabel(initialGrip),
+    ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
+    onClick: () => setOpenSheet('grip')
+  })), repSuggestions.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       alignItems: 'center',
@@ -6419,20 +7823,23 @@ const RepPickerModal = ({
       letterSpacing: '0.6px',
       marginRight: '2px'
     }
-  }, repSuggestionSource), repSuggestions.map(value => {
+  }, repSuggestionSource, repSuggestionDate ? ` \xB7 ${repSuggestionLabel}` : ''), repSuggestions.map(value => {
     const isActive = String(value) === String(customReps);
     return /*#__PURE__*/React.createElement("button", {
       key: value,
       type: "button",
       "aria-label": `Suggest ${value} reps`,
       "aria-pressed": isActive,
+      className: "rep-suggestion",
       onClick: () => setCustomReps(String(value)),
       style: {
         minHeight: '32px',
         padding: '0 14px',
-        borderRadius: '20px',
-        border: isActive ? '1px solid var(--accent)' : '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
-        background: isActive ? 'color-mix(in srgb, var(--accent) 30%, transparent)' : 'color-mix(in srgb, var(--accent) 8%, transparent)',
+        '--svg-plate-fill': isActive ? 'color-mix(in srgb, var(--accent) 30%, transparent)' : 'color-mix(in srgb, var(--accent) 8%, transparent)',
+        '--svg-plate-stroke': isActive ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 22%, transparent)',
+        '--svg-plate-r': '12px',
+        border: 'none',
+        background: 'transparent',
         color: isActive ? 'var(--text-bright)' : 'var(--accent-soft)',
         fontSize: '13px',
         fontWeight: '700',
@@ -6486,7 +7893,30 @@ const RepPickerModal = ({
     key: r,
     className: `rep-btn${emberEnabled && r >= 8 && r <= 12 ? ' rep-btn-ember' : ''}`,
     onClick: () => onSelectReps(r)
-  }, r))))));
+  }, r))), openSheet === 'load' && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Load",
+    onClose: () => setOpenSheet(null)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => { onChangeWeight({ weight: null, weightType: 'bodyweight' }); setOpenSheet(null); }
+  }, "Bodyweight"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-secondary",
+    onClick: () => { onChangeWeight({ weight: null, weightType: 'none' }); setOpenSheet(null); }
+  }, "No load"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: onRequestWeight
+  }, "Add weight"))), openSheet === 'grip' && /*#__PURE__*/React.createElement(PickerSheet, {
+    title: "Grip",
+    onClose: () => setOpenSheet(null)
+  }, /*#__PURE__*/React.createElement(GripInlineSelector, {
+    embedded: true,
+    initialGrip: initialGrip,
+    onChange: onGripChange,
+    gripReason: gripReason,
+    onDisableGrip: () => { setOpenSheet(null); onDisableGrip && onDisableGrip(); }
+  })))));
 };
 
 // ============ SOUND SETTINGS MODAL ============
@@ -8908,6 +10338,57 @@ const exitDemoMode = async () => {
   activeDbName = REAL_DB_NAME;
 };
 
+// Fixed-pixel squircle plates: length changes are absorbed by straight edges,
+// not by stretching the corner shape. These are decorative only.
+const SVG_PLATE_NS = 'http://www.w3.org/2000/svg';
+const SVG_PLATE_SELECTORS = '.settings-segment-option, .coach-model-option, .weight-btn, .rep-btn, .rep-suggestion';
+const fixedCornerSquirclePath = (w, h, radius) => {
+  const r = Math.max(0, Math.min(radius, w / 2, h / 2));
+  if (r <= 0) return `M0,0 H${w} V${h} H0 Z`;
+  const p = 0.14644 * r;
+  const q = 0.29290 * r;
+  const m = 0.52860 * r;
+  return [`M ${r},0`, `L ${w - r},0`, `C ${w - m},0 ${w - q},0 ${w - p},${p}`, `C ${w},${q} ${w},${m} ${w},${r}`, `L ${w},${h - r}`, `C ${w},${h - m} ${w},${h - q} ${w - p},${h - p}`, `C ${w - q},${h} ${w - m},${h} ${w - r},${h}`, `L ${r},${h}`, `C ${m},${h} ${q},${h} ${p},${h - p}`, `C 0,${h - q} 0,${h - m} 0,${h - r}`, `L 0,${r}`, `C 0,${m} 0,${q} ${p},${p}`, `C ${q},0 ${m},0 ${r},0`, 'Z'].join(' ');
+};
+const ensureSvgCornerPlate = el => {
+  if (!el || el.querySelector(':scope > .svg-corner-plate')) return;
+  const svg = document.createElementNS(SVG_PLATE_NS, 'svg');
+  svg.classList.add('svg-corner-plate');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('focusable', 'false');
+  svg.setAttribute('preserveAspectRatio', 'none');
+  ['svg-corner-plate-fill', 'svg-corner-plate-stroke'].forEach(className => {
+    const path = document.createElementNS(SVG_PLATE_NS, 'path');
+    path.classList.add(className);
+    svg.appendChild(path);
+  });
+  el.classList.add('svg-plate-control');
+  el.insertBefore(svg, el.firstChild);
+};
+const updateSvgCornerPlatesNow = () => {
+  document.querySelectorAll(SVG_PLATE_SELECTORS).forEach(el => {
+    ensureSvgCornerPlate(el);
+    const rect = el.getBoundingClientRect();
+    if (rect.width < 1 || rect.height < 1) return;
+    const radius = parseFloat(getComputedStyle(el).getPropertyValue('--svg-plate-r')) || 12;
+    const w = Math.round(rect.width * 100) / 100;
+    const h = Math.round(rect.height * 100) / 100;
+    const svg = el.querySelector(':scope > .svg-corner-plate');
+    if (!svg) return;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svg.querySelectorAll('path').forEach(path => path.setAttribute('d', fixedCornerSquirclePath(w, h, radius)));
+  });
+};
+let svgPlateRaf = 0;
+const updateSvgCornerPlates = () => {
+  if (svgPlateRaf) cancelAnimationFrame(svgPlateRaf);
+  svgPlateRaf = requestAnimationFrame(() => {
+    svgPlateRaf = 0;
+    updateSvgCornerPlatesNow();
+  });
+};
+window.addEventListener('resize', updateSvgCornerPlates);
+
 const SettingsModal = ({
   onClose,
   onReplayTour,
@@ -8941,6 +10422,7 @@ const SettingsModal = ({
   const [showDupInfo, setShowDupInfo] = useState(false);
   const [groqApiKey, setGroqApiKeyState] = useState(() => getStoredGroqApiKey());
   const [groqModel, setGroqModelState] = useState(() => getStoredGroqModel());
+  const [showGroqKeyEditor, setShowGroqKeyEditor] = useState(false);
   const coachSectionRef = useRef(null);
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const templateOptions = ['', ...(settingsCategories || ['Push', 'Pull', 'Legs', 'Core', 'Cardio']), 'Rest'];
@@ -8955,6 +10437,9 @@ const SettingsModal = ({
       });
     }
   }, [focusCoachConfig, activeTab]);
+  useEffect(() => {
+    updateSvgCornerPlates();
+  }, [activeTab, timerSounds, groqModel]);
   const handleSelectChange = (idx, value) => {
     if (value === '__add_new__') {
       setShowCatEditor(true);
@@ -9192,10 +10677,9 @@ const SettingsModal = ({
   }, /*#__PURE__*/React.createElement("div", _extends({
     className: "modal-header"
   }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, "Settings"), onOpenFeedback && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary feedback-settings-btn",
+    className: "feedback-settings-btn",
     onClick: onOpenFeedback,
-    type: "button",
-    style: { color: 'var(--text-warm)' }
+    type: "button"
   }, "Feedback"), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
     "aria-label": "Close",
@@ -9638,13 +11122,9 @@ const SettingsModal = ({
       WebkitAppearance: 'none'
     }
   }, FIELD_NOTE_ICON)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
-    }
+    className: "settings-segmented"
   }, /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${dupWarning ? 'is-selected' : ''}`,
     onClick: () => {
       setDupWarning(true);
       removePref('skipDupWarning');
@@ -9658,10 +11138,10 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: dupWarning ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: dupWarning ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: dupWarning ? '#fff' : 'var(--text-faint)'
     }
   }, "On"), /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${!dupWarning ? 'is-selected' : ''}`,
     onClick: () => {
       setDupWarning(false);
       setPref('skipDupWarning', 'true');
@@ -9675,8 +11155,7 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: !dupWarning ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: !dupWarning ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: !dupWarning ? '#fff' : 'var(--text-faint)'
     }
   }, "Off"))), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -9696,13 +11175,9 @@ const SettingsModal = ({
       color: 'var(--text-warm)'
     }
   }, "Weight Reminder Banner")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
-    }
+    className: "settings-segmented"
   }, /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${weightBanner ? 'is-selected' : ''}`,
     onClick: () => {
       setWeightBanner(true);
       removePref('hideWeightBanner');
@@ -9716,10 +11191,10 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: weightBanner ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: weightBanner ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: weightBanner ? '#fff' : 'var(--text-faint)'
     }
   }, "On"), /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${!weightBanner ? 'is-selected' : ''}`,
     onClick: () => {
       setWeightBanner(false);
       setPref('hideWeightBanner', 'true');
@@ -9733,8 +11208,7 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: !weightBanner ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: !weightBanner ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: !weightBanner ? '#fff' : 'var(--text-faint)'
     }
   }, "Off"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -9750,13 +11224,9 @@ const SettingsModal = ({
       color: 'var(--text-warm)'
     }
   }, "Rep Ember Effect (8-12)")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
-    }
+    className: "settings-segmented"
   }, /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${repEmber ? 'is-selected' : ''}`,
     onClick: () => {
       setRepEmber(true);
       removePref('disableRepEmber');
@@ -9770,10 +11240,10 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: repEmber ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: repEmber ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: repEmber ? '#fff' : 'var(--text-faint)'
     }
   }, "On"), /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${!repEmber ? 'is-selected' : ''}`,
     onClick: () => {
       setRepEmber(false);
       setPref('disableRepEmber', 'true');
@@ -9787,8 +11257,7 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: !repEmber ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: !repEmber ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: !repEmber ? '#fff' : 'var(--text-faint)'
     }
   }, "Off"))), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -9808,13 +11277,9 @@ const SettingsModal = ({
       color: 'var(--text-warm)'
     }
   }, "Timer Sounds")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)'
-    }
+    className: "settings-segmented"
   }, /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${timerSounds ? 'is-selected' : ''}`,
     onClick: () => {
       setTimerSounds(true);
       setPref('timerSoundsEnabled', 'true');
@@ -9828,10 +11293,10 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: timerSounds ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: timerSounds ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: timerSounds ? '#fff' : 'var(--text-faint)'
     }
   }, "On"), /*#__PURE__*/React.createElement("button", {
+    className: `settings-segment-option ${!timerSounds ? 'is-selected' : ''}`,
     onClick: () => {
       setTimerSounds(false);
       setPref('timerSoundsEnabled', 'false');
@@ -9845,8 +11310,7 @@ const SettingsModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       background: !timerSounds ? 'var(--accent)' : 'rgba(255,255,255,0.05)',
-      color: !timerSounds ? '#fff' : 'var(--text-faint)',
-      borderRadius: 0
+      color: !timerSounds ? '#fff' : 'var(--text-faint)'
     }
   }, "Off")), timerSounds && /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowSoundConfig(true),
@@ -9893,17 +11357,22 @@ const SettingsModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
       marginBottom: '10px'
     }
-  }, "Bring your own Groq key. The coach uses it directly from this browser and keeps the key local to this device. Changes here save immediately."), /*#__PURE__*/React.createElement("input", {
-    type: "password",
-    className: "form-input",
-    placeholder: "Paste Groq API key",
-    value: groqApiKey,
-    onChange: e => {
-      const value = e.target.value;
-      setGroqApiKeyState(value);
-      setStoredGroqApiKey(value.trim());
+  }, "Your key stays on this device and is used directly from this browser."), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-secondary",
+    onClick: () => setShowGroqKeyEditor(true),
+    style: {
+      marginTop: '10px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, groqApiKey ? "Manage API key" : "Add API key"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--accent-soft)',
+      fontSize: '12px'
+    }
+  }, groqApiKey ? "Saved" : "Required")), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '8px',
@@ -9911,6 +11380,7 @@ const SettingsModal = ({
     }
   }, FITLOGS_AI_MODELS.map(model => /*#__PURE__*/React.createElement("button", {
     key: model.id,
+    className: `coach-model-option ${groqModel === model.id ? 'is-selected' : ''}`,
     onClick: () => {
       setGroqModelState(model.id);
       setStoredGroqModel(model.id);
@@ -9918,8 +11388,7 @@ const SettingsModal = ({
     style: {
       flex: 1,
       padding: '10px 8px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
+      border: 'none',
       background: groqModel === model.id ? 'color-mix(in srgb, var(--accent) 22%, transparent)' : 'rgba(255,255,255,0.03)',
       color: groqModel === model.id ? 'var(--text-body)' : 'var(--text-faint)',
       fontSize: '11px',
@@ -9934,7 +11403,50 @@ const SettingsModal = ({
       lineHeight: '1.5',
       color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
     }
-  }, (FITLOGS_AI_MODELS.find(model => model.id === groqModel) || FITLOGS_AI_MODELS[0]).helper)), showSoundConfig && /*#__PURE__*/React.createElement(SoundSettingsModal, {
+  }, (FITLOGS_AI_MODELS.find(model => model.id === groqModel) || FITLOGS_AI_MODELS[0]).helper)), showGroqKeyEditor && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay feedback-overlay",
+    style: { zIndex: 210 },
+    onClick: () => setShowGroqKeyEditor(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal feedback-modal",
+    style: { height: 'auto', maxHeight: 'none' },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal-header feedback-header"
+  }, /*#__PURE__*/React.createElement("h2", null, "Groq API key"), /*#__PURE__*/React.createElement("button", {
+    className: "close-btn",
+    "aria-label": "Close API key editor",
+    onClick: () => setShowGroqKeyEditor(false)
+  }, /*#__PURE__*/React.createElement(IconX, { size: 20 }))), /*#__PURE__*/React.createElement("div", {
+    className: "modal-content",
+    style: { padding: '16px' }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: { fontSize: '12px', lineHeight: '1.55', color: 'var(--text-faint)', marginBottom: '12px' }
+  }, "Stored only on this device. It is sent directly to Groq when you use Log Coach."), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    className: "form-input",
+    placeholder: "Paste Groq API key",
+    value: groqApiKey,
+    autoFocus: true,
+    onChange: e => {
+      const value = e.target.value;
+      setGroqApiKeyState(value);
+      setStoredGroqApiKey(value.trim());
+    }
+  }), groqApiKey && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-secondary",
+    onClick: () => {
+      setGroqApiKeyState('');
+      setStoredGroqApiKey('');
+    },
+    style: { marginTop: '10px', color: 'var(--danger)' }
+  }, "Remove saved key"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn",
+    onClick: () => setShowGroqKeyEditor(false),
+    style: { marginTop: '10px' }
+  }, "Done")))), showSoundConfig && /*#__PURE__*/React.createElement(SoundSettingsModal, {
     onClose: () => setShowSoundConfig(false)
   })), showDupInfo && /*#__PURE__*/React.createElement("div", {
     onClick: () => setShowDupInfo(false),
@@ -10187,19 +11699,16 @@ const DayDetailModal = ({
     const load = async () => {
       const allExercises = await dbOps.exercises.getAll();
       const splitLower = dayLabel.toLowerCase();
-      // Two bugs lived here. This filtered the list down to the split, so an
-      // activity you had actually done was simply missing from the suggestions;
-      // and it compared raw stored categories against a lowercased split, so a
-      // category saved as "Arms" never matched the split "arms" at all. Same
-      // rule as the Add Activity list now: split first, everything still present.
+      // The Day Detail activity tab belongs to its selected split. Keep the
+      // comparison case-insensitive for imported/legacy category spelling, but
+      // do not carry unrelated activities into this list as lower-priority rows.
       const inSplit = ex => getExCategories(ex).some(c => String(c).toLowerCase() === splitLower);
       const byRecency = (a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '');
-      const matching = [...allExercises].sort((a, b) => (inSplit(b) ? 1 : 0) - (inSplit(a) ? 1 : 0) || byRecency(a, b));
+      const matching = allExercises.filter(inSplit).sort(byRecency);
       setActivities(matching);
       const histMap = {};
       const noteMap = {};
-      // Now that the list is no longer cut down to one split, this walks every
-      // activity — so the reads run together instead of ~70 serial round trips.
+      // Fetch each matching activity's context concurrently.
       await Promise.all(matching.map(async ex => {
         const [allSets, notes] = await Promise.all([dbOps.sets.getByExerciseId(ex.id), dbOps.sessionNotes.getByExerciseId(ex.id)]);
         const byDate = {};
@@ -10943,6 +12452,13 @@ const FieldNoteModal = ({
     }
   }, paragraph))));
 };
+// Coach replies may emphasize a real activity name (for example "BS w Ryan")
+// with Markdown. Render that light formatting while preserving the name exactly.
+const renderCoachContent = content => String(content || '').split('\n').map((line, lineIndex) => /*#__PURE__*/React.createElement("div", {
+  key: lineIndex,
+  style: { minHeight: line ? undefined : '0.65em' }
+}, line.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) => part.startsWith('**') && part.endsWith('**') ? /*#__PURE__*/React.createElement("strong", { key: partIndex }, part.slice(2, -2)) : /*#__PURE__*/React.createElement(React.Fragment, { key: partIndex }, part))));
+
 const AIChatModal = ({
   onClose,
   currentDate,
@@ -11110,7 +12626,7 @@ ${summarizeExercises()}`;
       lineHeight: '1.55',
       whiteSpace: 'pre-wrap'
     }
-  }, message.content)), loading && /*#__PURE__*/React.createElement("div", {
+  }, renderCoachContent(message.content))), loading && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '12px',
       color: 'var(--text-faint)'
@@ -11148,6 +12664,7 @@ ${summarizeExercises()}`;
     disabled: loading || !input.trim(),
     style: {
       width: '98px',
+      minHeight: '62px',
       opacity: loading || !input.trim() ? 0.45 : 1
     }
   }, "Send")))));
@@ -12212,7 +13729,10 @@ const GripInlineSelector = ({
   initialGrip,
   onChange,
   gripReason,
-  onDisableGrip
+  onDisableGrip,
+  // Inside a sheet the surrounding card and title already exist, so the
+  // selector drops its own box and heading rather than nesting a second one.
+  embedded = false
 }) => {
   const [gripType, setGripType] = useState(initialGrip?.gripType || null);
   const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
@@ -12242,14 +13762,16 @@ const GripInlineSelector = ({
     WebkitAppearance: 'none'
   });
   return /*#__PURE__*/React.createElement("div", {
-    style: {
+    style: embedded ? {
+      marginBottom: '4px'
+    } : {
       marginBottom: '12px',
       padding: '10px',
       borderRadius: '10px',
       background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
       border: '1px solid color-mix(in srgb, var(--accent) 14%, transparent)'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, !embedded && /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)',
@@ -12569,7 +14091,7 @@ const CreateVariationModal = ({
 }) => {
   const [name, setName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
-  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
+  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
   const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
   const handleSave = async () => {
     if (!name.trim()) return;
@@ -12663,11 +14185,11 @@ const ActivityLineageModal = ({
   const [step, setStep] = useState('menu');
   const [familyAnchors, setFamilyAnchors] = useState([]);
   const [selectedAnchorId, setSelectedAnchorId] = useState('');
-  const [newFamilyName, setNewFamilyName] = useState(inferMovementFamilyName(exercise?.name) || '');
+  const [newFamilyName, setNewFamilyName] = useState('');
   const [newVariantName, setNewVariantName] = useState('');
   const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
   const [variantFamilyId, setVariantFamilyId] = useState(exercise?.movementFamilyId || '');
-  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || inferMovementFamilyName(exercise?.name) || '');
+  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || '');
   useEffect(() => {
     (async () => {
       const all = (await dbOps.exercises.getAll()).filter(ex => ex.id !== exercise.id && ex.type !== 'neutral');
@@ -13422,10 +14944,15 @@ function App() {
   const [showQuickNotes, setShowQuickNotes] = useState(null);
   const [selectedQuickNotes, setSelectedQuickNotes] = useState({});
   const [activityContext, setActivityContext] = useState(null); // { exerciseId, exerciseName, defaultTab: 'history'|'notes'|'edit' }
+  // Holds the activity whose card just opened itself after its first set of the
+  // day. Drives the vibe-dial prompt and the card halo, and is cleared the
+  // moment the dial is touched or the card is closed.
+  const [firstLogHintId, setFirstLogHintId] = useState(null);
   const toggleExpandedExercise = exerciseId => {
     if (expandedExercise === exerciseId) {
       if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
       setClosingExercise(exerciseId);
+      setFirstLogHintId(current => current === exerciseId ? null : current);
       collapseTimerRef.current = setTimeout(() => {
         setExpandedExercise(null);
         setClosingExercise(null);
@@ -13435,7 +14962,21 @@ function App() {
     }
     if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
     setClosingExercise(null);
+    setFirstLogHintId(null);
     setExpandedExercise(exerciseId);
+  };
+  // The first set of an activity on a given day is the one moment the card is
+  // both new and unread: the vibe dial is blank and nothing has been noted yet.
+  // So the card opens itself instead of dropping back to a collapsed row.
+  const revealFirstLogOfDay = exerciseId => {
+    if (!exerciseId) return;
+    if (collapseTimerRef.current) {
+      clearTimeout(collapseTimerRef.current);
+      collapseTimerRef.current = null;
+    }
+    setClosingExercise(null);
+    setExpandedExercise(exerciseId);
+    setFirstLogHintId(exerciseId);
   };
   const [mergeCandidates, setMergeCandidates] = useState([]);
   const [exerciseLocks, setExerciseLocks] = useState({});
@@ -13923,9 +15464,12 @@ function App() {
       ...selectedExercise,
       lastUsed: currentDate
     }), 'update exercise');
+    const wasFirstOfDayCopy = orderData.existingExercise.length === 0;
+    const copiedExerciseId = selectedExercise.id;
     setModal(null);
     setSelectedExercise(null);
     await loadDayData();
+    if (wasFirstOfDayCopy) revealFirstLogOfDay(copiedExerciseId);
   };
   const handleLogPresence = async () => {
     const orderData = await assignExerciseOrder(selectedExercise.id);
@@ -13960,9 +15504,12 @@ function App() {
       ...selectedExercise,
       lastUsed: currentDate
     }), 'update exercise');
+    const wasFirstOfDayPresence = orderData.existingExercise.length === 0;
+    const presenceExerciseId = selectedExercise.id;
     setModal(null);
     setSelectedExercise(null);
     await loadDayData();
+    if (wasFirstOfDayPresence) revealFirstLogOfDay(presenceExerciseId);
     showUndoToast(`${presenceRecord.exerciseName} logged`, async () => {
       const removed = await safeDb(() => dbOps.sets.delete(presenceRecord.id), 'undo activity log');
       if (removed) await loadDayData();
@@ -14141,6 +15688,8 @@ function App() {
       lastUsed: currentDate
     };
     await safeDb(() => dbOps.exercises.update(exCopy), 'update exercise');
+    const wasFirstOfDay = existingExercise.length === 0;
+    const loggedExerciseId = selectedExercise.id;
     setPendingNewExerciseId(null);
     setLoggedSetCount(loggedSetCount + 1);
     setModal(null);
@@ -14155,6 +15704,7 @@ function App() {
       setGripLockedForDay(false);
     }
     await loadDayData();
+    if (wasFirstOfDay) revealFirstLogOfDay(loggedExerciseId);
     if (pendingLockType) {
       setExerciseLocks(prev => ({
         ...prev,
@@ -14289,6 +15839,8 @@ function App() {
       lastUsed: currentDate
     };
     await safeDb(() => dbOps.exercises.update(exCopy), 'update exercise');
+    const wasFirstOfDayDur = existingExercise.length === 0;
+    const loggedExerciseIdDur = selectedExercise.id;
     setPendingNewExerciseId(null);
     setLoggedSetCount(loggedSetCount + 1);
     setModal(null);
@@ -14303,6 +15855,7 @@ function App() {
       setGripLockedForDay(false);
     }
     await loadDayData();
+    if (wasFirstOfDayDur) revealFirstLogOfDay(loggedExerciseIdDur);
     if (pendingLockType) {
       setExerciseLocks(prev => ({
         ...prev,
@@ -14908,9 +16461,10 @@ function App() {
     const measuredSets = getMeasuredSets(exercise.sets);
     const latestVisibleSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
     const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
+    const isFirstLogHint = firstLogHintId === exercise.exerciseId;
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
-      className: isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group",
+      className: `${isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group"}${isFirstLogHint ? ' exercise-group-firstlog' : ''}`,
       style: isExpanded || isClosing ? {
         background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
         borderRadius: '12px',
@@ -15056,8 +16610,11 @@ function App() {
     }, isExpanded && (() => {
       const lastSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
+      const isTimed = exerciseType === 'timed';
       const hasSets = measuredSets.length > 0;
       const hasWeight = lastSet && lastSet.weight !== null && lastSet.weightType !== 'bodyweight';
+      const lastSetSummary = lastSet ? isTimed ? `${lastSet.duration || 0} ${lastSet.distance ? `${lastSet.distance}${lastSet.distanceUnit || ''}` : 'sec'}` : `${formatLoadSummary(lastSet)}${lastSet.reps ? ` \xD7 ${lastSet.reps}` : ''}` : '';
+      const lastSetWhen = lastSet?.date === currentDate ? `Today \xB7 Set ${lastSet.setOrder || measuredSets.length}` : lastSet?.date ? `${formatDateShort(lastSet.date)} \xB7 ${formatDaysSince(lastSet.date)}` : '';
       if (exerciseType === 'neutral') {
         return null;
       }
@@ -15147,10 +16704,15 @@ function App() {
         fontSize: '11px',
         fontWeight: '600',
         cursor: 'pointer',
+        // The carry-over buttons pair a lock glyph with their unit word, so the
+        // row centres icon and text together rather than text alone.
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '4px',
         borderRight: isLast ? 'none' : '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
         WebkitAppearance: 'none'
       });
-      const isTimed = exerciseType === 'timed';
       const isPureTimed = isTimed && !hasWeight;
       const openUnlockedSetFlow = async () => {
         const fullExercise = await hydrateExerciseForLogging({
@@ -15272,7 +16834,7 @@ function App() {
           setModal('weightPicker');
         }
       };
-      return /*#__PURE__*/React.createElement("div", {
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           marginTop: '6px',
@@ -15294,17 +16856,44 @@ function App() {
           ...segStyle(!lockMode),
           opacity: isPureTimed ? 0.3 : 1
         },
-        onClick: lockMode ? openLockedVariableFlow : openSameWeightFlow
-      }, lockMode ? lockMode === 'uniformWeight' ? isTimed ? 'New Dur' : 'New Reps' : 'New Wt' : "Same Wt"), !lockMode && /*#__PURE__*/React.createElement("button", {
+        onClick: lockMode ? openLockedVariableFlow : openSameWeightFlow,
+        "aria-label": lockMode ? undefined : 'Same weight as last set'
+      }, lockMode ? lockMode === 'uniformWeight' ? isTimed ? 'New Dur' : 'New Reps' : 'New Wt' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconBagCheck, {
+        size: 14
+      }), "Wt")), !lockMode && /*#__PURE__*/React.createElement("button", {
         style: segStyle(false),
-        onClick: openSameRepsFlow
-      }, isTimed ? 'Same Dur' : 'Same Reps'), /*#__PURE__*/React.createElement("button", {
+        onClick: openSameRepsFlow,
+        "aria-label": isTimed ? 'Same duration as last set' : 'Same reps as last set'
+      }, /*#__PURE__*/React.createElement(IconLock, {
+        size: 14
+      }), isTimed ? 'Dur' : 'Reps'), /*#__PURE__*/React.createElement("button", {
         style: {
           ...segStyle(true),
           background: 'color-mix(in srgb, var(--accent) 15%, transparent)'
         },
         onClick: () => duplicateLastSet()
-      }, "Both"));
+      }, "Both")), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px',
+          minHeight: '18px',
+          marginTop: '4px',
+          color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)',
+          fontSize: '10px',
+          lineHeight: 1.2
+        }
+      }, /*#__PURE__*/React.createElement(IconBagCheck, {
+        size: 12,
+        style: {
+          flexShrink: 0
+        }
+      }), /*#__PURE__*/React.createElement("span", null, "Last logged: ", /*#__PURE__*/React.createElement("strong", {
+        style: {
+          color: 'var(--accent-soft)',
+          fontWeight: '650'
+        }
+      }, lastSetSummary), " \xB7 ", lastSetWhen)));
       })(), isExpanded && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: '4px',
@@ -15315,13 +16904,16 @@ function App() {
       min: "1",
       max: "100",
       value: inlineMood[exercise.exerciseId] || 50,
-      className: "mood-slider",
+      // The hint only survives while the dial is still unanswered: touching it
+      // is the answer, so the glow and the prompt both retire on first input.
+      className: isFirstLogHint && inlineMood[exercise.exerciseId] == null ? "mood-slider is-hinting" : "mood-slider",
       style: {
         '--mood-thumb-color': inlineMood[exercise.exerciseId] != null ? getMoodColor(inlineMood[exercise.exerciseId]) : 'color-mix(in srgb, var(--accent) 30%, transparent)',
-        opacity: inlineMood[exercise.exerciseId] != null ? 1 : 0.4
+        opacity: inlineMood[exercise.exerciseId] != null || isFirstLogHint ? 1 : 0.4
       },
       onInput: e => {
         const newMood = parseInt(e.target.value);
+        setFirstLogHintId(current => current === exercise.exerciseId ? null : current);
         setInlineMood(prev => ({
           ...prev,
           [exercise.exerciseId]: newMood
@@ -15356,7 +16948,9 @@ function App() {
           }, 'save mood');
         }, 300);
       }
-    })), /*#__PURE__*/React.createElement("div", {
+    }), isFirstLogHint && inlineMood[exercise.exerciseId] == null && /*#__PURE__*/React.createElement("div", {
+      className: "vibe-hint-prompt"
+    }, "How did that feel?")), /*#__PURE__*/React.createElement("div", {
       style: {
         display: 'flex',
         gap: '4px',
@@ -15572,6 +17166,7 @@ function App() {
     onSelectReps: handleRepsSelected,
     onChangeWeight: weightData => setSelectedWeight(weightData),
     onRequestWeight: () => setModal('weightPicker', 'repPicker'),
+    selectedDate: currentDate,
     setNumber: setNumber,
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
