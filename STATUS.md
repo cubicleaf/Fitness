@@ -2,13 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-21
+updated: 2026-09-22
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-21
+**Last updated:** 2026-09-22
 
 ## Where I left off
+
+2026-09-22: The activity-picker, family, date-tap-sheet, split-search, split-pairing, and timed-activity crash fixes are live. User authorized integrating local fix commit `921f078`; `main` was merged and pushed as `cdbf0ee`, producing Ready Vercel production deployment `https://fitness-6tcfuu6o5-tims-projects-5135e79e.vercel.app`, aliased to `https://fit-logs.vercel.app`. Verification fetched the production HTML and confirmed it is byte-for-byte identical to the merged `index.html`; the old `inferMovementFamilyName` marker is absent, the new usage-count/split-boundary markers are present, GitHub reports the Vercel status as successful, and the six inline scripts plus all 122 split-classifier fixtures pass. The functional flows were exercised immediately before release in an isolated demo browser; physical-phone review is still appropriate.
 
 2026-09-21: The **Day Detail** modal—the sheet opened by tapping the date—now treats its `Split Day Activities` tab as a hard split-specific list. Once a day has a split, it shows only activities explicitly assigned to that split (case-insensitively for older/imported data), ordered by recency. The bodyweight and split controls remain at the top; no unrelated activities are retained as lower-priority suggestions.
 
