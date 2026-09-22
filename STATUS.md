@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-09-22: **Related Activities consolidation is implemented locally in an isolated `origin/main` worktree, not pushed or deployed.** Edit and the picker relationship control open one management surface. Standalone activities can be related to another activity or create a variation with an explicit group name; linked activities show every group member and offer variation creation, moving, detaching, and history navigation. A single IndexedDB transaction owns relationship writes and empty-family cleanup. The picker still has its separate compact family row and split-gated selection sheet, now labelled “variation(s).” Local demo-browser interactions covered standalone close, linking two standalone activities, variation creation from standalone and linked, moving, detaching the last member, related history navigation, split gating, name-only search, and a 390×844 layout. The source checkout’s user notes remain untouched. Physical-phone use and production release remain open.
+
 2026-09-22: The activity-picker, family, date-tap-sheet, split-search, split-pairing, and timed-activity crash fixes are live. User authorized integrating local fix commit `921f078`; `main` was merged and pushed as `cdbf0ee`, producing Ready Vercel production deployment `https://fitness-6tcfuu6o5-tims-projects-5135e79e.vercel.app`, aliased to `https://fit-logs.vercel.app`. Verification fetched the production HTML and confirmed it is byte-for-byte identical to the merged `index.html`; the old `inferMovementFamilyName` marker is absent, the new usage-count/split-boundary markers are present, GitHub reports the Vercel status as successful, and the six inline scripts plus all 122 split-classifier fixtures pass. The functional flows were exercised immediately before release in an isolated demo browser; physical-phone review is still appropriate.
 
 2026-09-21: The **Day Detail** modal—the sheet opened by tapping the date—now treats its `Split Day Activities` tab as a hard split-specific list. Once a day has a split, it shows only activities explicitly assigned to that split (case-insensitively for older/imported data), ordered by recency. The bodyweight and split controls remain at the top; no unrelated activities are retained as lower-priority suggestions.
@@ -39,6 +41,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-22: **What:** Use **Related Activities** as the one relationship-management entry point; say **activity** by default and **variation** only in relationship creation, comparison, or management. **Why:** Family Link, Family View, Create Variation, and Family Linking overlapped and could leave a variation pointer without a valid family or only link one side of a standalone pair. **How to apply:** Keep families organizational and history-free, write all relationship changes through the shared transaction, require an explicit name when a group is first made, remove the final empty family, and never infer links during boot or ordinary creation. The picker’s compact group row and split-gated selection sheet stay separate; Merge Activities remains the only history-combining path. **Evidence strength:** isolated demo browser interaction plus syntax and fixture checks; a physical phone and production deployment are not yet verified.
 
 - 2026-09-21: **What:** Family membership is strictly user-authored, and the Add Activity picker ranks by exact logged-set count. **Why:** Broad name inference put unrelated movements such as Leg Press and Chest Press into the same family, while a priority-only split rule still filled a Push picker with irrelevant activities. **How to apply:** Never create or amend a family link from words in an activity name—not in app boot migration, new activity creation, or a prefilled family form. Preserve old links so the user can repair them one activity at a time through Family Linking. A non-All split filters the picker before search; all search matching is against the activity name; after filtering, sort by real (non-placeholder/non-presence) set count, then name. Render a family as one compact row and reveal individual variants only in its own modal. **Evidence strength:** local browser verification using the demo dataset plus a manually created family; physical-phone review remains open.
 
@@ -397,23 +401,13 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - **The alias table is small and hand-written** (`ACTIVITY_SEARCH_ALIASES`): db, bb, kb, ohp, rdl, sldl, bw, bp, dl and a few body-part stems. Add to it when a real miss shows up rather than pre-emptively.
 - **Not exercised on a phone.** Fold into the standing device pass.
 
-### Families, variants, and retrieval reliability
+### Related Activities and retrieval reliability
 
-- Active direction: use `family` as the umbrella concept and keep history on the exact activity/variant the user logs.
-- Core rule set now settling:
-  - one activity can belong to zero or one family
-  - one family can contain many activities
-  - linking and unlinking must be reversible and non-destructive
-  - standalone is a valid long-term state, not an error condition
-- Product value:
-  - Preserve exact activity history while still tracking continuity in a broader movement lane like Row or Run.
-  - Let recommendations surface the right neighborhood without flattening distinct activities into one history stream.
-  - Give the AI coach a structure it can explain and use without forcing taxonomy on every activity.
-- Main risk is no longer storage. It is retrieval trust:
-  - the Add Activity picker must surface relevant families and activities without fail
-  - search must hit family names, activity names, split/category context, and useful variation language
-  - if the picker misses obvious matches, users will stop organizing activities at all
-- Current recommendation: keep family linking manual and reversible, then use AI to explain and assist rather than silently auto-classifying. Detailed build rules now live in [FAMILY-SYSTEM-AND-PICKER-SPEC.md](/Users/cubicleaf/Documents/Fitness-git/FAMILY-SYSTEM-AND-PICKER-SPEC.md).
+- The local consolidated flow is implemented; a physical-phone session and separately authorized production release remain open.
+- An activity owns its exact history, notes, presets, categories, and load behavior. A family is an optional named umbrella. A variation is an activity’s relative role inside Related Activities, not another storage entity.
+- Related Activities is the only management surface. The Add Activity picker keeps its compact family row and a variation-selection sheet that includes only in-split activities. Duplicate merging stays separate and is the only flow that combines histories.
+- Search stays activity-name-only; non-All splits remain hard boundaries; qualifying logged-set count followed by alphabetical name orders eligible activities. Do not restore older metadata search guidance from historical decisions.
+- The canonical implementation contract is [FAMILY-SYSTEM-AND-PICKER-SPEC.md](/Users/cubicleaf/Documents/Fitness-git/FAMILY-SYSTEM-AND-PICKER-SPEC.md). No automatic grouping on ordinary creation or boot.
 
 ### IDFK workout helper
 

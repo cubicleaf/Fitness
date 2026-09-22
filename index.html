@@ -3286,10 +3286,7 @@ const dbOps = {
     delete: id => idbRun('sessionNotes', 'readwrite', store => store.delete(id), () => undefined)
   },
   families: {
-    add: family => idbRun('movementFamilies', 'readwrite', store => store.add(family)),
-    update: family => idbRun('movementFamilies', 'readwrite', store => store.put(family)),
-    getAll: () => idbRun('movementFamilies', 'readonly', store => store.getAll(), result => result.sort((a, b) => (a.name || '').localeCompare(b.name || ''))),
-    findByName: name => idbRun('movementFamilies', 'readonly', store => store.index('by-name').getAll(name), result => result[0] || null)
+    getAll: () => idbRun('movementFamilies', 'readonly', store => store.getAll(), result => result.sort((a, b) => (a.name || '').localeCompare(b.name || '')))
   }
 };
 
@@ -3800,15 +3797,10 @@ const FIELD_NOTES = {
     title: 'What is a neutral activity?',
     body: ['Neutral activities are for things you want to record without pretending they are a normal lift. They still keep feel, notes, history, and edit, but they skip the set logging controls.', 'Use this for note-only events, recovery items, or anything where “it happened” matters more than weight, reps, or time.']
   },
-  movementFamily: {
+  relatedActivities: {
     eyebrow: 'Field Note',
-    title: 'What is a movement family?',
-    body: ['A movement family links related activities without merging them into one history. Cable row, dumbbell row, and machine row can stay separate while still belonging to the broader row family.', 'Think of the family as the umbrella and the activity as the exact variation you actually performed. That keeps presets and history precise while still allowing broader views later.']
-  },
-  activityLineage: {
-    eyebrow: 'Field Note',
-    title: 'Family or standalone?',
-    body: ['A family is just an organizational umbrella like Row or Run. The real history still lives on the exact activity you log, such as Cable Row or Outdoor Run.', 'You can link an activity into a family, detach it back to standalone, or create related variants later. None of those moves rewrite sets or delete history.']
+    title: 'How do related activities work?',
+    body: ['A family is an organizational group, such as Row or Run. The activity you log owns its own sets, notes, presets, and history.', 'Related Activities can link, move, or detach activities and create a variation. Those actions never combine histories. Merge Activities is a separate action for true duplicates.']
   },
   gripTracking: {
     eyebrow: 'Field Note',
@@ -3914,7 +3906,7 @@ Rules:
 App guidance:
 - The app logs workouts locally in IndexedDB and works offline after the first visit.
 - The core loop is quick set logging: pick activity, weight, reps/duration.
-- Movement family = the umbrella. Activity/variation = the exact thing performed.
+- A family is an organizational umbrella. The activity is the exact thing performed and owns its history. A variation is a new activity created in a related group.
 - Grip tracking is optional and off by default.
 - Neutral activities are note-only and skip set logging controls.
 
@@ -3928,20 +3920,91 @@ const withNormalizedExerciseFields = exercise => ({
   measurementModes: inferMeasurementModes(exercise),
   gripTrackingEnabled: !!exercise.gripTrackingEnabled
 });
-const ensureMovementFamilyRecord = async familyName => {
-  const normalized = normalizeFamilyName(familyName);
-  if (!normalized) return null;
-  const existingFamilies = await dbOps.families.getAll();
-  const existing = existingFamilies.find(f => normalizeFamilyKey(f.name) === normalizeFamilyKey(normalized));
-  if (existing) return existing;
-  const family = {
-    id: generateId('fam'),
-    name: normalized,
-    createdAt: Date.now()
+// Every relationship action commits its activity and family changes together.
+// Sets, session notes, and presets are deliberately outside this transaction.
+const writeRelatedActivities = command => new Promise((resolve, reject) => {
+  if (!db) return reject(new Error('Database is not open'));
+  const tx = db.transaction(['exercises', 'movementFamilies'], 'readwrite');
+  const activityStore = tx.objectStore('exercises');
+  const familyStore = tx.objectStore('movementFamilies');
+  let result = null;
+  let failure = null;
+  let applied = false;
+  tx.oncomplete = () => resolve(result);
+  tx.onabort = () => reject(failure || tx.error || new Error('Related Activities could not be saved'));
+  tx.onerror = () => { failure = tx.error; };
+  const activitiesRequest = activityStore.getAll();
+  const familiesRequest = familyStore.getAll();
+  activitiesRequest.onerror = familiesRequest.onerror = event => { failure = event.target.error; };
+  familiesRequest.onsuccess = () => {
+    if (activitiesRequest.readyState !== 'done') return;
+    apply(activitiesRequest.result, familiesRequest.result);
   };
-  await dbOps.families.add(family);
-  return family;
-};
+  activitiesRequest.onsuccess = () => {
+    if (familiesRequest.readyState !== 'done') return;
+    apply(activitiesRequest.result, familiesRequest.result);
+  };
+  function apply(activities, families) {
+    if (applied || failure) return;
+    applied = true;
+    try {
+      const current = activities.find(ex => ex.id === command.activityId);
+      if (!current) throw new Error('Activity no longer exists');
+      const target = command.targetId && activities.find(ex => ex.id === command.targetId);
+      if (command.kind === 'relate' && (!target || target.id === current.id)) throw new Error('Choose another activity');
+      const findFamily = id => families.find(f => f.id === id);
+      const linkedFamily = ex => ex?.movementFamilyId && findFamily(ex.movementFamilyId);
+      let family = null;
+      if (command.kind === 'create') family = linkedFamily(current);
+      if (command.kind === 'relate') family = linkedFamily(target) || linkedFamily(current);
+      if (command.kind === 'move') family = findFamily(command.familyId);
+      if (command.kind !== 'standalone' && !family) {
+        const name = normalizeFamilyName(command.familyName);
+        if (!name) throw new Error('Confirm a group name first');
+        family = families.find(f => normalizeFamilyKey(f.name) === normalizeFamilyKey(name));
+        if (!family) {
+          family = { id: generateId('fam'), name, createdAt: Date.now() };
+          families.push(family);
+          familyStore.add(family);
+        }
+      }
+      const link = (ex, variationOf = null) => ({
+        ...ex, movementFamilyId: family.id, movementFamilyName: family.name,
+        variationLabel: ex.variationLabel || '', variationOf
+      });
+      const anchor = activities.find(ex => ex.id === current.variationOf);
+      const retainedVariationOf = anchor?.movementFamilyId === family?.id ? current.variationOf : null;
+      let updated = command.kind === 'standalone' ? toStandaloneActivity(current) : link(current, retainedVariationOf);
+      activityStore.put(updated);
+      if (command.kind === 'relate' && !linkedFamily(target)) activityStore.put(link(target));
+      if (command.kind === 'create') {
+        const name = String(command.name || '').trim();
+        if (!name) throw new Error('Enter an activity name');
+        const created = link({
+          ...current, id: generateId('ex'), name, note: '', lastUsed: '',
+          createdAt: Date.now(), variationLabel: String(command.variationLabel || '').trim()
+        }, current.id);
+        activityStore.add(created);
+        result = created;
+      } else result = updated;
+      // A variation pointer is meaningful only while both activities share a
+      // valid family. Moving or detaching an anchor clears stale pointers.
+      activities.forEach(ex => {
+        if (ex.id === current.id || ex.id === target?.id) return;
+        if (ex.variationOf === current.id && ex.movementFamilyId !== updated.movementFamilyId) {
+          activityStore.put({ ...ex, variationOf: null });
+        }
+      });
+      const finalActivities = activities.map(ex => ex.id === current.id ? updated : ex.id === target?.id && command.kind === 'relate' && !linkedFamily(target) ? link(target) : ex);
+      families.forEach(f => {
+        if (!finalActivities.some(ex => ex.movementFamilyId === f.id) && f.id !== family?.id) familyStore.delete(f.id);
+      });
+    } catch (error) {
+      failure = error;
+      tx.abort();
+    }
+  }
+});
 const migrateActivityModel = async () => {
   const exercises = await dbOps.exercises.getAll();
   for (const exercise of exercises) {
@@ -4630,7 +4693,7 @@ const ExercisePickerModal = ({
   onCategoriesChanged,
   defaultCategory,
   onPair,
-  onOpenLineage
+  onOpenRelated
 }) => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(defaultCategory || 'all');
@@ -4812,10 +4875,10 @@ const ExercisePickerModal = ({
     }, "pair") : null;
     const lineageButton = !pairingSource ? /*#__PURE__*/React.createElement("button", {
       type: "button",
-      "aria-label": `Set family link for ${ex.name}`,
+      "aria-label": `Related Activities for ${ex.name}`,
       onClick: e => {
         e.stopPropagation();
-        onOpenLineage && onOpenLineage(ex);
+        onOpenRelated && onOpenRelated(ex);
       },
       style: {
         border: 'none',
@@ -4879,7 +4942,7 @@ const ExercisePickerModal = ({
   };
 
   // Families are compact doors, not expanded stacks. One row per family keeps
-  // the main scroll useful; the explicit button opens the variants in a modal.
+  // the main scroll useful; the explicit button opens the variations in a modal.
   const buildSections = (list, keyPrefix) => {
     if (pairingSource) return list.map(renderActivityRow);
     const order = [];
@@ -4930,7 +4993,7 @@ const ExercisePickerModal = ({
       onClick: () => {
         setSelectedFamilyId(family.id);
       },
-      "aria-label": `Show ${family.members.length} variants in the ${family.name} family`,
+      "aria-label": `Show ${family.members.length} ${family.members.length === 1 ? 'variation' : 'variations'} in the ${family.name} family`,
       style: {
         minHeight: '32px',
         padding: '0 12px',
@@ -4944,7 +5007,7 @@ const ExercisePickerModal = ({
         cursor: 'pointer',
         WebkitAppearance: 'none'
       }
-    }, family.members.length, family.members.length === 1 ? ' variant' : ' variants'))));
+    }, family.members.length, family.members.length === 1 ? ' variation' : ' variations'))));
     return [...familyCards, ...loose.map(renderActivityRow)];
   };
 
@@ -5160,7 +5223,7 @@ const ExercisePickerModal = ({
     className: "modal-header"
   }, makeSwipeDownHandlers(() => setSelectedFamilyId(null))), /*#__PURE__*/React.createElement("h2", null, selectedFamily.name), /*#__PURE__*/React.createElement("button", {
     className: "close-btn",
-    "aria-label": "Close variants",
+    "aria-label": "Close variations",
     onClick: () => setSelectedFamilyId(null)
   }, /*#__PURE__*/React.createElement(IconX, {
     size: 20
@@ -5172,7 +5235,7 @@ const ExercisePickerModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)',
       marginBottom: '12px'
     }
-  }, selectedFamilyVariants.length, selectedFamilyVariants.length === 1 ? ' variant' : ' variants · most logged first'), selectedFamilyVariants.map(renderActivityRow)))))));
+  }, selectedFamilyVariants.length, selectedFamilyVariants.length === 1 ? ' variation' : ' variations · most logged first'), selectedFamilyVariants.map(renderActivityRow)))))));
 };
 const ActivitySplitHelper = (() => {
 // Pure offline prototype. Catalog is injected so the eventual app can inline it.
@@ -6409,17 +6472,14 @@ const CreateExerciseModal = ({
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
-  const doSave = async (opts = {}) => {
+  const doSave = async () => {
     if (saveInFlight.current) return;
     saveInFlight.current = true; setSaving(true); setFormError('');
     try {
     const barSelection = weightMeaning === 'bar' ? resolveBarSelection(barType, customBarWeight) : null;
     const finalWeightMeaning = barSelection ? barSelection.weightMeaning : weightMeaning || 'total';
     const finalType = type || 'reps';
-    // New activities start standalone unless this exact user action explicitly
-    // supplied a family. Names are never used to manufacture a relationship.
-    const resolvedFamilyName = normalizeFamilyName(opts.movementFamilyName);
-    const familyRecord = resolvedFamilyName ? await ensureMovementFamilyRecord(resolvedFamilyName) : null;
+    // Ordinary creation is always standalone. Relationship edits have one writer.
     const exercise = {
       id: generateId('ex'),
       name: name.trim(),
@@ -6431,10 +6491,10 @@ const CreateExerciseModal = ({
       weightDefault: finalType === 'neutral' ? 'none' : weightDefault || (finalType === 'timed' ? 'none' : 'bodyweight'),
       customBarWeight: finalType === 'neutral' || !barSelection ? null : barSelection.customBarWeight,
       barName: finalType === 'neutral' || !barSelection ? null : barSelection.barName,
-      variationOf: opts.variationOf || null,
-      movementFamilyId: familyRecord?.id || null,
-      movementFamilyName: familyRecord?.name || '',
-      variationLabel: (opts.variationLabel || '').trim(),
+      variationOf: null,
+      movementFamilyId: null,
+      movementFamilyName: '',
+      variationLabel: '',
       gripTrackingEnabled: finalType !== 'neutral' && !!gripTrackingEnabled,
       // Explicit answer, so the name heuristic never overrides it later.
       gripTracking: finalType === 'neutral' ? 'off' : gripTrackingEnabled ? 'on' : 'off',
@@ -6523,7 +6583,7 @@ const CreateExerciseModal = ({
       color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)',
       marginBottom: '8px'
     }
-  }, "\"Use\" logs to the existing activity. \"New Variation\" creates a separate version (e.g. incline vs flat)."), dupMatches.map((m, i) => /*#__PURE__*/React.createElement("div", {
+  }, "Use logs to the existing activity. Create a distinct activity when its history should stay separate."), dupMatches.map((m, i) => /*#__PURE__*/React.createElement("div", {
     key: m.exercise.id,
     style: {
       display: 'flex',
@@ -6562,24 +6622,7 @@ const CreateExerciseModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Use This"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      doSave({
-        variationOf: m.exercise.id
-      });
-    },
-    style: {
-      padding: '5px 10px',
-      borderRadius: '6px',
-      border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
-      color: 'var(--accent-soft)',
-      fontSize: '11px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "New Variation")))), /*#__PURE__*/React.createElement("button", {
+  }, "Use This")))), /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowDupPanel(false),
     style: {
       width: '100%',
@@ -13369,9 +13412,9 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Change Split"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+  }, "Change Split"), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      onAction('manageFamily');
+      onAction('relatedActivities');
       onClose();
     },
     style: {
@@ -13387,25 +13430,7 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Family Link"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      onAction('viewFamily');
-      onClose();
-    },
-    style: {
-      width: '100%',
-      padding: '14px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--text-body)',
-      fontSize: '14px',
-      fontWeight: '500',
-      cursor: 'pointer',
-      WebkitAppearance: 'none',
-      textAlign: 'left'
-    }
-  }, "View Family"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
+  }, "Related Activities"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('changeType');
       onClose();
@@ -13494,24 +13519,6 @@ const ActivityContextModal = ({
       textAlign: 'left'
     }
   }, `Grip Tracking: ${shouldOfferGripTracking(exercise) ? 'On' : 'Off'}${gripTrackingModeFor(exercise) === 'auto' ? ' (auto)' : ''}`), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
-    onClick: () => {
-      onAction('createVariation');
-      onClose();
-    },
-    style: {
-      width: '100%',
-      padding: '14px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--text-body)',
-      fontSize: '14px',
-      fontWeight: '500',
-      cursor: 'pointer',
-      WebkitAppearance: 'none',
-      textAlign: 'left'
-    }
-  }, "Create Variation"), exercise?.type !== 'neutral' && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('mergeActivity');
       onClose();
@@ -13836,155 +13843,6 @@ const GripInlineSelector = ({
     style: toggleStyle(gripWidth === opt)
   }, opt === 'v-grip' ? 'V-bar' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
 };
-const ExistingFamilyChoices = ({
-  selectedFamilyId,
-  onSelect,
-  includeNone = false
-}) => {
-  const [families, setFamilies] = useState([]);
-  useEffect(() => {
-    dbOps.families.getAll().then(all => setFamilies((all || []).sort((a, b) => a.name.localeCompare(b.name))));
-  }, []);
-  if (families.length === 0 && !includeNone) return null;
-  return /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: '12px'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "form-label",
-    style: {
-      marginBottom: '6px'
-    }
-  }, "Existing Families"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      gap: '6px'
-    }
-  }, includeNone && /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: () => onSelect(null),
-    style: {
-      padding: '8px 10px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
-      background: !selectedFamilyId ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--text-body)',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Standalone"), families.map(family => /*#__PURE__*/React.createElement("button", {
-    key: family.id,
-    type: "button",
-    onClick: () => onSelect(family),
-    style: {
-      padding: '8px 10px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
-      background: selectedFamilyId === family.id ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--text-body)',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, family.name))));
-};
-const ManageFamilyModal = ({
-  exercise,
-  onSave,
-  onCancel,
-  onOpenFieldNote
-}) => {
-  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
-  const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
-  const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
-  const handleSave = async () => {
-    const normalized = normalizeFamilyName(familyName);
-    const familyRecord = normalized ? await ensureMovementFamilyRecord(normalized) : null;
-    await onSave({
-      ...exercise,
-      movementFamilyId: familyRecord?.id || null,
-      movementFamilyName: familyRecord?.name || '',
-      variationLabel: familyRecord ? variationLabel.trim() : '',
-      variationOf: familyRecord ? exercise.variationOf || null : null
-    });
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", _extends({
-    className: "modal-header"
-  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px'
-    }
-  }, /*#__PURE__*/React.createElement("h2", null, "Family Link"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
-    noteId: "movementFamily",
-    onOpen: onOpenFieldNote,
-    ariaLabel: "What is a movement family?"
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "close-btn",
-    "aria-label": "Close",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '12px',
-      lineHeight: '1.55',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      marginBottom: '14px'
-    }
-  }, "Link this activity into a family or clear the link and return it to standalone. Family structure is organizational only and does not rewrite history."), /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
-    selectedFamilyId: selectedFamilyId,
-    includeNone: true,
-    onSelect: family => {
-      setSelectedFamilyId(family?.id || '');
-      setFamilyName(family?.name || '');
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Family"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "E.g., Row",
-    value: familyName,
-    onChange: e => setFamilyName(e.target.value)
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Variation Label"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "E.g., Wide Neutral",
-    value: variationLabel,
-    onChange: e => setVariationLabel(e.target.value)
-  })), exercise?.movementFamilyId && /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: () => onSave(toStandaloneActivity(exercise)),
-    style: {
-      width: '100%',
-      marginBottom: '12px'
-    }
-  }, "Make Standalone"), /*#__PURE__*/React.createElement("div", {
-    className: "modal-footer"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: onCancel
-  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: handleSave
-  }, "Save")))));
-};
 const ChangeWeightMeaningModal = ({
   exercise,
   onSave,
@@ -14084,418 +13942,98 @@ const ChangeWeightMeaningModal = ({
     onClick: handleSave
   }, "Save")))));
 };
-const CreateVariationModal = ({
-  exercise,
-  onSave,
-  onCancel
-}) => {
+const RelatedActivitiesModal = ({ exercise, onClose, onCommit, onOpenHistory, onOpenFieldNote }) => {
+  const h = React.createElement;
+  const [activities, setActivities] = useState([]);
+  const [families, setFamilies] = useState([]);
+  const [step, setStep] = useState('overview');
+  const [targetId, setTargetId] = useState('');
+  const [familyId, setFamilyId] = useState('');
+  const [familyName, setFamilyName] = useState('');
   const [name, setName] = useState('');
   const [variationLabel, setVariationLabel] = useState('');
-  const [familyName, setFamilyName] = useState(exercise?.movementFamilyName || '');
-  const [selectedFamilyId, setSelectedFamilyId] = useState(exercise?.movementFamilyId || '');
-  const handleSave = async () => {
-    if (!name.trim()) return;
-    const familySourceName = normalizeFamilyName(familyName);
-    const familyRecord = familySourceName ? await ensureMovementFamilyRecord(familySourceName) : null;
-    await onSave({
-      ...exercise,
-      id: generateId('ex'),
-      name: name.trim(),
-      variationOf: exercise.id,
-      movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
-      movementFamilyName: familyRecord?.name || '',
-      variationLabel: variationLabel.trim(),
-      lastUsed: '',
-      createdAt: Date.now()
-    });
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", _extends({
-    className: "modal-header"
-  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Create Variation"), /*#__PURE__*/React.createElement("button", {
-    className: "close-btn",
-    "aria-label": "Close",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
-  }, /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
-    selectedFamilyId: selectedFamilyId,
-    onSelect: family => {
-      setSelectedFamilyId(family?.id || '');
-      setFamilyName(family?.name || '');
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Family Name"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    value: familyName,
-    onChange: e => {
-      setFamilyName(e.target.value);
-      setSelectedFamilyId('');
-    },
-    placeholder: "E.g., Chest Press"
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "New Activity Name"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "E.g., Wide Neutral Grip Pulldown",
-    value: name,
-    onChange: e => setName(e.target.value),
-    autoFocus: true
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "form-label"
-  }, "Variation Label"), /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "E.g., Wide Neutral",
-    value: variationLabel,
-    onChange: e => setVariationLabel(e.target.value)
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "modal-footer"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: onCancel
-  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: handleSave
-  }, "Create")))));
-};
-const ActivityLineageModal = ({
-  exercise,
-  onClose,
-  onSaveExercise,
-  onCreateExercise,
-  onOpenFieldNote
-}) => {
-  const [step, setStep] = useState('menu');
-  const [familyAnchors, setFamilyAnchors] = useState([]);
-  const [selectedAnchorId, setSelectedAnchorId] = useState('');
-  const [newFamilyName, setNewFamilyName] = useState('');
-  const [newVariantName, setNewVariantName] = useState('');
-  const [variationLabel, setVariationLabel] = useState(exercise?.variationLabel || '');
-  const [variantFamilyId, setVariantFamilyId] = useState(exercise?.movementFamilyId || '');
-  const [variantFamilyName, setVariantFamilyName] = useState(exercise?.movementFamilyName || '');
+  const [error, setError] = useState('');
+  const [working, setWorking] = useState(false);
   useEffect(() => {
-    (async () => {
-      const all = (await dbOps.exercises.getAll()).filter(ex => ex.id !== exercise.id && ex.type !== 'neutral');
-      setFamilyAnchors(all.sort((a, b) => a.name.localeCompare(b.name)));
-    })();
-  }, [exercise]);
-  const selectedAnchor = familyAnchors.find(anchor => anchor.id === selectedAnchorId) || null;
-  const linkToExistingFamily = async anchor => {
-    const familySeed = normalizeFamilyName(anchor.movementFamilyName || anchor.name);
-    const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
-    await onSaveExercise({
-      ...exercise,
-      movementFamilyId: familyRecord?.id || anchor.movementFamilyId || null,
-      movementFamilyName: familyRecord?.name || anchor.movementFamilyName || anchor.name,
-      variationLabel: variationLabel.trim(),
-      variationOf: anchor.id
-    });
+    Promise.all([dbOps.exercises.getAll(), dbOps.families.getAll()]).then(([all, groups]) => {
+      setActivities(all || []);
+      setFamilies(groups || []);
+    }).catch(() => setError('Related activities could not be loaded.'));
+  }, [exercise.id]);
+  const family = families.find(f => f.id === exercise.movementFamilyId) || null;
+  const related = family ? activities.filter(ex => ex.movementFamilyId === family.id).sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''))) : [];
+  const target = activities.find(ex => ex.id === targetId);
+  const targetFamily = families.find(f => f.id === target?.movementFamilyId);
+  const activeFamilies = families.filter(f => activities.some(ex => ex.movementFamilyId === f.id) && f.id !== family?.id);
+  const button = (label, click, primary = false, disabled = false) => h('button', {
+    type: 'button', className: primary ? 'btn' : 'btn btn-secondary',
+    disabled: disabled || working, onClick: click,
+    style: { width: '100%', minHeight: '44px', marginBottom: '9px', textAlign: 'left', opacity: disabled || working ? 0.45 : 1 }
+  }, label);
+  const field = (label, value, setter, placeholder) => h('div', { className: 'form-group' },
+    h('label', { className: 'form-label' }, label),
+    h('input', { className: 'form-input', value, onChange: e => setter(e.target.value), placeholder }));
+  const save = async command => {
+    setError(''); setWorking(true);
+    try { await onCommit({ ...command, activityId: exercise.id }); }
+    catch (cause) { setError(cause.message || 'Could not save this relationship.'); setWorking(false); }
   };
-  const createFamilyFromActivity = async () => {
-    if (!newFamilyName.trim()) return;
-    const familyRecord = await ensureMovementFamilyRecord(newFamilyName.trim());
-    await onSaveExercise({
-      ...exercise,
-      movementFamilyId: familyRecord?.id || null,
-      movementFamilyName: familyRecord?.name || newFamilyName.trim(),
-      variationLabel: variationLabel.trim(),
-      variationOf: null
-    });
-  };
-  const createSiblingVariant = async () => {
-    if (!newVariantName.trim()) return;
-    const familySeed = normalizeFamilyName(variantFamilyName || exercise.movementFamilyName || exercise.name);
-    const familyRecord = familySeed ? await ensureMovementFamilyRecord(familySeed) : null;
-    await onCreateExercise({
-      ...exercise,
-      id: generateId('ex'),
-      name: newVariantName.trim(),
-      note: '',
-      lastUsed: '',
-      createdAt: Date.now(),
-      movementFamilyId: familyRecord?.id || exercise.movementFamilyId || null,
-      movementFamilyName: familyRecord?.name || variantFamilyName || exercise.movementFamilyName || exercise.name,
-      variationLabel: variationLabel.trim(),
-      variationOf: exercise.id
-    });
-  };
-  let stepContent = null;
-  if (step === 'menu') {
-    stepContent = /*#__PURE__*/React.createElement("div", {
-      style: {
-        display: 'grid',
-        gap: '10px'
-      }
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "btn",
-      onClick: () => setStep('existing')
-    }, "Link To Existing Family"), /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => setStep('new-family')
-    }, "Create New Family"), /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => onSaveExercise(toStandaloneActivity(exercise))
-    }, "Make Standalone"), exercise?.movementFamilyId && /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => setStep('new-variant')
-    }, "Create Related Variant"));
-  } else if (step === 'existing') {
-    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ExistingFamilyChoices, {
-      selectedFamilyId: variantFamilyId,
-      onSelect: family => {
-        setVariantFamilyId(family?.id || '');
-        setVariantFamilyName(family?.name || '');
-      }
-    }), /*#__PURE__*/React.createElement("div", {
-      style: {
-        maxHeight: '260px',
-        overflowY: 'auto',
-        marginBottom: '12px'
-      }
-    }, familyAnchors.map(anchor => /*#__PURE__*/React.createElement("button", {
-      key: anchor.id,
-      onClick: () => setSelectedAnchorId(anchor.id),
-      style: {
-        width: '100%',
-        textAlign: 'left',
-        padding: '11px 12px',
-        marginBottom: '8px',
-        borderRadius: '10px',
-        border: '1px solid color-mix(in srgb, var(--accent) 18%, transparent)',
-        background: selectedAnchorId === anchor.id ? 'color-mix(in srgb, var(--accent) 18%, transparent)' : 'rgba(255,255,255,0.03)',
-        color: 'var(--text-body)',
-        cursor: 'pointer',
-        WebkitAppearance: 'none'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: '13px',
-        fontWeight: '600'
-      }
-    }, anchor.name), /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: '11px',
-        marginTop: '3px',
-        color: 'color-mix(in srgb, var(--accent-soft) 55%, transparent)'
-      }
-    }, anchor.movementFamilyName || 'Will seed a family name from this activity')))), /*#__PURE__*/React.createElement("div", {
-      className: "form-group"
-    }, /*#__PURE__*/React.createElement("label", {
-      className: "form-label"
-    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
-      className: "form-input",
-      value: variationLabel,
-      onChange: e => setVariationLabel(e.target.value),
-      placeholder: "E.g., Outdoor, Wide, Incline"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "modal-footer"
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => setStep('menu')
-    }, "Back"), /*#__PURE__*/React.createElement("button", {
-      className: "btn",
-      disabled: !selectedAnchor,
-      style: {
-        opacity: selectedAnchor ? 1 : 0.45
-      },
-      onClick: () => selectedAnchor && linkToExistingFamily(selectedAnchor)
-    }, "Link Activity")));
-  } else if (step === 'new-family') {
-    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: '13px',
-        lineHeight: '1.5',
-        color: 'var(--text-body)',
-        marginBottom: '14px'
-      }
-    }, "This will add ", /*#__PURE__*/React.createElement("strong", null, exercise.name), " to the new family. Its history will stay attached to this exact activity."), /*#__PURE__*/React.createElement("div", {
-      className: "form-group"
-    }, /*#__PURE__*/React.createElement("label", {
-      className: "form-label"
-    }, "New Family Name"), /*#__PURE__*/React.createElement("input", {
-      className: "form-input",
-      value: newFamilyName,
-      onChange: e => setNewFamilyName(e.target.value),
-      placeholder: "E.g., Row"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "form-group"
-    }, /*#__PURE__*/React.createElement("label", {
-      className: "form-label"
-    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
-      className: "form-input",
-      value: variationLabel,
-      onChange: e => setVariationLabel(e.target.value),
-      placeholder: "E.g., Cable, Outdoor, Incline"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "modal-footer"
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => setStep('menu')
-    }, "Back"), /*#__PURE__*/React.createElement("button", {
-      className: "btn",
-      disabled: !newFamilyName.trim(),
-      style: {
-        opacity: newFamilyName.trim() ? 1 : 0.45
-      },
-      onClick: createFamilyFromActivity
-    }, "Create Family + Link Activity")));
+  let content;
+  if (step === 'overview') {
+    content = h(React.Fragment, null,
+      h('p', { style: { fontSize: '13px', lineHeight: 1.5, marginTop: 0 } }, family
+        ? `${exercise.name} belongs to the ${family.name} group. Each activity keeps its own sets, notes, presets, and history.`
+        : `${exercise.name} is tracked on its own. It has its own sets, notes, presets, and history.`),
+      family && h('div', { style: { marginBottom: '14px' } },
+        h('div', { className: 'form-label' }, `${family.name} · ${related.length} ${related.length === 1 ? 'activity' : 'activities'}`),
+        related.map(ex => h('button', {
+          key: ex.id, type: 'button', onClick: () => onOpenHistory(ex),
+          style: { display: 'flex', width: '100%', minHeight: '48px', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '6px', padding: '10px 12px', borderRadius: '10px', border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)', background: 'color-mix(in srgb, var(--accent) 5%, transparent)', color: 'var(--text-body)', textAlign: 'left' }
+        }, h('span', null, ex.name, ex.id === exercise.id ? ' · Current activity' : ''), h('span', { style: { flexShrink: 0, fontSize: '11px' } }, 'History ›')))),
+      family ? h(React.Fragment, null,
+        button('Create variation', () => setStep('create'), true),
+        button('Move to another group', () => setStep('move')),
+        button('Make standalone', () => save({ kind: 'standalone' })))
+      : h(React.Fragment, null,
+        button('Relate to another activity', () => setStep('relate'), true),
+        button('Create a variation', () => setStep('create'))));
+  } else if (step === 'relate') {
+    content = h(React.Fragment, null,
+      h('p', { style: { fontSize: '13px', lineHeight: 1.5 } }, 'Choose another activity. Both histories will stay separate.'),
+      h('div', { style: { maxHeight: '220px', overflowY: 'auto', marginBottom: '12px' } },
+        activities.filter(ex => ex.id !== exercise.id).sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''))).map(ex => button(`${ex.name}${ex.movementFamilyId ? ` · ${families.find(f => f.id === ex.movementFamilyId)?.name || 'linked'}` : ' · standalone'}`, () => setTargetId(ex.id), targetId === ex.id))),
+      target && (targetFamily
+        ? h('p', { style: { fontSize: '13px' } }, `This will add ${exercise.name} to ${targetFamily.name}.`)
+        : h(React.Fragment, null, h('p', { style: { fontSize: '13px' } }, `Both ${exercise.name} and ${target.name} will join one named group.`), field('Group name · confirm before linking', familyName, setFamilyName, 'E.g., Row'))),
+      button('Relate activities', () => save({ kind: 'relate', targetId, familyName }), true, !target || !targetFamily && !familyName.trim()),
+      button('Back', () => setStep('overview')));
+  } else if (step === 'create') {
+    content = h(React.Fragment, null,
+      h('p', { style: { fontSize: '13px', lineHeight: 1.5 } }, family
+        ? `The new variation will join ${family.name} and start with its own history and presets.`
+        : `The new variation and ${exercise.name} will both join the group you name. Each keeps separate history and presets.`),
+      !family && field('Group name · confirm before creating', familyName, setFamilyName, 'E.g., Row'),
+      field('New activity name', name, setName, 'E.g., Incline Dumbbell Row'),
+      field('Variation label · optional', variationLabel, setVariationLabel, 'E.g., Incline'),
+      button('Create variation', () => save({ kind: 'create', name, variationLabel, familyName }), true, !name.trim() || !family && !familyName.trim()),
+      button('Back', () => setStep('overview')));
   } else {
-    stepContent = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-      style: {
-        fontSize: '13px',
-        lineHeight: '1.55',
-        color: 'var(--text-body)',
-        marginBottom: '14px'
-      }
-    }, "Create a related variant under the same family without touching this activity's history or presets."), /*#__PURE__*/React.createElement("div", {
-      className: "form-group"
-    }, /*#__PURE__*/React.createElement("label", {
-      className: "form-label"
-    }, "New Variant Name"), /*#__PURE__*/React.createElement("input", {
-      className: "form-input",
-      value: newVariantName,
-      onChange: e => setNewVariantName(e.target.value),
-      placeholder: "E.g., Incline Dumbbell Row"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "form-group"
-    }, /*#__PURE__*/React.createElement("label", {
-      className: "form-label"
-    }, "Variant Label (optional)"), /*#__PURE__*/React.createElement("input", {
-      className: "form-input",
-      value: variationLabel,
-      onChange: e => setVariationLabel(e.target.value),
-      placeholder: "E.g., Incline"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "modal-footer"
-    }, /*#__PURE__*/React.createElement("button", {
-      className: "btn btn-secondary",
-      onClick: () => setStep('menu')
-    }, "Back"), /*#__PURE__*/React.createElement("button", {
-      className: "btn",
-      disabled: !newVariantName.trim(),
-      style: {
-        opacity: newVariantName.trim() ? 1 : 0.45
-      },
-      onClick: createSiblingVariant
-    }, "Create Variant")));
+    content = h(React.Fragment, null,
+      h('p', { style: { fontSize: '13px', lineHeight: 1.5 } }, `Move ${exercise.name} to another group. Its history stays with this activity.`),
+      h('div', { style: { maxHeight: '220px', overflowY: 'auto', marginBottom: '12px' } },
+        activeFamilies.map(f => button(f.name, () => { setFamilyId(f.id); setFamilyName(''); }, familyId === f.id))),
+      field('Or name a new group', familyName, value => { setFamilyName(value); setFamilyId(''); }, 'E.g., Press'),
+      button('Move activity', () => save({ kind: 'move', familyId, familyName }), true, !familyId && !familyName.trim()),
+      button('Back', () => setStep('overview')));
   }
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", _extends({
-    className: "modal-header"
-  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '6px'
-    }
-  }, /*#__PURE__*/React.createElement("h2", null, "Family Linking"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
-    noteId: "activityLineage",
-    onOpen: onOpenFieldNote,
-    ariaLabel: "Family or standalone?"
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "close-btn",
-    "aria-label": "Close",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '13px',
-      lineHeight: '1.55',
-      color: 'var(--text-body)',
-      marginBottom: '14px'
-    }
-  }, "Use this to link ", /*#__PURE__*/React.createElement("strong", null, exercise.name), " into a family, create a new family, create a related variant, or return it to standalone."), stepContent)));
-};
-const FamilyViewModal = ({
-  exercise,
-  onClose,
-  onOpenExercise
-}) => {
-  const [siblings, setSiblings] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const all = (await dbOps.exercises.getAll()).map(withNormalizedExerciseFields);
-      const familyId = exercise?.movementFamilyId || null;
-      const familyName = normalizeFamilyKey(exercise?.movementFamilyName || '');
-      const related = all.filter(ex => ex.id !== exercise.id && (familyId && ex.movementFamilyId === familyId || !familyId && familyName && normalizeFamilyKey(ex.movementFamilyName) === familyName));
-      setSiblings(related.sort((a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '')));
-    })();
-  }, [exercise]);
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", _extends({
-    className: "modal-header"
-  }, makeSwipeDownHandlers(onClose)), /*#__PURE__*/React.createElement("h2", null, exercise?.movementFamilyName || 'Family View'), /*#__PURE__*/React.createElement("button", {
-    className: "close-btn",
-    "aria-label": "Close",
-    onClick: onClose
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
-  }, siblings.length === 0 ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      color: 'var(--text-placeholder)',
-      padding: '20px 0',
-      fontSize: '13px'
-    }
-  }, "No linked variations yet") : siblings.map(sibling => /*#__PURE__*/React.createElement("button", {
-    key: sibling.id,
-    onClick: () => onOpenExercise(sibling),
-    style: {
-      width: '100%',
-      textAlign: 'left',
-      padding: '12px',
-      marginBottom: '8px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--accent) 15%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--text-body)',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '14px',
-      fontWeight: '600'
-    }
-  }, sibling.name), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
-      marginTop: '4px'
-    }
-  }, sibling.variationLabel || 'No variation label', sibling.lastUsed ? ` · Last ${formatDateShort(sibling.lastUsed)}` : ' · Not logged yet'))))));
+  return h('div', { className: 'modal-overlay', onClick: onClose },
+    h('div', { className: 'modal', onClick: e => e.stopPropagation() },
+      h('div', { className: 'modal-header', ...makeSwipeDownHandlers(onClose) },
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: '6px' } },
+          h('h2', null, 'Related Activities'),
+          h(FieldNoteTrigger, { noteId: 'relatedActivities', onOpen: onOpenFieldNote, ariaLabel: 'About related activities' })),
+        h('button', { className: 'close-btn', 'aria-label': 'Close', onClick: onClose }, h(IconX, { size: 20 }))),
+      h('div', { className: 'modal-content' }, error && h('p', { role: 'alert', style: { color: '#ffaaaa', fontSize: '13px' } }, error), content)));
 };
 const MergeActivitySearchModal = ({
   candidates,
@@ -16141,25 +15679,15 @@ function App() {
         setSelectedExercise(ex);
         setModal('changeWeightMeaning');
       });
-    } else if (action === 'manageFamily') {
+    } else if (action === 'relatedActivities') {
       dbOps.exercises.get(exercise.exerciseId).then(ex => {
         setSelectedExercise(withNormalizedExerciseFields(ex));
-        setModal('manageFamily');
+        setModal('relatedActivities');
       });
     } else if (action === 'changeGripTracking') {
       dbOps.exercises.get(exercise.exerciseId).then(ex => {
         setSelectedExercise(withNormalizedExerciseFields(ex));
         setModal('changeGripTracking');
-      });
-    } else if (action === 'createVariation') {
-      dbOps.exercises.get(exercise.exerciseId).then(ex => {
-        setSelectedExercise(withNormalizedExerciseFields(ex));
-        setModal('createVariation');
-      });
-    } else if (action === 'viewFamily') {
-      dbOps.exercises.get(exercise.exerciseId).then(ex => {
-        setSelectedExercise(withNormalizedExerciseFields(ex));
-        setModal('familyView');
       });
     } else if (action === 'mergeActivity') {
       dbOps.exercises.get(exercise.exerciseId).then(ex => {
@@ -17058,9 +16586,9 @@ function App() {
     },
     selectedDate: currentDate,
     defaultCategory: dayLabel ? dayLabel.toLowerCase() : 'all',
-    onOpenLineage: exercise => {
+    onOpenRelated: exercise => {
       setSelectedExercise(withNormalizedExerciseFields(exercise));
-      setModal('activityLineage', 'exercisePicker');
+      setModal('relatedActivities', 'exercisePicker');
     },
     onPair: (sourceEx, targetEx) => {
       // Store both exercises for paired duration logging
@@ -17275,40 +16803,21 @@ function App() {
       setModal(null);
       setSelectedExercise(null);
     }
-  }), modal === 'manageFamily' && selectedExercise && /*#__PURE__*/React.createElement(ManageFamilyModal, {
+  }), modal === 'relatedActivities' && selectedExercise && /*#__PURE__*/React.createElement(RelatedActivitiesModal, {
     exercise: selectedExercise,
-    onSave: async updated => {
-      const ok = await safeDb(() => dbOps.exercises.update(updated), 'save movement family');
-      if (ok) {
-        setModal(null);
-        setSelectedExercise(null);
-        loadDayData();
-      }
-    },
-    onCancel: () => {
-      setModal(null);
-      setSelectedExercise(null);
-    },
-    onOpenFieldNote: openFieldNote
-  }), modal === 'activityLineage' && selectedExercise && /*#__PURE__*/React.createElement(ActivityLineageModal, {
-    exercise: selectedExercise,
-    onClose: modalBack,
+    onClose: () => { setSelectedExercise(null); modalBack(); },
     onOpenFieldNote: openFieldNote,
-    onSaveExercise: async updated => {
-      const ok = await safeDb(() => dbOps.exercises.update(updated), 'save activity lineage');
-      if (ok) {
-        setSelectedExercise(null);
-        modalBack();
-        loadDayData();
-      }
+    onOpenHistory: exercise => {
+      setSelectedExercise(null);
+      setModal(null);
+      setActivityContext({ exerciseId: exercise.id, exerciseName: exercise.name, defaultTab: 'history' });
     },
-    onCreateExercise: async newExercise => {
-      const ok = await safeDb(() => dbOps.exercises.add(newExercise), 'create linked activity');
-      if (ok) {
-        setSelectedExercise(null);
-        modalBack();
-        await loadDayData();
-      }
+    onCommit: async command => {
+      const result = await writeRelatedActivities(command);
+      setSelectedExercise(null);
+      modalBack();
+      await loadDayData();
+      return result;
     }
   }), modal === 'changeWeightMeaning' && selectedExercise && /*#__PURE__*/React.createElement(ChangeWeightMeaningModal, {
     exercise: selectedExercise,
@@ -17443,35 +16952,7 @@ function App() {
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "On")))), modal === 'createVariation' && selectedExercise && /*#__PURE__*/React.createElement(CreateVariationModal, {
-    exercise: selectedExercise,
-    onSave: async newExercise => {
-      const ok = await safeDb(() => dbOps.exercises.add(newExercise), 'create variation');
-      if (ok) {
-        setModal(null);
-        setSelectedExercise(null);
-      }
-    },
-    onCancel: () => {
-      setModal(null);
-      setSelectedExercise(null);
-    }
-  }), modal === 'familyView' && selectedExercise && /*#__PURE__*/React.createElement(FamilyViewModal, {
-    exercise: selectedExercise,
-    onClose: () => {
-      setModal(null);
-      setSelectedExercise(null);
-    },
-    onOpenExercise: exercise => {
-      setModal(null);
-      setSelectedExercise(null);
-      setActivityContext({
-        exerciseId: exercise.id,
-        exerciseName: exercise.name,
-        defaultTab: 'history'
-      });
-    }
-  }), modal === 'changeType' && selectedExercise && (() => {
+  }, "On")))), modal === 'changeType' && selectedExercise && (() => {
     const currentType = selectedExercise.type || 'reps';
     const newType = currentType === 'reps' ? 'timed' : 'reps';
     const handleConfirmTypeChange = async () => {
