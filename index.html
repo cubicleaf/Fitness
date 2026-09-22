@@ -4681,10 +4681,12 @@ const ExercisePickerModal = ({
     const q = normalizeActivitySearch(search);
     let result = exercises;
 
-    // In pairing mode: show ALL timed exercises except the source
+    // Pairing narrows by type, but it does not override the selected split.
+    // A split-specific picker must stay a hard boundary in every sub-flow.
     if (pairingSource) {
       result = result.filter(e => e.type === 'timed' && e.id !== pairingSource.id);
-    } else if (category !== 'all') {
+    }
+    if (category !== 'all') {
       // A chosen split is a true picker boundary. It applies both before and
       // during a search: when today is Push, only activities explicitly tagged
       // Push belong in this list.
@@ -5012,7 +5014,6 @@ const ExercisePickerModal = ({
       const nextSearch = e.target.value;
       setSearch(nextSearch);
       setSelectedFamilyId(null);
-      setCategory(nextSearch.trim() ? 'all' : defaultCategory || 'all');
     }
   }), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs"
@@ -16609,6 +16610,7 @@ function App() {
     }, isExpanded && (() => {
       const lastSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
+      const isTimed = exerciseType === 'timed';
       const hasSets = measuredSets.length > 0;
       const hasWeight = lastSet && lastSet.weight !== null && lastSet.weightType !== 'bodyweight';
       const lastSetSummary = lastSet ? isTimed ? `${lastSet.duration || 0} ${lastSet.distance ? `${lastSet.distance}${lastSet.distanceUnit || ''}` : 'sec'}` : `${formatLoadSummary(lastSet)}${lastSet.reps ? ` \xD7 ${lastSet.reps}` : ''}` : '';
@@ -16711,7 +16713,6 @@ function App() {
         borderRight: isLast ? 'none' : '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
         WebkitAppearance: 'none'
       });
-      const isTimed = exerciseType === 'timed';
       const isPureTimed = isTimed && !hasWeight;
       const openUnlockedSetFlow = async () => {
         const fullExercise = await hydrateExerciseForLogging({
