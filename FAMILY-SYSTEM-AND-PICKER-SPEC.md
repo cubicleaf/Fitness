@@ -1,6 +1,6 @@
 # Related Activities and Picker Spec
 
-**Last updated:** 2026-09-22
+**Last updated:** 2026-09-23
 
 ## Model
 
@@ -20,6 +20,7 @@ The existing `movementFamilies` store and activity fields remain the data model.
 - **Create a variation from standalone:** Require an explicit group name and new activity name. Confirm both the original and new activity in that group. The new activity gets its own ID and empty history. Never seed a group name from keywords or the source activity name.
 - **Linked:** Show the group, every related activity, and which one is current. Each row opens that activity's own history. Offer **Create variation**, **Move to another group**, and **Make standalone**. A variation created here joins the existing family with a new ID and empty history. Moving may target an existing group or an explicitly named new one.
 - **Detaching:** Clear the family ID, name, variation label, and variation pointer from the activity. When the last member leaves, delete the empty family record. Clear convenience pointers that would otherwise refer across groups.
+- **Legacy cleanup:** Settings → Data may preview families with exactly one linked activity and, after an explicit confirmation, make those activities standalone and remove those family records in one relationship transaction. This never touches sets, notes, presets, categories, or history. Multi-activity groups require individual review because a name alone cannot establish which links are mistaken.
 
 Every relationship command changes only activity relationship fields and the family store. It must preserve existing sets, session notes, presets, categories, weight settings, and exact-activity last-time data. Ordinary new activity creation starts standalone. App boot and migration must preserve existing links without inferring or manufacturing new ones.
 
@@ -27,7 +28,7 @@ Every relationship command changes only activity relationship fields and the fam
 
 The Add Activity picker remains a selection surface, separate from relationship management:
 
-- Standalone activities appear as normal rows. A family is one compact row with a variation count button. Its gated selection modal shows only the family's activities eligible under the current filter; it never becomes the management modal.
+- Standalone activities appear as normal rows. A family gets one compact row only when at least two of its activities are eligible under the current filter. A single eligible member appears as an ordinary activity row, never as “1 variation.” The family row offers both a variation count button for gated selection and a direct Related Activities review control. Neither selection surface becomes the management modal.
 - A non-All split is a hard boundary for browsing, search, pairing, and the family selection modal. All allows every activity.
 - Search matches activity names only. Family names, variation labels, categories, and split metadata cannot make an unrelated activity appear.
 - Eligible activities order by real qualifying logged-set count for that exact activity, then alphabetically. Neutral anchors and presence-only sets do not count. The family row follows its eligible members' highest count, then family name.
