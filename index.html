@@ -1135,6 +1135,8 @@
         }
 
         .exercise-name {
+            flex: 1;
+            min-width: 0;
             font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
@@ -1895,9 +1897,10 @@
         .history-session-row {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 30px;
+            flex-wrap: nowrap;
+            gap: 6px;
+            min-width: 0;
+            min-height: 44px;
         }
 
         .history-session-date {
@@ -1907,28 +1910,110 @@
             color: var(--text-bright);
         }
 
+        .history-session-date-button {
+            min-height: 44px;
+            padding: 0 3px 0 0;
+            border: 0;
+            background: none;
+            color: var(--text-bright);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
         .history-session-sets {
             display: flex;
             align-items: center;
-            flex: 1 1 auto;
-            flex-wrap: wrap;
+            flex: 0 1 auto;
+            flex-wrap: nowrap;
             gap: 4px;
             min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+            mask-image: linear-gradient(90deg, #000 85%, transparent);
+        }
+
+        .history-session-sets.has-note {
+            max-width: 48%;
         }
 
         .history-session-sets .set-box {
             margin: 0;
+            flex: 0 0 auto;
         }
 
         .history-session-note {
-            flex: 0 0 100%;
+            flex: 1 1 48px;
             min-width: 0;
             overflow: hidden;
-            color: color-mix(in srgb, var(--accent-soft) 50%, transparent);
+            color: color-mix(in srgb, var(--accent-soft) 76%, transparent);
             font-size: 12px;
             line-height: 1.3;
-            text-overflow: ellipsis;
+            text-align: left;
             white-space: nowrap;
+            min-height: 44px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+        }
+
+        .history-session-note span {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            -webkit-mask-image: linear-gradient(90deg, #000 73%, transparent);
+            mask-image: linear-gradient(90deg, #000 73%, transparent);
+        }
+
+        .qualifier-peek-button {
+            flex: 0 0 44px;
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--accent-soft);
+            cursor: pointer;
+        }
+
+        .quick-detail-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 240;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(13, 6, 10, 0.68);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .quick-detail-card {
+            width: min(100%, 390px);
+            max-height: min(70dvh, 520px);
+            overflow-y: auto;
+            padding: 18px;
+            border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+            border-radius: 16px;
+            background: var(--surface);
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+            color: var(--text-body);
+        }
+
+        .quick-detail-card p {
+            margin: 8px 0 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
 
@@ -2781,6 +2866,17 @@ const IconDumbbell = ({
   opacity: "0.5",
   d: "M16 10.5H8V13.5H16V10.5Z",
   fill: "currentColor"
+}));
+// Supplied class-warlock SVG: its own circular silhouette is the artwork, so
+// the touch target around it stays transparent rather than adding a frame.
+const IconHandPlacement = ({ size = 24 }) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 128 128",
+  fill: "currentColor",
+  "aria-hidden": "true"
+}, /*#__PURE__*/React.createElement("path", {
+  d: "m64.125 1.926c-34.352 0-62.199 27.847-62.199 62.199s27.847 62.199 62.199 62.199 62.199-27.847 62.199-62.199-27.848-62.199-62.199-62.199zm-0.334 118.55c-13.121 0-25.198-4.473-34.789-11.976 7.071-6.864 33.416-32.45 36.378-35.509 5.1-5.267 11.704 2.842 11.704 2.842s11.202 16.219 12.54 17.222 3.01 1.588 4.765 0.167c1.756-1.421 0.334-3.678 0.334-3.678s-8.668-10.251-10.701-14.463c-2.341-4.849 2.926-5.434 2.926-5.434s23.575 2.592 24.662 2.508 2.341-0.585 2.424-2.842c0.084-2.257-2.006-2.592-2.006-2.592s-22.526-4.709-24.411-5.434c-2.174-0.836-3.432-2.525-3.762-3.846-0.502-2.006 2.09-2.508 2.09-2.508s21.318-5.016 23.325-5.936c2.006-0.92 2.09-2.842 1.338-4.514s-4.347-1.421-4.347-1.421-16.887 3.26-19.73 3.762c-2.842 0.502-5.106 0.691-7.524-0.836-3.177-2.006-0.418-4.682-0.418-4.682s16.886-14.212 18.475-16.469c1.588-2.257 1.087-3.511-0.585-4.849s-4.431 0.752-4.431 0.752-9.865 6.688-14.296 10.283-18.727 14.63-22.907 15.048-16.971-5.768-18.643-6.604-3.26-0.167-3.929 1.756 0.92 4.932 3.01 6.354c2.09 1.421 10.534 4.598 14.547 6.437s0.669 6.354 0.669 6.354l-38.919 25.256c-2.771-6.672-4.304-13.987-4.304-21.662 0-31.212 25.302-56.514 56.514-56.514s56.514 25.302 56.514 56.514-25.302 56.514-56.513 56.514z"
 }));
 // Supplied Solar two-tone assets. The buttons provide the surface; these SVGs
 // remain transparent artwork inside it.
@@ -3793,28 +3889,6 @@ const formatGripLabel = set => {
   if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-bar' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
-const formatGripHeaderTag = set => {
-  if (!set) return '';
-  const parts = [];
-  if (set.gripType) {
-    const typeMap = {
-      neutral: 'N',
-      pronated: 'P',
-      supinated: 'S'
-    };
-    parts.push(typeMap[set.gripType] || set.gripType.charAt(0).toUpperCase());
-  }
-  if (set.gripWidth) {
-    const widthMap = {
-      close: 'C',
-      standard: 'Std',
-      wide: 'W',
-      'v-grip': 'V'
-    };
-    parts.push(widthMap[set.gripWidth] || set.gripWidth.charAt(0).toUpperCase());
-  }
-  return parts.join(' ');
-};
 const getGripSelectionForDate = async (exerciseId, date) => {
   const daySets = await dbOps.sets.getByDate(date);
   const lastGripSet = daySets
@@ -4360,9 +4434,6 @@ const formatSetBox = (set, previousSet, unitOverride) => {
       box += `${set.weight}${displayUnit} `;
     }
   }
-  const modifierTag = formatGripHeaderTag(set);
-  const previousModifierTag = formatGripHeaderTag(previousSet);
-  if (modifierTag && modifierTag !== previousModifierTag) box += `${modifierTag} `;
   if (set.distance !== null && set.distance !== undefined) {
     const distanceUnit = set.distanceUnit === 'mi' ? 'miles' : set.distanceUnit || 'km';
     box += `${set.distance}${distanceUnit}`;
@@ -5147,7 +5218,12 @@ const ExercisePickerModal = ({
       setSearch(nextSearch);
       setSelectedFamilyId(null);
     }
-  }), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }), onOpenMerge && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "btn btn-secondary",
+    onClick: () => onOpenMerge([]),
+    style: { minHeight: '44px', margin: '8px 0 12px', fontSize: '12px' }
+  }, "Find activities to merge"), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs"
   }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
     key: cat,
@@ -9640,6 +9716,79 @@ const SessionNoteModal = ({
     onClick: handleSave
   }, "Save"))));
 };
+const QuickDetailOverlay = ({ title, onClose, children }) => {
+  useEffect(() => {
+    const onEscape = event => { if (event.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onEscape);
+    return () => document.removeEventListener('keydown', onEscape);
+  }, [onClose]);
+  return ReactDOM.createPortal(/*#__PURE__*/React.createElement("div", {
+    className: "quick-detail-overlay",
+    onClick: onClose
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "quick-detail-card",
+    role: "dialog",
+    "aria-modal": "true",
+    "aria-label": title,
+    onClick: event => event.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }
+  }, /*#__PURE__*/React.createElement("strong", { style: { fontSize: '15px' } }, title), /*#__PURE__*/React.createElement("button", {
+    type: "button", className: "close-btn", "aria-label": "Close detail", onClick: onClose
+  }, /*#__PURE__*/React.createElement(IconX, { size: 20 }))), children)), document.body);
+};
+const sessionNoteParts = note => {
+  if (!note) return [];
+  const parts = [];
+  if (note.freeText?.trim()) parts.push({ label: 'Note', text: note.freeText.trim() });
+  if (note.formCueText?.trim()) parts.push({ label: 'Form cue', text: note.formCueText.trim() });
+  if (note.tags?.length) parts.push({ label: 'Quick notes', text: note.tags.join(' · ') });
+  if (note.mood) parts.push({ label: 'Feeling', text: getMoodLabel(note.mood) });
+  return parts;
+};
+// Both activity-history entry points use this one row and the same two peek
+// surfaces. Date navigation, notes, and hand placement have distinct targets.
+const HistorySessionRow = ({ date, sets, note, unit, onNavigate }) => {
+  const [peek, setPeek] = useState(null);
+  const noteParts = sessionNoteParts(note);
+  const notePreview = noteParts.map(part => part.text).join(' · ');
+  const gripSets = sets.filter(set => formatGripLabel(set));
+  const dateLabel = formatDateShort(date);
+  return /*#__PURE__*/React.createElement(React.Fragment, null,
+    /*#__PURE__*/React.createElement("div", { className: "history-session-row" },
+      onNavigate ? /*#__PURE__*/React.createElement("button", {
+        type: "button", className: "history-session-date-button",
+        "aria-label": `Open ${dateLabel} day log`, onClick: () => onNavigate(date)
+      }, dateLabel, " ›") : /*#__PURE__*/React.createElement("div", { className: "history-session-date" }, dateLabel),
+      /*#__PURE__*/React.createElement("div", {
+        className: `history-session-sets${notePreview ? ' has-note' : ''}`,
+        "aria-label": sets.length ? sets.map((set, index) => formatSetBox(set, sets[index - 1], unit)).join(', ') : 'No sets'
+      }, sets.length ? sets.map((set, index) => /*#__PURE__*/React.createElement("span", {
+        key: set.id || index,
+        className: "set-box",
+        style: { backgroundColor: getSetBoxColor(index) }
+      }, formatSetBox(set, sets[index - 1], unit))) : /*#__PURE__*/React.createElement("span", {
+        style: { fontSize: '11px', color: 'var(--text-faint)' }
+      }, "Note only")),
+      notePreview && /*#__PURE__*/React.createElement("button", {
+        type: "button", className: "history-session-note",
+        "aria-label": `Read notes from ${dateLabel}`,
+        onClick: () => setPeek('note')
+      }, /*#__PURE__*/React.createElement("span", null, notePreview)),
+      gripSets.length > 0 && /*#__PURE__*/React.createElement("button", {
+        type: "button", className: "qualifier-peek-button",
+        "aria-label": `Show hand placement from ${dateLabel}`,
+        onClick: () => setPeek('grip')
+      }, /*#__PURE__*/React.createElement(IconHandPlacement, { size: 24 }))),
+    peek === 'note' && /*#__PURE__*/React.createElement(QuickDetailOverlay, {
+      title: `Notes · ${dateLabel}`, onClose: () => setPeek(null)
+    }, noteParts.map(part => /*#__PURE__*/React.createElement("div", { key: part.label },
+      /*#__PURE__*/React.createElement("div", { className: "form-label", style: { marginTop: '14px' } }, part.label),
+      /*#__PURE__*/React.createElement("p", null, part.text)))),
+    peek === 'grip' && /*#__PURE__*/React.createElement(QuickDetailOverlay, {
+      title: `Hand placement · ${dateLabel}`, onClose: () => setPeek(null)
+    }, gripSets.map(set => /*#__PURE__*/React.createElement("p", { key: set.id }, `Set ${set.setOrder || 1}: ${formatGripLabel(set)}`))));
+};
 const HistoryModal = ({
   exercise,
   onClose,
@@ -9809,40 +9958,20 @@ const HistoryModal = ({
       color: 'var(--text-placeholder)',
       marginTop: 20
     }
-  }, onLogSet ? 'First time — no history yet' : 'No history yet') : history.map((session, idx) => {
-    const note = sessionNotes[session.date];
-    const noteParts = [];
-    if (note?.mood) noteParts.push(getMoodLabel(note.mood));
-    if (note?.tags?.length) noteParts.push(note.tags.join(' · '));
-    if (note?.formCueText) noteParts.push(note.formCueText);
-    if (note?.freeText) noteParts.push(note.freeText);
-    const notePreview = noteParts.join(' · ');
-    return /*#__PURE__*/React.createElement("div", {
-      key: idx,
-      onClick: () => onNavigate && onNavigate(session.date, exercise.id),
-      style: {
-        padding: '8px 0',
-        marginBottom: '4px',
-        borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
-        cursor: onNavigate ? 'pointer' : 'default'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "history-session-row"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "history-session-date"
-    }, formatDateShort(session.date)), session.sets.length > 0 && /*#__PURE__*/React.createElement("div", {
-      className: "history-session-sets"
-    }, session.sets.map((s, sidx) => /*#__PURE__*/React.createElement("div", {
-      key: sidx,
-      className: "set-box",
-      style: {
-        backgroundColor: getSetBoxColor(sidx)
-      }
-    }, formatSetBox(s, session.sets[sidx - 1], unit)))), notePreview && /*#__PURE__*/React.createElement("div", {
-      className: "history-session-note",
-      title: notePreview
-    }, notePreview)));
-  }))));
+  }, onLogSet ? 'First time — no history yet' : 'No history yet') : history.map((session, idx) => /*#__PURE__*/React.createElement("div", {
+    key: session.date,
+    style: {
+      padding: '8px 0',
+      marginBottom: '4px',
+      borderBottom: idx < history.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none'
+    }
+  }, /*#__PURE__*/React.createElement(HistorySessionRow, {
+    date: session.date,
+    sets: session.sets,
+    note: sessionNotes[session.date],
+    unit: unit,
+    onNavigate: onNavigate ? date => onNavigate(date, exercise.id) : null
+  }))))));
 };
 const FeedbackModal = ({
   onClose,
@@ -12912,6 +13041,7 @@ const ActivityContextModal = ({
   const [tab, setTab] = useState(defaultTab || 'history');
   const [notesTab, setNotesTab] = useState('custom');
   const [history, setHistory] = useState([]);
+  const [historyNotesByDate, setHistoryNotesByDate] = useState({});
   const [exercise, setExercise] = useState(null);
   const [formCueText, setFormCueText] = useState('');
   const [pastNotes, setPastNotes] = useState([]);
@@ -12953,15 +13083,16 @@ const ActivityContextModal = ({
         if (!grouped[s.date]) grouped[s.date] = [];
         grouped[s.date].push(s);
       });
-      const dates = Object.keys(grouped).sort().reverse();
-      setHistory(dates.map(d => ({
-        date: d,
-        sets: grouped[d].sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0))
-      })));
-
       // Notes & form cues
       const allNotes = await dbOps.sessionNotes.getAll();
       const exNotes = allNotes.filter(n => n.exerciseId === exerciseId);
+      const notesByDate = Object.fromEntries(exNotes.map(note => [note.date, note]));
+      const dates = [...new Set([...Object.keys(grouped), ...Object.keys(notesByDate)])].sort().reverse();
+      setHistory(dates.map(date => ({
+        date,
+        sets: getVisibleSets(grouped[date] || []).sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0))
+      })));
+      setHistoryNotesByDate(notesByDate);
       const notes = exNotes.filter(n => n.freeText).map(n => ({
         date: n.date,
         text: n.freeText
@@ -13035,13 +13166,15 @@ const ActivityContextModal = ({
     const formCueValue = options.formCueText !== undefined ? options.formCueText : latestFormCueRef.current;
     const quickTags = options.quickTags !== undefined ? options.quickTags : latestQuickNotesRef.current;
     const existing = await dbOps.sessionNotes.getByExerciseAndDate(exerciseId, targetDate);
+    let savedRecord;
     if (existing) {
       if (type === 'custom') existing.freeText = customValue;
       if (type === 'formcue') existing.formCueText = formCueValue;
       if (type === 'quicknotes') existing.tags = quickTags;
       await safeDb(() => dbOps.sessionNotes.add(existing), 'save note');
+      savedRecord = existing;
     } else {
-      await safeDb(() => dbOps.sessionNotes.add({
+      savedRecord = {
         id: generateId('sn'),
         exerciseId,
         exerciseName,
@@ -13050,8 +13183,15 @@ const ActivityContextModal = ({
         tags: type === 'quicknotes' ? quickTags : [],
         formCueText: type === 'formcue' ? formCueValue : '',
         freeText: type === 'custom' ? customValue : ''
-      }), 'save note');
+      };
+      await safeDb(() => dbOps.sessionNotes.add(savedRecord), 'save note');
     }
+    setHistoryNotesByDate(prev => ({ ...prev, [targetDate]: savedRecord }));
+    setHistory(prev => {
+      const exists = prev.find(day => day.date === targetDate);
+      if (exists) return !exists.sets.length && !sessionNoteParts(savedRecord).length ? prev.filter(day => day.date !== targetDate) : prev;
+      return sessionNoteParts(savedRecord).length ? [...prev, { date: targetDate, sets: [] }].sort((a, b) => b.date.localeCompare(a.date)) : prev;
+    });
     if (type === 'custom') {
       if (targetDate === currentDate) {
         setInlineNote(prev => ({
@@ -13218,33 +13358,20 @@ const ActivityContextModal = ({
       padding: '40px 0',
       fontSize: '13px'
     }
-  }, "No history yet") : history.map(day => {
-    const visibleDaySets = getVisibleSets(day.sets);
-    return /*#__PURE__*/React.createElement("div", {
-      key: day.date,
-      onClick: () => onNavigate && onNavigate(day.date, exerciseId),
-      style: {
-        padding: '8px 0',
-        marginBottom: '4px',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
-        cursor: onNavigate ? 'pointer' : 'default'
-      }
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "history-session-row"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "history-session-date"
-    }, formatDateShort(day.date)), visibleDaySets.length === 0 ? /*#__PURE__*/React.createElement("div", {
-      className: "history-session-note"
-    }, "Note-only activity") : /*#__PURE__*/React.createElement("div", {
-      className: "history-session-sets"
-    }, visibleDaySets.map((set, si) => /*#__PURE__*/React.createElement("div", {
-      key: set.id,
-      className: "set-box",
-      style: {
-        backgroundColor: getSetBoxColor(si)
-      }
-    }, formatSetBox(set, visibleDaySets[si - 1], unit))))));
-  })), tab === 'notes' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, "No history yet") : history.map(day => /*#__PURE__*/React.createElement("div", {
+    key: day.date,
+    style: {
+      padding: '8px 0',
+      marginBottom: '4px',
+      borderBottom: '1px solid rgba(255,255,255,0.06)'
+    }
+  }, /*#__PURE__*/React.createElement(HistorySessionRow, {
+    date: day.date,
+    sets: day.sets,
+    note: historyNotesByDate[day.date],
+    unit: unit,
+    onNavigate: onNavigate ? date => onNavigate(date, exerciseId) : null
+  })))), tab === 'notes' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px',
@@ -14049,6 +14176,7 @@ const RelatedActivitiesModal = ({ exercise, onClose, onCommit, onOpenHistory, on
   const [families, setFamilies] = useState([]);
   const [step, setStep] = useState('overview');
   const [targetId, setTargetId] = useState('');
+  const [activityQuery, setActivityQuery] = useState('');
   const [familyId, setFamilyId] = useState('');
   const [familyName, setFamilyName] = useState('');
   const [name, setName] = useState('');
@@ -14099,10 +14227,12 @@ const RelatedActivitiesModal = ({ exercise, onClose, onCommit, onOpenHistory, on
         button('Relate to another activity', () => setStep('relate'), true),
         button('Create a variation', () => setStep('create'))));
   } else if (step === 'relate') {
+    const matchingActivities = activities.filter(ex => ex.id !== exercise.id && String(ex.name || '').toLowerCase().includes(activityQuery.trim().toLowerCase())).sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
     content = h(React.Fragment, null,
       h('p', { style: { fontSize: '13px', lineHeight: 1.5 } }, 'Choose another activity. Both histories will stay separate.'),
+      h('input', { className: 'search-input', type: 'text', placeholder: 'Search activity names…', 'aria-label': 'Find an activity to relate', value: activityQuery, onChange: event => setActivityQuery(event.target.value), style: { marginBottom: '12px' } }),
       h('div', { style: { maxHeight: '220px', overflowY: 'auto', marginBottom: '12px' } },
-        activities.filter(ex => ex.id !== exercise.id).sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''))).map(ex => button(`${ex.name}${ex.movementFamilyId ? ` · ${families.find(f => f.id === ex.movementFamilyId)?.name || 'linked'}` : ' · standalone'}`, () => setTargetId(ex.id), targetId === ex.id))),
+        matchingActivities.length ? matchingActivities.map(ex => button(`${ex.name}${ex.movementFamilyId ? ` · ${families.find(f => f.id === ex.movementFamilyId)?.name || 'linked'}` : ' · standalone'}`, () => setTargetId(ex.id), targetId === ex.id)) : h('p', { style: { fontSize: '12px', color: 'var(--text-faint)' } }, 'No activity names match.')),
       target && (targetFamily
         ? h('p', { style: { fontSize: '13px' } }, `This will add ${exercise.name} to ${targetFamily.name}.`)
         : h(React.Fragment, null, h('p', { style: { fontSize: '13px' } }, `Both ${exercise.name} and ${target.name} will join one named group.`), field('Group name · confirm before linking', familyName, setFamilyName, 'E.g., Row'))),
@@ -14141,9 +14271,18 @@ const MergeActivitySearchModal = ({
   onMerge,
   onClose
 }) => {
+  const [activities, setActivities] = useState(candidates || []);
+  const [query, setQuery] = useState('');
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [keepId, setKeepId] = useState(null);
-  const selected = (candidates || []).filter(ex => selectedIds.has(ex.id));
+  useEffect(() => {
+    dbOps.exercises.getAll().then(all => setActivities((all || []).sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')))));
+  }, []);
+  const selected = activities.filter(ex => selectedIds.has(ex.id));
+  const queryText = query.trim().toLowerCase();
+  const visible = (queryText
+    ? activities.filter(ex => String(ex.name || '').toLowerCase().includes(queryText))
+    : candidates || []).filter(ex => !selectedIds.has(ex.id)).slice(0, 60);
   const toggle = id => {
     setSelectedIds(prev => {
       const next = new Set(prev);
@@ -14177,15 +14316,37 @@ const MergeActivitySearchModal = ({
       color: 'var(--text-body)',
       marginBottom: '14px'
     }
-  }, "You are in control. Select the activity histories that are truly duplicates, then choose the name to keep. Nothing changes until you confirm."), /*#__PURE__*/React.createElement("div", {
+  }, "Shared words do not mean two activities are duplicates. Search by any activity name, select only histories you truly want combined, then choose the name to keep. Nothing changes until you confirm."), selected.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: { marginBottom: '14px' }
+  }, /*#__PURE__*/React.createElement("div", { className: "section-title" }, `Selected · ${selected.length}`), selected.map(ex => /*#__PURE__*/React.createElement("button", {
+    key: ex.id,
+    type: "button",
+    onClick: () => toggle(ex.id),
+    "aria-label": `Remove ${ex.name} from merge selection`,
+    style: { minHeight: '44px', padding: '8px 12px', margin: '0 6px 6px 0', borderRadius: '9px', border: '1px solid var(--accent)', background: 'color-mix(in srgb, var(--accent) 20%, transparent)', color: 'var(--text-body)' }
+  }, "✓ ", ex.name))), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    className: "search-input",
+    placeholder: "Search any activity name…",
+    "aria-label": "Find an activity to merge",
+    value: query,
+    onChange: event => setQuery(event.target.value),
+    style: { marginBottom: '12px' }
+  }), /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, "Activities to combine"), /*#__PURE__*/React.createElement("div", {
+  }, queryText ? "Name matches" : "Suggested matches"), !queryText && !(candidates || []).length && /*#__PURE__*/React.createElement("p", {
+    style: { fontSize: '12px', color: 'var(--text-faint)' }
+  }, "Type a name to find an activity. Your own names work too."), queryText && !visible.length && /*#__PURE__*/React.createElement("p", {
+    style: { fontSize: '12px', color: 'var(--text-faint)' }
+  }, activities.some(ex => selectedIds.has(ex.id) && String(ex.name || '').toLowerCase().includes(queryText)) ? "All matching activities are selected." : "No activity names match."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'grid',
       gap: '8px',
-      marginBottom: '16px'
+      marginBottom: '16px',
+      maxHeight: '35dvh',
+      overflowY: 'auto'
     }
-  }, (candidates || []).map(ex => /*#__PURE__*/React.createElement("button", {
+  }, visible.map(ex => /*#__PURE__*/React.createElement("button", {
     key: ex.id,
     type: "button",
     onClick: () => toggle(ex.id),
@@ -14583,6 +14744,7 @@ function App() {
   const [showQuickNotes, setShowQuickNotes] = useState(null);
   const [selectedQuickNotes, setSelectedQuickNotes] = useState({});
   const [activityContext, setActivityContext] = useState(null); // { exerciseId, exerciseName, defaultTab: 'history'|'notes'|'edit' }
+  const [gripPeek, setGripPeek] = useState(null);
   // Holds the activity whose card just opened itself after its first set of the
   // day. Drives the vibe-dial prompt and the card halo, and is cleared the
   // moment the dial is touched or the card is closed.
@@ -16092,7 +16254,7 @@ function App() {
     const visibleSets = getVisibleSets(exercise.sets);
     const measuredSets = getMeasuredSets(exercise.sets);
     const latestVisibleSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
-    const gripHeaderTag = formatGripHeaderTag(latestVisibleSet);
+    const gripSets = visibleSets.filter(set => formatGripLabel(set));
     const isFirstLogHint = firstLogHintId === exercise.exerciseId;
     return /*#__PURE__*/React.createElement("div", {
       key: exercise.exerciseId,
@@ -16148,22 +16310,22 @@ function App() {
       }
     }, exercise._pairedName.split('\n').map((line, i) => /*#__PURE__*/React.createElement(React.Fragment, {
       key: i
-    }, i > 0 && /*#__PURE__*/React.createElement("br", null), line))) : exercise._pairedName : exercise.exerciseName, !exercise._pairedName && gripHeaderTag && /*#__PURE__*/React.createElement("span", {
-      style: {
-        fontSize: '11px',
-        color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-        marginLeft: '8px',
-        fontWeight: '700',
-        letterSpacing: '0.06em'
-      }
-    }, gripHeaderTag), !exercise._pairedName && exercise._categories && exercise._categories.length > 1 && /*#__PURE__*/React.createElement("span", {
+    }, i > 0 && /*#__PURE__*/React.createElement("br", null), line))) : exercise._pairedName : exercise.exerciseName, !exercise._pairedName && exercise._categories && exercise._categories.length > 1 && /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: '11px',
         color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)',
         marginLeft: '6px',
         fontWeight: '400'
       }
-    }, exercise._categories.join(' / '))), (() => {
+    }, exercise._categories.join(' / '))), gripSets.length > 0 && /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "qualifier-peek-button",
+      "aria-label": `Show hand placement for ${exercise.exerciseName}`,
+      onClick: event => {
+        event.stopPropagation();
+        setGripPeek({ name: exercise.exerciseName, sets: gripSets });
+      }
+    }, /*#__PURE__*/React.createElement(IconHandPlacement, { size: 27 })), (() => {
       const lock = exerciseLocks[exercise.exerciseId];
       return lock ? /*#__PURE__*/React.createElement("div", {
         style: {
@@ -16630,7 +16792,10 @@ function App() {
       color: '#D4A853'
     },
     onClick: () => setModal('exercisePicker')
-  }, "+ Add New Activity"))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
+  }, "+ Add New Activity"))), gripPeek && /*#__PURE__*/React.createElement(QuickDetailOverlay, {
+    title: `Hand placement · ${gripPeek.name}`,
+    onClose: () => setGripPeek(null)
+  }, gripPeek.sets.map(set => /*#__PURE__*/React.createElement("p", { key: set.id }, `Set ${set.setOrder || 1}: ${formatGripLabel(set)}`))), activityContext && /*#__PURE__*/React.createElement(ActivityContextModal, {
     exerciseId: activityContext.exerciseId,
     exerciseName: activityContext.exerciseName,
     defaultTab: activityContext.defaultTab,
@@ -16721,7 +16886,7 @@ function App() {
       if (modalBackRef.current) modalBack();else setModal('exercisePicker');
     },
     unit: unit
-  }), modal === 'mergeSearch' && mergeCandidates.length > 1 && /*#__PURE__*/React.createElement(MergeActivitySearchModal, {
+  }), modal === 'mergeSearch' && /*#__PURE__*/React.createElement(MergeActivitySearchModal, {
     candidates: mergeCandidates,
     onClose: () => {
       setMergeCandidates([]);
