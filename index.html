@@ -1216,23 +1216,28 @@
             padding-right: 0;
         }
 
-        .set-box-delete {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            padding: 15px;
-            cursor: pointer;
-            display: flex;
+        .set-box-row {
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 4px;
         }
 
-        .set-box-delete:active {
-            color: white;
+        .set-box-delete-action {
+            min-height: 36px;
+            padding: 0 8px;
+            border: 1px solid color-mix(in srgb, #e8a0a0 28%, transparent);
+            border-radius: 6px;
+            background: transparent;
+            color: #e8a0a0;
+            font: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .set-box-delete-action:active {
+            background: color-mix(in srgb, #e8a0a0 14%, transparent);
         }
 
         /* Set list for expanded view */
@@ -13770,7 +13775,7 @@ const ActivityContextModal = ({
       WebkitAppearance: 'none',
       textAlign: 'left'
     }
-  }, "Remove from Today")), /*#__PURE__*/React.createElement("button", {
+  }, "Delete all sets for today")), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       onAction('deletePermanent');
       onClose();
@@ -13796,7 +13801,7 @@ const ActivityContextModal = ({
     }
   }, /*#__PURE__*/React.createElement(IconTrash, {
     size: 16
-  }), "Delete Permanently")))), customNoteEditor && /*#__PURE__*/React.createElement(NoteEntryModal, {
+  }), "Delete activity and history permanently")))), customNoteEditor && /*#__PURE__*/React.createElement(NoteEntryModal, {
     title: "Custom Note",
     initialText: customNoteEditor.text,
     dateLabel: formatDate(customNoteEditor.date),
@@ -15662,29 +15667,16 @@ function App() {
     }
     await loadDayData();
   };
-  const startSetDeleteLongPress = (el, set) => {
-    if (!el) return;
-    if (el._setLongPressTimer) clearTimeout(el._setLongPressTimer);
-    el._setLongPressFired = false;
-    el._setLongPressTimer = setTimeout(() => {
-      el._setLongPressFired = true;
-      setConfirmation({
-        title: `Delete set ${formatSetBox(set, null, unit)} from ${set.exerciseName}?`,
-        message: '',
-        onConfirm: async () => {
-          setConfirmation(null);
-          await handleDeleteSet(set.id);
-        },
-        onCancel: () => setConfirmation(null)
-      });
-    }, 600);
-  };
-  const clearSetDeleteLongPress = el => {
-    if (!el) return;
-    if (el._setLongPressTimer) {
-      clearTimeout(el._setLongPressTimer);
-      el._setLongPressTimer = null;
-    }
+  const requestDeleteSet = set => {
+    setConfirmation({
+      title: `Delete set ${formatSetBox(set, null, unit)} from ${set.exerciseName}?`,
+      message: '',
+      onConfirm: async () => {
+        setConfirmation(null);
+        await handleDeleteSet(set.id);
+      },
+      onCancel: () => setConfirmation(null)
+    });
   };
   const handleEditSet = async set => {
     setSelectedSetForEdit(set);
@@ -16341,33 +16333,26 @@ function App() {
       className: "set-boxes-container"
     }, visibleSets.map((set, idx) => /*#__PURE__*/React.createElement("div", {
       key: set.id,
+      className: "set-box-row"
+    }, /*#__PURE__*/React.createElement("div", {
       className: "set-box",
       style: {
         backgroundColor: getSetBoxColor(idx)
       },
-      onMouseDown: e => {
-        if (!isExpanded) return;
-        startSetDeleteLongPress(e.currentTarget, set);
-      },
-      onMouseUp: e => clearSetDeleteLongPress(e.currentTarget),
-      onMouseLeave: e => clearSetDeleteLongPress(e.currentTarget),
-      onTouchStart: e => {
-        if (!isExpanded) return;
-        startSetDeleteLongPress(e.currentTarget, set);
-      },
-      onTouchMove: e => clearSetDeleteLongPress(e.currentTarget),
-      onTouchEnd: e => clearSetDeleteLongPress(e.currentTarget),
-      onClick: e => {
-        if (!isExpanded) return;
-        if (e.currentTarget._setLongPressFired) {
-          e.currentTarget._setLongPressFired = false;
-          return;
-        }
-        handleEditSet(set);
+      onClick: () => {
+        if (isExpanded) handleEditSet(set);
       }
     }, /*#__PURE__*/React.createElement("div", {
       className: "set-box-content"
-    }, formatSetBox(set, visibleSets[idx - 1], unit)))))), /*#__PURE__*/React.createElement("div", {
+    }, formatSetBox(set, visibleSets[idx - 1], unit))), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      className: "set-box-delete-action",
+      "aria-label": `Delete set ${formatSetBox(set, null, unit)} from ${exercise.exerciseName}`,
+      onClick: event => {
+        event.stopPropagation();
+        requestDeleteSet(set);
+      }
+    }, "Delete")))), /*#__PURE__*/React.createElement("div", {
       className: `exercise-expanded-content${isClosing ? ' is-closing' : ''}`
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-expanded-content__clip"
