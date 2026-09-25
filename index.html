@@ -1102,19 +1102,17 @@
         .day-activity-meta { color: color-mix(in srgb, var(--accent-soft) 70%, transparent); font-size: 10px; line-height: 1.25; letter-spacing: 0.065em; text-transform: uppercase; }
         .day-activity-row:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: -2px; }
 
-        /* Activity controls open and close together with a measured settle. */
+        /* Activity controls use a measured height transition for reliable motion on mobile Safari. */
         .exercise-expanded-content {
-            display: grid;
-            grid-template-rows: 0fr;
+            height: 0;
+            overflow: hidden;
             opacity: 0;
-            transform: translateY(-5px);
-            transition: grid-template-rows 520ms cubic-bezier(.25,.1,.25,1),
-                        opacity 520ms cubic-bezier(.25,.1,.25,1),
-                        transform 520ms cubic-bezier(.25,.1,.25,1);
+            transform: translateY(-4px);
+            transition: opacity 420ms cubic-bezier(.22,1,.36,1),
+                        transform 420ms cubic-bezier(.22,1,.36,1);
         }
 
-        .exercise-expanded-content:not(.is-closing) {
-            grid-template-rows: 1fr;
+        .exercise-expanded-content.is-open {
             opacity: 1;
             transform: translateY(0);
         }
@@ -1122,7 +1120,7 @@
         .exercise-expanded-content.is-closing { pointer-events: none; }
         .exercise-expanded-content__clip { min-height: 0; overflow: hidden; }
         @media (prefers-reduced-motion: reduce) {
-            .exercise-expanded-content,.exercise-expanded-content:not(.is-closing) { transition: none; transform: none; }
+            .exercise-expanded-content,.exercise-expanded-content.is-open { transition: none; transform: none; }
         }
 
         .exercise-group-inner {
@@ -14689,6 +14687,27 @@ function App() {
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [closingExercise, setClosingExercise] = useState(null);
   const collapseTimerRef = useRef(null);
+  const exercisePanelRefs = useRef(new Map());
+  const animateExercisePanel = (exerciseId, opening, duration = 460) => {
+    const panel = exercisePanelRefs.current.get(exerciseId);
+    if (!panel) return;
+    const startHeight = panel.getBoundingClientRect().height;
+    const targetHeight = opening ? panel.scrollHeight : 0;
+    panel.style.height = `${startHeight}px`;
+    panel.style.overflow = 'hidden';
+    panel.style.transition = 'none';
+    panel.offsetHeight;
+    panel.style.transition = `height ${duration}ms cubic-bezier(.22,1,.36,1)`;
+    panel.style.height = `${targetHeight}px`;
+    if (opening) {
+      window.setTimeout(() => {
+        if (exercisePanelRefs.current.get(exerciseId) !== panel) return;
+        panel.style.height = 'auto';
+        panel.style.overflow = '';
+        panel.style.transition = '';
+      }, duration + 24);
+    }
+  };
   const [selectedSetForEdit, setSelectedSetForEdit] = useState(null);
   const [setNumber, setSetNumber] = useState(1);
   const [prefilledReps, setPrefilledReps] = useState(null);
@@ -14726,24 +14745,37 @@ function App() {
   const [firstLogHintId, setFirstLogHintId] = useState(null);
   const [firstMoodPromptId, setFirstMoodPromptId] = useState(null);
   const toggleExpandedExercise = exerciseId => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduceMotion ? 0 : 460;
     if (expandedExercise === exerciseId) {
       if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
-      const closeDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 520;
       setClosingExercise(exerciseId);
+      animateExercisePanel(exerciseId, false, duration);
       setFirstLogHintId(current => current === exerciseId ? null : current);
       setFirstMoodPromptId(current => current === exerciseId ? null : current);
       collapseTimerRef.current = setTimeout(() => {
         setExpandedExercise(null);
         setClosingExercise(null);
         collapseTimerRef.current = null;
-      }, closeDuration);
+      }, duration);
       return;
     }
     if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
-    setClosingExercise(null);
+    if (expandedExercise) {
+      const previousExerciseId = expandedExercise;
+      setClosingExercise(previousExerciseId);
+      animateExercisePanel(previousExerciseId, false, duration);
+      collapseTimerRef.current = setTimeout(() => {
+        setClosingExercise(null);
+        collapseTimerRef.current = null;
+      }, duration);
+    } else {
+      setClosingExercise(null);
+    }
     setFirstLogHintId(null);
     setFirstMoodPromptId(null);
     setExpandedExercise(exerciseId);
+    requestAnimationFrame(() => animateExercisePanel(exerciseId, true, duration));
   };
   // Open after the first set of each activity. Show the words only for the
   // day's first logged activity; later new activities get the quiet dial cue.
@@ -14755,6 +14787,7 @@ function App() {
     }
     setClosingExercise(null);
     setExpandedExercise(exerciseId);
+    requestAnimationFrame(() => animateExercisePanel(exerciseId, true));
     setFirstLogHintId(exerciseId);
     setFirstMoodPromptId(daySets.length ? null : exerciseId);
   };
@@ -16353,10 +16386,13 @@ function App() {
         requestDeleteSet(set);
       }
     }, "Delete")))), /*#__PURE__*/React.createElement("div", {
-      className: `exercise-expanded-content${isClosing ? ' is-closing' : ''}`
+      className: `exercise-expanded-content${isExpanded ? ' is-open' : ''}${isClosing ? ' is-closing' : ''}`,
+      ref: element => {
+        if (element) exercisePanelRefs.current.set(exercise.exerciseId, element);else exercisePanelRefs.current.delete(exercise.exerciseId);
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-expanded-content__clip"
-    }, isExpanded && (() => {
+    }, (isExpanded || isClosing) && (() => {
       const lastSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
       const isTimed = exerciseType === 'timed';
@@ -16620,7 +16656,7 @@ function App() {
         },
         onClick: () => duplicateLastSet()
       }, "Both")));
-      })(), isExpanded && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      })(), (isExpanded || isClosing) && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: '4px',
         position: 'relative'
