@@ -1088,38 +1088,41 @@
             position: relative;
         }
 
-        /* Activity cards open with a restrained content reveal: the card stays
-           anchored while its controls gently settle into place. */
+        /* Compact, numbered date-sheet rows connected by a thin rail. */
+        .day-activity-list { position: relative; display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding: 0 0 8px; margin: 0; list-style: none; }
+        .day-activity-list > li { list-style: none; margin: 0; padding: 0; }
+        .day-activity-row { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 68px; padding: 7px 2px; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--accent) 16%, transparent); background: transparent; color: var(--text-body); text-align: left; cursor: pointer; -webkit-appearance: none; appearance: none; }
+        .day-activity-row::before { content: ''; position: absolute; left: 21px; top: 0; bottom: 0; width: 1.5px; background: color-mix(in srgb, var(--accent-soft) 36%, transparent); pointer-events: none; }
+        .day-activity-list > li:first-child .day-activity-row::before { top: 50%; }
+        .day-activity-list > li:last-child .day-activity-row::before { bottom: 50%; }
+        .day-activity-node { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1.5px solid var(--accent); border-radius: 11px; background: var(--bg-page); color: var(--accent-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
+        .day-activity-row.is-most-used .day-activity-node,.day-activity-row:active .day-activity-node { background: var(--accent); color: #fff; }
+        .day-activity-copy { display: grid; gap: 4px; min-width: 0; }
+        .day-activity-name { color: var(--text-bright); font-size: 14px; line-height: 1.2; font-weight: 650; }
+        .day-activity-meta { color: color-mix(in srgb, var(--accent-soft) 70%, transparent); font-size: 10px; line-height: 1.25; letter-spacing: 0.065em; text-transform: uppercase; }
+        .day-activity-row:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: -2px; }
+
+        /* Activity controls open and close together with a measured settle. */
         .exercise-expanded-content {
-            max-height: 0;
-            overflow: hidden;
+            display: grid;
+            grid-template-rows: 0fr;
             opacity: 0;
-            transform: translateY(-6px);
-            transition: max-height 0.28s cubic-bezier(0.25, 0.1, 0.25, 1),
-                        opacity 0.2s ease-out,
-                        transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1);
+            transform: translateY(-5px);
+            transition: grid-template-rows 520ms cubic-bezier(.25,.1,.25,1),
+                        opacity 520ms cubic-bezier(.25,.1,.25,1),
+                        transform 520ms cubic-bezier(.25,.1,.25,1);
         }
 
         .exercise-expanded-content:not(.is-closing) {
-            max-height: 900px;
+            grid-template-rows: 1fr;
             opacity: 1;
             transform: translateY(0);
         }
 
-        .exercise-expanded-content.is-closing {
-            pointer-events: none;
-        }
-
-        .exercise-expanded-content > * {
-            transform-origin: top center;
-        }
-
+        .exercise-expanded-content.is-closing { pointer-events: none; }
+        .exercise-expanded-content__clip { min-height: 0; overflow: hidden; }
         @media (prefers-reduced-motion: reduce) {
-            .exercise-expanded-content,
-            .exercise-expanded-content:not(.is-closing) {
-                transition: none;
-                transform: none;
-            }
+            .exercise-expanded-content,.exercise-expanded-content:not(.is-closing) { transition: none; transform: none; }
         }
 
         .exercise-group-inner {
@@ -2032,6 +2035,14 @@
             width: 280px;
             box-shadow: 0 12px 40px rgba(12, 6, 10, 0.8);
         }
+
+        .confirmation-dialog[data-scope="one-set"] { border-top: 3px solid var(--accent-soft); }
+        .confirmation-dialog[data-scope="day-sets"] { border-top: 3px solid color-mix(in srgb, var(--danger) 58%, var(--accent)); }
+        .confirmation-dialog[data-scope="all-history"] { border-top: 3px solid var(--danger); }
+        .confirmation-scope-row { display: flex; align-items: center; gap: 10px; margin: -4px 0 12px; color: var(--accent-soft); font-size: 9px; line-height: 1.3; font-weight: 800; letter-spacing: .1em; }
+        .confirmation-scope-icon { flex: 0 0 42px; width: 42px; height: 42px; padding: 5px; border-radius: 10px; color: currentColor; background: color-mix(in srgb, currentColor 10%, transparent); }
+        .confirmation-scope-day-sets { color: color-mix(in srgb, var(--danger) 58%, var(--accent-soft)); }
+        .confirmation-scope-all-history { color: var(--danger); }
 
         .confirmation-title {
             font-size: 16px;
@@ -5218,7 +5229,7 @@ const ExercisePickerModal = ({
       setSearch(nextSearch);
       setSelectedFamilyId(null);
     }
-  }), onOpenMerge && /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement("div", { style: { margin: '-8px 2px 10px', color: 'color-mix(in srgb, var(--accent-soft) 48%, transparent)', fontSize: '10px', lineHeight: 1.4 } }, "Touch and hold an activity to permanently delete it, even when it has no sets."), onOpenMerge && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "btn btn-secondary",
     onClick: () => onOpenMerge([]),
@@ -5242,16 +5253,13 @@ const ExercisePickerModal = ({
       padding: '12px',
       marginBottom: '12px',
       borderRadius: '10px',
-      border: '1px solid rgba(220,60,60,0.3)',
-      background: 'rgba(220,60,60,0.08)'
+      border: '1px solid color-mix(in srgb, var(--danger) 40%, transparent)',
+      borderLeft: '3px solid var(--danger)',
+      background: 'color-mix(in srgb, var(--danger) 9%, transparent)'
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '13px',
-      color: '#e8a0a0',
-      marginBottom: '8px'
-    }
-  }, "Delete \"", deleteConfirm.name, "\" permanently? This removes the activity and all its history."), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", { className: "confirmation-scope-row confirmation-scope-all-history" }, /*#__PURE__*/React.createElement(DeleteScopeVisual, { scope: "all-history" }), /*#__PURE__*/React.createElement("span", null, "PERMANENT · ALL DATES")), /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: '13px', color: 'var(--text-bright)', marginBottom: '8px', lineHeight: 1.45 }
+  }, "Delete \"", deleteConfirm.name, "\" and all its history? This removes the activity and every logged set."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '8px'
@@ -5259,7 +5267,6 @@ const ExercisePickerModal = ({
   }, /*#__PURE__*/React.createElement("button", {
     onClick: async () => {
       await safeDb(() => dbOps.exercises.delete(deleteConfirm.id), 'delete exercise');
-      // Also delete all sets for this exercise
       const allSets = await dbOps.sets.getByExerciseId(deleteConfirm.id);
       for (const s of allSets) {
         await safeDb(() => dbOps.sets.delete(s.id), 'delete set');
@@ -5279,7 +5286,7 @@ const ExercisePickerModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Delete"), /*#__PURE__*/React.createElement("button", {
+  }, "Delete activity + history"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setDeleteConfirm(null),
     style: {
       flex: 1,
@@ -11853,19 +11860,53 @@ const ChangeCategoryModal = ({
     }
   }, "Save"))));
 };
+const DeleteScopeVisual = ({ scope }) => {
+  const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
+  let marks;
+  if (scope === 'one-set') {
+    marks = [
+      /*#__PURE__*/React.createElement("rect", { key: "sheet", x: 12, y: 5, width: 20, height: 34, rx: 3, ...stroke }),
+      /*#__PURE__*/React.createElement("path", { key: "lines", d: "M17 14h10M17 20h10M17 26h6", ...stroke }),
+      /*#__PURE__*/React.createElement("circle", { key: "mark", cx: 27, cy: 31, r: 2, fill: 'currentColor', stroke: 'none' })
+    ];
+  } else if (scope === 'day-sets') {
+    marks = [
+      /*#__PURE__*/React.createElement("rect", { key: "calendar", x: 6, y: 9, width: 32, height: 29, rx: 4, ...stroke }),
+      /*#__PURE__*/React.createElement("path", { key: "header", d: "M6 17h32M14 6v6M30 6v6", ...stroke }),
+      /*#__PURE__*/React.createElement("rect", { key: "set-a", x: 12, y: 22, width: 5, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
+      /*#__PURE__*/React.createElement("rect", { key: "set-b", x: 21, y: 22, width: 5, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
+      /*#__PURE__*/React.createElement("rect", { key: "set-c", x: 30, y: 22, width: 4, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
+      /*#__PURE__*/React.createElement("path", { key: "more", d: "M12 32h20", ...stroke })
+    ];
+  } else {
+    marks = [
+      /*#__PURE__*/React.createElement("rect", { key: "back", x: 6, y: 12, width: 23, height: 28, rx: 3, opacity: .45, ...stroke }),
+      /*#__PURE__*/React.createElement("rect", { key: "middle", x: 11, y: 8, width: 23, height: 28, rx: 3, opacity: .7, ...stroke }),
+      /*#__PURE__*/React.createElement("rect", { key: "front", x: 16, y: 4, width: 23, height: 28, rx: 3, ...stroke }),
+      /*#__PURE__*/React.createElement("path", { key: "records", d: "M21 12h13M21 18h13M21 24h8", ...stroke })
+    ];
+  }
+  return /*#__PURE__*/React.createElement("svg", { className: "confirmation-scope-icon", viewBox: "0 0 44 44", "aria-hidden": "true" }, marks);
+};
+
 const ConfirmationDialog = ({
   title,
   message,
   onConfirm,
-  onCancel
+  onCancel,
+  scope,
+  confirmLabel
 }) => {
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: onCancel
   }, /*#__PURE__*/React.createElement("div", {
     className: "confirmation-dialog",
+    role: "alertdialog",
+    "aria-modal": "true",
+    "data-scope": scope || undefined,
     onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
+  }, scope && /*#__PURE__*/React.createElement("div", { className: `confirmation-scope-row confirmation-scope-${scope}` }, /*#__PURE__*/React.createElement(DeleteScopeVisual, { scope: scope }), /*#__PURE__*/React.createElement("span", null, scope === 'one-set' ? 'ONE SET · THIS DAY' : scope === 'day-sets' ? 'ALL SETS · THIS DAY' : 'ACTIVITY + ALL HISTORY')), /*#__PURE__*/React.createElement("div", {
     className: "confirmation-title"
   }, title), /*#__PURE__*/React.createElement("div", {
     className: "confirmation-message"
@@ -11885,7 +11926,7 @@ const ConfirmationDialog = ({
     }
   }, /*#__PURE__*/React.createElement(IconTrash, {
     size: 14
-  }), " Delete"))));
+  }), " ", confirmLabel || "Delete"))));
 };
 
 // ============ MAIN APP ============
@@ -11902,42 +11943,17 @@ const getCategories = async () => {
 const saveCategories = async cats => {
   await dbOps.dayNotes.set('__categories__', JSON.stringify(cats));
 };
-const DayActivityList = ({ activities, splitLabel, onSelect }) => /*#__PURE__*/React.createElement("div", {
-  style: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-    gap: '8px',
-    alignContent: 'start',
-    overflowY: 'auto',
-    flex: 1,
-    paddingBottom: '8px'
-  }
-}, activities.length === 0 ? /*#__PURE__*/React.createElement("div", {
-  style: {
-    gridColumn: '1 / -1',
-    textAlign: 'center',
-    color: 'var(--text-placeholder)',
-    padding: '32px 16px'
-  }
-}, "No ", splitLabel.toLowerCase(), " activities found yet") : activities.map(activity => /*#__PURE__*/React.createElement("button", {
-  key: activity.id,
-  type: "button",
-  onClick: () => onSelect(activity),
-  style: {
-    minHeight: '58px',
-    padding: '12px 10px',
-    borderRadius: '10px',
-    border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
-    background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-    color: 'var(--text-body)',
-    fontSize: '13px',
-    lineHeight: '1.2',
-    fontWeight: '600',
-    textAlign: 'left',
-    cursor: 'pointer',
-    WebkitAppearance: 'none'
-  }
-}, activity.name)));
+const DayActivityList = ({ activities, splitLabel, onSelect }) => /*#__PURE__*/React.createElement("ol", { className: "day-activity-list", "aria-label": `${splitLabel} activities ranked by logged use` }, activities.length === 0 ? /*#__PURE__*/React.createElement("li", { style: { textAlign: 'center', color: 'var(--text-placeholder)', padding: '32px 16px' } }, "No ", splitLabel.toLowerCase(), " activities found yet") : activities.map((activity, index) => {
+  const useCount = activity._useCount || 0;
+  const lastUsed = activity._lastLoggedDate ? formatDateShort(activity._lastLoggedDate) : null;
+  const meta = useCount > 0 ? `${useCount} ${useCount === 1 ? 'set' : 'sets'} logged${lastUsed ? ` · Last used ${lastUsed}` : ''}` : 'Not logged yet';
+  return /*#__PURE__*/React.createElement("li", { key: activity.id }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: `day-activity-row${index === 0 ? ' is-most-used' : ''}`,
+    onClick: () => onSelect(activity),
+    "aria-label": `${index + 1}. ${activity.name}, ${meta}`
+  }, /*#__PURE__*/React.createElement("span", { className: "day-activity-node", "aria-hidden": "true" }, String(index + 1).padStart(2, '0')), /*#__PURE__*/React.createElement("span", { className: "day-activity-copy" }, /*#__PURE__*/React.createElement("span", { className: "day-activity-name" }, activity.name), /*#__PURE__*/React.createElement("span", { className: "day-activity-meta" }, meta))));
+}));
 
 const DayDetailModal = ({
   date,
@@ -11976,27 +11992,29 @@ const DayDetailModal = ({
       // comparison case-insensitive for imported/legacy category spelling, but
       // do not carry unrelated activities into this list as lower-priority rows.
       const inSplit = ex => getExCategories(ex).some(c => String(c).toLowerCase() === splitLower);
-      const byRecency = (a, b) => (b.lastUsed || '').localeCompare(a.lastUsed || '');
-      const matching = allExercises.filter(inSplit).sort(byRecency);
-      setActivities(matching);
+      const matching = allExercises.filter(inSplit);
       const histMap = {};
       const noteMap = {};
-      // Fetch each matching activity's context concurrently.
+      const usageMap = {};
+      const lastUsedMap = {};
+      // Count real work sets to match activity-picker ranking; ignore neutral
+      // placeholders and presence-only markers.
       await Promise.all(matching.map(async ex => {
         const [allSets, notes] = await Promise.all([dbOps.sets.getByExerciseId(ex.id), dbOps.sessionNotes.getByExerciseId(ex.id)]);
+        const workSets = (allSets || []).filter(set => !isNeutralAnchorSet(set) && !isPresenceOnlySet(set));
+        usageMap[ex.id] = workSets.length;
+        lastUsedMap[ex.id] = workSets.reduce((latest, set) => !latest || set.date > latest ? set.date : latest, '');
         const byDate = {};
         (allSets || []).forEach(set => {
           if (!byDate[set.date]) byDate[set.date] = [];
           byDate[set.date].push(set);
         });
-        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({
-          date,
-          sets: byDate[date].sort((a, b) => a.setOrder - b.setOrder)
-        }));
-        (notes || []).forEach(note => {
-          noteMap[`${note.exerciseId}_${note.date}`] = note;
-        });
+        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({ date, sets: byDate[date].sort((a, b) => a.setOrder - b.setOrder) }));
+        (notes || []).forEach(note => { noteMap[`${note.exerciseId}_${note.date}`] = note; });
       }));
+      const rankedActivities = matching.map(ex => ({ ...ex, _useCount: usageMap[ex.id] || 0, _lastLoggedDate: lastUsedMap[ex.id] || '' }))
+        .sort((a, b) => b._useCount - a._useCount || b._lastLoggedDate.localeCompare(a._lastLoggedDate) || a.name.localeCompare(b.name));
+      setActivities(rankedActivities);
       setAllHistory(histMap);
       setSessionNotes(noteMap);
     };
@@ -14753,6 +14771,7 @@ function App() {
   const toggleExpandedExercise = exerciseId => {
     if (expandedExercise === exerciseId) {
       if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
+      const closeDuration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 520;
       setClosingExercise(exerciseId);
       setFirstLogHintId(current => current === exerciseId ? null : current);
       setFirstMoodPromptId(current => current === exerciseId ? null : current);
@@ -14760,7 +14779,7 @@ function App() {
         setExpandedExercise(null);
         setClosingExercise(null);
         collapseTimerRef.current = null;
-      }, 280);
+      }, closeDuration);
       return;
     }
     if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
@@ -15698,8 +15717,10 @@ function App() {
     el._setLongPressTimer = setTimeout(() => {
       el._setLongPressFired = true;
       setConfirmation({
-        title: 'Delete this rep?',
-        message: `Remove ${formatSetBox(set, null, unit)} from ${set.exerciseName}?`,
+        title: 'Delete one set?',
+        message: `Remove ${formatSetBox(set, null, unit)} from ${set.exerciseName} on ${formatDateShort(set.date)}. Other sets and activity history will stay.`,
+        scope: 'one-set',
+        confirmLabel: 'Delete this set',
         onConfirm: async () => {
           setConfirmation(null);
           await handleDeleteSet(set.id);
@@ -15779,8 +15800,10 @@ function App() {
   };
   const handleDeleteExercise = exercise => {
     setConfirmation({
-      title: `Delete ${exercise.exerciseName}?`,
-      message: `Remove ${exercise.exerciseName} and all its sets from today?`,
+      title: `Remove ${exercise.exerciseName} from today?`,
+      message: `This removes only ${exercise.exerciseName}'s sets on ${formatDateShort(currentDate)}. The saved activity and sets from other dates will stay.`,
+      scope: 'day-sets',
+      confirmLabel: 'Remove today’s sets',
       onConfirm: async () => {
         const daySets = await dbOps.sets.getByDate(currentDate);
         const toDelete = daySets.filter(s => s.exerciseId === exercise.exerciseId);
@@ -15883,7 +15906,9 @@ function App() {
       const exerciseId = exercise.exerciseId;
       setConfirmation({
         title: `Delete ${exercise.exerciseName} permanently?`,
-        message: `This removes the activity, every logged set, and every note attached to it from this device. It cannot be undone.`,
+        message: `This removes the saved activity, every logged set from every date, and all attached notes from this device. This cannot be undone.`,
+        scope: 'all-history',
+        confirmLabel: 'Delete activity + history',
         onConfirm: async () => {
           const allSets = await dbOps.sets.getByExerciseId(exerciseId);
           for (const set of allSets) {
@@ -15996,14 +16021,11 @@ function App() {
   const exercises = Object.values(groupedExercises).filter(ex => !pairedMerged.has(ex.exerciseId) || ex._pairedPartner).sort((a, b) => {
     const aOrder = a.sets[0]?.exerciseOrder || 0;
     const bOrder = b.sets[0]?.exerciseOrder || 0;
-    // If day has a split assigned, push non-matching exercises to bottom
-    if (dayLabel) {
-      const aInSplit = (a._categories || []).some(c => c.toLowerCase() === dayLabel.toLowerCase());
-      const bInSplit = (b._categories || []).some(c => c.toLowerCase() === dayLabel.toLowerCase());
-      if (aInSplit && !bInSplit) return -1;
-      if (!aInSplit && bInSplit) return 1;
-    }
-    return aOrder - bOrder;
+    const aLoggedAt = Math.max(...a.sets.map(set => set.createdAt || 0));
+    const bLoggedAt = Math.max(...b.sets.map(set => set.createdAt || 0));
+    // New activities receive the next exerciseOrder, so descending order keeps
+    // the most recently added activity first regardless of split membership.
+    return bOrder - aOrder || bLoggedAt - aLoggedAt || a.exerciseName.localeCompare(b.exerciseName);
   });
   const RenameModal = ({
     exercise,
@@ -16401,6 +16423,8 @@ function App() {
       className: "set-box-content"
     }, formatSetBox(set, visibleSets[idx - 1], unit)))))), /*#__PURE__*/React.createElement("div", {
       className: `exercise-expanded-content${isClosing ? ' is-closing' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "exercise-expanded-content__clip"
     }, isExpanded && (() => {
       const lastSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
       const exerciseType = exercise._type || (lastSet ? getSetType(lastSet) : exercise.sets[0] ? getSetType(exercise.sets[0]) : 'reps');
@@ -16783,7 +16807,7 @@ function App() {
         cursor: 'pointer',
         WebkitAppearance: 'none'
       }
-    }, "Edit"))))));
+    }, "Edit")))))));
   }), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     "data-tour": "add-activity",
@@ -17552,7 +17576,9 @@ function App() {
     title: confirmation.title,
     message: confirmation.message,
     onConfirm: confirmation.onConfirm,
-    onCancel: confirmation.onCancel
+    onCancel: confirmation.onCancel,
+    scope: confirmation.scope,
+    confirmLabel: confirmation.confirmLabel
   }));
 }
 class ErrorBoundary extends React.Component {

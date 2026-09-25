@@ -2,13 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-23
+updated: 2026-09-25
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-23
+**Last updated:** 2026-09-25
 
 ## Where I left off
+
+2026-09-25: The split-assigned date activity tab now uses compact Route Spine rows and ranks activities by real logged set count, then last use and name. The daily log places newly added activities first regardless of split. Activity cards open and close with a 520ms Measured easing curve; reduced-motion users transition immediately. Delete confirmations show distinct SVG scope cues for one set, all sets on a date, and an activity's full history.
 
 2026-09-23: **Merge, qualifier, and history follow-up is included in production `main`.** Broad picker searches such as “push” remain discovery only; Merge Activities now has an explicit all-activity name search, so personal names can be chosen without a machine suggestion. Related Activities also has name search when choosing another activity. Grip abbreviations have been removed from daily set chips and activity names; the supplied hand icon opens a dismissible set-by-set hand-placement detail. Both picker history and Activity Context history use one compact date/sets/note row with a fading note preview, a full-note popup, a separate hand-placement popup, and a dedicated day-navigation button. Demo-browser checks covered manual merge search and cancel, the “push” false-positive case, both history entry points and note popup, a logged grip set, and the daily icon/detail. Real phone data and physical iPhone layout remain untested.
 
