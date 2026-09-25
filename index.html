@@ -1102,6 +1102,26 @@
         .day-activity-meta { color: color-mix(in srgb, var(--accent-soft) 70%, transparent); font-size: 10px; line-height: 1.25; letter-spacing: 0.065em; text-transform: uppercase; }
         .day-activity-row:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: -2px; }
 
+        .split-choice-row {
+            display: flex;
+            height: 44px;
+            margin: 8px 0 16px;
+            overflow: hidden;
+            border: 1px solid var(--surface-edge);
+            border-radius: 8px;
+        }
+        .split-choice-row button {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+            min-height: 0;
+            padding: 0 8px;
+            display: grid;
+            place-items: center;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
         /* Activity controls use a measured height transition for reliable motion on mobile Safari. */
         .exercise-expanded-content {
             height: 0;
@@ -1523,6 +1543,14 @@
 
         .picker-chip.is-set {
             color: var(--text-bright);
+        }
+
+        .picker-chip.is-compact {
+            width: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            height: 40px;
+            justify-content: center;
         }
 
         .picker-chip-label {
@@ -3507,6 +3535,24 @@ const getMostRecentBodyweightOnOrBefore = async targetDate => {
     // Older historical dated entries are usable; today's migrated legacy copy is not.
     return match[1] < getTodayString() || confirmedDates.has(match[1]);
   }).sort((a, b) => b.date.localeCompare(a.date))[0] || null;
+};
+const getBodyweightContextForDate = async targetDate => {
+  const today = getTodayString();
+  if (targetDate > today) return { kind: 'future', date: targetDate };
+  const [record, confirmation] = await Promise.all([
+    dbOps.dayNotes.get(getBodyweightKey(targetDate)),
+    dbOps.dayNotes.get(getBodyweightConfirmationKey(targetDate))
+  ]);
+  const exactIsConfirmed = targetDate < today || confirmation?.note === 'true';
+  if (exactIsConfirmed && hasBodyweightValue(record?.note)) {
+    return { kind: 'exact', value: Number.parseFloat(record.note), date: targetDate };
+  }
+  const latest = await getMostRecentBodyweightOnOrBefore(targetDate);
+  return latest ? {
+    kind: 'last',
+    value: Number.parseFloat(latest.note),
+    date: latest.date.slice('__bodyweight_'.length)
+  } : { kind: 'empty', date: targetDate };
 };
 const migrateLegacyBodyweightIfNeeded = async () => {
   const today = getTodayString();
@@ -6821,25 +6867,17 @@ const CreateExerciseModal = ({
       marginTop: '6px'
     }
   }, "Creates a note-only activity with feel, history, notes, and edit, but no set logging controls."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      border: '1px solid var(--surface-edge)',
-      marginTop: '8px'
-    }
+    className: "split-choice-row"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => chooseSplits([]),
     style: {
       flex: 1,
-      padding: '10px',
       border: 'none',
       borderRight: '1px solid var(--surface-edge)',
       fontSize: '11px',
       fontWeight: '600',
       cursor: 'pointer',
       WebkitAppearance: 'none',
-      minHeight: 44,
       background: selectedCats.length === 0 ? 'color-mix(in srgb, var(--accent) 25%, transparent)' : 'rgba(255,255,255,0.03)',
       color: selectedCats.length === 0 ? 'var(--accent-soft)' : 'var(--text-placeholder)'
     }
@@ -6849,13 +6887,11 @@ const CreateExerciseModal = ({
     onClick: () => setSplitHelperOpen(true),
     style: {
       flex: 1,
-      padding: '10px',
       border: 'none',
       fontSize: '11px',
       fontWeight: '600',
       cursor: name.trim() ? 'pointer' : 'not-allowed',
       WebkitAppearance: 'none',
-      minHeight: 44,
       opacity: name.trim() ? 1 : 0.45,
       background: splitHelperOpen ? 'color-mix(in srgb, var(--accent) 14%, transparent)' : 'rgba(255,255,255,0.03)',
       color: splitHelperOpen ? 'var(--accent-soft)' : 'var(--text-placeholder)'
@@ -7200,16 +7236,17 @@ const PickerChip = ({
   label,
   isSet,
   onClick,
-  ariaLabel
+  ariaLabel,
+  compact = false
 }) => /*#__PURE__*/React.createElement("button", {
   type: "button",
   onClick: onClick,
   "aria-label": ariaLabel,
-  className: isSet ? "picker-chip is-set" : "picker-chip"
+  className: `picker-chip${isSet ? ' is-set' : ''}${compact ? ' is-compact' : ''}`
 }, /*#__PURE__*/React.createElement(IconBubble, {
   size: 38,
   filled: isSet
-}, icon), /*#__PURE__*/React.createElement("span", {
+}, icon), !compact && /*#__PURE__*/React.createElement("span", {
   className: "picker-chip-label"
 }, label));
 const WeightPickerModal = ({
@@ -7253,6 +7290,8 @@ const WeightPickerModal = ({
   const barbellCommonWeightsKg = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50].map(increment => barWeight + increment);
   const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
+  const pairPresetTotals = new Set(quickPlateOptions.map(count => isBarExercise ? barWeight + count * plateWeight * 2 : count * plateWeight));
+  const totalWeightOptions = commonWeights.filter(value => !isBarExercise || !pairPresetTotals.has(value));
 
   // On a bar activity the stepper edits PLATES while `weight` stays the total.
   // Keeping the total as the stored value is what protects old records: nothing
@@ -7518,6 +7557,7 @@ const WeightPickerModal = ({
     }),
     label: "Load",
     isSet: false,
+    compact: true,
     ariaLabel: "Change how this set is loaded",
     onClick: () => setOpenSheet('load')
   }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
@@ -7526,6 +7566,7 @@ const WeightPickerModal = ({
     }),
     label: "Grip",
     isSet: !!formatGripLabel(initialGrip),
+    compact: true,
     ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
     onClick: () => setOpenSheet('grip')
   })), lastMeasured && /*#__PURE__*/React.createElement("div", {
@@ -7612,13 +7653,7 @@ const WeightPickerModal = ({
       WebkitAppearance: 'none',
       transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)'
     }
-  }, "Change")), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      lineHeight: '1.45',
-      color: 'color-mix(in srgb, var(--accent-soft) 62%, transparent)'
-    }
-  }, "Enter plates only — the ", barWeight, " ", unit, " bar is added for you."), previousBelowBar && /*#__PURE__*/React.createElement("div", {
+  }, "Change")), previousBelowBar && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: '6px',
       fontSize: '11px',
@@ -7640,12 +7675,12 @@ const WeightPickerModal = ({
       textTransform: 'uppercase',
       letterSpacing: '0.6px'
     }
-  }, "Plates"), /*#__PURE__*/React.createElement("span", {
+  }, "Plate math"), /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: '12px',
       color: 'var(--text-faint)'
     }
-  }, plateOnlyWeight, " plates + ", barWeight, " bar = ", /*#__PURE__*/React.createElement("strong", {
+  }, plateOnlyWeight, " ", unit, " plates + ", barWeight, " ", unit, " bar = ", /*#__PURE__*/React.createElement("strong", {
     style: {
       color: 'var(--accent-soft)',
       fontWeight: '700'
@@ -7661,7 +7696,7 @@ const WeightPickerModal = ({
     key: amount,
     onClick: () => applyStepperValue(stepperValue + amount),
     style: {
-      width: '38px',
+      flex: 1,
       minWidth: '38px',
       height: '46px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)',
@@ -7677,7 +7712,7 @@ const WeightPickerModal = ({
     }
   }, amount)), /*#__PURE__*/React.createElement("div", {
     style: {
-      width: '62px',
+      flex: 1,
       minWidth: '62px',
       height: '46px',
       display: 'flex',
@@ -7737,7 +7772,7 @@ const WeightPickerModal = ({
     key: amount,
     onClick: () => applyStepperValue(stepperValue + amount),
     style: {
-      width: '38px',
+      flex: 1,
       minWidth: '38px',
       height: '46px',
       backgroundColor: 'color-mix(in srgb, var(--accent) 15%, transparent)',
@@ -7751,41 +7786,34 @@ const WeightPickerModal = ({
       fontFamily: 'inherit',
       padding: 0
     }
-  }, `+${amount}`)), /*#__PURE__*/React.createElement("button", {
+  }, `+${amount}`))), /*#__PURE__*/React.createElement("button", {
     onClick: () => onSelectWeight({
       weight: weight,
       weightType: unit
     }),
     className: "btn",
     style: {
-      flex: 1,
-      height: '46px',
-      padding: '4px 8px',
+      width: '100%',
+      minHeight: '44px',
+      marginBottom: '12px',
+      padding: '8px 12px',
       fontSize: '13px',
       fontWeight: '600',
       whiteSpace: 'nowrap'
     }
-  }, "Use ", weight, " ", unit, isBarExercise ? ' total' : '')), isBarExercise && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginTop: '-4px',
-      marginBottom: '10px',
-      fontSize: '11px',
-      color: 'var(--text-faint)',
-      textAlign: 'center'
-    }
-  }, "Logged as the total, so it stays comparable with your older sets."), /*#__PURE__*/React.createElement("div", {
+  }, "Use ", weight, " ", unit, isBarExercise ? ' total' : ''), /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px'
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, isBarExercise ? `Plate Pairs (${barWeight} ${unit} bar included)` : `${plateWeight} ${unit} Plates`), /*#__PURE__*/React.createElement("div", {
+  }, isBarExercise ? "Plate Pairs" : `${plateWeight} ${unit} Plates`), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginBottom: '8px'
     }
-  }, isBarExercise ? 'Quick totals for bar work. Each step adds one plate per side.' : 'Quick plate math for machine or plate-loaded totals.'), /*#__PURE__*/React.createElement("div", {
+  }, isBarExercise ? `Per-side plates; totals include the ${barWeight} ${unit} bar.` : 'Quick plate math for machine or plate-loaded totals.'), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px'
@@ -7840,15 +7868,15 @@ const WeightPickerModal = ({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, isBarExercise ? `Bar Totals (${barWeight} ${unit} bar included)` : "Common Weights"), /*#__PURE__*/React.createElement("div", {
+  }, isBarExercise ? "Other Total Weights" : "Common Weights"), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
       marginBottom: '8px'
     }
-  }, isBarExercise ? 'These presets already include the bar, so 95 means 95 total, not plates-only.' : 'Fast total-weight presets for non-bar work.'), /*#__PURE__*/React.createElement("div", {
+  }, isBarExercise ? 'Each value is the full load.' : 'Fast total-weight presets.'), /*#__PURE__*/React.createElement("div", {
     className: "weight-grid"
-  }, commonWeights.map(w => /*#__PURE__*/React.createElement("button", {
+  }, totalWeightOptions.map(w => /*#__PURE__*/React.createElement("button", {
     key: w,
     className: "weight-btn",
     onClick: () => onSelectWeight({
@@ -11923,6 +11951,7 @@ const DayDetailModal = ({
   onActivitySelect
 }) => {
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
+  const bodyweightLabel = !bodyweight || bodyweight.kind === 'loading' ? 'Weight history loading' : bodyweight.kind === 'future' ? 'Future date · no weight recorded' : bodyweight.kind === 'exact' ? `${bodyweight.value} ${unit} · ${formatDateShort(bodyweight.date)}` : bodyweight.kind === 'last' ? `Last logged ${bodyweight.value} ${unit} · ${formatDateShort(bodyweight.date)}` : date === getTodayString() ? 'No weight logged today' : `No weight logged by ${formatDateShort(date)}`;
   const [activities, setActivities] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [sessionNotes, setSessionNotes] = useState({});
@@ -12168,7 +12197,7 @@ const DayDetailModal = ({
       fontSize: '11px',
       color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)'
     }
-  }, bodyweight !== null ? `${bodyweight} ${unit}` : 'Add bodyweight for this day'))), /*#__PURE__*/React.createElement("div", {
+  }, bodyweightLabel))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       alignItems: 'center',
@@ -14716,6 +14745,8 @@ function App() {
   const [settingsInitialTab, setSettingsInitialTab] = useState('weekly');
   const [settingsFocusCoach, setSettingsFocusCoach] = useState(false);
   const [bodyweight, setBodyweight] = useState(null);
+  const [bodyweightContext, setBodyweightContext] = useState({ kind: 'loading' });
+  const bodyweightContextLoadRef = useRef(0);
   const [bodyweightEntryConfirmed, setBodyweightEntryConfirmed] = useState(false);
   const [showBWEditor, setShowBWEditor] = useState(false);
   const [bwEditValue, setBWEditValue] = useState('');
@@ -14971,6 +15002,11 @@ function App() {
     if (bwEditorDate === currentDate) {
       setBodyweight(parseFloat(bwEditValue.trim()));
       setBodyweightEntryConfirmed(true);
+      setBodyweightContext(bwEditorDate > getTodayString() ? { kind: 'future', date: bwEditorDate } : {
+        kind: 'exact',
+        value: parseFloat(bwEditValue.trim()),
+        date: bwEditorDate
+      });
     }
     closeBodyweightEditor();
   }, [bwEditValue, bwEditorDate, closeBodyweightEditor, currentDate]);
@@ -15004,6 +15040,8 @@ function App() {
   // by a ref because the boot effect re-runs on every date change.
   const demoTopUpRef = useRef(false);
   useEffect(() => {
+    setBodyweightContext({ kind: 'loading' });
+    const contextRequest = ++bodyweightContextLoadRef.current;
     initDB().then(async () => {
       await migrateActivityModel();
       await migrateLegacyBodyweightIfNeeded();
@@ -15026,6 +15064,8 @@ function App() {
       setBodyweight(hasBodyweightValue(storedBodyweight) ? parseFloat(storedBodyweight) : null);
       const confirmation = await dbOps.dayNotes.get(getBodyweightConfirmationKey(currentDate));
       setBodyweightEntryConfirmed(confirmation?.note === 'true');
+      const context = await getBodyweightContextForDate(currentDate);
+      if (contextRequest === bodyweightContextLoadRef.current) setBodyweightContext(context);
     });
   }, [currentDate, loadDayData]);
   useEffect(() => {
@@ -17519,7 +17559,7 @@ function App() {
       await loadDayData();
     },
     unit: unit,
-    bodyweight: bodyweight,
+    bodyweight: bodyweightContext,
     onEditBodyweight: openBodyweightEditor,
     onOpenFieldNote: openFieldNote,
     onActivitySelect: async exercise => {
