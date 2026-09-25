@@ -2036,14 +2036,6 @@
             box-shadow: 0 12px 40px rgba(12, 6, 10, 0.8);
         }
 
-        .confirmation-dialog[data-scope="one-set"] { border-top: 3px solid var(--accent-soft); }
-        .confirmation-dialog[data-scope="day-sets"] { border-top: 3px solid color-mix(in srgb, var(--danger) 58%, var(--accent)); }
-        .confirmation-dialog[data-scope="all-history"] { border-top: 3px solid var(--danger); }
-        .confirmation-scope-row { display: flex; align-items: center; gap: 10px; margin: -4px 0 12px; color: var(--accent-soft); font-size: 9px; line-height: 1.3; font-weight: 800; letter-spacing: .1em; }
-        .confirmation-scope-icon { flex: 0 0 42px; width: 42px; height: 42px; padding: 5px; border-radius: 10px; color: currentColor; background: color-mix(in srgb, currentColor 10%, transparent); }
-        .confirmation-scope-day-sets { color: color-mix(in srgb, var(--danger) 58%, var(--accent-soft)); }
-        .confirmation-scope-all-history { color: var(--danger); }
-
         .confirmation-title {
             font-size: 16px;
             font-weight: 600;
@@ -5257,9 +5249,9 @@ const ExercisePickerModal = ({
       borderLeft: '3px solid var(--danger)',
       background: 'color-mix(in srgb, var(--danger) 9%, transparent)'
     }
-  }, /*#__PURE__*/React.createElement("div", { className: "confirmation-scope-row confirmation-scope-all-history" }, /*#__PURE__*/React.createElement(DeleteScopeVisual, { scope: "all-history" }), /*#__PURE__*/React.createElement("span", null, "PERMANENT · ALL DATES")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: { fontSize: '13px', color: 'var(--text-bright)', marginBottom: '8px', lineHeight: 1.45 }
-  }, "Delete \"", deleteConfirm.name, "\" and all its history? This removes the activity and every logged set."), /*#__PURE__*/React.createElement("div", {
+  }, "You are about to delete \"", deleteConfirm.name, "\" and its history permanently."), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '8px'
@@ -5286,7 +5278,7 @@ const ExercisePickerModal = ({
       cursor: 'pointer',
       WebkitAppearance: 'none'
     }
-  }, "Delete activity + history"), /*#__PURE__*/React.createElement("button", {
+  }, "Delete"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setDeleteConfirm(null),
     style: {
       flex: 1,
@@ -11860,42 +11852,11 @@ const ChangeCategoryModal = ({
     }
   }, "Save"))));
 };
-const DeleteScopeVisual = ({ scope }) => {
-  const stroke = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
-  let marks;
-  if (scope === 'one-set') {
-    marks = [
-      /*#__PURE__*/React.createElement("rect", { key: "sheet", x: 12, y: 5, width: 20, height: 34, rx: 3, ...stroke }),
-      /*#__PURE__*/React.createElement("path", { key: "lines", d: "M17 14h10M17 20h10M17 26h6", ...stroke }),
-      /*#__PURE__*/React.createElement("circle", { key: "mark", cx: 27, cy: 31, r: 2, fill: 'currentColor', stroke: 'none' })
-    ];
-  } else if (scope === 'day-sets') {
-    marks = [
-      /*#__PURE__*/React.createElement("rect", { key: "calendar", x: 6, y: 9, width: 32, height: 29, rx: 4, ...stroke }),
-      /*#__PURE__*/React.createElement("path", { key: "header", d: "M6 17h32M14 6v6M30 6v6", ...stroke }),
-      /*#__PURE__*/React.createElement("rect", { key: "set-a", x: 12, y: 22, width: 5, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
-      /*#__PURE__*/React.createElement("rect", { key: "set-b", x: 21, y: 22, width: 5, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
-      /*#__PURE__*/React.createElement("rect", { key: "set-c", x: 30, y: 22, width: 4, height: 5, rx: 1, fill: 'currentColor', stroke: 'none' }),
-      /*#__PURE__*/React.createElement("path", { key: "more", d: "M12 32h20", ...stroke })
-    ];
-  } else {
-    marks = [
-      /*#__PURE__*/React.createElement("rect", { key: "back", x: 6, y: 12, width: 23, height: 28, rx: 3, opacity: .45, ...stroke }),
-      /*#__PURE__*/React.createElement("rect", { key: "middle", x: 11, y: 8, width: 23, height: 28, rx: 3, opacity: .7, ...stroke }),
-      /*#__PURE__*/React.createElement("rect", { key: "front", x: 16, y: 4, width: 23, height: 28, rx: 3, ...stroke }),
-      /*#__PURE__*/React.createElement("path", { key: "records", d: "M21 12h13M21 18h13M21 24h8", ...stroke })
-    ];
-  }
-  return /*#__PURE__*/React.createElement("svg", { className: "confirmation-scope-icon", viewBox: "0 0 44 44", "aria-hidden": "true" }, marks);
-};
-
 const ConfirmationDialog = ({
   title,
   message,
   onConfirm,
-  onCancel,
-  scope,
-  confirmLabel
+  onCancel
 }) => {
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -11904,11 +11865,10 @@ const ConfirmationDialog = ({
     className: "confirmation-dialog",
     role: "alertdialog",
     "aria-modal": "true",
-    "data-scope": scope || undefined,
     onClick: e => e.stopPropagation()
-  }, scope && /*#__PURE__*/React.createElement("div", { className: `confirmation-scope-row confirmation-scope-${scope}` }, /*#__PURE__*/React.createElement(DeleteScopeVisual, { scope: scope }), /*#__PURE__*/React.createElement("span", null, scope === 'one-set' ? 'ONE SET · THIS DAY' : scope === 'day-sets' ? 'ALL SETS · THIS DAY' : 'ACTIVITY + ALL HISTORY')), /*#__PURE__*/React.createElement("div", {
+  }, title && /*#__PURE__*/React.createElement("div", {
     className: "confirmation-title"
-  }, title), /*#__PURE__*/React.createElement("div", {
+  }, title), message && /*#__PURE__*/React.createElement("div", {
     className: "confirmation-message"
   }, message), /*#__PURE__*/React.createElement("div", {
     className: "confirmation-buttons"
@@ -11917,16 +11877,8 @@ const ConfirmationDialog = ({
     onClick: onCancel
   }, "Cancel"), /*#__PURE__*/React.createElement("button", {
     className: "btn-confirm",
-    onClick: onConfirm,
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '5px'
-    }
-  }, /*#__PURE__*/React.createElement(IconTrash, {
-    size: 14
-  }), " ", confirmLabel || "Delete"))));
+    onClick: onConfirm
+  }, "Delete"))));
 };
 
 // ============ MAIN APP ============
@@ -15717,10 +15669,8 @@ function App() {
     el._setLongPressTimer = setTimeout(() => {
       el._setLongPressFired = true;
       setConfirmation({
-        title: 'Delete one set?',
-        message: `Remove ${formatSetBox(set, null, unit)} from ${set.exerciseName} on ${formatDateShort(set.date)}. Other sets and activity history will stay.`,
-        scope: 'one-set',
-        confirmLabel: 'Delete this set',
+        title: `Delete set ${formatSetBox(set, null, unit)} from ${set.exerciseName}?`,
+        message: '',
         onConfirm: async () => {
           setConfirmation(null);
           await handleDeleteSet(set.id);
@@ -15800,10 +15750,8 @@ function App() {
   };
   const handleDeleteExercise = exercise => {
     setConfirmation({
-      title: `Remove ${exercise.exerciseName} from today?`,
-      message: `This removes only ${exercise.exerciseName}'s sets on ${formatDateShort(currentDate)}. The saved activity and sets from other dates will stay.`,
-      scope: 'day-sets',
-      confirmLabel: 'Remove today’s sets',
+      title: `Delete all sets for today for ${exercise.exerciseName}?`,
+      message: '',
       onConfirm: async () => {
         const daySets = await dbOps.sets.getByDate(currentDate);
         const toDelete = daySets.filter(s => s.exerciseId === exercise.exerciseId);
@@ -15905,10 +15853,8 @@ function App() {
     } else if (action === 'deletePermanent') {
       const exerciseId = exercise.exerciseId;
       setConfirmation({
-        title: `Delete ${exercise.exerciseName} permanently?`,
-        message: `This removes the saved activity, every logged set from every date, and all attached notes from this device. This cannot be undone.`,
-        scope: 'all-history',
-        confirmLabel: 'Delete activity + history',
+        title: `You are about to delete ${exercise.exerciseName} and its history permanently.`,
+        message: '',
         onConfirm: async () => {
           const allSets = await dbOps.sets.getByExerciseId(exerciseId);
           for (const set of allSets) {
@@ -17576,9 +17522,7 @@ function App() {
     title: confirmation.title,
     message: confirmation.message,
     onConfirm: confirmation.onConfirm,
-    onCancel: confirmation.onCancel,
-    scope: confirmation.scope,
-    confirmLabel: confirmation.confirmLabel
+    onCancel: confirmation.onCancel
   }));
 }
 class ErrorBoundary extends React.Component {
