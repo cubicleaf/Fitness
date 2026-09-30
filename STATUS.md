@@ -2,15 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-25
+updated: 2026-09-29
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-25
+**Last updated:** 2026-09-29
 
 ## Where I left off
 
-2026-09-25: The release source is synced to `origin/main` at `c8d6795`. Add Activity search now spans all splits, matches any query word, and shows direct activity results. Per-set Delete buttons are removed; a 600ms press-and-hold opens the existing confirmation. Change Split fills its grid cell, while the centered today's-set and permanent-history actions use distinct warning treatments. Activity history no longer prints feel-slider labels beside sets, the Did some action includes `¯\\_(ツ)_/¯`, and the Copy last set control/handler are removed. These source changes have not been deployed yet.
+2026-09-29: Set entry now puts last-used context inside the main weight action and collapses the long common-weight list to five recent/common choices with an explicit expansion control. Grip picker chips use the supplied hand-placement SVG directly. Set pills in activity history fade only when a note shares the row; rows without notes keep every set fully visible. Changes shipped on `main` as `8097755`; the live site matches the release source.
 
 2026-09-25: The split-assigned date activity tab now uses compact Route Spine rows and ranks activities by real logged set count, then last use and name. The daily log places newly added activities first regardless of split. Activity cards open and close with a 520ms Measured easing curve; reduced-motion users transition immediately. Delete confirmations state the exact scope in one plain sentence: a set and its activity, all sets for today, or the activity and its history permanently.
 
