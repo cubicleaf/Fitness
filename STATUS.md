@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-09-30: Weekly Split days with no assignment now display “None” while explicitly saved Rest days still display “Rest.” Squircle plates stay mounted during state changes and discard their SVG when a control becomes transparent, fixing pressed-corner flashes and the oversized mauve shape on empty days. Modal outer edges are borderless. The split detail uses the same bodyweight icon as the main header without a redundant arrow. The compact mauve Add Activity button now has gold plus/person artwork, with slightly heavier body strokes on the person.
+
 2026-09-30: Filled mauve squircle plates now cover the app's rectangular buttons and key row/card surfaces using the fixed-pixel SVG edge; weight/rep keys use 20px, wider controls 26px, and larger rows 30px. The Did some action is compact and left-aligned. The daily set actions are separate filled buttons, and activity-history uniform controls now use the same supplied lock and dumbbell artwork as their daily counterparts. Measured activity histories omit note-only dates while preserving their notes; neutral activities retain their note-only dates. Tim chose a compact mauve Add Activity button over the gold mockups; the daily view now has a centered 168×56px button with the original plus and stretching SVGs. The header scale has a solid mauve face and the gear's inner ring is thicker. Local demo-browser checks covered the daily log, activity picker, activity history, and header icons; physical iPhone review remains open.
 
 2026-09-29: Bar activities now make **added weight across both sides** the primary entry and the daily/history label. A persistent Bar math control opens the per-side, bar, and total breakdown; its details and setup action stay out of the resting logging view. New sets snapshot the bar weight and name while continuing to store total load, and CSV export/import carries those fields. Older bar sets without a snapshot remain labelled as totals rather than being recalculated from today's bar. An isolated demo-browser pass covered EZ-bar entry, reps, daily/history display, carry-over after a bar change, and CSV export/import into a fresh local origin; physical-phone use remains unverified.
@@ -55,6 +57,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-30: **What:** An unassigned weekly split is “None”; “Rest” is an explicit choice. Modal surfaces have no visible outer border. The Add Activity control stays compact and mauve with gold icon artwork. **Why:** Tim corrected the default label, modal edge, and icon emphasis during device review. **How to apply:** Preserve saved Rest assignments; keep the button background mauve and both glyphs gold.
 
 - 2026-09-30: **What:** Use a centered, 168×56px filled mauve squircle for Add Activity, retaining the original plus and stretching SVGs. **Why:** Tim preferred a smaller bounded mauve action after reviewing the gold directions. **How to apply:** Keep it at least 44px tall and preserve the SVG pair and Add New Activity accessible label. Do not adopt the exploratory gold button treatments without another decision. **Evidence strength:** Tim-directed choice, verified in the local daily view.
 

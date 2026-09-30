@@ -2260,7 +2260,7 @@
             background-color: color-mix(in srgb, var(--accent) 22%, var(--bg-page));
         }
         .auto-squircle-plate.auto-squircle-plate {
-            position: relative;
+            position: relative !important;
             isolation: isolate;
             background: transparent !important;
             border: 0 !important;
@@ -2276,6 +2276,11 @@
             overflow: visible;
         }
         .auto-squircle-svg path { fill: var(--auto-squircle-fill); }
+        .modal, .modal.feedback-modal, .modal-overlay > div,
+        .quick-detail-card, .confirmation-dialog, .field-note-card {
+            border: 0 !important;
+        }
+        .add-activity-icon-pair { color: #d8aa55; }
     </style>
 </head>
 <body>
@@ -2883,9 +2888,15 @@ const IconStretching = ({ size }) => /*#__PURE__*/React.createElement("svg", {
 }), /*#__PURE__*/React.createElement("path", {
   fillRule: "evenodd",
   clipRule: "evenodd",
+  stroke: "currentColor",
+  strokeWidth: "0.65",
+  strokeLinejoin: "round",
   d: "M16.5589 14.0535C18.2318 13.7817 19.75 15.0731 19.75 16.7679V22C19.75 22.4142 19.4142 22.75 19 22.75C18.5858 22.75 18.25 22.4142 18.25 22V16.7679C18.25 15.9975 17.5599 15.4105 16.7995 15.5341L15.787 15.6986C15.3781 15.7651 14.9928 15.4875 14.9264 15.0786C14.8599 14.6698 15.1375 14.2845 15.5464 14.218L16.5589 14.0535Z"
 }), /*#__PURE__*/React.createElement("path", {
   opacity: "0.58",
+  stroke: "currentColor",
+  strokeWidth: "0.65",
+  strokeLinejoin: "round",
   d: "M10.5028 9.20681C11.9875 8.57051 13.6391 9.65957 13.6391 11.2749V13.8953C13.6391 14.3654 13.4091 14.8277 13.2891 15.238L10.5768 20.0862C10.2519 20.6669 9.72748 21.1101 9.10074 21.3337L5.25218 22.7065C4.86205 22.8456 4.43296 22.6422 4.2938 22.2521C4.15464 21.8619 4.35809 21.4328 4.74823 21.2937L8.59678 19.9209C8.88166 19.8192 9.12004 19.6178 9.26771 19.3538L11.98 14.5056C12.0843 14.3191 12.1391 14.109 12.1391 13.8953V11.2749C12.1391 10.7364 11.5886 10.3735 11.0937 10.5855L8.63786 11.638C8.14643 11.8466 8.02612 12.4911 8.40972 12.8644L9.02378 13.4631C9.32036 13.7522 9.32637 14.2271 9.0372 14.5237C8.74804 14.8202 8.27321 14.8262 7.97663 14.5371L7.36257 13.9384C6.21412 12.8186 6.20691 10.8911 8.04698 10.2593L10.5028 9.20681Z"
 }));
 const IconScale = ({
@@ -11261,7 +11272,7 @@ const SettingsModal = ({
       fontSize: '13px',
       fontWeight: '500'
     }
-  }, weeklyLabels[idx] || 'Rest'))))), /*#__PURE__*/React.createElement("button", {
+  }, weeklyLabels[idx] || 'None'))))), /*#__PURE__*/React.createElement("button", {
     className: "btn",
     onClick: handleSaveTemplate,
     style: {
@@ -12312,7 +12323,7 @@ const DayDetailModal = ({
       alignItems: 'center',
       gap: '10px'
     }
-  }, /*#__PURE__*/React.createElement(IconScale, {
+  }, /*#__PURE__*/React.createElement(IconBodyweight, {
     size: 18,
     style: {
       color: 'var(--accent-soft)',
@@ -12346,11 +12357,6 @@ const DayDetailModal = ({
     style: {
       width: '28px',
       height: '28px'
-    }
-  }), /*#__PURE__*/React.createElement(IconArrowRight, {
-    size: 16,
-    style: {
-      color: 'color-mix(in srgb, var(--accent-soft) 42%, transparent)'
     }
   }))), dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -12652,6 +12658,7 @@ const BodyweightEntryModal = ({
       padding: '24px'
     }
   }, /*#__PURE__*/React.createElement("div", {
+    className: "field-note-card",
     onClick: e => e.stopPropagation(),
     style: {
       width: '100%',
@@ -17977,44 +17984,51 @@ initPrefs().then(() => {
       observer.disconnect();
       document.querySelectorAll(selectors).forEach(el => {
         if (el.matches('.svg-plate-control') || el.closest('.svg-corner-plate')) return;
-        // Read the settled source fill, not an in-flight transition from the
-        // transparent plate class back to the original button background.
-        const originalTransition = el.style.transition;
-        el.style.transition = 'none';
-        el.classList.remove('auto-squircle-plate');
-        void el.offsetWidth;
-        const style = getComputedStyle(el);
+        // Measure a hidden copy. Never strip the visible plate while a finger
+        // is down: that exposed the old rectangular background for one frame.
+        let source = el;
+        if (el.classList.contains('auto-squircle-plate')) {
+          source = el.cloneNode(false);
+          source.classList.remove('auto-squircle-plate');
+          source.style.cssText += ';position:fixed!important;visibility:hidden!important;pointer-events:none!important;';
+          el.parentNode.insertBefore(source, el.nextSibling);
+        }
+        const style = getComputedStyle(source);
         const fill = style.backgroundColor;
         const radius = style.borderRadius;
+        const hasBackgroundImage = style.backgroundImage !== 'none';
         const isCircle = radius.includes('50%') || (el.clientWidth === el.clientHeight && radius === '50%');
         const isTransparent = fill === 'transparent' || /^rgba?\([^)]*,\s*0\s*\)$/.test(fill);
-        if (isCircle || isTransparent || style.backgroundImage !== 'none') {
-          el.style.transition = originalTransition;
+        if (source !== el) source.remove();
+        const svg = el.querySelector(':scope > .auto-squircle-svg');
+        if (isCircle || isTransparent || hasBackgroundImage) {
+          svg?.remove();
+          el.classList.remove('auto-squircle-plate');
           return;
         }
         const rect = el.getBoundingClientRect();
         if (rect.width < 1 || rect.height < 1) {
-          el.style.transition = originalTransition;
+          svg?.remove();
+          el.classList.remove('auto-squircle-plate');
           return;
         }
-        let svg = el.querySelector(':scope > .auto-squircle-svg');
-        if (!svg) {
-          svg = document.createElementNS(namespace, 'svg');
-          svg.classList.add('auto-squircle-svg');
-          svg.setAttribute('aria-hidden', 'true');
-          svg.setAttribute('focusable', 'false');
-          svg.setAttribute('preserveAspectRatio', 'none');
-          svg.appendChild(document.createElementNS(namespace, 'path'));
-          el.insertBefore(svg, el.firstChild);
+        let plate = svg;
+        if (!plate) {
+          plate = document.createElementNS(namespace, 'svg');
+          plate.classList.add('auto-squircle-svg');
+          plate.setAttribute('aria-hidden', 'true');
+          plate.setAttribute('focusable', 'false');
+          plate.setAttribute('preserveAspectRatio', 'none');
+          plate.appendChild(document.createElementNS(namespace, 'path'));
+          el.insertBefore(plate, el.firstChild);
         }
         const w = Math.round(rect.width * 100) / 100;
         const h = Math.round(rect.height * 100) / 100;
         const r = el.matches('.set-item-expanded, .exercise-picker-item, .last-time-section, .your-weights-container, .quick-detail-card, .confirmation-dialog') ? 30 : w >= 120 ? 26 : 20;
         el.style.setProperty('--auto-squircle-fill', fill);
-        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-        svg.querySelector('path').setAttribute('d', fixedCornerSquirclePath(w, h, r));
+        plate.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        plate.querySelector('path').setAttribute('d', fixedCornerSquirclePath(w, h, r));
         el.classList.add('auto-squircle-plate');
-        el.style.transition = originalTransition;
       });
       observe();
     });
