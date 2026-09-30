@@ -15664,7 +15664,7 @@ function App() {
   };
   const handleDeleteSet = async setId => {
     // Capture the set's (date, exerciseId) BEFORE deleting so we know
-    // which group needs renumbering afterward. Per data-model.md, after
+    // which group needs renumbering afterward. Per _docs/data-model.md, after
     // a delete we must recompute setOrder so we don't end up with gaps
     // like 1, 3, 4 (which would show up as wrong "Set N" labels later).
     const setBeingDeleted = await dbOps.sets.get(setId);
@@ -15787,7 +15787,7 @@ function App() {
         for (const set of toDelete) {
           await safeDb(() => dbOps.sets.delete(set.id), 'delete set');
         }
-        // Per data-model.md: after deleting an exercise from a day,
+        // Per _docs/data-model.md: after deleting an exercise from a day,
         // recompute exerciseOrder for the remaining exercises so we
         // don't leave gaps (e.g. 1, 3, 4). Group remaining sets by
         // exerciseId, sort each exercise group by its current

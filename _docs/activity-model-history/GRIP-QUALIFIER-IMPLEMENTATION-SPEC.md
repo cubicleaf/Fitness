@@ -1,3 +1,5 @@
+**Document status: Archived — 2026-09-29.** Preserved for reference; check the project `../../STATUS.md` for current decisions.
+
 # Grip Qualifier Implementation Spec
 
 ## Purpose
