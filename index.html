@@ -1623,6 +1623,34 @@
             margin-bottom: 16px;
         }
 
+        .weight-grid.is-quick {
+            margin-bottom: 8px;
+        }
+
+        .weight-presets-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .weight-presets-heading .section-title {
+            margin-bottom: 0;
+        }
+
+        .weight-presets-toggle {
+            min-height: 44px;
+            padding: 8px 4px 8px 10px;
+            border: 0;
+            background: none;
+            color: var(--accent-soft);
+            font: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
         .weight-btn,
         .rep-btn,
         .rep-suggestion {
@@ -1957,12 +1985,12 @@
             min-width: 0;
             overflow: hidden;
             white-space: nowrap;
-            -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
-            mask-image: linear-gradient(90deg, #000 85%, transparent);
         }
 
         .history-session-sets.has-note {
             max-width: 48%;
+            -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+            mask-image: linear-gradient(90deg, #000 85%, transparent);
         }
 
         .history-session-sets .set-box {
@@ -2866,37 +2894,6 @@ const IconChevronDown = ({
   style: style
 }, /*#__PURE__*/React.createElement("polyline", {
   points: "6 9 12 15 18 9"
-}));
-// A knurled handle seen end-on: the bar plus the grooves your hand sits in.
-// Placeholder until a supplied grip asset replaces it — the rest of this row
-// uses Tim's Solar two-tone set.
-const IconGrip = ({
-  size,
-  style
-}) => /*#__PURE__*/React.createElement(Icon, {
-  size: size,
-  style: style
-}, /*#__PURE__*/React.createElement("rect", {
-  x: "2.5",
-  y: "8.5",
-  width: "19",
-  height: "7",
-  rx: "3.5"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "8.5",
-  y1: "10.5",
-  x2: "8.5",
-  y2: "13.5"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "12",
-  y1: "10.5",
-  x2: "12",
-  y2: "13.5"
-}), /*#__PURE__*/React.createElement("line", {
-  x1: "15.5",
-  y1: "10.5",
-  x2: "15.5",
-  y2: "13.5"
 }));
 // Supplied asset (Solar two-tone dumbbell), recolored to currentColor. The
 // half-opacity path is the bar between the bells.
@@ -7257,13 +7254,14 @@ const PickerChip = ({
   isSet,
   onClick,
   ariaLabel,
-  compact = false
+  compact = false,
+  iconOwnsSurface = false
 }) => /*#__PURE__*/React.createElement("button", {
   type: "button",
   onClick: onClick,
   "aria-label": ariaLabel,
   className: `picker-chip${isSet ? ' is-set' : ''}${compact ? ' is-compact' : ''}`
-}, /*#__PURE__*/React.createElement(IconBubble, {
+}, iconOwnsSurface ? icon : /*#__PURE__*/React.createElement(IconBubble, {
   size: 38,
   filled: isSet
 }, icon), !compact && /*#__PURE__*/React.createElement("span", {
@@ -7291,9 +7289,10 @@ const WeightPickerModal = ({
   const [selectedBandColor, setSelectedBandColor] = useState(null);
   const [bandedCustomName, setBandedCustomName] = useState('');
   const [yourWeights, setYourWeights] = useState([]);
+  const [showAllWeightPresets, setShowAllWeightPresets] = useState(false);
   // 'load' | 'grip' | null — which secondary sheet is open over the picker.
   const [openSheet, setOpenSheet] = useState(null);
-  // { date, label } for the most recent measured session of this activity.
+  // { date, label, weight, weightType } for the latest measured set.
   const [lastMeasured, setLastMeasured] = useState(null);
   const [exerciseWeightMeaning, setExerciseWeightMeaning] = useState('total');
   const [storedCustomBarWeight, setStoredCustomBarWeight] = useState(0);
@@ -7312,6 +7311,9 @@ const WeightPickerModal = ({
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
   const pairPresetTotals = new Set(quickPlateOptions.map(count => isBarExercise ? barWeight + count * plateWeight * 2 : count * plateWeight));
   const totalWeightOptions = commonWeights.filter(value => !isBarExercise || !pairPresetTotals.has(value));
+  const recentWeightOptions = yourWeights.filter(value => !pairPresetTotals.has(value));
+  const allWeightOptions = [...recentWeightOptions, ...totalWeightOptions.filter(value => !recentWeightOptions.includes(value))];
+  const visibleWeightOptions = showAllWeightPresets ? allWeightOptions : allWeightOptions.slice(0, 5);
 
   // On a bar activity the stepper edits PLATES while `weight` stays the total.
   // Keeping the total as the stored value is what protects old records: nothing
@@ -7343,7 +7345,9 @@ const WeightPickerModal = ({
           const finalSet = lastSession.sets.slice().sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0)).pop();
           setLastMeasured(finalSet ? {
             date: lastSession.date,
-            label: formatLoadSummary(finalSet)
+            label: formatLoadSummary(finalSet),
+            weight: finalSet.weight,
+            weightType: finalSet.weightType || 'lbs'
           } : null);
         } else {
           setYourWeights([]);
@@ -7581,52 +7585,16 @@ const WeightPickerModal = ({
     ariaLabel: "Change how this set is loaded",
     onClick: () => setOpenSheet('load')
   }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
-    icon: /*#__PURE__*/React.createElement(IconGrip, {
-      size: 20
+    icon: /*#__PURE__*/React.createElement(IconHandPlacement, {
+      size: 38
     }),
     label: "Grip",
     isSet: !!formatGripLabel(initialGrip),
     compact: true,
+    iconOwnsSurface: true,
     ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
     onClick: () => setOpenSheet('grip')
-  })), lastMeasured && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'baseline',
-      gap: '8px',
-      marginBottom: '10px',
-      padding: '8px 12px',
-      borderRadius: '10px',
-      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 16%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '9px',
-      fontWeight: '600',
-      letterSpacing: '0.06em',
-      textTransform: 'uppercase',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      flexShrink: 0
-    }
-  }, "Last"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '14px',
-      fontWeight: '700',
-      color: 'var(--text-bright)',
-      flexShrink: 0
-    }
-  }, lastMeasured.label), /*#__PURE__*/React.createElement("span", {
-    style: {
-      flex: 1,
-      textAlign: 'right',
-      fontSize: '11px',
-      color: 'var(--text-faint)',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis'
-    }
-  }, formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), isBarExercise && /*#__PURE__*/React.createElement("div", {
+  })), isBarExercise && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '10px',
       padding: '10px 12px',
@@ -7814,14 +7782,25 @@ const WeightPickerModal = ({
     className: "btn",
     style: {
       width: '100%',
-      minHeight: '44px',
+      minHeight: lastMeasured ? '54px' : '44px',
       marginBottom: '12px',
       padding: '8px 12px',
       fontSize: '13px',
       fontWeight: '600',
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: lastMeasured ? '2px' : 0
     }
-  }, "Use ", weight, " ", unit, isBarExercise ? ' total' : ''), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, "Use ", weight, " ", unit, isBarExercise ? ' total' : ''), lastMeasured && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '10px',
+      fontWeight: '500',
+      opacity: 0.78
+    }
+  }, Number(lastMeasured.weight) === Number(weight) && lastMeasured.weightType === unit ? 'Last used' : `Last ${lastMeasured.label}`, " · ", formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px'
     }
@@ -7887,16 +7866,19 @@ const WeightPickerModal = ({
       marginBottom: '12px'
     }
   }, /*#__PURE__*/React.createElement("div", {
+    className: "weight-presets-heading"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, isBarExercise ? "Other Total Weights" : "Common Weights"), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      color: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)',
-      marginBottom: '8px'
-    }
-  }, isBarExercise ? 'Each value is the full load.' : 'Fast total-weight presets.'), /*#__PURE__*/React.createElement("div", {
-    className: "weight-grid"
-  }, totalWeightOptions.map(w => /*#__PURE__*/React.createElement("button", {
+  }, recentWeightOptions.length ? "Your Weights" : isBarExercise ? "Other Total Weights" : "Common Weights"), allWeightOptions.length > 5 && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "weight-presets-toggle",
+    "aria-expanded": showAllWeightPresets,
+    "aria-controls": "weight-preset-options",
+    onClick: () => setShowAllWeightPresets(value => !value)
+  }, showAllWeightPresets ? "Show fewer" : "More weights")), /*#__PURE__*/React.createElement("div", {
+    id: "weight-preset-options",
+    className: `weight-grid${showAllWeightPresets ? '' : ' is-quick'}`
+  }, visibleWeightOptions.map(w => /*#__PURE__*/React.createElement("button", {
     key: w,
     className: "weight-btn",
     onClick: () => onSelectWeight({
@@ -8040,9 +8022,10 @@ const RepPickerModal = ({
     ariaLabel: `Load: ${displayWeight}. Tap to change.`,
     onClick: () => setOpenSheet('load')
   }), gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerChip, {
-    icon: /*#__PURE__*/React.createElement(IconGrip, { size: 20 }),
+    icon: /*#__PURE__*/React.createElement(IconHandPlacement, { size: 38 }),
     label: "Grip",
     isSet: !!formatGripLabel(initialGrip),
+    iconOwnsSurface: true,
     ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
     onClick: () => setOpenSheet('grip')
   })), repSuggestions.length > 0 && /*#__PURE__*/React.createElement("div", {
