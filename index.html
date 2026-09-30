@@ -5041,7 +5041,27 @@ const ExercisePickerModal = ({
       WebkitAppearance: 'none'
     }
   }, "Merge activities")) : null;
+  const assignActivityToSplit = async (exercise, split) => {
+    const currentCategories = getExCategories(exercise);
+    if (currentCategories.some(value => String(value).toLowerCase() === split.toLowerCase())) return;
+    const latest = await dbOps.exercises.get(exercise.id);
+    if (!latest) return;
+    const updated = {
+      ...latest,
+      categories: [...getExCategories(latest), split]
+    };
+    const saved = await safeDb(() => dbOps.exercises.update(updated), 'assign activity split');
+    if (saved) {
+      setExercises(previous => previous.map(item => item.id === exercise.id ? {
+        ...item,
+        categories: updated.categories
+      } : item));
+    }
+  };
   const renderActivityRow = ex => {
+    const activitySplits = getExCategories(ex);
+    const splitLabel = activitySplits.length ? formatCategories(ex) : queryText && category !== 'all' ? 'No split assigned' : '';
+    const splitDisplayName = category.charAt(0).toUpperCase() + category.slice(1);
     const meta = /*#__PURE__*/React.createElement("div", {
       style: {
         flex: 1
@@ -5050,7 +5070,7 @@ const ExercisePickerModal = ({
       className: "exercise-picker-name"
     }, getActivityName(ex)), /*#__PURE__*/React.createElement("div", {
       className: "exercise-picker-meta"
-    }, ex.variationLabel ? /*#__PURE__*/React.createElement("span", null, ex.variationLabel, " · ") : null, getExCategories(ex).length > 0 && /*#__PURE__*/React.createElement("span", null, formatCategories(ex)), ex.lastUsed ? ` · Last: ${formatDateShort(ex.lastUsed)}` : ''));
+    }, ex.variationLabel ? /*#__PURE__*/React.createElement("span", null, ex.variationLabel, " · ") : null, splitLabel && /*#__PURE__*/React.createElement("span", null, splitLabel), ex.lastUsed ? `${splitLabel || ex.variationLabel ? ' · ' : ''}Last: ${formatDateShort(ex.lastUsed)}` : ''));
     const pairButton = !pairingSource && ex.type === 'timed' && onPair ? /*#__PURE__*/React.createElement("button", {
       onClick: e => {
         e.stopPropagation();
@@ -5069,6 +5089,30 @@ const ExercisePickerModal = ({
         WebkitAppearance: 'none'
       }
     }, "pair") : null;
+    const assignSplitButton = !pairingSource && queryText && category !== 'all' && activitySplits.length === 0 ? /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      "aria-label": `Add ${getActivityName(ex)} to ${splitDisplayName}`,
+      onTouchStart: event => event.stopPropagation(),
+      onClick: event => {
+        event.stopPropagation();
+        assignActivityToSplit(ex, category);
+      },
+      style: {
+        minHeight: '44px',
+        minWidth: '44px',
+        padding: '0 10px',
+        borderRadius: '8px',
+        border: '1px solid color-mix(in srgb, var(--accent) 36%, transparent)',
+        background: 'color-mix(in srgb, var(--accent) 12%, transparent)',
+        color: 'var(--accent-soft)',
+        fontSize: '10px',
+        fontWeight: '700',
+        whiteSpace: 'nowrap',
+        cursor: 'pointer',
+        WebkitAppearance: 'none',
+        flexShrink: 0
+      }
+    }, `Add to ${splitDisplayName}`) : null;
     const lineageButton = !pairingSource ? /*#__PURE__*/React.createElement("button", {
       type: "button",
       "aria-label": `Related Activities for ${ex.name}`,
@@ -5134,7 +5178,7 @@ const ExercisePickerModal = ({
           e.preventDefault();
         }
       }
-    }, meta, pairButton, lineageButton);
+    }, meta, pairButton, assignSplitButton, lineageButton);
   };
 
   // Families are compact doors, not expanded stacks. One row per family keeps
@@ -11935,7 +11979,8 @@ const DayDetailModal = ({
   bodyweight,
   onEditBodyweight,
   onOpenFieldNote,
-  onActivitySelect
+  onActivitySelect,
+  onAddActivity
 }) => {
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
   const bodyweightLabel = !bodyweight || bodyweight.kind === 'loading' ? 'Weight history loading' : bodyweight.kind === 'future' ? 'Future date · no weight recorded' : bodyweight.kind === 'exact' ? `${bodyweight.value} ${unit} · ${formatDateShort(bodyweight.date)}` : bodyweight.kind === 'last' ? `Last logged ${bodyweight.value} ${unit} · ${formatDateShort(bodyweight.date)}` : date === getTodayString() ? 'No weight logged today' : `No weight logged by ${formatDateShort(date)}`;
@@ -12239,11 +12284,21 @@ const DayDetailModal = ({
       color: activeTab === 'split' ? '#fff' : 'var(--text-faint)',
       borderRadius: '0 8px 8px 0'
     }
-  }, "Change Split")), activeTab === 'activities' && /*#__PURE__*/React.createElement(DayActivityList, {
+  }, "Change Split")), activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DayActivityList, {
     activities: activities,
     splitLabel: dayLabel,
     onSelect: onActivitySelect
-  }), false && activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, activities.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: onAddActivity,
+    className: "btn btn-secondary",
+    style: {
+      minHeight: '44px',
+      width: '100%',
+      marginTop: '8px',
+      flexShrink: 0
+    }
+  }, "Find or assign an activity")), false && activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, activities.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'center',
@@ -15126,7 +15181,7 @@ function App() {
   }, [expandedExercise, currentDate]);
   const handleExerciseSelect = async exercise => {
     if (!exercise) {
-      setModal(null);
+      if (modalBackRef.current) modalBack();else setModal(null);
       return;
     }
     setSelectedExercise(exercise);
@@ -17537,6 +17592,7 @@ function App() {
     bodyweight: bodyweightContext,
     onEditBodyweight: openBodyweightEditor,
     onOpenFieldNote: openFieldNote,
+    onAddActivity: () => setModal('exercisePicker', 'dayDetail'),
     onActivitySelect: async exercise => {
       const fullExercise = await dbOps.exercises.get(exercise.id);
       setSelectedExercise(fullExercise || exercise);

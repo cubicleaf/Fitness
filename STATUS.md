@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-09-29: Split directories now have a direct path to find activities. When a search from a named split returns an unassigned activity, its row explains that it has no split and offers an explicit Add to [split] action; the assignment is saved on that activity. No name-based split assignment is made automatically.
+
 2026-09-29: Set entry now puts last-used context inside the main weight action and collapses the long common-weight list to five recent/common choices with an explicit expansion control. Grip picker chips use the supplied hand-placement SVG directly. Set pills in activity history fade only when a note shares the row; rows without notes keep every set fully visible. Changes shipped on `main` as `8097755`; the live site matches the release source.
 
 2026-09-25: The split-assigned date activity tab now uses compact Route Spine rows and ranks activities by real logged set count, then last use and name. The daily log places newly added activities first regardless of split. Activity cards open and close with a 520ms Measured easing curve; reduced-motion users transition immediately. Delete confirmations state the exact scope in one plain sentence: a set and its activity, all sets for today, or the activity and its history permanently.
@@ -49,6 +51,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-29: **What:** Add “Find or assign an activity” to the split-day directory. In search results for a named split, identify unassigned matches and let the user add one to the selected split in one explicit action. **Why:** Leg Press appeared in all-splits search but had no saved split, so the Legs directory correctly omitted it while giving no direct way to repair the mismatch. **How to apply:** Keep the search broad for discovery, name the missing assignment plainly, and require the user to tap before writing a split. Preserve existing assignments and all workout history.
 
 - 2026-09-29: **What:** Fold the last-used load and date into the existing Use button, show five personalized/common weights before an explicit More weights expansion, use the supplied hand-placement SVG for Grip in both weight and reps pickers, and apply history set fading only when a note occupies the row. **Why:** The full-width LAST strip and dozens of presets displaced the primary controls, the grip chip used an unrelated knurled bar glyph, and the unconditional history mask hid valid set values. **How to apply:** Keep all presets reachable, tailor the initial five to the activity's recent measured weights, and only fade chips when the note area competes for the same horizontal row. Shared components carry these rules across the equipment and history variants. This pass shipped on `main` as `8097755`; physical iPhone review remains open.
 
