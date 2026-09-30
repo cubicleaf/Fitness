@@ -1654,12 +1654,12 @@
         .weight-btn,
         .rep-btn,
         .rep-suggestion {
-            --svg-plate-fill: color-mix(in srgb, var(--accent) 8%, transparent);
-            --svg-plate-stroke: color-mix(in srgb, var(--accent) 20%, transparent);
-            --svg-plate-r: 12px;
+            --svg-plate-fill: color-mix(in srgb, var(--accent) 34%, var(--bg-page));
+            --svg-plate-stroke: transparent;
+            --svg-plate-r: 20px;
             background: var(--svg-plate-fill);
             border: none;
-            border-radius: 12px;
+            border-radius: 20px;
             padding: 12px;
             font-size: 14px;
             font-weight: 600;
@@ -1755,10 +1755,9 @@
             96% { background: rgba(160, 50, 50, 0.06); }
         }
         .rep-btn-ember {
-            --svg-plate-fill: rgba(160, 50, 50, 0.06);
-            --svg-plate-stroke: rgba(180,60,60,0.15);
+            --svg-plate-fill: color-mix(in srgb, var(--accent-bright) 38%, var(--bg-page));
+            --svg-plate-stroke: transparent;
             color: var(--text-bright);
-            animation: repEmberShift 3s ease-in-out 3, repEmberShiftSlow 10s ease-in-out 9s infinite;
         }
         .rep-btn-ember:active {
             color: white;
@@ -2226,6 +2225,57 @@
                 padding-right: max(16px, env(safe-area-inset-right));
             }
         }
+
+        /* Fixed-corner squircle pass. Filled mauve replaces outline-only
+           controls; an SVG plate supplies the actual superellipse edge. */
+        .btn { min-height: 44px; }
+        .btn-secondary,
+        .btn-add-set,
+        .button-grid .btn,
+        .category-tab,
+        .duration-btn,
+        .stepper-btn,
+        .your-weights-btn,
+        .confirmation-buttons .btn-cancel {
+            background: color-mix(in srgb, var(--accent) 34%, var(--bg-page));
+            border: 0;
+            color: var(--text-bright);
+        }
+        .button-grid .btn.active,
+        .category-tab.active { background: var(--accent); color: white; }
+        .day-activity-node {
+            background: color-mix(in srgb, var(--accent) 34%, var(--bg-page));
+            border: 0;
+            color: var(--text-bright);
+        }
+        .set-item-expanded,
+        .exercise-picker-item,
+        .last-time-section,
+        .your-weights-container {
+            background: color-mix(in srgb, var(--accent) 22%, var(--bg-page));
+            border: 0;
+        }
+        .search-input, .stepper-input, .form-input, .form-select {
+            border-radius: 20px;
+            background-color: color-mix(in srgb, var(--accent) 22%, var(--bg-page));
+        }
+        .auto-squircle-plate.auto-squircle-plate {
+            position: relative;
+            isolation: isolate;
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+        }
+        .auto-squircle-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: visible;
+        }
+        .auto-squircle-svg path { fill: var(--auto-squircle-fill); }
     </style>
 </head>
 <body>
@@ -2803,6 +2853,13 @@ const IconSetGauge = ({
   style: { display: 'block', ...style }
 }, /*#__PURE__*/React.createElement("path", {
   d: "m39.618 29.759l-2.832-9.175c-.833-2.32-.525-2.973 1.795-3.805l15.052-5.402c2.32-.833 2.973-.525 3.805 1.795l3.617 8.884M22.515 61.246l-8.939-3.506c-2.333-.795-2.651-1.443-1.856-3.776l5.161-15.136c.795-2.333 1.443-2.651 3.776-1.856l9.201 2.711M36.47 94.249l-8.314 4.803c-2.076 1.328-2.781 1.173-4.109-.903l-8.617-13.473c-1.328-2.076-1.173-2.781.903-4.109l7.856-5.503M70.974 103.92l-1.429 9.495c-.256 2.451-.817 2.906-3.268 2.65l-15.905-1.663c-2.451-.256-2.906-.817-2.65-3.268l.595-9.573M100.04 82.964l6.533 7.037c1.75 1.729 1.763 2.451.034 4.207l-11.216 11.399c-1.729 1.757-2.451 1.763-4.207.034l-7.114-6.434M101.79 47.174l9.575-.72c2.447-.296 3.015.15 3.311 2.597l1.919 15.876c.296 2.447-.15 3.015-2.597 3.311l-9.466 1.55M74.892 23.497l5.406-7.935c1.294-2.098 1.997-2.264 4.094-.97l13.609 8.398c2.098 1.294 2.264 1.997.97 4.094l-4.689 8.367M77.997 58.346c2.775 7.733-1.244 16.251-8.977 19.027s-16.251-1.244-19.027-8.977c-2.775-7.733 1.244-16.251 8.977-19.027 7.733-2.775 16.251 1.244 19.027 8.977zm15.927-5.716c-5.967-16.626-24.281-25.267-40.907-19.3s-25.267 24.281-19.3 40.907 24.281 25.267 40.907 19.3 25.266-24.281 19.3-40.907zm2.625-.942c6.487 18.076-2.908 37.988-20.983 44.475-18.076 6.487-37.988-2.908-44.475-20.983s2.908-37.988 20.983-44.475 37.988 2.907 44.475 20.983zm-46.736-27.284c-21.459 7.701-32.612 31.34-24.911 52.799s31.34 32.612 52.799 24.911 32.612-31.34 24.911-52.799-31.34-32.612-52.799-24.911z"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "64",
+  cy: "64",
+  r: "18",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: "6"
 }));
 const IconActivityPlus = ({ size }) => /*#__PURE__*/React.createElement("svg", {
   width: size,
@@ -2839,8 +2896,15 @@ const IconScale = ({
   style: style,
   stroke: "none"
 }, /*#__PURE__*/React.createElement("path", {
-  d: "M17.25 2H6.75A4.755 4.755 0 0 0 2 6.75v10.5A4.755 4.755 0 0 0 6.75 22h10.5A4.755 4.755 0 0 0 22 17.25V6.75A4.755 4.755 0 0 0 17.25 2Zm1.697 7.5-1.561 1.838a1.958 1.958 0 0 1-1.495.695 1.985 1.985 0 0 1-1.045-.299C14.18 11.324 13.145 10.833 12 10.833s-2.18.491-2.846.901a1.963 1.963 0 0 1-2.54-.397L5.053 9.5a2.366 2.366 0 0 1 .21-3.293C6.57 5.02 8.797 3.604 12 3.604s5.43 1.416 6.737 2.603a2.366 2.366 0 0 1 .21 3.293Z",
+  d: "M17.25 2H6.75A4.755 4.755 0 0 0 2 6.75v10.5A4.755 4.755 0 0 0 6.75 22h10.5A4.755 4.755 0 0 0 22 17.25V6.75A4.755 4.755 0 0 0 17.25 2Z",
   fill: "currentColor"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M6.5 9.8C7.8 8.2 9.6 7.4 12 7.4s4.2.8 5.5 2.4M12 10.9l2.6-1.8",
+  fill: "none",
+  stroke: "var(--top-nav-surface)",
+  strokeWidth: "2.1",
+  strokeLinecap: "round",
+  strokeLinejoin: "round"
 }));
 const IconCalendar = ({
   size,
@@ -3607,7 +3671,36 @@ const formatLoadSummary = set => {
     return set.bandedColor && set.bandedColor !== 'undefined' ? `${set.bandedColor} band` : 'Band';
   }
   if (set.weightType === 'none' || set.weight === null || set.weight === undefined) return 'No load';
-  return `${set.weight} ${set.weightType || 'lbs'}`;
+  return formatRecordedWeight(set);
+};
+// A snapshot is required to say "added": older bar sets store only the total.
+// Never subtract today's activity setting from historical sets.
+const barLoadForSet = set => {
+  if (!set || !['barbell', 'bar-custom'].includes(set.weightMeaning)) return null;
+  const bar = Number(set.barWeightAtLog);
+  if (!Number.isFinite(bar) || bar < 0 || set.barWeightAtLog === null || set.barWeightAtLog === undefined) return null;
+  const total = Number(set.weight);
+  if (!Number.isFinite(total) || total < bar) return null;
+  return { added: parseFloat((total - bar).toFixed(1)), bar, total };
+};
+const formatRecordedWeight = set => {
+  const unit = set.weightType || 'lbs';
+  const load = barLoadForSet(set);
+  if (load) return `${load.added} ${unit} added`;
+  const legacyBar = ['barbell', 'bar-custom'].includes(set.weightMeaning);
+  return `${set.weight} ${unit}${legacyBar ? ' total' : ''}`;
+};
+const barSnapshotFromSelection = selection => selection && Number.isFinite(Number(selection.barWeightAtLog)) && selection.barWeightAtLog !== null && selection.barWeightAtLog !== undefined ? {
+  barWeightAtLog: Number(selection.barWeightAtLog),
+  barNameAtLog: selection.barNameAtLog || 'Bar'
+} : {};
+const carryWeightIntoCurrentBar = (set, exercise, unit) => {
+  const base = { weight: set.weight, weightType: set.weightType, bandedColor: set.bandedColor, ...barSnapshotFromSelection(set) };
+  const prior = barLoadForSet(set);
+  if (!prior || set.weightType !== unit) return base;
+  const bar = exercise?.weightMeaning === 'barbell' ? unit === 'kg' ? 20 : 45 : exercise?.weightMeaning === 'bar-custom' ? Number(exercise.customBarWeight) : NaN;
+  if (!Number.isFinite(bar) || bar < 0) return base;
+  return { ...base, weight: parseFloat((bar + prior.added).toFixed(1)), barWeightAtLog: bar, barNameAtLog: exercise.barName || 'Bar' };
 };
 const formatDurationLabel = seconds => {
   const value = Math.max(0, Math.floor(Number(seconds) || 0));
@@ -3626,7 +3719,7 @@ const formatSetDisplay = set => {
     const bandLabel = set.bandedColor && set.bandedColor !== 'undefined' ? set.bandedColor + ' Band' : 'Banded';
     display += bandLabel;
   } else if (set.weight !== null) {
-    display += `${set.weight} ${set.weightType || 'lbs'}`;
+    display += formatRecordedWeight(set);
   }
   if (set.distance !== null && set.distance !== undefined) {
     const distanceUnit = set.distanceUnit === 'mi' ? 'miles' : set.distanceUnit || 'km';
@@ -4487,8 +4580,7 @@ const getSetBoxColor = index => {
 const formatSetBox = (set, previousSet, unitOverride) => {
   if (isPresenceOnlySet(set)) return 'Did some';
   let box = '';
-  const displayUnit = unitOverride || 'lbs';
-  if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType || set.bandedColor !== previousSet.bandedColor) {
+  if (!previousSet || set.weight !== previousSet.weight || set.weightType !== previousSet.weightType || set.bandedColor !== previousSet.bandedColor || set.barWeightAtLog !== previousSet.barWeightAtLog) {
     if (set.weightType === 'bodyweight' && set.duration === null) {
       box += 'BW ';
     } else if (set.weightType === 'banded') {
@@ -4496,7 +4588,8 @@ const formatSetBox = (set, previousSet, unitOverride) => {
       const bandLabel = set.bandedColor && set.bandedColor !== 'undefined' ? set.bandedColor : 'Band';
       box += bandLabel + ' ';
     } else if (set.weightType !== 'none' && set.weight !== null && set.weight !== undefined && !isNaN(set.weight)) {
-      box += `${set.weight}${displayUnit} `;
+      const recorded = formatRecordedWeight(set);
+      box += `${recorded} `;
     }
   }
   if (set.distance !== null && set.distance !== undefined) {
@@ -7334,6 +7427,7 @@ const WeightPickerModal = ({
   const [bandedCustomName, setBandedCustomName] = useState('');
   const [yourWeights, setYourWeights] = useState([]);
   const [showAllWeightPresets, setShowAllWeightPresets] = useState(false);
+  const [showBarMath, setShowBarMath] = useState(false);
   // 'load' | 'grip' | null — which secondary sheet is open over the picker.
   const [openSheet, setOpenSheet] = useState(null);
   // { date, label, weight, weightType } for the latest measured set.
@@ -7353,9 +7447,9 @@ const WeightPickerModal = ({
   const barbellCommonWeightsKg = [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20, 22.5, 25, 27.5, 30, 32.5, 35, 37.5, 40, 42.5, 45, 47.5, 50].map(increment => barWeight + increment);
   const commonWeights = isBarExercise ? unit === 'kg' ? barbellCommonWeightsKg : barbellCommonWeightsLbs : unit === 'kg' ? commonWeightsKg : commonWeightsLbs;
   const quickPlateOptions = isBarExercise ? [0, 1, 2, 3, 4, 5] : [1, 2, 4, 6, 8, 10];
-  const pairPresetTotals = new Set(quickPlateOptions.map(count => isBarExercise ? barWeight + count * plateWeight * 2 : count * plateWeight));
+  const pairPresetTotals = new Set(isBarExercise ? [] : quickPlateOptions.map(count => count * plateWeight));
   const totalWeightOptions = commonWeights.filter(value => !isBarExercise || !pairPresetTotals.has(value));
-  const recentWeightOptions = yourWeights.filter(value => !pairPresetTotals.has(value));
+  const recentWeightOptions = yourWeights.filter(value => !pairPresetTotals.has(value) && (!isBarExercise || value >= barWeight));
   const allWeightOptions = [...recentWeightOptions, ...totalWeightOptions.filter(value => !recentWeightOptions.includes(value))];
   const visibleWeightOptions = showAllWeightPresets ? allWeightOptions : allWeightOptions.slice(0, 5);
 
@@ -7369,6 +7463,11 @@ const WeightPickerModal = ({
     setWeight(isBarExercise ? parseFloat((barWeight + clamped).toFixed(1)) : clamped);
   };
   const barName = storedBarName || (exerciseWeightMeaning === 'barbell' ? 'Barbell' : 'Custom bar');
+  const selectMeasuredWeight = total => onSelectWeight({
+    weight: total,
+    weightType: unit,
+    ...(isBarExercise ? { barWeightAtLog: barWeight, barNameAtLog: barName } : {})
+  });
   // A set logged before the bar was configured can total less than the bar
   // itself. That is real history, so it is surfaced rather than silently fixed.
   const previousBelowBar = isBarExercise && previousWeight != null && previousWeight < barWeight;
@@ -7377,10 +7476,16 @@ const WeightPickerModal = ({
       try {
         const lastSession = await getLastMeasuredSession(exercise.id);
         if (lastSession) {
+          const fullEx = await dbOps.exercises.get(exercise.id);
+          const currentBar = fullEx?.weightMeaning === 'barbell' ? unit === 'kg' ? 20 : 45 : fullEx?.weightMeaning === 'bar-custom' ? Number(fullEx.customBarWeight) || 0 : 0;
+          const barActivity = fullEx?.weightMeaning === 'barbell' || fullEx?.weightMeaning === 'bar-custom';
           const weights = new Map();
           lastSession.sets.forEach(s => {
-            if (s.weight && s.weightType === unit) {
-              weights.set(s.weight, (weights.get(s.weight) || 0) + 1);
+            if (s.weight != null && s.weightType === unit) {
+              const previousLoad = barLoadForSet(s);
+              if (barActivity && !previousLoad) return;
+              const suggestion = barActivity ? parseFloat((currentBar + previousLoad.added).toFixed(1)) : s.weight;
+              weights.set(suggestion, (weights.get(suggestion) || 0) + 1);
             }
           });
           setYourWeights(Array.from(weights.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(w => w[0]));
@@ -7391,7 +7496,8 @@ const WeightPickerModal = ({
             date: lastSession.date,
             label: formatLoadSummary(finalSet),
             weight: finalSet.weight,
-            weightType: finalSet.weightType || 'lbs'
+            weightType: finalSet.weightType || 'lbs',
+            added: barLoadForSet(finalSet)?.added
           } : null);
         } else {
           setYourWeights([]);
@@ -7419,11 +7525,18 @@ const WeightPickerModal = ({
           setWeight(customBar);
         }
       }
-      // The bare bar is the floor. Seeding from a last set logged before the bar
-      // existed (or under a lighter bar) otherwise produced a total below the
-      // bar, and the plates line contradicted itself: "0 plates + 45 bar = 20".
+      // Reuse the last added load when a bar setting has changed. Older sets
+      // without a bar snapshot remain total-only and are never reinterpreted.
       const effectiveBar = fullEx?.weightMeaning === 'barbell' ? unit === 'kg' ? 20 : 45 : fullEx?.weightMeaning === 'bar-custom' ? customBar : 0;
-      if (effectiveBar > 0) setWeight(current => current < effectiveBar ? effectiveBar : current);
+      if (effectiveBar > 0) {
+        let seededTotal = previousWeight;
+        if (previousWeight != null) {
+          const sets = await dbOps.sets.getByExerciseId(exercise.id);
+          const matching = sets.filter(set => set.weight === previousWeight && set.weightType === unit && barLoadForSet(set)).sort((a, b) => b.date.localeCompare(a.date) || (b.setOrder || 0) - (a.setOrder || 0))[0];
+          if (matching) seededTotal = parseFloat((effectiveBar + barLoadForSet(matching).added).toFixed(1));
+        }
+        setWeight(current => Math.max(effectiveBar, seededTotal ?? current));
+      }
     };
     loadMeaning();
   }, [exercise, previousWeight, unit]);
@@ -7640,84 +7753,46 @@ const WeightPickerModal = ({
     onClick: () => setOpenSheet('grip')
   })), isBarExercise && /*#__PURE__*/React.createElement("div", {
     style: {
-      marginBottom: '10px',
-      padding: '10px 12px',
-      borderRadius: '12px',
-      background: 'color-mix(in srgb, var(--accent) 9%, transparent)',
-      border: '1px solid color-mix(in srgb, var(--accent) 26%, transparent)'
+      marginBottom: '10px'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setShowBarMath(value => !value),
+    "aria-expanded": showBarMath,
+    "aria-controls": "bar-math-details",
     style: {
+      width: '100%',
+      minHeight: '44px',
+      padding: '0 12px',
       display: 'flex',
       alignItems: 'center',
-      gap: '8px',
-      marginBottom: '6px'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '10px',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      textTransform: 'uppercase',
-      letterSpacing: '0.6px'
-    }
-  }, "Bar"), /*#__PURE__*/React.createElement("span", {
-    style: {
-      flex: 1,
-      fontSize: '14px',
-      fontWeight: '700',
-      color: 'var(--text-bright)'
-    }
-  }, barName, " · ", barWeight, " ", unit), onEditWeightStyle && /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: onEditWeightStyle,
-    "aria-label": "Change how this activity's weight is set up",
-    style: {
-      minHeight: '32px',
-      padding: '0 12px',
-      borderRadius: '20px',
+      justifyContent: 'space-between',
+      borderRadius: '8px',
       border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
       background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
       color: 'var(--accent-soft)',
-      fontSize: '11px',
+      fontSize: '12px',
       fontWeight: '700',
-      whiteSpace: 'nowrap',
-      cursor: 'pointer',
-      WebkitAppearance: 'none',
-      transition: 'background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)'
+      cursor: 'pointer'
     }
-  }, "Change")), previousBelowBar && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, "Bar math · ", barName, " ", barWeight, " ", unit), /*#__PURE__*/React.createElement("span", { "aria-hidden": "true" }, showBarMath ? '⌃' : '›')), showBarMath && /*#__PURE__*/React.createElement("div", {
+    id: "bar-math-details",
     style: {
       marginTop: '6px',
-      fontSize: '11px',
-      lineHeight: '1.45',
-      color: 'var(--text-faint)'
-    }
-  }, "Last set here logged ", previousWeight, " ", unit, " total — below this bar, so it predates the bar setup. It has been left exactly as recorded.")), isBarExercise && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      alignItems: 'baseline',
-      justifyContent: 'space-between',
-      gap: '8px',
-      marginBottom: '6px'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '10px',
-      color: 'color-mix(in srgb, var(--accent-soft) 52%, transparent)',
-      textTransform: 'uppercase',
-      letterSpacing: '0.6px'
-    }
-  }, "Plate math"), /*#__PURE__*/React.createElement("span", {
-    style: {
+      padding: '10px 12px',
+      borderRadius: '8px',
+      background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
       fontSize: '12px',
-      color: 'var(--text-faint)'
+      lineHeight: '1.8',
+      color: 'var(--text-body)'
     }
-  }, plateOnlyWeight, " ", unit, " plates + ", barWeight, " ", unit, " bar = ", /*#__PURE__*/React.createElement("strong", {
-    style: {
-      color: 'var(--accent-soft)',
-      fontWeight: '700'
-    }
-  }, weight, " ", unit))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", null, plateOnlyWeight / 2, " ", unit, " each side × 2 = ", plateOnlyWeight, " ", unit, " added"), /*#__PURE__*/React.createElement("div", null, barName, " = ", barWeight, " ", unit), /*#__PURE__*/React.createElement("strong", null, "Total in your hands = ", weight, " ", unit), onEditWeightStyle && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: onEditWeightStyle,
+    style: { display: 'block', minHeight: '44px', marginTop: '8px', padding: '0 12px', borderRadius: '8px', border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)', background: 'transparent', color: 'var(--accent-soft)', fontWeight: '700' }
+  }, "Change bar setup"), previousBelowBar && /*#__PURE__*/React.createElement("div", { style: { color: 'var(--text-faint)' } }, "The last set predates this bar setup and remains recorded as ", previousWeight, " ", unit, " total."))), isBarExercise && /*#__PURE__*/React.createElement("div", {
+    style: { marginBottom: '6px', fontSize: '12px', fontWeight: '700', color: 'var(--text-bright)' }
+  }, "Added weight"), /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       gap: '4px',
@@ -7761,7 +7836,7 @@ const WeightPickerModal = ({
     // Bar mode shows a literal 0 rather than an empty box: "no plates yet" is a
     // real answer there, not a blank field.
     value: isBarExercise && stepperValue === 0 ? '0' : stepperValue || '',
-    "aria-label": isBarExercise ? `Plate weight in ${unit}, on top of a ${barWeight} ${unit} bar` : `Weight in ${unit}`,
+    "aria-label": isBarExercise ? `Added weight in ${unit}, both sides combined` : `Weight in ${unit}`,
     onFocus: e => {
       setIsEditingWeight(true);
       e.target.select();
@@ -7819,10 +7894,7 @@ const WeightPickerModal = ({
       padding: 0
     }
   }, `+${amount}`))), /*#__PURE__*/React.createElement("button", {
-    onClick: () => onSelectWeight({
-      weight: weight,
-      weightType: unit
-    }),
+    onClick: () => selectMeasuredWeight(weight),
     className: "btn",
     style: {
       width: '100%',
@@ -7838,13 +7910,13 @@ const WeightPickerModal = ({
       justifyContent: 'center',
       gap: lastMeasured ? '2px' : 0
     }
-  }, /*#__PURE__*/React.createElement("span", null, "Use ", weight, " ", unit, isBarExercise ? ' total' : ''), lastMeasured && /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, "Use ", isBarExercise ? plateOnlyWeight : weight, " ", unit, isBarExercise ? ' added' : ''), lastMeasured && /*#__PURE__*/React.createElement("span", {
     style: {
       fontSize: '10px',
       fontWeight: '500',
       opacity: 0.78
     }
-  }, Number(lastMeasured.weight) === Number(weight) && lastMeasured.weightType === unit ? 'Last used' : `Last ${lastMeasured.label}`, " · ", formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), /*#__PURE__*/React.createElement("div", {
+  }, (isBarExercise && lastMeasured.added != null ? Number(lastMeasured.added) === Number(plateOnlyWeight) : Number(lastMeasured.weight) === Number(weight)) && lastMeasured.weightType === unit ? 'Last used' : `Last ${lastMeasured.label}`, " · ", formatDateShort(lastMeasured.date), " · ", formatDaysSince(lastMeasured.date))), !isBarExercise && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px'
     }
@@ -7913,7 +7985,7 @@ const WeightPickerModal = ({
     className: "weight-presets-heading"
   }, /*#__PURE__*/React.createElement("div", {
     className: "section-title"
-  }, recentWeightOptions.length ? "Your Weights" : isBarExercise ? "Other Total Weights" : "Common Weights"), allWeightOptions.length > 5 && /*#__PURE__*/React.createElement("button", {
+  }, recentWeightOptions.length ? "Your Weights" : isBarExercise ? "Added Weight Presets" : "Common Weights"), allWeightOptions.length > 5 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "weight-presets-toggle",
     "aria-expanded": showAllWeightPresets,
@@ -7925,11 +7997,8 @@ const WeightPickerModal = ({
   }, visibleWeightOptions.map(w => /*#__PURE__*/React.createElement("button", {
     key: w,
     className: "weight-btn",
-    onClick: () => onSelectWeight({
-      weight: w,
-      weightType: unit
-    })
-  }, w))))), openSheet === 'load' && /*#__PURE__*/React.createElement(PickerSheet, {
+    onClick: () => selectMeasuredWeight(w)
+  }, isBarExercise ? `${parseFloat((w - barWeight).toFixed(1))} added` : w))))), openSheet === 'load' && /*#__PURE__*/React.createElement(PickerSheet, {
     title: "Load",
     onClose: () => setOpenSheet(null)
   }, loadSheetContent), openSheet === 'grip' && gripTrackingEnabled && /*#__PURE__*/React.createElement(PickerSheet, {
@@ -7950,6 +8019,7 @@ const RepPickerModal = ({
   exercise,
   weight,
   weightType,
+  barWeightAtLog,
   bandedColor,
   selectedDate,
   onSelectReps,
@@ -8023,7 +8093,7 @@ const RepPickerModal = ({
   useEffect(() => {
     updateSvgCornerPlates();
   }, [repSuggestions]);
-  const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
+  const displayWeight = weightType === 'bodyweight' ? 'BW' : weightType === 'banded' ? bandedColor || 'Banded' : formatRecordedWeight({ weight, weightType, weightMeaning: exercise.weightMeaning, barWeightAtLog });
   const repSuggestionLabel = repSuggestionDate ? repSuggestionDate === selectedDate ? 'Today' : `${formatDateShort(repSuggestionDate)} \xB7 ${formatDaysSince(repSuggestionDate)}` : repSuggestionSource;
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
@@ -8100,9 +8170,9 @@ const RepPickerModal = ({
       style: {
         minHeight: '32px',
         padding: '0 14px',
-        '--svg-plate-fill': isActive ? 'color-mix(in srgb, var(--accent) 30%, transparent)' : 'color-mix(in srgb, var(--accent) 8%, transparent)',
-        '--svg-plate-stroke': isActive ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 22%, transparent)',
-        '--svg-plate-r': '12px',
+        '--svg-plate-fill': isActive ? 'var(--accent)' : 'color-mix(in srgb, var(--accent) 34%, var(--bg-page))',
+        '--svg-plate-stroke': 'transparent',
+        '--svg-plate-r': '20px',
         border: 'none',
         background: 'transparent',
         color: isActive ? 'var(--text-bright)' : 'var(--accent-soft)',
@@ -8527,6 +8597,7 @@ const TimedDurationModal = ({
   exercise,
   weight,
   weightType,
+  barWeightAtLog,
   bandedColor,
   onSelectDuration: persistDuration,
   onChangeWeight,
@@ -8664,7 +8735,7 @@ const TimedDurationModal = ({
     if (s >= 3600) return `${Math.floor(s / 3600)}:${String(Math.floor(s % 3600 / 60)).padStart(2, '0')}:00`;
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   };
-  const displayWeight = weightType === 'bodyweight' ? 'Bodyweight' : weightType === 'none' || weight == null ? 'No load' : weightType === 'banded' ? bandedColor || 'Banded' : `${weight} ${weightType}`;
+  const displayWeight = weightType === 'bodyweight' ? 'Bodyweight' : weightType === 'none' || weight == null ? 'No load' : weightType === 'banded' ? bandedColor || 'Banded' : formatRecordedWeight({ weight, weightType, weightMeaning: exercise.weightMeaning, barWeightAtLog });
 
   // Stopwatch controls
   const startStopwatch = () => {
@@ -9896,7 +9967,11 @@ const HistoryModal = ({
       notes.forEach(n => {
         notesByDate[n.date] = n;
       });
-      const dates = [...new Set([...Object.keys(grouped), ...notes.map(n => n.date)])].sort().reverse();
+      // Measured activities need an actual log on the date; notes without a
+      // set remain saved in Notes but are not presented as workout history.
+      const dates = (isNeutralExercise(exercise)
+        ? [...new Set([...Object.keys(grouped), ...notes.map(n => n.date)])]
+        : Object.keys(grouped)).sort().reverse();
       setHistory(dates.map(date => ({
         date,
         sets: getVisibleSets(grouped[date] || []).sort((a, b) => a.setOrder - b.setOrder)
@@ -9953,22 +10028,32 @@ const HistoryModal = ({
   }, "Log a Set"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: onUniformWeight,
+    "aria-label": "Uniform weight",
     style: {
       flex: 1,
       fontSize: '12px',
       padding: '10px 4px',
-      fontWeight: '600'
+      fontWeight: '600',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '3px'
     }
-  }, "Uniform Weight"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(IconLock, { size: 14 }), /*#__PURE__*/React.createElement(IconDumbbell, { size: 18, style: { transform: 'rotate(-20deg)' } }), " Weight"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: onUniformReps,
+    "aria-label": "Uniform reps",
     style: {
       flex: 1,
       fontSize: '12px',
       padding: '10px 4px',
-      fontWeight: '600'
+      fontWeight: '600',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '3px'
     }
-  }, "Uniform Reps"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(IconLock, { size: 14 }), " Reps"), /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: onBoth,
     style: {
@@ -9982,29 +10067,35 @@ const HistoryModal = ({
     className: "btn btn-secondary",
     onClick: onLogPresence,
     style: {
-      width: '100%',
+      width: 'fit-content',
+      maxWidth: '100%',
+      minWidth: '210px',
       minHeight: '52px',
       marginTop: '-8px',
       marginBottom: '16px',
-      padding: '7px 12px',
+      padding: '8px 16px',
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      gap: '1px'
+      justifyContent: 'flex-start',
+      gap: '12px',
+      textAlign: 'left'
     }
   }, /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: '13px',
-      fontWeight: '700'
+      fontSize: '16px',
+      lineHeight: '1',
+      flexShrink: 0
     }
-  }, "¯\\_(ツ)_/¯  Did some"), /*#__PURE__*/React.createElement("span", {
+  }, "¯\\_(ツ)_/¯"), /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: '10px',
-      fontWeight: '500',
-      color: 'color-mix(in srgb, var(--accent-soft) 58%, transparent)'
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1px'
     }
-  }, "No sets or reps")), exercise.note && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("strong", { style: { fontSize: '13px' } }, "Did some"), /*#__PURE__*/React.createElement("small", {
+    style: { fontSize: '10px', color: 'var(--text-faint)' }
+  }, "No sets or reps"))), exercise.note && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: '12px',
       padding: '8px 12px',
@@ -10296,6 +10387,8 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
       const type = rawType === 'reps' || rawType === 'timed' ? rawType : 'reps';
       const weightType = parts[6] || 'lbs';
       const note = parts[11] || '';
+      const importedBarWeight = parts[12] !== undefined && parts[12] !== '' ? Number(parts[12]) : null;
+      const importedWeightMeaning = ['barbell', 'bar-custom', 'per-side', 'total'].includes(parts[14]) ? parts[14] : null;
 
       // Create exercise record if needed
       if (!exerciseMap.has(exerciseName)) {
@@ -10305,6 +10398,11 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
           category,
           categories: categories_arr,
           type,
+          ...(importedWeightMeaning === 'barbell' || importedWeightMeaning === 'bar-custom' ? {
+            weightMeaning: importedWeightMeaning,
+            barName: parts[13] || 'Bar',
+            customBarWeight: importedWeightMeaning === 'bar-custom' ? importedBarWeight : null
+          } : {}),
           note: '',
           lastUsed: date,
           createdAt: Date.now()
@@ -10322,6 +10420,9 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
         setOrder: parseInt(parts[4]) || 1,
         weight: parts[5] && parts[5] !== '' ? parseFloat(parts[5]) : null,
         weightType,
+        weightMeaning: importedWeightMeaning,
+        barWeightAtLog: Number.isFinite(importedBarWeight) && importedBarWeight >= 0 ? importedBarWeight : undefined,
+        barNameAtLog: parts[13] || undefined,
         reps: parts[7] && parts[7] !== '' ? parseInt(parts[7]) : null,
         duration: parts[8] && parts[8] !== '' ? parseInt(parts[8]) : null,
         distance: parts[9] && parts[9] !== '' ? parseFloat(parts[9]) : null,
@@ -10363,6 +10464,9 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
         setOrder: row.setOrder,
         weight: row.weight,
         weightType: row.weightType,
+        weightMeaning: row.weightMeaning || 'total',
+        barWeightAtLog: row.barWeightAtLog,
+        barNameAtLog: row.barNameAtLog,
         bandedColor: row.bandedColor,
         reps: row.reps,
         duration: row.duration,
@@ -10862,7 +10966,7 @@ const SettingsModal = ({
           bwDayLines += csvRow(['__BODYWEIGHT_DAY__', bwDate, dn.note, '', '', '', '', '', '', '']);
         }
       });
-      let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note\n';
+      let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note,BarWeightAtLog,BarNameAtLog,WeightMeaning\n';
       // Recalculate setOrder on export to fix any stored inconsistencies
       allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder || a.createdAt - b.createdAt);
       const setOrderCounters = {};
@@ -10901,7 +11005,7 @@ const SettingsModal = ({
             noteStr = parts.join('|');
           }
         }
-        csv += csvRow([set.date, set.exerciseName, getExCategories(ex).join(';') || '', ex.type || '', set._exportSetOrder, weightStr, set.weightType, repsStr, durationStr, distanceStr, distanceUnitStr, noteStr]);
+        csv += csvRow([set.date, set.exerciseName, getExCategories(ex).join(';') || '', ex.type || '', set._exportSetOrder, weightStr, set.weightType, repsStr, durationStr, distanceStr, distanceUnitStr, noteStr, set.barWeightAtLog ?? '', set.barNameAtLog || '', set.weightMeaning || 'total']);
       });
       // Metadata section at bottom — used for re-import, safe to ignore when reading
       csv += '\n__META__,,,,,,,,,\n';
@@ -13126,7 +13230,9 @@ const ActivityContextModal = ({
       const allNotes = await dbOps.sessionNotes.getAll();
       const exNotes = allNotes.filter(n => n.exerciseId === exerciseId);
       const notesByDate = Object.fromEntries(exNotes.map(note => [note.date, note]));
-      const dates = [...new Set([...Object.keys(grouped), ...Object.keys(notesByDate)])].sort().reverse();
+      const dates = (isNeutralExercise(fullEx)
+        ? [...new Set([...Object.keys(grouped), ...Object.keys(notesByDate)])]
+        : Object.keys(grouped)).sort().reverse();
       setHistory(dates.map(date => ({
         date,
         sets: getVisibleSets(grouped[date] || []).sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0))
@@ -13314,7 +13420,7 @@ const ActivityContextModal = ({
     color: (selectedQuickNotes[exerciseId] || []).includes(chip) ? '#fff' : 'var(--accent-soft)'
   });
   const formatSetDisplay = set => {
-    const w = set.weightType === 'bodyweight' ? 'BW' : set.weight ? `${set.weight} ${set.weightType}` : '';
+    const w = set.weightType === 'bodyweight' ? 'BW' : set.weight !== null && set.weight !== undefined ? formatRecordedWeight(set) : '';
     const r = set.reps ? `${set.reps} reps` : '';
     const d = set.duration ? set.duration >= 60 ? Math.floor(set.duration / 60) + 'm' + (set.duration % 60 ? set.duration % 60 + 's' : '') : set.duration + 's' : '';
     return [w, r, d].filter(Boolean).join(' x ');
@@ -15446,6 +15552,7 @@ function App() {
         setOrder,
         weight: weightData.weight,
         weightType: weightData.weightType,
+        ...barSnapshotFromSelection(weightData),
         reps: prefilledReps,
         duration: null,
         weightMeaning: wmPrefill,
@@ -15521,6 +15628,7 @@ function App() {
       setOrder,
       weight: selectedWeight.weight,
       weightType: selectedWeight.weightType,
+      ...barSnapshotFromSelection(selectedWeight),
       reps,
       duration: null,
       weightMeaning,
@@ -15604,8 +15712,9 @@ function App() {
       exerciseName: selectedExercise.name,
       exerciseOrder,
       setOrder,
-      weight: selectedWeight.weight || null,
+      weight: selectedWeight.weight ?? null,
       weightType: selectedWeight.weightType,
+      ...barSnapshotFromSelection(selectedWeight),
       reps: null,
       duration: durationSeconds,
       distance: distanceValue,
@@ -15778,7 +15887,9 @@ function App() {
     setSelectedWeight({
       weight: set.weight,
       weightType: set.weightType,
-      bandedColor: set.bandedColor
+      bandedColor: set.bandedColor,
+      barWeightAtLog: set.barWeightAtLog,
+      barNameAtLog: set.barNameAtLog
     });
     if (set.reps) {
       setModal('repPicker');
@@ -15804,6 +15915,7 @@ function App() {
     // If target has no sets today, create a mirror set with same duration
     if (targetSets.length === 0) {
       const maxOrder = Math.max(...daySets.map(s => s.exerciseOrder), 0);
+      const pairedLoad = carryWeightIntoCurrentBar(sourceLastSet, targetEx, unit);
       const newSet = {
         id: generateId('set'),
         date: currentDate,
@@ -15811,8 +15923,9 @@ function App() {
         exerciseName: targetEx.name,
         exerciseOrder: maxOrder + 1,
         setOrder: 1,
-        weight: sourceLastSet.weight,
-        weightType: sourceLastSet.weightType,
+        weight: pairedLoad.weight,
+        weightType: pairedLoad.weightType,
+        ...barSnapshotFromSelection(pairedLoad),
         reps: null,
         duration: sourceLastSet.duration,
         weightMeaning: targetEx.weightMeaning || 'total',
@@ -16470,6 +16583,8 @@ function App() {
         const daySets = await dbOps.sets.getByDate(currentDate);
         const exerciseSets = daySets.filter(s => s.exerciseId === exercise.exerciseId);
         const maxSetOrderDup = exerciseSets.reduce((max, s) => Math.max(max, s.setOrder || 0), 0);
+        const currentExercise = await dbOps.exercises.get(exercise.exerciseId);
+        const carried = carryWeightIntoCurrentBar(lastSet, currentExercise, unit);
         const newSet = {
           id: generateId('set'),
           date: currentDate,
@@ -16477,13 +16592,14 @@ function App() {
           exerciseName: exercise.exerciseName,
           exerciseOrder: lastSet.exerciseOrder || exerciseSets[0]?.exerciseOrder || 1,
           setOrder: Math.max(exerciseSets.length + 1, maxSetOrderDup + 1),
-          weight: lastSet.weight,
-          weightType: lastSet.weightType,
+          weight: carried.weight,
+          weightType: carried.weightType,
+          ...barSnapshotFromSelection(carried),
           reps: lastSet.reps,
           duration: lastSet.duration,
           distance: lastSet.distance,
           distanceUnit: lastSet.distanceUnit,
-          weightMeaning: lastSet.weightMeaning || 'total',
+          weightMeaning: currentExercise?.weightMeaning || lastSet.weightMeaning || 'total',
           bandedColor: lastSet.bandedColor,
           type: exerciseType,
           createdAt: Date.now()
@@ -16545,8 +16661,8 @@ function App() {
         flex: 1,
         padding: '8px 2px',
         border: 'none',
-        background: 'color-mix(in srgb, var(--accent) 8%, transparent)',
-        color: 'var(--accent-soft)',
+        background: 'color-mix(in srgb, var(--accent) 34%, var(--bg-page))',
+        color: 'var(--text-bright)',
         fontSize: '11px',
         fontWeight: '600',
         cursor: 'pointer',
@@ -16556,7 +16672,6 @@ function App() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '4px',
-        borderRight: isLast ? 'none' : '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
         WebkitAppearance: 'none'
       });
       const isPureTimed = isTimed && !hasWeight;
@@ -16571,10 +16686,7 @@ function App() {
         setPreviousWeight(lastSet?.weight || null);
         setSetNumber(measuredSets.length + 1);
         if (isTimed) {
-          setSelectedWeight({
-            weight: lastSet?.weight || null,
-            weightType: lastSet?.weightType || 'bodyweight'
-          });
+          setSelectedWeight(lastSet ? carryWeightIntoCurrentBar(lastSet, fullExercise, unit) : { weight: null, weightType: 'bodyweight' });
           setModal('timedDuration');
         } else if (lastSet?.weightType === 'bodyweight' && !lastSet?.weight) {
           setSelectedWeight({
@@ -16596,11 +16708,7 @@ function App() {
         });
         setSelectedExercise(fullExercise);
         await primeGripSelection(fullExercise);
-        setSelectedWeight({
-          weight: lastSet.weight,
-          weightType: lastSet.weightType,
-          bandedColor: lastSet.bandedColor
-        });
+        setSelectedWeight(carryWeightIntoCurrentBar(lastSet, fullExercise, unit));
         setPreviousWeight(lastSet.weight);
         setSetNumber(measuredSets.length + 1);
         if (isTimed) {
@@ -16643,11 +16751,7 @@ function App() {
           });
           setSelectedExercise(fullExercise);
           await primeGripSelection(fullExercise);
-          setSelectedWeight({
-            weight: lastSet.weight,
-            weightType: lastSet.weightType,
-            bandedColor: lastSet.bandedColor
-          });
+          setSelectedWeight(carryWeightIntoCurrentBar(lastSet, fullExercise, unit));
           setPreviousWeight(lastSet.weight);
           setSetNumber(visibleSets.length + 1);
           if (isTimed) {
@@ -16683,11 +16787,9 @@ function App() {
       return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
+          gap: '4px',
           marginTop: '6px',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-          height: '40px'
+          height: '44px'
         }
       }, !lockMode && /*#__PURE__*/React.createElement("button", {
         style: {
@@ -16715,7 +16817,7 @@ function App() {
       }), isTimed ? 'Dur' : 'Reps'), /*#__PURE__*/React.createElement("button", {
         style: {
           ...segStyle(true),
-          background: 'color-mix(in srgb, var(--accent) 15%, transparent)'
+          background: 'color-mix(in srgb, var(--accent) 42%, var(--bg-page))'
         },
         onClick: () => duplicateLastSet()
       }, "Both")));
@@ -16843,12 +16945,15 @@ function App() {
     "data-tour": "add-activity",
     "aria-label": "Add New Activity",
     style: {
-      marginBottom: 0,
-      color: '#D4A853',
+      width: '168px',
+      maxWidth: '100%',
+      margin: '0 auto',
+      background: 'var(--accent)',
+      color: 'var(--text-bright)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      minHeight: '48px'
+      minHeight: '56px'
     },
     onClick: () => setModal('exercisePicker')
   }, /*#__PURE__*/React.createElement("span", {
@@ -16998,6 +17103,7 @@ function App() {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
     weightType: selectedWeight.weightType,
+    barWeightAtLog: selectedWeight.barWeightAtLog,
     bandedColor: selectedWeight.bandedColor,
     onSelectReps: handleRepsSelected,
     onChangeWeight: weightData => setSelectedWeight(weightData),
@@ -17014,6 +17120,7 @@ function App() {
     exercise: selectedExercise,
     weight: selectedWeight.weight,
     weightType: selectedWeight.weightType,
+    barWeightAtLog: selectedWeight.barWeightAtLog,
     bandedColor: selectedWeight.bandedColor,
     onSelectDuration: handleDurationSelected,
     onChangeWeight: weightData => setSelectedWeight(weightData),
@@ -17847,6 +17954,77 @@ initPrefs().then(() => {
   // TEMPORARY phase-2 preview: visit with #tour. Remove when phase 4 wires first-run/Settings.
   function maybePreview(){if(location.hash==='#tour')setTimeout(start,700);}
   if(document.readyState!=='loading')setTimeout(maybePreview,300);else window.addEventListener('load',maybePreview);
+})();
+</script>
+<script>
+/* Shared fixed-pixel squircle geometry for the app's filled rectangular
+   controls and rows. The existing weight/rep key plates keep their own
+   state-aware styling and are deliberately excluded here. */
+(() => {
+  const selectors = 'button, .set-box, .day-activity-node, .set-item-expanded, .exercise-picker-item, .last-time-section, .your-weights-container, .quick-detail-card, .confirmation-dialog';
+  const namespace = 'http://www.w3.org/2000/svg';
+  let frame = 0;
+  const observer = new MutationObserver(records => {
+    if (records.some(record => record.type !== 'attributes' || record.target.matches?.(selectors))) schedule();
+  });
+  const observe = () => observer.observe(document.body, {
+    childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class', 'style']
+  });
+  function schedule() {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      observer.disconnect();
+      document.querySelectorAll(selectors).forEach(el => {
+        if (el.matches('.svg-plate-control') || el.closest('.svg-corner-plate')) return;
+        // Read the settled source fill, not an in-flight transition from the
+        // transparent plate class back to the original button background.
+        const originalTransition = el.style.transition;
+        el.style.transition = 'none';
+        el.classList.remove('auto-squircle-plate');
+        void el.offsetWidth;
+        const style = getComputedStyle(el);
+        const fill = style.backgroundColor;
+        const radius = style.borderRadius;
+        const isCircle = radius.includes('50%') || (el.clientWidth === el.clientHeight && radius === '50%');
+        const isTransparent = fill === 'transparent' || /^rgba?\([^)]*,\s*0\s*\)$/.test(fill);
+        if (isCircle || isTransparent || style.backgroundImage !== 'none') {
+          el.style.transition = originalTransition;
+          return;
+        }
+        const rect = el.getBoundingClientRect();
+        if (rect.width < 1 || rect.height < 1) {
+          el.style.transition = originalTransition;
+          return;
+        }
+        let svg = el.querySelector(':scope > .auto-squircle-svg');
+        if (!svg) {
+          svg = document.createElementNS(namespace, 'svg');
+          svg.classList.add('auto-squircle-svg');
+          svg.setAttribute('aria-hidden', 'true');
+          svg.setAttribute('focusable', 'false');
+          svg.setAttribute('preserveAspectRatio', 'none');
+          svg.appendChild(document.createElementNS(namespace, 'path'));
+          el.insertBefore(svg, el.firstChild);
+        }
+        const w = Math.round(rect.width * 100) / 100;
+        const h = Math.round(rect.height * 100) / 100;
+        const r = el.matches('.set-item-expanded, .exercise-picker-item, .last-time-section, .your-weights-container, .quick-detail-card, .confirmation-dialog') ? 30 : w >= 120 ? 26 : 20;
+        el.style.setProperty('--auto-squircle-fill', fill);
+        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        svg.querySelector('path').setAttribute('d', fixedCornerSquirclePath(w, h, r));
+        el.classList.add('auto-squircle-plate');
+        el.style.transition = originalTransition;
+      });
+      observe();
+    });
+  }
+  observe();
+  schedule();
+  window.addEventListener('resize', schedule);
+  document.addEventListener('pointerdown', () => requestAnimationFrame(schedule), true);
+  document.addEventListener('pointerup', () => requestAnimationFrame(schedule), true);
+  document.addEventListener('click', () => requestAnimationFrame(schedule), true);
 })();
 </script>
 <script>

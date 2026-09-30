@@ -2,13 +2,17 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-29
+updated: 2026-09-30
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-29
+**Last updated:** 2026-09-30
 
 ## Where I left off
+
+2026-09-30: Filled mauve squircle plates now cover the app's rectangular buttons and key row/card surfaces using the fixed-pixel SVG edge; weight/rep keys use 20px, wider controls 26px, and larger rows 30px. The Did some action is compact and left-aligned. The daily set actions are separate filled buttons, and activity-history uniform controls now use the same supplied lock and dumbbell artwork as their daily counterparts. Measured activity histories omit note-only dates while preserving their notes; neutral activities retain their note-only dates. Tim chose a compact mauve Add Activity button over the gold mockups; the daily view now has a centered 168×56px button with the original plus and stretching SVGs. The header scale has a solid mauve face and the gear's inner ring is thicker. Local demo-browser checks covered the daily log, activity picker, activity history, and header icons; physical iPhone review remains open.
+
+2026-09-29: Bar activities now make **added weight across both sides** the primary entry and the daily/history label. A persistent Bar math control opens the per-side, bar, and total breakdown; its details and setup action stay out of the resting logging view. New sets snapshot the bar weight and name while continuing to store total load, and CSV export/import carries those fields. Older bar sets without a snapshot remain labelled as totals rather than being recalculated from today's bar. An isolated demo-browser pass covered EZ-bar entry, reps, daily/history display, carry-over after a bar change, and CSV export/import into a fresh local origin; physical-phone use remains unverified.
 
 2026-09-29: Split directories now have a direct path to find activities. When a search from a named split returns an unassigned activity, its row explains that it has no split and offers an explicit Add to [split] action; the assignment is saved on that activity. No name-based split assignment is made automatically.
 
@@ -51,6 +55,12 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-30: **What:** Use a centered, 168×56px filled mauve squircle for Add Activity, retaining the original plus and stretching SVGs. **Why:** Tim preferred a smaller bounded mauve action after reviewing the gold directions. **How to apply:** Keep it at least 44px tall and preserve the SVG pair and Add New Activity accessible label. Do not adopt the exploratory gold button treatments without another decision. **Evidence strength:** Tim-directed choice, verified in the local daily view.
+
+- 2026-09-30: **What:** Use filled, fixed-pixel squircle plates across rectangular action and row surfaces: 20px number/small buttons, 26px wide buttons, and 30px larger rows. Use a solid mauve tint for secondary surfaces instead of a dark center with a mauve outline. Retain the current overall palette. **Why:** Tim chose the squircle mockup values and rejected hollow buttons and the proposed color overhaul. **How to apply:** Preserve the exact `fixedCornerSquirclePath` geometry and redraw it when dimensions or state change; never use CSS borders around plated elements. Keep note-only dates out of measured histories without deleting saved notes. The compact Did some action remains available for intentionally imprecise activity logs. **Evidence strength:** Tim-directed visual choice and local demo-browser review; physical phone review pending.
+
+- 2026-09-29: **What:** For bar activities, enter and display the weight added across both sides; reveal the bar and total calculation through an always-visible Bar math control. **Why:** The logger should match what the lifter loads while keeping total weight available without crowding the set screen. **How to apply:** Store the total plus a per-set bar snapshot for new logs; show older records without a snapshot as totals. Changing an activity's bar must not reinterpret history. Preserve the snapshot in CSV backup and in copied sets. **Evidence strength:** Tim-directed interaction choice; local demo-browser and fresh-origin CSV round-trip checks, pending physical-phone use.
 
 - 2026-09-29: **What:** Add “Find or assign an activity” to the split-day directory. In search results for a named split, identify unassigned matches and let the user add one to the selected split in one explicit action. **Why:** Leg Press appeared in all-splits search but had no saved split, so the Legs directory correctly omitted it while giving no direct way to repair the mismatch. **How to apply:** Keep the search broad for discovery, name the missing assignment plainly, and require the user to tap before writing a split. Preserve existing assignments and all workout history.
 
@@ -282,7 +292,7 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - 2026-07-22 (recommender disconnected, code retained): Disabled the create-activity recommender / duplicate-variation UI path without deleting its code. Added a local `activityRecommenderEnabled = false` gate in `CreateExerciseModal`, so fuzzy duplicate checks, the similar-activities panel, the `New Variation` affordance, the split `Recommend` button, and recommendation feedback all stay inert while the underlying code remains in `index.html` for later revival. Rationale: the app does not yet have a settled rule for what counts as a variation, so the UI was forcing taxonomy decisions earlier than the product can support. Verified all 5 inline script blocks with a Node syntax pass.
 - 2026-07-22 (gold CTA + long-press rep delete + barbell presets): Ran three live-source UX experiments in `index.html`. `+ Add Activity` now uses a pure-gold fill (`#D4A853`) with dark text (`#12070C`) as a visual test. Expanded rep pills now support press-and-hold delete via the existing confirmation flow, replacing the removed inline-corner delete pattern with an action directly on the pill itself. The weight picker now branches for bar-style exercises (`weightMeaning: barbell` / `bar-custom`): quick presets and common totals explicitly include the bar, and the plate quick-picks are labeled as per-side pairs instead of pretending generic totals mean the same thing for machines and barbells. Verified all 5 inline script blocks with a Node syntax pass.
 - 2026-07-22 (date persistence + today jump): Changed day navigation so refreshing the app no longer snaps back to the current day. The active `currentDate` now restores from saved preferences and updates whenever the viewed day changes, including arrow/swipe/history navigation. Added a small `Today` button in the date header when viewing another day so returning to the present stays one tap away. Verified the 5 inline script blocks with a Node syntax pass.
-- 2026-07-22 (aesthetic exploration spec): Tim asked to explore a less-dark gold/cream direction, with possible Holden Flâneur/Ambiance moving-atmosphere influence, but explicitly not as a high-priority source-app change. Created WDM handoff spec at `webdev/fit-logs-gold-cream-aesthetic-build-spec.md` with five directions: Candlelit Logbook, Cream Ledger, Antique Brass Utility, Ambient Ember, and Bone + Burgundy. No source app UI/code changes made.
+- 2026-07-22 (aesthetic exploration spec): Tim asked to explore a less-dark gold/cream direction, with possible Holden Flâneur/Ambiance moving-atmosphere influence, but explicitly not as a high-priority source-app change. Created WDM handoff spec at `webdev/_docs/build-specs/fit-logs-gold-cream-aesthetic-build-spec.md` with five directions: Candlelit Logbook, Cream Ledger, Antique Brass Utility, Ambient Ember, and Bone + Burgundy. No source app UI/code changes made.
 - 2026-07-22 (red bubble hotfix): Removed the inline per-set delete buttons from expanded exercise set pills. Root cause: expanded cards rendered an absolutely positioned `.set-box-delete-inline` button for every set; its oversized padding made it appear as red circles over the pill text on iPhone. Fix: set pills still tap to edit when expanded, but no longer render the red delete overlay; removed the unused red-bubble CSS. Verified all 6 inline script blocks with `node --check`.
 - 2026-07-22 (production correction): After Tim still saw `40lbs ×2 ×10` on `fit-logs.vercel.app`, confirmed the actual problem was deployment scope: the fix had only been pushed to `fix-babel-crash`, while production was still serving `main` at `bdcf910`. Fast-forwarded `main` to `d73b9ff` and verified Vercel production deployment `dpl_G44DUaRemFxemqTQ5tzKw9vGXhWQ` (`fitness-re2gvy6dr-tims-projects-5135e79e.vercel.app`) is Ready and aliased to `fit-logs.vercel.app`. Live HTML now contains `set.weightMeaning === 'per-side' ? ' ea' : ''`. If a phone still shows `×2`, treat it as local browser/cache/service-worker freshness and reload.
 - 2026-07-22: Hot-fixed two gym-blocking logging UX bugs in `index.html`. Set pills for per-hand/dumbbell weights no longer render a second multiplication term (`40lbs ×2 ×10`); they now show per-hand weight as `40lbs ea ×10` so reps are the only `×#` value. Add Activity search now searches across all activities when text is entered instead of hiding exact matches behind the active split filter; root cause of the reported Decline Dumbbell Press mismatch was that the existing activity had "No split" while the picker was filtered to `push`. Duplicate detection also now shows only exact normalized matches when an exact name already exists, instead of cluttering the panel with weaker similar presses. Verified all 6 inline script blocks with `node --check`.
@@ -312,9 +322,8 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ### Bar-screen follow-ups from the 09-03 pass
 
-- **Plate Pairs presets assume 45 lb plates.** On the new bar screen an EZ-bar activity shows `1 pair → 110lbs`, because `plateWeight` is the standard plate constant (45 lbs / 20 kg). The arithmetic is correct (a pair of 45s on a 20 lb bar) but useless for EZ work, where you load 10s and 25s. Pre-existing, and now more visible next to the clearer plates/total line. Likely fix: let the plate step follow the bar, or expose a plate-size chooser.
+- The old 45-lb Plate Pairs shortcuts are hidden for bar activities; verify the new added-weight and expandable bar-math flow on a physical phone.
 - **Bar presets are lbs-labelled.** `Barbell (45 lbs)` and the new `EZ Bar (20 lbs)` follow the existing lbs-only bar copy in the create form. A kg user gets a bar stored as `20` and read back in kg. The `barbell` preset already resolves per-unit at log time (45 lbs / 20 kg); `bar-custom` does not. Decide whether custom bar weights need a stored unit before this matters.
-- **Not yet exercised on a phone.** Verified in a desktop browser at a 375×812 mobile viewport against seeded IndexedDB data, not on hardware. Fold this into the existing 08-14 device-verification pass: log a bar set, change the bar mid-set, and confirm the month calendar's swipe gesture behaves on touch.
 
 ### Verify the 08-14 correctness pass on a real device
 
@@ -377,10 +386,10 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
   - Decide whether repository/folder/deploy metadata should remain Fitness/Fit Logs internally or move to Tim's Logbook later.
 - Caution: "Tim's Logbook" is a safer-feeling working name, not a legal opinion or clearance result.
 
-### Gold / cream aesthetic exploration
+### Color overhaul parked
 
-- Pending, not high priority: explore a broader aesthetic rebalance using gold, cream/bone, and possibly the Holden Flâneur/Ambiance moving-atmosphere language to offset the app's current very dark burgundy/mauve feel.
-- Current artifact: `webdev/fit-logs-gold-cream-aesthetic-build-spec.md`.
+- Parked after the 2026-09-30 palette mockups; Tim chose to keep the current app colors and change the shapes instead. Do not treat the older gold/cream proposal as a current retheme request.
+- Current artifact: `webdev/_docs/build-specs/fit-logs-gold-cream-aesthetic-build-spec.md`.
 - Proposed WDM directions:
   - Candlelit Logbook — HF-faithful gold punctuation, cream readability.
   - Cream Ledger — dark shell with cream raised cards.
