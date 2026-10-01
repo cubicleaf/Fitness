@@ -1,0 +1,17 @@
+Fitness Tracker
+Thursday, Oct 1
+Log today's weight
+Swipe up to dismiss
+No activities logged yet today.
+Nothing logged yet.
+
+Want to see this app with eleven months of real training in it first? Marcus started in October unable to do a single pull-up.
+
+Hundreds of sessions across push, pull, legs, core, cardio and mobility
+Every set, note and mood he logged along the way
+The bench going 132 → 200 lbs, and the first unassisted pull-up
+Show me the demo
+I'll start my own
+Could not load the sample data. Check your connection and try again.
+
+The demo runs in its own separate storage. Your own log stays empty and untouched, and leaving the demo deletes it.

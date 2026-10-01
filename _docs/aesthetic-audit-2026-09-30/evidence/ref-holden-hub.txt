@@ -1,0 +1,297 @@
+Holden Flâneur
+THE HUB
+Collate
+Export .md
+Export .json
+
+An idea hub for the channel — creators worth studying, ideas worth making, the identity they get made in. Everything typed here stays in this browser. Export before clearing site data. The numbers below are the honest ones, not the flattering ones.
+
+0
+VIDEOS PUBLISHED, ALL TIME
+The system is built. The channel is not. Nothing here counts until something ships.
+TO END-OF-AUGUST
+— target passed
+PUBLISHED
+0 videos
+IDEAS BANKED
+0
+CREATORS STUDIED
+0
+OBSERVATIONS
+0
+INBOX OPEN
+0
+◇
+Inbox
+Catch the thought first, file it later. Press N anywhere.
+0
+NOTES
+▸
+
+One line, no category, no commitment. This exists so a thought never dies waiting for you to decide where it belongs. Triage later — send an item to the Idea Bench, or tick it off.
+
+Add
+Nothing caught yet.
+FIELD NOTES — INBOX
+SAVED
+◈
+Creator Vault
+Who has something special, and exactly what it is
+0
+NOTES
+▸
+
+Add a creator once. After that their card takes as many separate observations as you want — each its own entry, grouped by kind. One field is enough to add; tag, reference and steal-note are optional. The point is that adding is never a decision.
+
+ADD A CREATOR
+NAME
+LINK (OPTIONAL)
+HEADLINE — THE ONE-LINE SUMMARY
+Add to vault
+FILTER BY WHAT YOU NOTICED
+all
+pacing
+framing
+script
+thumbnail
+title
+voice
+edit
+sound
+structure
+presence
+restraint
+PATTERNS ACROSS EVERYONE
+
+What you keep noticing, and who you keep noticing it in. A tag on two or more creators is a trait you're drawn to, not a fact about one person — those are highlighted. Copy the block below into a session and ask what it says about you.
+
+Nothing to compare yet. Patterns appear once observations do.
+Copy patterns for Claude
+THE VAULT
+The vault is empty. Add the first person whose work you keep thinking about.
+FIELD NOTES — VAULT
+SAVED
+◆
+Idea Bench
+Video ideas, from spark to published
+0
+NOTES
+▸
+
+Every idea carries the noticing — the observation underneath it. If you can't write that line, it isn't an HF video yet, it's a topic. Stage advances by clicking it.
+
+BANK AN IDEA
+WORKING TITLE
+THE NOTICING
+PILLAR
+Literature
+Philosophy
+Claude/AI
+Mandarin
+Daily Life
+Lexis
+Bank it
+ON THE BENCH
+Nothing on the bench.
+PUBLISHED LEDGER
+
+This is what drives the counter at the top. Log a publish and the number resets — that's the only thing on this page that can move it.
+
+TITLE
+DATE
+Log a publish
+Nothing published. This is the number that matters.
+FIELD NOTES — BENCH
+SAVED
+◉
+Brand Identity
+Palette, type, and the rules that keep them honest
+NOTES
+▸
+
+Mirrored from HF-PALETTE.md, which is canon. If this page and that file ever disagree, the file wins — tell Claude and it re-syncs. This page is a view, not a source.
+
+TIER 1 — LOCKED BRAND COLOURS
+Core Burgundy
+#4A1525
+The anchor. Primary background gradient.
+Dark Mauve
+#2D1020
+Backgrounds, atmosphere, deep shadow.
+Near-Black
+#0A0506
+True darks, negative space, thumbnail ground.
+Muted Rose
+#4A2035
+Secondary accent, transitions.
+Gold
+#D4A853
+Sparse punctuation, edge detail. Never a fill.
+Cream
+#F0E6D3
+Text overlays / rare highlight only.
+TIER 2 — ATMOSPHERE TONES
+
+Gradient stops only. Never used alone. Never carry meaning. They are plumbing, not identity — don't defend them.
+
+Plum Shadow
+#2A0F1F
+Smoky Purple
+#3D2438
+Dusty Mauve
+#8B5A6B
+Dusty Rose
+#D4A5A5
+KILLED
+REJECTED 2026-05-29
+Ember Orange #C9532A — "rogue insertion." Do not reintroduce. Gold is the only accent, and gold is punctuation, never a fill.
+TYPE
+DM SERIF DISPLAY · HEADINGS, CARDS, TITLES
+Noticing is a discipline, not a mood.
+INTER · BODY, UI, CAPTIONS
+The image serves the word. Every piece of footage is judged by one test: does it help the text, or fight it? Quiet, low-contrast, generous dead space wins.
+THUMBNAIL RULES
+CANON
+Abstract text-beds, not focal-subject art. The image is a bed for words, not a picture that happens to have words on it.
+CANON
+Must stay distinguishable at channel-grid scale — vary texture, not busyness.
+CANON
+A text-safe zone is non-negotiable. Generous dead space is the feature.
+CANON
+Gold is edge detail and punctuation. Never a fill region.
+FIELD NOTES — IDENTITY
+SAVED
+✦
+Asset Studio
+Compose a text-bed. Build an image prompt.
+NOTES
+▸
+TEXT-BED COMPOSER
+
+Renders at 1280×720 using only canon colours. The dotted rectangle is the text-safe zone — nothing important goes outside it. Downloads a real PNG you can use or overlay.
+
+HEADLINE
+KICKER (OPTIONAL)
+BED
+Deep fall — burgundy into near-black
+Low rim — plum into black, gold edge
+Pressed — mauve into smoky, centre weight
+Bisect — muted rose diagonal
+Flat ground — near-black, gold hairline
+TEXT POSITION
+Left
+Centre
+Lower left
+Safe-zone guides
+Grain
+Download PNG
+IMAGE-PROMPT COMPOSER
+
+Assembles a Flux-shaped prompt from canon: palette named explicitly, safe zone stated, spectacle ruled out. Copy it into your generator, or paste it to Claude to extend the prompts/ library.
+
+PILLAR
+Literature
+Philosophy
+Claude/AI
+Mandarin
+Daily Life
+Lexis
+RATIO
+16:9 — thumbnail / backdrop
+1:1 — grid
+9:16 — Shorts
+MATERIAL
+worn paper edge
+pressed book cloth
+etched metal plate
+ink bleeding into fibre
+dust in a light shaft
+scored plaster
+folded linen
+rain-beaded glass
+LIGHT
+a single low rim from the left
+flat, almost no light
+one narrow shaft, steep angle
+diffuse from above, no source visible
+Abstract text-bed for a literary essay channel: a page edge and the shadow it throws, rendered as worn paper edge. Lit by a single low rim from the left. Colour is restricted to deep burgundy #4A1525, dark mauve #2D1020 and near-black #0A0506, with muted rose #4A2035 only in transitions and a single thread of gold #D4A853 as an edge or hairline — gold is never a fill. Composition leaves the left half almost empty as a text-safe zone: no detail, no focal point, no subject there. Quiet, low contrast, generous dead space, matte and slightly grained. No people, no text, no lettering, no logos, no lens flare, no dramatic spectacle, no neon, no orange. This is a bed for words, not a picture. Aspect ratio 16:9.
+Copy prompt
+FIELD NOTES — STUDIO
+SAVED
+◐
+Ambiance
+The presentation engine — 12 scenes, deck builder
+NOTES
+▸
+
+Ambiance stays a separate full-screen tool — it needs the whole viewport and its scenes run animation loops. Embedding it here would fight both. Opening it in a new tab is the right seam.
+
+Open Ambiance ↗
+BACKDROP SCENES STILL MISSING
+
+STATUS names this gap: the current set is abstract, and each pillar wants a quiet, themed scene of its own.
+
+PHILOSOPHY
+A candle burning down
+LITERATURE
+Rain on glass
+MANDARIN
+Ink into water
+DAILY LIFE
+Static highway-night
+FIELD NOTES — AMBIANCE
+SAVED
+◎
+Signals
+What P&C, Loom and Shadowboard say about HF
+NOTES
+▸
+Snapshot baked 2026-08-03. This is a copy, not a live read — a local HTML file can't open your markdown. Say "refresh HF signals" to Claude and this block gets rewritten from source. Sources: Master-Reader/progress-clarity/LEDGER.md · _meta/big-picture/big-picture-data.js · Shadowboard/BOARD.md.
+LOOM — BIG PICTURE
+NEGLECTED LANE · CONFIRMED
+HF Video 1 — "0% on own checklist, 16+ days untouched, end-of-August target ~6 weeks out."
+big-picture-data.js · run 2026-07-20
+WEAVE 1
+Practice detail #1 × HF Video 1 — film the Elantra run: before/after plus 90 raw talking-head seconds is V1 footage, gating photos, and channel material in one afternoon.
+big-picture-data.js · run 2026-07-20
+TOP PICK HISTORY
+07-10 top pick was literally "Ship HF Video 1." 07-20 replaced it with the filmed detail run — which subsumes V1 rather than dropping it.
+big-picture-data.js · reports[]
+P&C — LEDGER THREADS
+BLD-24 · NEW
+Pipe P&C / Marius outputs into the HF image flow so real interests and constraints shape generated images. Your note 07-04: "I don't even know where this came from, but I kinda like it — almost seems unhinged, lol." Kept, no momentum.
+LEDGER.md
+BLD-20 · NEW
+Image-generation automation v2 — post-mortem plus taste lock. 05-24: wanted feedback on the taste profile before generating more.
+LEDGER.md
+INC-02 · ACTIVE — CONTRADICTION
+Ledger still carries "Professional website (Holden Flaneur) launch" as Active, last touched 07-04. Standing decision elsewhere is that this site is not being deployed. One of the two is wrong; the ledger is the one that hasn't been told.
+LEDGER.md
+SHADOWBOARD — THE HF TOOL STACK
+HANGING · $22/MO
+ElevenLabs (Creator) — voice/audio for HF and EE. Music v2 test still pending; it gates the Suno row.
+BOARD.md
+HANGING · $0 CREDITS
+Higgsfield — thumbnail beds, 1 credit per image, free tier proved the pipe end to end.
+BOARD.md
+HANGING · $0
+HyperFrames — HF Shorts and title cards. Free to start; real compute sits behind paid API billing you're deliberately not opening.
+BOARD.md
+HANGING · $0
+Buttondown — the HF newsletter, free under 100 subscribers.
+BOARD.md
+OUTLINED · OPEN DECISION
+fal.ai / Replicate vs Higgsfield — the thumbnail access path, blocked on a cost-per-usable-bed comparison. Owned by Creative Stack.
+BOARD.md
+HAUL · UNTRIAGED
+Upscayl — free local upscaler. If it holds up it kills the Topaz/Magnific row's "not yet at scale" cost gate outright.
+BOARD.md
+FIELD NOTES — SIGNALS
+SAVED
+Holden Flâneur · hub · local file, never deployed · N capture · E export · Esc close
+canon: HF-PALETTE.md · INTENT.md · STATUS.md
+Collated — paste this to Claude
+✕
+Copy to clipboard
+Download .md
+Download .json

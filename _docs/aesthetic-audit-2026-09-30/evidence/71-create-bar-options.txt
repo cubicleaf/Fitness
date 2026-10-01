@@ -1,0 +1,44 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+New Activity
+ACTIVITY NAME
+Neutral / Note-Only Activity
+No Split
+Recommend split
+SPLITS (SELECT MULTIPLE)
+Push
+Pull
+Legs
+Core
+Cardio
+Mobility
+Stretch
+Other
+TYPE
+Reps
+Timed
+WEIGHT STYLE
+Total
+Per Side
+Bar
+Select bar type below
+Barbell (45 lbs)
+EZ Bar (20 lbs)
+Custom Bar
+DEFAULT LOAD
+Weight
+Bodyweight
+No Weight
+Starts weighted; bodyweight remains available per set
+ASK ABOUT GRIP?
+Suggested off. Turn it on only for movements where grip actually matters.
+No
+Yes
+Choose activity name, type (Reps, Timed, or Neutral), default load to create this activity.
+Create Activity
+Cancel

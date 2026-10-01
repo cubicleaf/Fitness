@@ -1,0 +1,40 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Plank — Set 1
+Weight: Bodyweight
+LOAD
+Bodyweight
+No load
+Add Weight
+EDIT PRESETS
+Done
+0:30
+1:00
+5:00
+10:00
+15:00
+20:00
+30:00
+45:00
+1:00:00
+ADD NEW PRESET
+0:45
+Add 0:45
+Enter digits → MM:SS
+1
+2
+3
+4
+5
+6
+7
+8
+9
+CLR
+0
+⌫

@@ -1,0 +1,42 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Plank — Set 1
+-5
+-1
+lbs
++1
++5
+Use 45 lbs
+Last Bodyweight · Sep 1 · 29 days ago
+45 LBS PLATES
+Quick plate math for machine or plate-loaded totals.
+1
+plate
+45lbs
+2
+plates
+90lbs
+4
+plates
+180lbs
+6
+plates
+270lbs
+8
+plates
+360lbs
+10
+plates
+450lbs
+COMMON WEIGHTS
+More weights
+5
+10
+15
+20
+25

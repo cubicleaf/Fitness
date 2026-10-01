@@ -1,0 +1,17 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Weight Style
+Total
+Per Side
+Bar
+Barbell (45 lbs)
+EZ Bar (20 lbs)
+Custom Bar
+Sets you already logged keep the exact total they were recorded with. This only changes what the set screen asks you to type from now on.
+Cancel
+Save

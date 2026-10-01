@@ -1,0 +1,26 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Merge Activities
+Shared words do not mean two activities are duplicates. Search by any activity name, select only histories you truly want combined, then choose the name to keep. Nothing changes until you confirm.
+SELECTED · 2
+✓ Leg Press
+✓ Squat
+NAME MATCHES
+
+All matching activities are selected.
+
+KEEP HISTORY UNDER
+Leg Press
+✓ Squat
+Sets and notes will be preserved under the name you choose. The other activity records will be removed after your final confirmation.
+Cancel
+Review merge
+Merge 2 activities?
+Keep the history under Squat. Sets and notes from the other selected activities will be combined into it, and their activity records will be removed. This cannot be undone.
+Cancel
+Delete

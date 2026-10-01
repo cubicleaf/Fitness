@@ -1,0 +1,82 @@
+Fitness Tracker
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+PULL
+Log today's weight
+Swipe up to dismiss
+DEAD HANGS
+2min 40sec
+DUMBBELL CURLS
+60 lbs × 14
+× 14
+× 13
+FACE PULLS
+95 lbs × 18
+× 17
+× 17
+LAT PULLDOWNS
+240 lbs × 15
+× 15
+× 14
+BARBELL ROWS
+285 lbs × 8
+× 8
+× 8
+PULLUPS
+BW × 10
+× 9
+× 8
+Settings
+Feedback
+Weekly Splits
+Data
+Preferences
+Potential Duplicate Warning
+On
+Off
+Weight Reminder Banner
+On
+Off
+Rep Ember Effect (8-12)
+On
+Off
+Timer Sounds
+On
+Off
+Configure Sounds
+Log Coach
+Your key stays on this device and is used directly from this browser.
+Add API key
+Required
+GPT OSS 120B
+Qwen3.6 27B
+Better default for app-aware help, long answers, and spec-heavy questions.
+Timer Sounds
+TICK STYLE
+Click
+subtle
+Beep
+classic
+Ping
+bright
+COMPLETION SOUND
+Fanfare
+Singing Bowl
+Chime
+SOSMorse
+Gentle Chime Settings
+Preview
+Major
+Minor
+Pentatonic
+Octave
+Speed
+180ms
+Pitch
+350Hz
+COUNTDOWN
+5 sec
+10 sec
+None
+Play Full Preview

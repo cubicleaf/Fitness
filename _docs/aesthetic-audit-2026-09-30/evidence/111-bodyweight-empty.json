@@ -1,0 +1,462 @@
+[
+  {
+    "text": "Fitness Tracker",
+    "tag": "DIV",
+    "cls": "nav-title",
+    "rect": {
+      "x": 16,
+      "y": 25.5,
+      "w": 164,
+      "h": 17
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "17px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "17px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "nav-title",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.9",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Thursday, Oct 1",
+    "tag": "DIV",
+    "cls": "day-date",
+    "rect": {
+      "x": 135.984375,
+      "y": 103.5,
+      "w": 118.015625,
+      "h": 18
+    },
+    "color": "rgb(212, 168, 83)",
+    "size": "16px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-date",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "No activities logged yet today.",
+    "tag": "DIV",
+    "cls": "empty-state",
+    "rect": {
+      "x": 16,
+      "y": 173,
+      "w": 358,
+      "h": 300
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "16px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "24px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "empty-state",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Recorded for Oct 1",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 59,
+      "y": 364.5,
+      "w": 272,
+      "h": 13
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.68)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "field-note-card",
+        "bg": "color(srgb 0.171835 0.0901849 0.132954 / 0.827059)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(12, 6, 10, 0.34)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "lbs",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 263.6875,
+      "y": 412.5,
+      "w": 22.625,
+      "h": 18
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.58)",
+    "size": "16px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "field-note-card",
+        "bg": "color(srgb 0.171835 0.0901849 0.132954 / 0.827059)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(12, 6, 10, 0.34)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "✓",
+    "tag": "BUTTON",
+    "cls": "",
+    "rect": {
+      "x": 183.53125,
+      "y": 455.5,
+      "w": 22.9375,
+      "h": 30
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.28)",
+    "size": "30px",
+    "weight": "400",
+    "font": "Arial",
+    "line": "30px",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "field-note-card",
+        "bg": "color(srgb 0.171835 0.0901849 0.132954 / 0.827059)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(12, 6, 10, 0.34)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  }
+]

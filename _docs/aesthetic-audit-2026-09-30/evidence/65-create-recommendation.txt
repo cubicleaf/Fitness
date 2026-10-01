@@ -1,0 +1,46 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+New Activity
+ACTIVITY NAME
+Similar activities already exist:
+Use logs to the existing activity. Create a distinct activity when its history should stay separate.
+Bench Press
+push
+Use This
+Neither — Create Brand New
+Neutral / Note-Only Activity
+No Split
+Recommend split
+SPLITS (SELECT MULTIPLE)
+Suggested from a recognized activity. You are always free to change it.
+Use push
+Push
+Pull
+Legs
+Core
+Cardio
+Mobility
+Stretch
+Other
+TYPE — SELECT ONE
+Reps
+Timed
+WEIGHT STYLE — SELECT ONE
+Total
+Per Side
+Bar
+DEFAULT LOAD — SELECT ONE
+Weight
+Bodyweight
+No Weight
+ASK ABOUT GRIP?
+Suggested off. Turn it on only for movements where grip actually matters.
+No
+Yes
+Create Activity
+Cancel

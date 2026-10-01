@@ -1,0 +1,54 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Audit Bar Press — Set 1
+Bar math · EZ bar 20 lbs
+⌃
+0 lbs each side × 2 = 0 lbs added
+EZ bar = 20 lbs
+Total in your hands = 20 lbs
+Change bar setup
+Added weight
+-5
+-1
+lbs
++1
++5
+Use 0 lbs added
+ADDED WEIGHT PRESETS
+Show fewer
+0 added
+5 added
+10 added
+15 added
+20 added
+25 added
+30 added
+35 added
+40 added
+45 added
+50 added
+55 added
+60 added
+65 added
+70 added
+75 added
+80 added
+85 added
+90 added
+95 added
+100 added
+GRIP
+Grip tracking is on for this activity.
+Don't ask
+Pronated
+Supinated
+Neutral
+Close
+Standard
+Wide
+V-bar

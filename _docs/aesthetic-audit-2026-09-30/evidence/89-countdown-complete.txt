@@ -1,0 +1,24 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Plank — Set 1
+Weight: Bodyweight
+LOAD
+Bodyweight
+No load
+Add Weight
+PRESETS
+countdown
+Edit Presets
+Timer complete
+0:01
+Use 0:01
+Cancel
+0:00
+Start Stopwatch
+0:00
+minutes

@@ -1,0 +1,35 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+New Activity
+ACTIVITY NAME
+Neutral Activity Selected
+Creates a note-only activity with feel, history, notes, and edit, but no set logging controls.
+No Split
+Recommend split
+SPLITS (SELECT MULTIPLE)
+I do not recognize this activity confidently enough to suggest a split. Choose below, or leave it unassigned.
+Push
+Pull
+Legs
+Core
+Cardio
+Mobility
+Stretch
+Other
+TYPE
+Reps
+Timed
+Create Activity
+Cancel
+×
+FIELD NOTE
+What is a neutral activity?
+
+Neutral activities are for things you want to record without pretending they are a normal lift. They still keep feel, notes, history, and edit, but they skip the set logging controls.
+
+Use this for note-only events, recovery items, or anything where “it happened” matters more than weight, reps, or time.

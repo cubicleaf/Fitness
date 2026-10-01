@@ -1,0 +1,22 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Add Activity
++ Create New Activity
+Touch and hold an activity to permanently delete it, even when it has no sets.
+Find activities to merge
+All
+pull
+push
+legs
+cardio
+other
+mobility
+core
+stretch
+Edit
+No saved activities match. Create a new activity above.

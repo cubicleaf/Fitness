@@ -1,0 +1,32 @@
+Fitness Tracker
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+PULL
+Log today's weight
+Swipe up to dismiss
+DEAD HANGS
+2min 40sec
+DUMBBELL CURLS
+60 lbs × 14
+× 14
+× 13
+FACE PULLS
+95 lbs × 18
+× 17
+× 17
+LAT PULLDOWNS
+240 lbs × 15
+× 15
+× 14
+BARBELL ROWS
+285 lbs × 8
+× 8
+× 8
+PULLUPS
+BW × 10
+× 9
+× 8
+Log Coach
+Ask me about this app, your current day, movement families, grip tracking, or what to log next.
+Send

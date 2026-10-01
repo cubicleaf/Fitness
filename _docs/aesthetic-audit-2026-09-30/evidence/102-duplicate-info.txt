@@ -1,0 +1,58 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Tuesday, Sep 29
+LEGS
+CALF RAISES
+330 lbs × 18
+× 18
+× 17
+WALKING LUNGES
+60 lbs × 15
+× 14
+× 13
+LEG CURLS
+175 lbs × 15
+× 14
+× 13
+LEG PRESS
+525 lbs × 15
+× 15
+× 14
+ROMANIAN DEADLIFT
+245 lbs × 9
+× 9
+× 8
+SQUAT
+260 lbs × 10
+× 9
+× 8
+Settings
+Feedback
+Weekly Splits
+Data
+Preferences
+Potential Duplicate Warning
+On
+Off
+Weight Reminder Banner
+On
+Off
+Rep Ember Effect (8-12)
+On
+Off
+Timer Sounds
+On
+Off
+Configure Sounds
+Log Coach
+Your key stays on this device and is used directly from this browser.
+Add API key
+Required
+GPT OSS 120B
+Qwen3.6 27B
+Better default for app-aware help, long answers, and spec-heavy questions.
+Duplicate Warning
+When enabled, the app will check for exercises with similar names when you create a new one. This helps prevent accidentally adding duplicates like "Bench Press" and "Bench press" as separate exercises.
+Got it

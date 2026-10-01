@@ -10,6 +10,20 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-09-30: **The project's purview is changing — a light program layer is authorized.** Tim has
+approved adding a **Routine** section: a routine assigned per weekday, in one of two fidelities —
+*Split Day (simple)*, one split category whose activities rank by use, or *Routine (detailed)*, a
+bespoke activity checklist. Same activities as the rest of the app; only the interface differs.
+This absorbs and retires the existing free-text "split label per weekday" feature rather than
+sitting beside it. Nothing is built. The full handoff —
+[ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md) — carries ten settled decisions, the data
+model, verified existing-code findings, six mandatory check-ins, and the verification method for a
+repo with no test runner. **`INTENT.md` is not yet amended**; its "Not a program builder" line is
+being narrowed to "the app may tell you *what*, never *how much*," pending Tim's sign-off on the
+exact sentence (spec §1). Two things surfaced while verifying: `'Rest'` in the weekly template is a
+pseudo-split that matches no category and needs its own mode in the new model (spec §3.4, Tim has
+not ruled on it), and the demo seed horizon expires 2026-10-01.
+
 2026-09-30: Weekly Split days with no assignment now display “None” while explicitly saved Rest days still display “Rest.” Squircle plates stay mounted during state changes and discard their SVG when a control becomes transparent, fixing pressed-corner flashes and the oversized mauve shape on empty days. Modal outer edges are borderless. The split detail uses the same bodyweight icon as the main header without a redundant arrow. The compact mauve Add Activity button now has gold plus/person artwork, with slightly heavier body strokes on the person.
 
 2026-09-30: Filled mauve squircle plates now cover the app's rectangular buttons and key row/card surfaces using the fixed-pixel SVG edge; weight/rep keys use 20px, wider controls 26px, and larger rows 30px. The Did some action is compact and left-aligned. The daily set actions are separate filled buttons, and activity-history uniform controls now use the same supplied lock and dumbbell artwork as their daily counterparts. Measured activity histories omit note-only dates while preserving their notes; neutral activities retain their note-only dates. Tim chose a compact mauve Add Activity button over the gold mockups; the daily view now has a centered 168×56px button with the original plus and stretching SVGs. The header scale has a solid mauve face and the gear's inner ring is thicker. Local demo-browser checks covered the daily log, activity picker, activity history, and header icons; physical iPhone review remains open.
@@ -57,6 +71,8 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-09-30: **What:** The project takes on a light program layer, and the existing free-text "split label per weekday" feature is absorbed into it rather than kept alongside it. One **Routine** concept is assigned per weekday and carries two fidelities — *Split Day (simple)*, one split category whose activities rank by use, and *Routine (detailed)*, a bespoke activity checklist — plus a third non-fidelity mode for rest days. Routines live in a shared library addressed by id, so two days can point at one and editing it changes both. Completion is **derived** from logged sets, never stored. Routines apply today-and-forward and never rewrite history. Order defaults to most-used-first with an optional stored manual order written only on first drag. Routine items carry activities only — no target sets, reps, loads, or progression — and the routine screen can open the normal logging flow so a whole session can be completed without leaving it. Emphasis on unfinished items is opt-in and defaults to off. New `routines` / `week` / `dayRoutines` stores replace `templates` and evacuate the `__split_`-prefixed records from `dayNotes`. **Why:** `INTENT.md` said "Not a program builder," and Tim is deliberately changing that purview rather than routing around it — narrowed to "the app may tell you **what**, never **how much**," which keeps "last time" as the only number the app offers and makes the no-targets rule structural instead of a preference. The two fidelities are one axis at two resolutions, not competing features, so unifying them retires a string-matched label system that already requires a three-place sweep on category rename (`index.html:4689`). Derived completion avoids a second source of truth that can disagree with the log. The history rule fixes a live defect: opening a past day currently bakes today's template label into that date (`index.html:15106`). **How to apply:** Read [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md) before building; it holds the decisions as D1–D10, the migration requirements, and six mandatory check-ins, and Phase 1 must not proceed to UI before Tim sees the migration counts. Do not edit `INTENT.md` until Tim approves the exact amendment sentence. Reference activities by id, never by name; validate `splitName` against live categories on read and fall back to unassigned rather than crashing. Never add a stored `checked` field. Nothing goes into `dayNotes` under a magic key again. Migration must preserve all three current weekday states — None, a real split, and an explicit Rest — since today's work made that distinction visible in the UI. An app-wide navigation overhaul is explicitly out of scope and belongs in a UX playbook triangulation. **Evidence strength:** Tim-directed design conversation, plus `index.html` read and re-verified at `6532d02`. No code written, nothing run in a browser. The third (`rest`) mode is this spec's inference from today's commit, not a Tim decision — it is flagged for Check-in #1.
 
 - 2026-09-30: **What:** An unassigned weekly split is “None”; “Rest” is an explicit choice. Modal surfaces have no visible outer border. The Add Activity control stays compact and mauve with gold icon artwork. **Why:** Tim corrected the default label, modal edge, and icon emphasis during device review. **How to apply:** Preserve saved Rest assignments; keep the button background mauve and both glyphs gold.
 
@@ -308,6 +324,17 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - 2026-06-24: Rewrote seed data to lb-native, extended through Jun 30, audited via 2 sub-agents, promoted to project. Next: onboarding tour (seeded Marcus demo + just-in-time coachmarks) using this data.
 - 2026-06-24: Diagnosed live crash (unpinned Babel 8 breaking change). Confirmed local index.html is babel-free and passes a node syntax check. Planning onboarding tour (data-tour anchors required since UI renders dynamically into #root). Naming front-runner: "Benchmark".
 - 2026-06-04: Resumed project. Created INTENT.md and STATUS.md. Shelved color work.
+
+## Front Burner
+
+- Build the routine system per [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md). Phase 0 is
+  paperwork only: get Tim's sign-off on the `INTENT.md` amendment wording, then answer the spec's
+  §7 open questions — including whether `mode: "rest"` is the right call. Phase 1 is the data
+  migration; it touches real training history and has a mandatory check-in before any UI work.
+- Demo seed horizon expires **2026-10-01**. `seed-data.csv` runs out, after which the rolling
+  simulation stops topping up and the demo reads as a museum piece again. Extend
+  `_archive/gen_summer_2026.py` and update `_docs/character-bio.md` in the same change. Separate
+  job from the routine build — do not fold it in.
 
 ## Open
 

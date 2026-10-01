@@ -1,0 +1,17 @@
+Fitness Tracker
+Thursday, Oct 1
+Log today's weight
+Swipe up to dismiss
+No activities logged yet today.
+Oct 1
+Bodyweight
+No weight logged today
+Assign a split category to today
+Push
+Pull
+Legs
+Core
+Cardio
+Mobility
+Stretch
+Other

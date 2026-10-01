@@ -1,0 +1,4029 @@
+[
+  {
+    "text": "Fitness Tracker",
+    "tag": "DIV",
+    "cls": "nav-title",
+    "rect": {
+      "x": 16,
+      "y": 25.5,
+      "w": 164,
+      "h": 17
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "17px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "17px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "nav-title",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.9"
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Sample log — Marcus Chen",
+    "tag": "SPAN",
+    "cls": "demo-chip-label",
+    "rect": {
+      "x": 28,
+      "y": 84,
+      "w": 264.640625,
+      "h": 14
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Start my own",
+    "tag": "SPAN",
+    "cls": "demo-chip-action",
+    "rect": {
+      "x": 300.640625,
+      "y": 84,
+      "w": 75.359375,
+      "h": 14
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-action",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Wednesday, Sep 30",
+    "tag": "DIV",
+    "cls": "day-date",
+    "rect": {
+      "x": 120.015625,
+      "y": 138,
+      "w": 149.953125,
+      "h": 18
+    },
+    "color": "rgb(212, 168, 83)",
+    "size": "16px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-date",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Legs",
+    "tag": "DIV",
+    "cls": "day-label",
+    "rect": {
+      "x": 176.890625,
+      "y": 159,
+      "w": 36.1875,
+      "h": 16
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "13px",
+    "weight": "700",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "No activities logged yet today.",
+    "tag": "DIV",
+    "cls": "empty-state",
+    "rect": {
+      "x": 16,
+      "y": 217,
+      "w": 358,
+      "h": 300
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "16px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "24px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "empty-state",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Calendar",
+    "tag": "H2",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 27.5,
+      "w": 75.84375,
+      "h": 21
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "18px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "H2",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-header",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "October  2026",
+    "tag": "H3",
+    "cls": "",
+    "rect": {
+      "x": 68,
+      "y": 107,
+      "w": 254,
+      "h": 20
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "17px",
+    "weight": "700",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "H3",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-heading",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "S",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 14,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "M",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 66.28125,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "T",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 118.5625,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "W",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 170.84375,
+      "y": 153,
+      "w": 48.296875,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "T",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 223.140625,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "F",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 275.421875,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "S",
+    "tag": "DIV",
+    "cls": "calendar-weekday",
+    "rect": {
+      "x": 327.703125,
+      "y": 153,
+      "w": 48.28125,
+      "h": 12
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "10px",
+    "weight": "800",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-weekday-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "1",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 243.109375,
+      "y": 191.640625,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "2",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 295.390625,
+      "y": 191.640625,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "3",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 347.671875,
+      "y": 191.640625,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "4",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 33.96875,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "5",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 86.25,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "6",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 138.53125,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "7",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 190.8125,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.3 48.3\"><path d=\"M 20,0 L 28.299999999999997,0 C 37.727999999999994,0 42.442,0 45.371199999999995,2.9288 C 48.3,5.858 48.3,10.572 48.3,20 L 48.3,28.299999999999997 C 48.3,37.727999999999994 48.3,42.442 45.371199999999995,45.371199999999995 C 42.442,48.3 37.727999999999994,48.3 28.299999999999997,48.3 L 20,48.3 C 10.572,48.3 5.858,48.3 2.9288,45.371199999999995 C 0,42.442 0,37.727999999999994 0,28.299999999999997 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "8",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 243.109375,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "9",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 295.390625,
+      "y": 243.9375,
+      "w": 8.34375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "10",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 343.5,
+      "y": 243.9375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "11",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 30.203125,
+      "y": 296.234375,
+      "w": 15.859375,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "12",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 82.078125,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "13",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 134.359375,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "14",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 186.640625,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.3 48.3\"><path d=\"M 20,0 L 28.299999999999997,0 C 37.727999999999994,0 42.442,0 45.371199999999995,2.9288 C 48.3,5.858 48.3,10.572 48.3,20 L 48.3,28.299999999999997 C 48.3,37.727999999999994 48.3,42.442 45.371199999999995,45.371199999999995 C 42.442,48.3 37.727999999999994,48.3 28.299999999999997,48.3 L 20,48.3 C 10.572,48.3 5.858,48.3 2.9288,45.371199999999995 C 0,42.442 0,37.727999999999994 0,28.299999999999997 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "15",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 238.9375,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "16",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 291.21875,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "17",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 343.5,
+      "y": 296.234375,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "18",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 29.796875,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "19",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 82.078125,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "20",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 134.359375,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "21",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 186.640625,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.3 48.3\"><path d=\"M 20,0 L 28.299999999999997,0 C 37.727999999999994,0 42.442,0 45.371199999999995,2.9288 C 48.3,5.858 48.3,10.572 48.3,20 L 48.3,28.299999999999997 C 48.3,37.727999999999994 48.3,42.442 45.371199999999995,45.371199999999995 C 42.442,48.3 37.727999999999994,48.3 28.299999999999997,48.3 L 20,48.3 C 10.572,48.3 5.858,48.3 2.9288,45.371199999999995 C 0,42.442 0,37.727999999999994 0,28.299999999999997 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "22",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 238.9375,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "23",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 291.21875,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "24",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 343.5,
+      "y": 348.53125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "25",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 29.796875,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "26",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 82.078125,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "27",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 134.359375,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "28",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 186.640625,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.3 48.3\"><path d=\"M 20,0 L 28.299999999999997,0 C 37.727999999999994,0 42.442,0 45.371199999999995,2.9288 C 48.3,5.858 48.3,10.572 48.3,20 L 48.3,28.299999999999997 C 48.3,37.727999999999994 48.3,42.442 45.371199999999995,45.371199999999995 C 42.442,48.3 37.727999999999994,48.3 28.299999999999997,48.3 L 20,48.3 C 10.572,48.3 5.858,48.3 2.9288,45.371199999999995 C 0,42.442 0,37.727999999999994 0,28.299999999999997 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "29",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 238.9375,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "30",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 291.21875,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "31",
+    "tag": "SPAN",
+    "cls": "calendar-day-num",
+    "rect": {
+      "x": 343.5,
+      "y": 400.828125,
+      "w": 16.6875,
+      "h": 15
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "15px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "15px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "calendar-day-num",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-day-cell is-future auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.45",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 48.28 48.28\"><path d=\"M 20,0 L 28.28,0 C 37.708,0 42.422000000000004,0 45.3512,2.9288 C 48.28,5.858 48.28,10.572 48.28,20 L 48.28,28.28 C 48.28,37.708 48.28,42.422000000000004 45.3512,45.3512 C 42.422000000000004,48.28 37.708,48.28 28.28,48.28 L 20,48.28 C 10.572,48.28 5.858,48.28 2.9288,45.3512 C 0,42.422000000000004 0,37.708 0,28.28 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "No gym days logged in October yet.",
+    "tag": "DIV",
+    "cls": "calendar-month-summary",
+    "rect": {
+      "x": 14,
+      "y": 450.484375,
+      "w": 362,
+      "h": 19.390625
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "12px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "17.4px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "calendar-month-summary",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Back to September",
+    "tag": "BUTTON",
+    "cls": "calendar-today-btn auto-squircle-plate",
+    "rect": {
+      "x": 118.109375,
+      "y": 483.875,
+      "w": 153.78125,
+      "h": 44
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "calendar-today-btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 153.78 44\"><path d=\"M 22,0 L 131.78,0 C 142.1508,0 147.3362,0 150.55832,3.2216799999999997 C 153.78,6.4437999999999995 153.78,11.629199999999999 153.78,22 L 153.78,22 C 153.78,32.3708 153.78,37.556200000000004 150.55832,40.77832 C 147.3362,44 142.1508,44 131.78,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "calendar-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal calendar-modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Related Activities
+
+Romanian Deadlift belongs to the Audit lower-body group group. Each activity keeps its own sets, notes, presets, and history.
+
+AUDIT LOWER-BODY GROUP · 2 ACTIVITIES
+Romanian Deadlift · Current activity
+History ›
+Squat
+History ›
+Create variation
+Move to another group
+Make standalone
+×
+FIELD NOTE
+How do related activities work?
+
+A family is an organizational group, such as Row or Run. The activity you log owns its own sets, notes, presets, and history.
+
+Related Activities can link, move, or detach activities and create a variation. Those actions never combine histories. Merge Activities is a separate action for true duplicates.

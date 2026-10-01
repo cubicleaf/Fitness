@@ -1,0 +1,4873 @@
+[
+  {
+    "text": "Fitness Tracker",
+    "tag": "DIV",
+    "cls": "nav-title",
+    "rect": {
+      "x": 16,
+      "y": 25.5,
+      "w": 164,
+      "h": 17
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "17px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "17px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "nav-title",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.9",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Today",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 187.640625,
+      "y": 41,
+      "w": 28.71875,
+      "h": 10
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "10px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "10px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "today-jump-top-btn",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.78",
+        "plateFill": null,
+        "plate": "<svg width=\"22\" height=\"22\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" transform=\"translate(15.5 6.5) scale(-1 1)\"><path d=\"m0 8v-2c0-1.65685425 1.34314575-3 3-3h8\"></path><path d=\"m7.999 6 3.001-3-3.001-3\"></path></g></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav-actions",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Sample log — Marcus Chen",
+    "tag": "SPAN",
+    "cls": "demo-chip-label",
+    "rect": {
+      "x": 28,
+      "y": 84,
+      "w": 264.640625,
+      "h": 14
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.545098 0.227451 0.384314 / 0.14)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Start my own",
+    "tag": "SPAN",
+    "cls": "demo-chip-action",
+    "rect": {
+      "x": 300.640625,
+      "y": 84,
+      "w": 75.359375,
+      "h": 14
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-action",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.545098 0.227451 0.384314 / 0.14)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Thursday, Oct 1",
+    "tag": "DIV",
+    "cls": "day-date",
+    "rect": {
+      "x": 135.984375,
+      "y": 138,
+      "w": 118.015625,
+      "h": 18
+    },
+    "color": "rgb(212, 168, 83)",
+    "size": "16px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-date",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Rest",
+    "tag": "DIV",
+    "cls": "day-label",
+    "rect": {
+      "x": 176.90625,
+      "y": 159,
+      "w": 36.171875,
+      "h": 16
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "13px",
+    "weight": "700",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "No activities on this day.",
+    "tag": "DIV",
+    "cls": "empty-state",
+    "rect": {
+      "x": 16,
+      "y": 217,
+      "w": 358,
+      "h": 300
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "16px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "24px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "empty-state",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "New Activity",
+    "tag": "H2",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 27.5,
+      "w": 105.640625,
+      "h": 21
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "18px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "H2",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-header",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Activity Name",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 16,
+      "y": 93,
+      "w": 358,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Similar activities already exist:",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 29,
+      "y": 177,
+      "w": 332,
+      "h": 13
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "11px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Use logs to the existing activity. Create a distinct activity when its history should stay separate.",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 29,
+      "y": 194,
+      "w": 332,
+      "h": 26
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.4)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Bench Press",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 29,
+      "y": 236,
+      "w": 75.234375,
+      "h": 16
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "13px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "push",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 29,
+      "y": 252,
+      "w": 75.234375,
+      "h": 13
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Use This",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 295.140625,
+      "y": 239.5,
+      "w": 65.859375,
+      "h": 22
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgb(139, 58, 98)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 65.86 22\"><path d=\"M 11,0 L 54.86,0 C 60.0454,0 62.6381,0 64.24916,1.6108399999999998 C 65.86,3.2218999999999998 65.86,5.8145999999999995 65.86,11 L 65.86,11 C 65.86,16.1854 65.86,18.778100000000002 64.24916,20.38916 C 62.6381,22 60.0454,22 54.86,22 L 11,22 C 5.8145999999999995,22 3.2218999999999998,22 1.6108399999999998,20.38916 C 0,18.778100000000002 0,16.1854 0,11 L 0,11 C 0,5.8145999999999995 0,3.2218999999999998 1.6108399999999998,1.6108399999999998 C 3.2218999999999998,0 5.8145999999999995,0 11,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Neither — Create Brand New",
+    "tag": "BUTTON",
+    "cls": "",
+    "rect": {
+      "x": 29,
+      "y": 279,
+      "w": 332,
+      "h": 26
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.4)",
+    "size": "11px",
+    "weight": "400",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Neutral / Note-Only Activity",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 324,
+      "w": 320,
+      "h": 34
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 320 34\"><path d=\"M 17,0 L 303,0 C 311.0138,0 315.0207,0 317.51052,2.48948 C 320,4.9793 320,8.9862 320,17 L 320,17 C 320,25.0138 320,29.020699999999998 317.51052,31.51052 C 315.0207,34 311.0138,34 303,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "No Split",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 17,
+      "y": 367,
+      "w": 178,
+      "h": 42
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "13.2px",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.545098 0.227451 0.384314 / 0.25)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 42\"><path d=\"M 21,0 L 157,0 C 166.8994,0 171.8491,0 174.92476,3.0752399999999995 C 178,6.1509 178,11.1006 178,21 L 178,21 C 178,30.8994 178,35.8491 174.92476,38.92476 C 171.8491,42 166.8994,42 157,42 L 21,42 C 11.1006,42 6.1509,42 3.0752399999999995,38.92476 C 0,35.8491 0,30.8994 0,21 L 0,21 C 0,11.1006 0,6.1509 3.0752399999999995,3.0752399999999995 C 6.1509,0 11.1006,0 21,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "split-choice-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Recommend split",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 195,
+      "y": 367,
+      "w": 178,
+      "h": 42
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "13.2px",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.545098 0.227451 0.384314 / 0.14)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 42\"><path d=\"M 21,0 L 157,0 C 166.8994,0 171.8491,0 174.92476,3.0752399999999995 C 178,6.1509 178,11.1006 178,21 L 178,21 C 178,30.8994 178,35.8491 174.92476,38.92476 C 171.8491,42 166.8994,42 157,42 L 21,42 C 11.1006,42 6.1509,42 3.0752399999999995,38.92476 C 0,35.8491 0,30.8994 0,21 L 0,21 C 0,11.1006 0,6.1509 3.0752399999999995,3.0752399999999995 C 6.1509,0 11.1006,0 21,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "split-choice-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Splits (select multiple)",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 16,
+      "y": 426,
+      "w": 358,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Suggested from a recognized activity. You are always free to change it.",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 447,
+      "w": 358,
+      "h": 39
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "19.5px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Use push",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 494,
+      "w": 358,
+      "h": 44
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgb(139, 58, 98)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 358 44\"><path d=\"M 22,0 L 336,0 C 346.3708,0 351.5562,0 354.77832,3.2216799999999997 C 358,6.4437999999999995 358,11.629199999999999 358,22 L 358,22 C 358,32.3708 358,37.556200000000004 354.77832,40.77832 C 351.5562,44 346.3708,44 336,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Push",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 558,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Pull",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 199,
+      "y": 558,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Legs",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 610,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Core",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 199,
+      "y": 610,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Cardio",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 662,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Mobility",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 199,
+      "y": 662,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Stretch",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 714,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Other",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 199,
+      "y": 714,
+      "w": 175,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 44\"><path d=\"M 22,0 L 153,0 C 163.3708,0 168.5562,0 171.77832,3.2216799999999997 C 175,6.4437999999999995 175,11.629199999999999 175,22 L 175,22 C 175,32.3708 175,37.556200000000004 171.77832,40.77832 C 168.5562,44 163.3708,44 153,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "button-grid",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Type",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 16,
+      "y": 774,
+      "w": 358,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "— select one",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 53.078125,
+      "y": 775,
+      "w": 86.71875,
+      "h": 13
+    },
+    "color": "rgb(232, 138, 138)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Reps",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 17,
+      "y": 796,
+      "w": 178,
+      "h": 35
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 35\"><path d=\"M 17.5,0 L 160.5,0 C 168.7495,0 172.87425,0 175.4373,2.5627 C 178,5.12575 178,9.250499999999999 178,17.5 L 178,17.5 C 178,25.7495 178,29.87425 175.4373,32.4373 C 172.87425,35 168.7495,35 160.5,35 L 17.5,35 C 9.250499999999999,35 5.12575,35 2.5627,32.4373 C 0,29.87425 0,25.7495 0,17.5 L 0,17.5 C 0,9.250499999999999 0,5.12575 2.5627,2.5627 C 5.12575,0 9.250499999999999,0 17.5,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Timed",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 205,
+      "y": 806,
+      "w": 158,
+      "h": 15
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "13px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null,
+        "plate": "<svg width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display: inline-block; vertical-align: middle;\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 16 14\"></polyline></svg>"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 35\"><path d=\"M 17.5,0 L 160.5,0 C 168.7495,0 172.87425,0 175.4373,2.5627 C 178,5.12575 178,9.250499999999999 178,17.5 L 178,17.5 C 178,25.7495 178,29.87425 175.4373,32.4373 C 172.87425,35 168.7495,35 160.5,35 L 17.5,35 C 9.250499999999999,35 5.12575,35 2.5627,32.4373 C 0,29.87425 0,25.7495 0,17.5 L 0,17.5 C 0,9.250499999999999 0,5.12575 2.5627,2.5627 C 5.12575,0 9.250499999999999,0 17.5,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Weight Style",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 16,
+      "y": 848,
+      "w": 358,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "— select one",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 116.375,
+      "y": 849,
+      "w": 86.71875,
+      "h": 13
+    },
+    "color": "rgb(232, 138, 138)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Total",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 17,
+      "y": 870,
+      "w": 118.65625,
+      "h": 34
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.66 34\"><path d=\"M 17,0 L 101.66,0 C 109.6738,0 113.6807,0 116.17052,2.48948 C 118.66,4.9793 118.66,8.9862 118.66,17 L 118.66,17 C 118.66,25.0138 118.66,29.020699999999998 116.17052,31.51052 C 113.6807,34 109.6738,34 101.66,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Per Side",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 135.65625,
+      "y": 870,
+      "w": 118.671875,
+      "h": 34
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.67 34\"><path d=\"M 17,0 L 101.67,0 C 109.6838,0 113.6907,0 116.18052,2.48948 C 118.67,4.9793 118.67,8.9862 118.67,17 L 118.67,17 C 118.67,25.0138 118.67,29.020699999999998 116.18052,31.51052 C 113.6907,34 109.6838,34 101.67,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Bar",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 254.328125,
+      "y": 870,
+      "w": 118.671875,
+      "h": 34
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.67 34\"><path d=\"M 17,0 L 101.67,0 C 109.6838,0 113.6907,0 116.18052,2.48948 C 118.67,4.9793 118.67,8.9862 118.67,17 L 118.67,17 C 118.67,25.0138 118.67,29.020699999999998 116.18052,31.51052 C 113.6907,34 109.6838,34 101.67,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Default Load",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 16,
+      "y": 921,
+      "w": 358,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "— select one",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 116.046875,
+      "y": 922,
+      "w": 86.71875,
+      "h": 13
+    },
+    "color": "rgb(232, 138, 138)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Weight",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 17,
+      "y": 943,
+      "w": 118.65625,
+      "h": 32
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.66 32\"><path d=\"M 16,0 L 102.66,0 C 110.2024,0 113.97359999999999,0 116.31696,2.34304 C 118.66,4.6864 118.66,8.4576 118.66,16 L 118.66,16 C 118.66,23.5424 118.66,27.3136 116.31696,29.65696 C 113.97359999999999,32 110.2024,32 102.66,32 L 16,32 C 8.4576,32 4.6864,32 2.34304,29.65696 C 0,27.3136 0,23.5424 0,16 L 0,16 C 0,8.4576 0,4.6864 2.34304,2.34304 C 4.6864,0 8.4576,0 16,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Bodyweight",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 135.65625,
+      "y": 943,
+      "w": 118.671875,
+      "h": 32
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.67 32\"><path d=\"M 16,0 L 102.67,0 C 110.2124,0 113.9836,0 116.32696,2.34304 C 118.67,4.6864 118.67,8.4576 118.67,16 L 118.67,16 C 118.67,23.5424 118.67,27.3136 116.32696,29.65696 C 113.9836,32 110.2124,32 102.67,32 L 16,32 C 8.4576,32 4.6864,32 2.34304,29.65696 C 0,27.3136 0,23.5424 0,16 L 0,16 C 0,8.4576 0,4.6864 2.34304,2.34304 C 4.6864,0 8.4576,0 16,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "No Weight",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 254.328125,
+      "y": 943,
+      "w": 118.671875,
+      "h": 32
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "11px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 118.67 32\"><path d=\"M 16,0 L 102.67,0 C 110.2124,0 113.9836,0 116.32696,2.34304 C 118.67,4.6864 118.67,8.4576 118.67,16 L 118.67,16 C 118.67,23.5424 118.67,27.3136 116.32696,29.65696 C 113.9836,32 110.2124,32 102.67,32 L 16,32 C 8.4576,32 4.6864,32 2.34304,29.65696 C 0,27.3136 0,23.5424 0,16 L 0,16 C 0,8.4576 0,4.6864 2.34304,2.34304 C 4.6864,0 8.4576,0 16,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Ask about grip?",
+    "tag": "LABEL",
+    "cls": "form-label",
+    "rect": {
+      "x": 118.53125,
+      "y": 999.5,
+      "w": 116.9375,
+      "h": 15
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.5)",
+    "size": "12px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "LABEL",
+        "cls": "form-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Suggested off. Turn it on only for movements where grip actually matters.",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 1030,
+      "w": 358,
+      "h": 31.875
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "15.95px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "No",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 17,
+      "y": 1070.875,
+      "w": 178,
+      "h": 34
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.545098 0.227451 0.384314 / 0.25)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 34\"><path d=\"M 17,0 L 161,0 C 169.0138,0 173.0207,0 175.51052,2.48948 C 178,4.9793 178,8.9862 178,17 L 178,17 C 178,25.0138 178,29.020699999999998 175.51052,31.51052 C 173.0207,34 169.0138,34 161,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Yes",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 195,
+      "y": 1070.875,
+      "w": 178,
+      "h": 34
+    },
+    "color": "rgb(122, 101, 112)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgba(255, 255, 255, 0.03)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 178 34\"><path d=\"M 17,0 L 161,0 C 169.0138,0 173.0207,0 175.51052,2.48948 C 178,4.9793 178,8.9862 178,17 L 178,17 C 178,25.0138 178,29.020699999999998 175.51052,31.51052 C 173.0207,34 169.0138,34 161,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Create Activity",
+    "tag": "BUTTON",
+    "cls": "btn auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 1129.875,
+      "w": 358,
+      "h": 44
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "rgb(139, 58, 98)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 358 44\"><path d=\"M 22,0 L 336,0 C 346.3708,0 351.5562,0 354.77832,3.2216799999999997 C 358,6.4437999999999995 358,11.629199999999999 358,22 L 358,22 C 358,32.3708 358,37.556200000000004 354.77832,40.77832 C 351.5562,44 346.3708,44 336,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  },
+  {
+    "text": "Cancel",
+    "tag": "BUTTON",
+    "cls": "btn btn-secondary auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 1181.875,
+      "w": 358,
+      "h": 44
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "btn btn-secondary auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": "color(srgb 0.252627 0.103216 0.177255)",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 358 44\"><path d=\"M 22,0 L 336,0 C 346.3708,0 351.5562,0 354.77832,3.2216799999999997 C 358,6.4437999999999995 358,11.629199999999999 358,22 L 358,22 C 358,32.3708 358,37.556200000000004 354.77832,40.77832 C 351.5562,44 346.3708,44 336,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "form-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1",
+        "plateFill": null
+      }
+    ]
+  }
+]

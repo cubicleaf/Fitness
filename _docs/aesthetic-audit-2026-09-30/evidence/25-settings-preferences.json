@@ -1,0 +1,5155 @@
+[
+  {
+    "text": "Fitness Tracker",
+    "tag": "DIV",
+    "cls": "nav-title",
+    "rect": {
+      "x": 16,
+      "y": 25.5,
+      "w": 164,
+      "h": 17
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "17px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "17px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "nav-title",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.9"
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Today",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 187.640625,
+      "y": 41,
+      "w": 28.71875,
+      "h": 10
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "10px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "10px",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "today-jump-top-btn",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "0.78",
+        "plate": "<svg width=\"22\" height=\"22\" viewBox=\"0 0 21 21\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" aria-hidden=\"true\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\" transform=\"translate(5.5 6.5)\"><path d=\"m0 8v-2c0-1.65685425 1.34314575-3 3-3h8\"></path><path d=\"m7.999 6 3.001-3-3.001-3\"></path></g></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav-actions",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "top-nav",
+        "bg": "color(srgb 0.137412 0.0542745 0.0956863)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Sample log — Marcus Chen",
+    "tag": "SPAN",
+    "cls": "demo-chip-label",
+    "rect": {
+      "x": 28,
+      "y": 84,
+      "w": 264.640625,
+      "h": 14
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Start my own",
+    "tag": "SPAN",
+    "cls": "demo-chip-action",
+    "rect": {
+      "x": 300.640625,
+      "y": 84,
+      "w": 75.359375,
+      "h": 14
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "demo-chip-action",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "demo-chip auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 390 44\"><path d=\"M 22,0 L 368,0 C 378.3708,0 383.5562,0 386.77832,3.2216799999999997 C 390,6.4437999999999995 390,11.629199999999999 390,22 L 390,22 C 390,32.3708 390,37.556200000000004 386.77832,40.77832 C 383.5562,44 378.3708,44 368,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Tuesday, Sep 29",
+    "tag": "DIV",
+    "cls": "day-date",
+    "rect": {
+      "x": 132.484375,
+      "y": 138,
+      "w": 125.015625,
+      "h": 18
+    },
+    "color": "rgb(212, 168, 83)",
+    "size": "16px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-date",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Legs",
+    "tag": "DIV",
+    "cls": "day-label",
+    "rect": {
+      "x": 176.890625,
+      "y": 159,
+      "w": 36.1875,
+      "h": 16
+    },
+    "color": "rgb(139, 58, 98)",
+    "size": "13px",
+    "weight": "700",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "day-label",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display-inner",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-display",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "day-nav",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Calf Raises",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 217,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "330 lbs × 18",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 244,
+      "w": 78.015625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 94.02 24\"><path d=\"M 12,0 L 82.02,0 C 87.6768,0 90.5052,0 92.26272,1.7572799999999997 C 94.02,3.5148 94.02,6.3431999999999995 94.02,12 L 94.02,12 C 94.02,17.6568 94.02,20.4852 92.26272,22.24272 C 90.5052,24 87.6768,24 82.02,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 18",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 128.015625,
+      "y": 244,
+      "w": 26.921875,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.92 24\"><path d=\"M 12,0 L 30.92,0 C 36.576800000000006,0 39.4052,0 41.16272,1.7572799999999997 C 42.92,3.5148 42.92,6.3431999999999995 42.92,12 L 42.92,12 C 42.92,17.6568 42.92,20.4852 41.16272,22.24272 C 39.4052,24 36.576800000000006,24 30.92,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 17",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 178.9375,
+      "y": 244,
+      "w": 25.859375,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 41.86 24\"><path d=\"M 12,0 L 29.86,0 C 35.5168,0 38.3452,0 40.10272,1.7572799999999997 C 41.86,3.5148 41.86,6.3431999999999995 41.86,12 L 41.86,12 C 41.86,17.6568 41.86,20.4852 40.10272,22.24272 C 38.3452,24 35.5168,24 29.86,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Walking Lunges",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 282,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "60 lbs × 15",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 309,
+      "w": 69.4375,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 85.44 24\"><path d=\"M 12,0 L 73.44,0 C 79.0968,0 81.9252,0 83.68272,1.7572799999999997 C 85.44,3.5148 85.44,6.3431999999999995 85.44,12 L 85.44,12 C 85.44,17.6568 85.44,20.4852 83.68272,22.24272 C 81.9252,24 79.0968,24 73.44,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 14",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 119.4375,
+      "y": 309,
+      "w": 26.890625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.89 24\"><path d=\"M 12,0 L 30.89,0 C 36.546800000000005,0 39.3752,0 41.13272,1.7572799999999997 C 42.89,3.5148 42.89,6.3431999999999995 42.89,12 L 42.89,12 C 42.89,17.6568 42.89,20.4852 41.13272,22.24272 C 39.3752,24 36.546800000000005,24 30.89,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 13",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 170.328125,
+      "y": 309,
+      "w": 26.65625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.66 24\"><path d=\"M 12,0 L 30.659999999999997,0 C 36.3168,0 39.145199999999996,0 40.902719999999995,1.7572799999999997 C 42.66,3.5148 42.66,6.3431999999999995 42.66,12 L 42.66,12 C 42.66,17.6568 42.66,20.4852 40.902719999999995,22.24272 C 39.145199999999996,24 36.3168,24 30.659999999999997,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Leg Curls",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 347,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "175 lbs × 15",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 374,
+      "w": 74.46875,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 90.47 24\"><path d=\"M 12,0 L 78.47,0 C 84.1268,0 86.9552,0 88.71272,1.7572799999999997 C 90.47,3.5148 90.47,6.3431999999999995 90.47,12 L 90.47,12 C 90.47,17.6568 90.47,20.4852 88.71272,22.24272 C 86.9552,24 84.1268,24 78.47,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 14",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 124.46875,
+      "y": 374,
+      "w": 26.890625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.89 24\"><path d=\"M 12,0 L 30.89,0 C 36.546800000000005,0 39.3752,0 41.13272,1.7572799999999997 C 42.89,3.5148 42.89,6.3431999999999995 42.89,12 L 42.89,12 C 42.89,17.6568 42.89,20.4852 41.13272,22.24272 C 39.3752,24 36.546800000000005,24 30.89,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 13",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 175.359375,
+      "y": 374,
+      "w": 26.65625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.66 24\"><path d=\"M 12,0 L 30.659999999999997,0 C 36.3168,0 39.145199999999996,0 40.902719999999995,1.7572799999999997 C 42.66,3.5148 42.66,6.3431999999999995 42.66,12 L 42.66,12 C 42.66,17.6568 42.66,20.4852 40.902719999999995,22.24272 C 39.145199999999996,24 36.3168,24 30.659999999999997,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Leg Press",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 412,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "525 lbs × 15",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 439,
+      "w": 77.0625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 93.06 24\"><path d=\"M 12,0 L 81.06,0 C 86.7168,0 89.54520000000001,0 91.30272000000001,1.7572799999999997 C 93.06,3.5148 93.06,6.3431999999999995 93.06,12 L 93.06,12 C 93.06,17.6568 93.06,20.4852 91.30272000000001,22.24272 C 89.54520000000001,24 86.7168,24 81.06,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 15",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 127.0625,
+      "y": 439,
+      "w": 26.578125,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.58 24\"><path d=\"M 12,0 L 30.58,0 C 36.2368,0 39.0652,0 40.82272,1.7572799999999997 C 42.58,3.5148 42.58,6.3431999999999995 42.58,12 L 42.58,12 C 42.58,17.6568 42.58,20.4852 40.82272,22.24272 C 39.0652,24 36.2368,24 30.58,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 14",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 177.640625,
+      "y": 439,
+      "w": 26.890625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 42.89 24\"><path d=\"M 12,0 L 30.89,0 C 36.546800000000005,0 39.3752,0 41.13272,1.7572799999999997 C 42.89,3.5148 42.89,6.3431999999999995 42.89,12 L 42.89,12 C 42.89,17.6568 42.89,20.4852 41.13272,22.24272 C 39.3752,24 36.546800000000005,24 30.89,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Romanian Deadlift",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 477,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "245 lbs × 9",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 504,
+      "w": 71.140625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 87.14 24\"><path d=\"M 12,0 L 75.14,0 C 80.7968,0 83.6252,0 85.38272,1.7572799999999997 C 87.14,3.5148 87.14,6.3431999999999995 87.14,12 L 87.14,12 C 87.14,17.6568 87.14,20.4852 85.38272,22.24272 C 83.6252,24 80.7968,24 75.14,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 9",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 121.140625,
+      "y": 504,
+      "w": 20.46875,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 36.47 24\"><path d=\"M 12,0 L 24.47,0 C 30.1268,0 32.9552,0 34.71272,1.7572799999999997 C 36.47,3.5148 36.47,6.3431999999999995 36.47,12 L 36.47,12 C 36.47,17.6568 36.47,20.4852 34.71272,22.24272 C 32.9552,24 30.1268,24 24.47,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 8",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 165.609375,
+      "y": 504,
+      "w": 20.5625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 36.56 24\"><path d=\"M 12,0 L 24.560000000000002,0 C 30.216800000000003,0 33.0452,0 34.80272,1.7572799999999997 C 36.56,3.5148 36.56,6.3431999999999995 36.56,12 L 36.56,12 C 36.56,17.6568 36.56,20.4852 34.80272,22.24272 C 33.0452,24 30.216800000000003,24 24.560000000000002,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Squat",
+    "tag": "DIV",
+    "cls": "exercise-name",
+    "rect": {
+      "x": 20,
+      "y": 542,
+      "w": 350,
+      "h": 17
+    },
+    "color": "color(srgb 0.855843 0.783843 0.820078)",
+    "size": "14px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "exercise-name",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-toggle-header",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "260 lbs × 10",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 26,
+      "y": 569,
+      "w": 77.78125,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 93.78 24\"><path d=\"M 12,0 L 81.78,0 C 87.4368,0 90.26520000000001,0 92.02272,1.7572799999999997 C 93.78,3.5148 93.78,6.3431999999999995 93.78,12 L 93.78,12 C 93.78,17.6568 93.78,20.4852 92.02272,22.24272 C 90.26520000000001,24 87.4368,24 81.78,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 9",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 127.78125,
+      "y": 569,
+      "w": 20.46875,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 36.47 24\"><path d=\"M 12,0 L 24.47,0 C 30.1268,0 32.9552,0 34.71272,1.7572799999999997 C 36.47,3.5148 36.47,6.3431999999999995 36.47,12 L 36.47,12 C 36.47,17.6568 36.47,20.4852 34.71272,22.24272 C 32.9552,24 30.1268,24 24.47,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "× 8",
+    "tag": "DIV",
+    "cls": "set-box-content",
+    "rect": {
+      "x": 172.25,
+      "y": 569,
+      "w": 20.5625,
+      "h": 16
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "13px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "set-box-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 36.56 24\"><path d=\"M 12,0 L 24.560000000000002,0 C 30.216800000000003,0 33.0452,0 34.80272,1.7572799999999997 C 36.56,3.5148 36.56,6.3431999999999995 36.56,12 L 36.56,12 C 36.56,17.6568 36.56,20.4852 34.80272,22.24272 C 33.0452,24 30.216800000000003,24 24.560000000000002,24 L 12,24 C 6.3431999999999995,24 3.5148,24 1.7572799999999997,22.24272 C 0,20.4852 0,17.6568 0,12 L 0,12 C 0,6.3431999999999995 0,3.5148 1.7572799999999997,1.7572799999999997 C 3.5148,0 6.3431999999999995,0 12,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-box-row",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "set-boxes-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-collapsible",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "exercise-group",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content-padding",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Settings",
+    "tag": "H2",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 27.5,
+      "w": 70.34375,
+      "h": 21
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "18px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "H2",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-header",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Feedback",
+    "tag": "BUTTON",
+    "cls": "feedback-settings-btn",
+    "rect": {
+      "x": 250.640625,
+      "y": 20,
+      "w": 75.359375,
+      "h": 36
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "feedback-settings-btn",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-header",
+        "bg": "color(srgb 0.545098 0.227451 0.384314 / 0.08)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Weekly Splits",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 93,
+      "w": 119.328125,
+      "h": 40
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 119.33 40\"><path d=\"M 20,0 L 99.33,0 C 108.758,0 113.472,0 116.4012,2.9288 C 119.33,5.858 119.33,10.572 119.33,20 L 119.33,20 C 119.33,29.428 119.33,34.142 116.4012,37.0712 C 113.472,40 108.758,40 99.33,40 L 20,40 C 10.572,40 5.858,40 2.9288,37.0712 C 0,34.142 0,29.428 0,20 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Data",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 135.328125,
+      "y": 93,
+      "w": 119.34375,
+      "h": 40
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 119.34 40\"><path d=\"M 20,0 L 99.34,0 C 108.768,0 113.482,0 116.41120000000001,2.9288 C 119.34,5.858 119.34,10.572 119.34,20 L 119.34,20 C 119.34,29.428 119.34,34.142 116.41120000000001,37.0712 C 113.482,40 108.768,40 99.34,40 L 20,40 C 10.572,40 5.858,40 2.9288,37.0712 C 0,34.142 0,29.428 0,20 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Preferences",
+    "tag": "BUTTON",
+    "cls": "auto-squircle-plate",
+    "rect": {
+      "x": 254.671875,
+      "y": 93,
+      "w": 119.328125,
+      "h": 40
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 119.33 40\"><path d=\"M 20,0 L 99.33,0 C 108.758,0 113.472,0 116.4012,2.9288 C 119.33,5.858 119.33,10.572 119.33,20 L 119.33,20 C 119.33,29.428 119.33,34.142 116.4012,37.0712 C 113.472,40 108.758,40 99.33,40 L 20,40 C 10.572,40 5.858,40 2.9288,37.0712 C 0,34.142 0,29.428 0,20 L 0,20 C 0,10.572 0,5.858 2.9288,2.9288 C 5.858,0 10.572,0 20,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Potential Duplicate Warning",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 171,
+      "w": 198.59375,
+      "h": 18
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "15px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "On",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option is-selected auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 207,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option is-selected auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 176 38\"><path d=\"M 19,0 L 157,0 C 165.9566,0 170.4349,0 173.21764,2.7823599999999997 C 176,5.5651 176,10.043399999999998 176,19 L 176,19 C 176,27.9566 176,32.4349 173.21764,35.21764 C 170.4349,38 165.9566,38 157,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Off",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option auto-squircle-plate",
+    "rect": {
+      "x": 198,
+      "y": 207,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 177 38\"><path d=\"M 19,0 L 158,0 C 166.9566,0 171.4349,0 174.21764,2.7823599999999997 C 177,5.5651 177,10.043399999999998 177,19 L 177,19 C 177,27.9566 177,32.4349 174.21764,35.21764 C 171.4349,38 166.9566,38 158,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Weight Reminder Banner",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 271,
+      "w": 177.484375,
+      "h": 18
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "15px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "On",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option is-selected auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 301,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option is-selected auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 176 38\"><path d=\"M 19,0 L 157,0 C 165.9566,0 170.4349,0 173.21764,2.7823599999999997 C 176,5.5651 176,10.043399999999998 176,19 L 176,19 C 176,27.9566 176,32.4349 173.21764,35.21764 C 170.4349,38 165.9566,38 157,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Off",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option auto-squircle-plate",
+    "rect": {
+      "x": 198,
+      "y": 301,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 177 38\"><path d=\"M 19,0 L 158,0 C 166.9566,0 171.4349,0 174.21764,2.7823599999999997 C 177,5.5651 177,10.043399999999998 177,19 L 177,19 C 177,27.9566 177,32.4349 174.21764,35.21764 C 171.4349,38 166.9566,38 158,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Rep Ember Effect (8-12)",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 365,
+      "w": 173.40625,
+      "h": 18
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "15px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "On",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option is-selected auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 395,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option is-selected auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 176 38\"><path d=\"M 19,0 L 157,0 C 165.9566,0 170.4349,0 173.21764,2.7823599999999997 C 176,5.5651 176,10.043399999999998 176,19 L 176,19 C 176,27.9566 176,32.4349 173.21764,35.21764 C 170.4349,38 165.9566,38 157,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Off",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option auto-squircle-plate",
+    "rect": {
+      "x": 198,
+      "y": 395,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 177 38\"><path d=\"M 19,0 L 158,0 C 166.9566,0 171.4349,0 174.21764,2.7823599999999997 C 177,5.5651 177,10.043399999999998 177,19 L 177,19 C 177,27.9566 177,32.4349 174.21764,35.21764 C 171.4349,38 166.9566,38 158,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Timer Sounds",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 459,
+      "w": 99.046875,
+      "h": 18
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "15px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "On",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 489,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 176 38\"><path d=\"M 19,0 L 157,0 C 165.9566,0 170.4349,0 173.21764,2.7823599999999997 C 176,5.5651 176,10.043399999999998 176,19 L 176,19 C 176,27.9566 176,32.4349 173.21764,35.21764 C 170.4349,38 165.9566,38 157,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Off",
+    "tag": "BUTTON",
+    "cls": "settings-segment-option is-selected auto-squircle-plate",
+    "rect": {
+      "x": 198,
+      "y": 489,
+      "w": 176,
+      "h": 36
+    },
+    "color": "rgb(255, 255, 255)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "settings-segment-option is-selected auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 177 38\"><path d=\"M 19,0 L 158,0 C 166.9566,0 171.4349,0 174.21764,2.7823599999999997 C 177,5.5651 177,10.043399999999998 177,19 L 177,19 C 177,27.9566 177,32.4349 174.21764,35.21764 C 171.4349,38 166.9566,38 158,38 L 19,38 C 10.043399999999998,38 5.5651,38 2.7823599999999997,35.21764 C 0,32.4349 0,27.9566 0,19 L 0,19 C 0,10.043399999999998 0,5.5651 2.7823599999999997,2.7823599999999997 C 5.5651,0 10.043399999999998,0 19,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "settings-segmented",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Log Coach",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 553,
+      "w": 75.6875,
+      "h": 18
+    },
+    "color": "rgb(232, 208, 208)",
+    "size": "15px",
+    "weight": "600",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Your key stays on this device and is used directly from this browser.",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 583,
+      "w": 358,
+      "h": 37.1875
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "12px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "18.6px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Add API key",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 32,
+      "y": 642.1875,
+      "w": 110.171875,
+      "h": 20
+    },
+    "color": "rgb(233, 221, 227)",
+    "size": "14px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"none\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display: inline-block; vertical-align: middle;\"><path opacity=\"0.5\" d=\"M3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 7.28595 22 4.92893 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447Z\" fill=\"currentColor\"></path><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6514 13.8603C18.4495 12.0621 18.4495 9.14675 16.6514 7.34861C14.8532 5.55046 11.9379 5.55046 10.1397 7.34861C8.94578 8.54257 8.5446 10.2291 8.93621 11.7541C8.99937 12 8.94328 12.266 8.76372 12.4456L6.28899 14.9203C6.07705 15.1322 5.97294 15.429 6.00604 15.7269L6.16075 17.1193C6.17725 17.2678 6.24377 17.4062 6.34939 17.5118L6.4882 17.6506C6.59381 17.7562 6.73223 17.8228 6.88068 17.8392L8.27307 17.994C8.57097 18.0271 8.86776 17.9229 9.0797 17.711L9.3764 17.4143L8.21332 16.264C7.91882 15.9727 7.91621 15.4978 8.20748 15.2033C8.49876 14.9088 8.97363 14.9062 9.26813 15.1975L10.4342 16.3507L10.4371 16.3536L11.5546 15.2361C11.7342 15.0565 12 15.0006 12.2459 15.0638C13.7709 15.4554 15.4574 15.0542 16.6514 13.8603ZM12.3905 9.72378C12.9112 9.20308 13.7554 9.20308 14.2761 9.72378C14.7968 10.2445 14.7968 11.0887 14.2761 11.6094C13.7554 12.1301 12.9112 12.1301 12.3905 11.6094C11.8698 11.0887 11.8698 10.2445 12.3905 9.72378Z\" fill=\"currentColor\"></path></svg>"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "btn btn-secondary auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 358 44\"><path d=\"M 22,0 L 336,0 C 346.3708,0 351.5562,0 354.77832,3.2216799999999997 C 358,6.4437999999999995 358,11.629199999999999 358,22 L 358,22 C 358,32.3708 358,37.556200000000004 354.77832,40.77832 C 351.5562,44 346.3708,44 336,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Required",
+    "tag": "SPAN",
+    "cls": "",
+    "rect": {
+      "x": 305.984375,
+      "y": 645.1875,
+      "w": 52.015625,
+      "h": 14
+    },
+    "color": "rgb(199, 125, 160)",
+    "size": "12px",
+    "weight": "600",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "SPAN",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "BUTTON",
+        "cls": "btn btn-secondary auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 358 44\"><path d=\"M 22,0 L 336,0 C 346.3708,0 351.5562,0 354.77832,3.2216799999999997 C 358,6.4437999999999995 358,11.629199999999999 358,22 L 358,22 C 358,32.3708 358,37.556200000000004 354.77832,40.77832 C 351.5562,44 346.3708,44 336,44 L 22,44 C 11.629199999999999,44 6.4437999999999995,44 3.2216799999999997,40.77832 C 0,37.556200000000004 0,32.3708 0,22 L 0,22 C 0,11.629199999999999 0,6.4437999999999995 3.2216799999999997,3.2216799999999997 C 6.4437999999999995,0 11.629199999999999,0 22,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "GPT OSS 120B",
+    "tag": "BUTTON",
+    "cls": "coach-model-option is-selected auto-squircle-plate",
+    "rect": {
+      "x": 16,
+      "y": 684.1875,
+      "w": 175,
+      "h": 32
+    },
+    "color": "rgb(232, 193, 208)",
+    "size": "11px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "coach-model-option is-selected auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 175 34\"><path d=\"M 17,0 L 158,0 C 166.0138,0 170.0207,0 172.51052,2.48948 C 175,4.9793 175,8.9862 175,17 L 175,17 C 175,25.0138 175,29.020699999999998 172.51052,31.51052 C 170.0207,34 166.0138,34 158,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Qwen3.6 27B",
+    "tag": "BUTTON",
+    "cls": "coach-model-option auto-squircle-plate",
+    "rect": {
+      "x": 199,
+      "y": 684.1875,
+      "w": 175,
+      "h": 32
+    },
+    "color": "rgb(154, 130, 144)",
+    "size": "11px",
+    "weight": "700",
+    "font": "Arial",
+    "line": "normal",
+    "ancestors": [
+      {
+        "tag": "BUTTON",
+        "cls": "coach-model-option auto-squircle-plate",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1",
+        "plate": "<svg class=\"auto-squircle-svg\" aria-hidden=\"true\" focusable=\"false\" preserveAspectRatio=\"none\" viewBox=\"0 0 176 34\"><path d=\"M 17,0 L 159,0 C 167.0138,0 171.0207,0 173.51052,2.48948 C 176,4.9793 176,8.9862 176,17 L 176,17 C 176,25.0138 176,29.020699999999998 173.51052,31.51052 C 171.0207,34 167.0138,34 159,34 L 17,34 C 8.9862,34 4.9793,34 2.48948,31.51052 C 0,29.020699999999998 0,25.0138 0,17 L 0,17 C 0,8.9862 0,4.9793 2.48948,2.48948 C 4.9793,0 8.9862,0 17,0 Z\"></path></svg>"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "text": "Better default for app-aware help, long answers, and spec-heavy questions.",
+    "tag": "DIV",
+    "cls": "",
+    "rect": {
+      "x": 16,
+      "y": 724.1875,
+      "w": 358,
+      "h": 33
+    },
+    "color": "color(srgb 0.780392 0.490196 0.627451 / 0.55)",
+    "size": "11px",
+    "weight": "400",
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif",
+    "line": "16.5px",
+    "ancestors": [
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-content",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal",
+        "bg": "rgb(26, 10, 18)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "modal-overlay",
+        "bg": "rgba(12, 6, 10, 0.5)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "app-container",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "none",
+        "opacity": "1"
+      },
+      {
+        "tag": "DIV",
+        "cls": "",
+        "bg": "rgba(0, 0, 0, 0)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "BODY",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      },
+      {
+        "tag": "HTML",
+        "cls": "",
+        "bg": "rgb(26, 10, 18)",
+        "img": "radial-gradient(rgb(13, 6, 10) 0%, rgb(26, 10, 18) 40%, rgb(26, 10, 18) 70%, rgb(34, 16, 26) 100%)",
+        "opacity": "1"
+      }
+    ]
+  }
+]

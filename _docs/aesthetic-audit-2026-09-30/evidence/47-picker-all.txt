@@ -1,0 +1,102 @@
+Fitness Tracker
+Today
+Sample log — Marcus Chen
+Start my own
+Thursday, Oct 1
+REST
+No activities on this day.
+Add Activity
++ Create New Activity
+Touch and hold an activity to permanently delete it, even when it has no sets.
+Find activities to merge
+All
+pull
+push
+legs
+cardio
+other
+mobility
+core
+stretch
+Edit
+ALL ACTIVITIES
+Long press to delete
+Barbell Rows
+pull · Last: Sep 28
+Dumbbell Curls
+pull · Last: Sep 28
+Lat Pulldowns
+pull · Last: Sep 28
+Bench Press
+push · Last: Sep 26
+Lateral Raises
+push · Last: Sep 26
+Overhead Press
+push · Last: Sep 26
+Push Ups
+push · Last: Sep 26
+Dips
+push · Last: Sep 26
+Incline Dumbbell Press
+push · Last: Sep 26
+Tricep Pushdowns
+push · Last: Sep 26
+Face Pulls
+pull · Last: Sep 28
+Banded Pullups
+pull · Last: Aug 8
+Pullups
+pull · Last: Sep 28
+Romanian Deadlift
+legs · Last: Sep 29
+Squat
+legs · Last: Sep 29
+Calf Raises
+legs · Last: Sep 29
+Leg Press
+legs · Last: Sep 29
+Walking Lunges
+legs · Last: Sep 29
+Leg Curls
+legs · Last: Sep 29
+Dead Hangs
+pull · Last: Sep 28
+pair
+Band Pull Aparts
+pull · Last: Apr 14
+Plank
+core · Last: Sep 1
+pair
+Ab Wheel Rollouts
+core · Last: May 27
+Hanging Leg Raises
+core · Last: Jul 23
+Cable Woodchops
+core · Last: Apr 1
+Treadmill Run
+cardio · Last: Aug 27
+pair
+Sauna
+other · Last: Sep 26
+pair
+Hip Flexor Stretches
+mobility · Last: Sep 24
+pair
+Pigeon Stretch
+mobility · Last: Sep 24
+pair
+Thoracic Spine Rotation
+mobility · Last: Sep 24
+pair
+Stretching (General)
+mobility · Last: Apr 29
+pair
+Cold Plunge
+other · Last: May 1
+pair
+Foam Rolling
+other · Last: Apr 29
+pair
+Outdoor Run
+cardio · Last: Sep 27
+pair
