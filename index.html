@@ -2301,6 +2301,163 @@
             border: 0 !important;
         }
         .add-activity-icon-pair { color: #d8aa55; }
+
+        /* ===== ROUTINE SYSTEM (Phase 2) =====
+           Uses only existing tokens. No new colours introduced: the mode pills
+           derive from --accent via color-mix, so they follow the palette if it
+           ever moves. Radii follow the app's existing scale (12 container,
+           8 small control, 20 pill). */
+        .rt-section-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 18px 0 8px;
+        }
+        .rt-day-row, .rt-routine-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            min-height: 48px;          /* above the 44px floor */
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: var(--surface);
+            border: none;
+            border-radius: 12px;
+            color: var(--text-body);
+            text-align: left;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+            opacity: 0;
+            animation: rtRowIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+        }
+        .rt-day-row:active, .rt-routine-row:active { transform: scale(0.95); }
+        .rt-day-row.is-open { background: var(--bg-edge); }
+        @keyframes rtRowIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .rt-day-row, .rt-routine-row { animation: none; opacity: 1; }
+        }
+        .rt-day-name {
+            flex: 0 0 42px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .rt-day-value { flex: 1; font-size: 14px; font-weight: 500; }
+        .rt-day-value.is-empty { color: var(--text-placeholder); font-weight: 400; }
+        .rt-routine-name { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
+        .rt-routine-meta { display: block; font-size: 11px; font-weight: 400; color: var(--text-faint); margin-top: 3px; }
+        /* Mode pill — the D2 vocabulary. Gym word on top, plain word under it. */
+        .rt-mode-pill {
+            flex: 0 0 auto;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: color-mix(in srgb, var(--accent) 20%, var(--bg-page));
+            color: color-mix(in srgb, var(--accent) 70%, var(--text-bright));
+            text-align: center;
+            line-height: 1.15;
+        }
+        .rt-mode-pill .rt-mode-primary { display: block; font-size: 11px; font-weight: 600; }
+        .rt-mode-pill .rt-mode-secondary {
+            display: block;
+            font-size: 9px;
+            font-weight: 400;
+            opacity: 0.75;
+            letter-spacing: 0.3px;
+        }
+        .rt-mode-pill.is-rest {
+            background: color-mix(in srgb, var(--text-faint) 18%, var(--bg-page));
+            color: var(--text-faint);
+        }
+        .rt-choice-list { padding: 2px 0 8px 12px; }
+        .rt-choice {
+            display: block;
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-body);
+            font-family: inherit;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .rt-choice:active { transform: scale(0.95); }
+        .rt-choice.is-current {
+            background: color-mix(in srgb, var(--accent) 22%, var(--bg-page));
+            color: var(--text-bright);
+            font-weight: 600;
+        }
+        .rt-empty {
+            padding: 20px 12px;
+            text-align: center;
+            color: var(--text-placeholder);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .rt-inline-form { display: flex; gap: 8px; margin-top: 8px; }
+        .rt-inline-form input {
+            flex: 1;
+            min-height: 44px;
+            padding: 10px 12px;
+            background: var(--surface);
+            border: 1px solid var(--surface-edge);
+            border-radius: 8px;
+            color: var(--text-bright);
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .rt-inline-form input::placeholder { color: var(--text-placeholder); }
+        .rt-mode-choice-row { display: flex; gap: 8px; margin-top: 8px; }
+        .rt-mode-choice {
+            flex: 1;
+            min-height: 54px;
+            padding: 8px;
+            background: var(--surface);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-faint);
+            font-family: inherit;
+            cursor: pointer;
+            line-height: 1.2;
+            transition: background 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .rt-mode-choice:active { transform: scale(0.95); }
+        .rt-mode-choice.is-on {
+            background: color-mix(in srgb, var(--accent) 24%, var(--bg-page));
+            color: var(--text-bright);
+        }
+        .rt-mode-choice b { display: block; font-size: 13px; font-weight: 600; }
+        .rt-mode-choice span { display: block; font-size: 10px; opacity: 0.8; margin-top: 2px; }
+        .rt-row-action {
+            flex: 0 0 auto;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-faint);
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .rt-row-action:active { transform: scale(0.95); }
+        .rt-row-action.is-danger { color: var(--danger); }
+
     </style>
 </head>
 <body>
@@ -3253,12 +3410,13 @@ const deleteDatabaseByName = name => new Promise(resolve => {
 
 const initDB = () => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(activeDbName, 3);
+    const request = indexedDB.open(activeDbName, 4);
     request.onerror = () => reject(request.error);
     // Fires when another open tab holds a connection that blocks a version
     // upgrade. Without this the promise never settles either way and the app
-    // hangs on a blank screen with no error. Harmless at version 3; required
-    // before the version 4 bump that bodyweight units and modifier storage need.
+    // hangs on a blank screen with no error. Load-bearing as of the version 4
+    // bump, which adds the routine-system stores — a version upgrade is now a
+    // real event this app performs, not a hypothetical one.
     request.onblocked = () => {
       reject(new Error('Another open tab is blocking a database upgrade. Close the app\'s other tabs and reload.'));
     };
@@ -3273,7 +3431,18 @@ const initDB = () => {
         db = null;
         showDbError('stay connected — reload the app');
       };
-      resolve(db);
+      // Run the routine migration before any caller gets the handle, so nothing can
+      // read a half-migrated database. It is idempotent and cheap once done (a single
+      // keyed read). A failure is logged and boot continues: nothing has been
+      // deleted, so the pre-migration split model still works and the app must not
+      // white-screen over it.
+      migrateRoutineSystem().then(outcome => {
+        if (outcome && !outcome.skipped) {
+          console.info('[routine migration] wrote', outcome.routines, 'routines,', outcome.week, 'week records,', outcome.dayRoutines, 'day overrides');
+        }
+      }).catch(err => {
+        console.error('[routine migration] failed, continuing on the old split model:', err);
+      }).then(() => resolve(db));
     };
     request.onupgradeneeded = e => {
       const database = e.target.result;
@@ -3338,6 +3507,30 @@ const initDB = () => {
         });
         familiesStore.createIndex('by-name', 'name', {
           unique: false
+        });
+      }
+      // Version 4 — the routine system. See ROUTINE-SYSTEM-SPEC.md.
+      // `routines` is the shared library; `week` maps the seven weekdays onto it;
+      // `dayRoutines` holds single-date overrides. Creation only: moving data off
+      // `templates` and the `__split_` dayNotes keys happens in
+      // migrateRoutineSystem(), which runs outside the upgrade transaction so it
+      // can be idempotent, re-runnable, and unit-tested.
+      if (!database.objectStoreNames.contains('routines')) {
+        const routinesStore = database.createObjectStore('routines', {
+          keyPath: 'id'
+        });
+        routinesStore.createIndex('by-name', 'name', {
+          unique: false
+        });
+      }
+      if (!database.objectStoreNames.contains('week')) {
+        database.createObjectStore('week', {
+          keyPath: 'dayOfWeek'
+        });
+      }
+      if (!database.objectStoreNames.contains('dayRoutines')) {
+        database.createObjectStore('dayRoutines', {
+          keyPath: 'date'
         });
       }
     };
@@ -3557,7 +3750,184 @@ const dbOps = {
   },
   families: {
     getAll: () => idbRun('movementFamilies', 'readonly', store => store.getAll(), result => result.sort((a, b) => (a.name || '').localeCompare(b.name || '')))
+  },
+  routines: {
+    get: id => idbRun('routines', 'readonly', store => store.get(id)),
+    put: routine => idbRun('routines', 'readwrite', store => store.put(routine), () => undefined),
+    delete: id => idbRun('routines', 'readwrite', store => store.delete(id), () => undefined),
+    getAll: () => idbRun('routines', 'readonly', store => store.getAll(), result => result.sort((a, b) => (a.name || '').localeCompare(b.name || '')))
+  },
+  week: {
+    get: dayOfWeek => idbRun('week', 'readonly', store => store.get(dayOfWeek)),
+    set: (dayOfWeek, routineId) => idbRun('week', 'readwrite', store => store.put({
+      dayOfWeek,
+      routineId: routineId || null
+    }), () => undefined),
+    getAll: () => idbRun('week', 'readonly', store => store.getAll(), result => result.sort((a, b) => a.dayOfWeek - b.dayOfWeek))
+  },
+  dayRoutines: {
+    get: date => idbRun('dayRoutines', 'readonly', store => store.get(date)),
+    set: (date, routineId) => idbRun('dayRoutines', 'readwrite', store => store.put({
+      date,
+      routineId: routineId || null
+    }), () => undefined),
+    delete: date => idbRun('dayRoutines', 'readwrite', store => store.delete(date), () => undefined),
+    getAll: () => idbRun('dayRoutines', 'readonly', store => store.getAll(), result => result.sort((a, b) => a.date.localeCompare(b.date)))
   }
+};
+
+// ============ ROUTINE SYSTEM MIGRATION ============
+// Moves the old weekday-split model onto the routine model in ROUTINE-SYSTEM-SPEC.md.
+//
+// Deliberately ADDITIVE. It reads `templates` and the `__split_<date>` records in
+// `dayNotes`, and writes `routines` / `week` / `dayRoutines`. It destroys nothing:
+// the old records stay readable because the day screen still reads them. Deleting
+// them here would break the app. The readers get switched over in a later phase,
+// and only then can the old keys go.
+//
+// Note on `dayNotes`: it is not only a notes store, it is this app's entire
+// key-value config bag. It currently holds nine distinct magic key families —
+// __bodyweight__ (plus __bodyweight_<date> and __bodyweight_confirmed_<date>),
+// __categories__, __duration_presets__, __preferences__, __quicknote_freq__,
+// __unit__, __demo_seeded_through__, and __split_<date>. This migration touches
+// ONLY the __split_ family. Evacuating the rest is a separate job and is not
+// claimed here.
+
+const SPLIT_NOTE_PREFIX = '__split_';
+const REST_ROUTINE_NAME = 'Rest';
+
+// Pure: old records in, new records out. No IndexedDB, no clock of its own, and no
+// id generation of its own — the caller supplies `makeId` and `now`. That makes it
+// unit-testable and makes two runs on identical input produce identical output.
+const buildRoutineMigration = (templates, daySplitRecords, categoryNames, makeId, now) => {
+  const categories = (categoryNames || []).map(c => String(c || '').trim().toLowerCase()).filter(Boolean);
+  // A category literally named "Rest" makes a weekday labelled "Rest" ambiguous.
+  // The old model cannot tell the pseudo-split from the real category either, so
+  // flag it rather than guess (ROUTINE-SYSTEM-SPEC.md 5.4).
+  const restIsRealCategory = categories.indexOf('rest') !== -1;
+  const warnings = [];
+  if (restIsRealCategory) {
+    warnings.push('A category named "Rest" exists, so a weekday labelled "Rest" is ambiguous. Treated as a real split, not a rest day. Confirm before relying on it.');
+  }
+  const routines = [];
+  const byKey = new Map();
+  const resolveLabel = label => {
+    const raw = label == null ? '' : String(label).trim();
+    if (!raw || raw === '__none__') return null;
+    const key = raw.toLowerCase();
+    const existing = byKey.get(key);
+    if (existing) return existing.id;
+    let routine;
+    if (key === 'rest' && !restIsRealCategory) {
+      routine = {
+        id: makeId(key),
+        name: REST_ROUTINE_NAME,
+        mode: 'rest',
+        manualOrder: null,
+        createdAt: now
+      };
+    } else {
+      routine = {
+        id: makeId(key),
+        name: raw,
+        mode: 'split',
+        splitName: key,
+        manualOrder: null,
+        createdAt: now
+      };
+      if (categories.indexOf(key) === -1) {
+        warnings.push('Weekday label "' + raw + '" matches no current category; its routine reads as unassigned until that category returns or the routine is edited.');
+      }
+    }
+    byKey.set(key, routine);
+    routines.push(routine);
+    return routine.id;
+  };
+  // All seven weekday records are always written, including empty ones. Seven
+  // present is the migration's own completion marker, so no sentinel row is needed.
+  const labelByDow = new Map();
+  (templates || []).forEach(t => {
+    if (t && typeof t.dayOfWeek === 'number' && t.dayOfWeek >= 0 && t.dayOfWeek <= 6) {
+      labelByDow.set(t.dayOfWeek, t.label);
+    }
+  });
+  const week = [];
+  for (let dow = 0; dow <= 6; dow++) {
+    week.push({
+      dayOfWeek: dow,
+      routineId: resolveLabel(labelByDow.get(dow))
+    });
+  }
+  const dayRoutines = [];
+  const seen = new Set();
+  (daySplitRecords || []).forEach(rec => {
+    if (!rec || typeof rec.date !== 'string' || rec.date.indexOf(SPLIT_NOTE_PREFIX) !== 0) return;
+    const date = rec.date.slice(SPLIT_NOTE_PREFIX.length);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      warnings.push('Skipped a split record with an unparseable date key: ' + rec.date);
+      return;
+    }
+    if (seen.has(date)) return;
+    seen.add(date);
+    // `__none__` resolves to null, which differs meaningfully from having no record
+    // at all: it means the user deliberately cleared that day's split.
+    dayRoutines.push({
+      date,
+      routineId: resolveLabel(rec.note)
+    });
+  });
+  dayRoutines.sort((a, b) => a.date.localeCompare(b.date));
+  return {
+    routines,
+    week,
+    dayRoutines,
+    warnings
+  };
+};
+
+// Deterministic ids, so a run interrupted partway through overwrites its own
+// records on retry instead of orphaning them. generateId() is time plus random and
+// would duplicate on every attempt.
+const routineMigrationId = key => 'rt_mig_' + String(key).replace(/[^a-z0-9]+/g, '_').replace(/^_+/, '').replace(/_+$/, '');
+
+const migrateRoutineSystem = async () => {
+  const existingWeek = await dbOps.week.getAll();
+  if (existingWeek.length >= 7) return {
+    skipped: true
+  };
+  const [templates, allDayNotes, exercises] = await Promise.all([dbOps.templates.getAll(), dbOps.dayNotes.getAll(), dbOps.exercises.getAll()]);
+  const daySplitRecords = allDayNotes.filter(n => n && typeof n.date === 'string' && n.date.indexOf(SPLIT_NOTE_PREFIX) === 0);
+  // Categories come from the stored __categories__ list first, then anything an
+  // activity actually carries, so a label is only reported as orphaned when it
+  // matches neither.
+  const categoryNames = [];
+  const pushCat = c => {
+    if (!c) return;
+    const str = String(c);
+    if (!categoryNames.some(k => k.toLowerCase() === str.toLowerCase())) categoryNames.push(str);
+  };
+  const catsRecord = allDayNotes.find(n => n && n.date === '__categories__');
+  if (catsRecord && catsRecord.note) {
+    try {
+      const parsed = JSON.parse(catsRecord.note);
+      if (Array.isArray(parsed)) parsed.forEach(pushCat);
+    } catch {/* a corrupt list is not a reason to abort the migration */}
+  }
+  exercises.forEach(ex => getExCategories(ex).forEach(pushCat));
+  const result = buildRoutineMigration(templates, daySplitRecords, categoryNames, routineMigrationId, Date.now());
+  for (const routine of result.routines) await dbOps.routines.put(routine);
+  for (const day of result.dayRoutines) await dbOps.dayRoutines.set(day.date, day.routineId);
+  // `week` is written last on purpose: it is the completion marker, so a failure
+  // partway through leaves the migration incomplete and it simply runs again.
+  for (const entry of result.week) await dbOps.week.set(entry.dayOfWeek, entry.routineId);
+  result.warnings.forEach(w => console.warn('[routine migration]', w));
+  return {
+    skipped: false,
+    routines: result.routines.length,
+    week: result.week.length,
+    dayRoutines: result.dayRoutines.length,
+    warnings: result.warnings
+  };
 };
 
 // ============ UTILITY FUNCTIONS ============
@@ -10825,6 +11195,188 @@ const updateSvgCornerPlates = () => {
 };
 window.addEventListener('resize', updateSvgCornerPlates);
 
+// ============ ROUTINE LIBRARY (Phase 2) ============
+// ROUTE-AGNOSTIC BY CONTRACT (ROUTINE-SYSTEM-SPEC.md D10). This component takes
+// exactly one prop — onClose — reads its own data, knows nothing about where it
+// was opened from, reads no navigation state, and assumes no back destination.
+// Relocating it later is a one-line change at the call site.
+const RT_DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+const RoutineModePill = ({ mode }) => {
+  const label = mode === 'rest' ? ['Rest', 'no session'] : mode === 'lineup' ? ['Routine', 'detailed'] : ['Split Day', 'simple'];
+  return /*#__PURE__*/React.createElement("span", {
+    className: 'rt-mode-pill' + (mode === 'rest' ? ' is-rest' : '')
+  }, /*#__PURE__*/React.createElement("span", { className: "rt-mode-primary" }, label[0]), /*#__PURE__*/React.createElement("span", { className: "rt-mode-secondary" }, label[1]));
+};
+
+const RoutineLibraryModal = ({ onClose }) => {
+  const [routines, setRoutines] = useState([]);
+  const [week, setWeek] = useState([]);
+  const [openDay, setOpenDay] = useState(null);
+  const [newName, setNewName] = useState('');
+  const [newMode, setNewMode] = useState('split');
+  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const reload = async () => {
+    try {
+      const [r, w] = await Promise.all([dbOps.routines.getAll(), dbOps.week.getAll()]);
+      setRoutines(r);
+      setWeek(w.length ? w : Array.from({ length: 7 }, (_, i) => ({ dayOfWeek: i, routineId: null })));
+    } catch (err) {
+      console.error('Routine load failed:', err);
+      showDbError('load your routines');
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => { reload(); }, []);
+
+  const byId = {};
+  routines.forEach(r => { byId[r.id] = r; });
+  const daysUsing = id => week.filter(w => w.routineId === id).map(w => RT_DAY_NAMES[w.dayOfWeek]);
+
+  const assign = async (dayOfWeek, routineId) => {
+    await safeDb(() => dbOps.week.set(dayOfWeek, routineId), 'assign a routine to that day');
+    setOpenDay(null);
+    reload();
+  };
+  const createRoutine = async () => {
+    const name = newName.trim();
+    if (!name) return;
+    const routine = {
+      id: generateId('rt'),
+      name,
+      mode: newMode,
+      manualOrder: null,
+      createdAt: Date.now()
+    };
+    if (newMode === 'split') routine.splitName = name.toLowerCase();
+    if (newMode === 'lineup') routine.activityIds = [];
+    await safeDb(() => dbOps.routines.put(routine), 'create that routine');
+    setNewName('');
+    reload();
+  };
+  const reallyDelete = async routine => {
+    const affected = week.filter(w => w.routineId === routine.id);
+    for (const w of affected) await safeDb(() => dbOps.week.set(w.dayOfWeek, null), 'clear that day');
+    await safeDb(() => dbOps.routines.delete(routine.id), 'delete that routine');
+    setConfirmDelete(null);
+    reload();
+  };
+
+  // D12: deletion names the days it will empty, and says the log is safe.
+  const deleteMessage = routine => {
+    const days = daysUsing(routine.id);
+    if (!days.length) return 'No day uses this routine. Your logged sets are not affected.';
+    const list = days.length === 1 ? days[0] : days.slice(0, -1).join(', ') + ' and ' + days[days.length - 1];
+    return list + (days.length === 1 ? ' uses' : ' use') + ' this routine. ' + (days.length === 1 ? 'It' : 'They') + ' will become unassigned. Your logged sets are not affected.';
+  };
+
+  const existingNames = routines.map(r => r.name.toLowerCase());
+  const duplicateWarning = newName.trim() && existingNames.indexOf(newName.trim().toLowerCase()) !== -1;
+
+  return /*#__PURE__*/React.createElement("div", { className: "modal-overlay", onClick: onClose },
+    /*#__PURE__*/React.createElement("div", {
+      className: "modal",
+      onClick: e => e.stopPropagation(),
+      style: { display: 'flex', flexDirection: 'column', maxHeight: '100%' }
+    },
+      /*#__PURE__*/React.createElement("div", { className: "modal-header" },
+        /*#__PURE__*/React.createElement("h2", null, "Routines"),
+        /*#__PURE__*/React.createElement("button", { className: "close-btn", onClick: onClose, "aria-label": "Close" }, "×")
+      ),
+      /*#__PURE__*/React.createElement("div", { className: "modal-content", style: { flex: 1, overflowY: 'auto' } },
+        loading ? /*#__PURE__*/React.createElement("div", { className: "rt-empty" }, "Loading…") :
+        /*#__PURE__*/React.createElement(React.Fragment, null,
+          /*#__PURE__*/React.createElement("div", { className: "rt-section-label" }, "Your week"),
+          week.map((w, i) => {
+            const routine = w.routineId ? byId[w.routineId] : null;
+            const isOpen = openDay === w.dayOfWeek;
+            return /*#__PURE__*/React.createElement(React.Fragment, { key: w.dayOfWeek },
+              /*#__PURE__*/React.createElement("button", {
+                className: 'rt-day-row' + (isOpen ? ' is-open' : ''),
+                style: { animationDelay: (i * 45) + 'ms' },
+                onClick: () => setOpenDay(isOpen ? null : w.dayOfWeek)
+              },
+                /*#__PURE__*/React.createElement("span", { className: "rt-day-name" }, RT_DAY_NAMES[w.dayOfWeek].substring(0, 3)),
+                /*#__PURE__*/React.createElement("span", { className: 'rt-day-value' + (routine ? '' : ' is-empty') }, routine ? routine.name : 'None'),
+                routine ? /*#__PURE__*/React.createElement(RoutineModePill, { mode: routine.mode }) : null
+              ),
+              isOpen && /*#__PURE__*/React.createElement("div", { className: "rt-choice-list" },
+                /*#__PURE__*/React.createElement("button", {
+                  className: 'rt-choice' + (w.routineId === null ? ' is-current' : ''),
+                  onClick: () => assign(w.dayOfWeek, null)
+                }, "None"),
+                routines.map(r => /*#__PURE__*/React.createElement("button", {
+                  key: r.id,
+                  className: 'rt-choice' + (w.routineId === r.id ? ' is-current' : ''),
+                  onClick: () => assign(w.dayOfWeek, r.id)
+                }, r.name)),
+                routines.length === 0 && /*#__PURE__*/React.createElement("div", { className: "rt-empty" }, "Make a routine below first.")
+              )
+            );
+          }),
+          /*#__PURE__*/React.createElement("div", { className: "rt-section-label" }, "Your routines"),
+          routines.length === 0 && /*#__PURE__*/React.createElement("div", { className: "rt-empty" }, "No routines yet. A Split Day points at one split and ranks its activities by use. A Routine is a checklist you build yourself."),
+          routines.map((r, i) => /*#__PURE__*/React.createElement("div", {
+            key: r.id,
+            className: "rt-routine-row",
+            style: { animationDelay: (i * 45) + 'ms', cursor: 'default' }
+          },
+            /*#__PURE__*/React.createElement("span", { className: "rt-routine-name" },
+              r.name,
+              /*#__PURE__*/React.createElement("span", { className: "rt-routine-meta" },
+                daysUsing(r.id).length ? daysUsing(r.id).map(d => d.substring(0, 3)).join(', ') : 'Not used on any day')
+            ),
+            /*#__PURE__*/React.createElement(RoutineModePill, { mode: r.mode }),
+            /*#__PURE__*/React.createElement("button", {
+              className: "rt-row-action is-danger",
+              onClick: () => setConfirmDelete(r),
+              "aria-label": 'Delete ' + r.name
+            }, "Delete")
+          )),
+          /*#__PURE__*/React.createElement("div", { className: "rt-section-label" }, "New routine"),
+          /*#__PURE__*/React.createElement("div", { className: "rt-mode-choice-row" },
+            /*#__PURE__*/React.createElement("button", {
+              className: 'rt-mode-choice' + (newMode === 'split' ? ' is-on' : ''),
+              onClick: () => setNewMode('split')
+            }, /*#__PURE__*/React.createElement("b", null, "Split Day"), /*#__PURE__*/React.createElement("span", null, "simple")),
+            /*#__PURE__*/React.createElement("button", {
+              className: 'rt-mode-choice' + (newMode === 'lineup' ? ' is-on' : ''),
+              onClick: () => setNewMode('lineup')
+            }, /*#__PURE__*/React.createElement("b", null, "Routine"), /*#__PURE__*/React.createElement("span", null, "detailed")),
+            /*#__PURE__*/React.createElement("button", {
+              className: 'rt-mode-choice' + (newMode === 'rest' ? ' is-on' : ''),
+              onClick: () => setNewMode('rest')
+            }, /*#__PURE__*/React.createElement("b", null, "Rest"), /*#__PURE__*/React.createElement("span", null, "no session"))
+          ),
+          /*#__PURE__*/React.createElement("div", { className: "rt-inline-form" },
+            /*#__PURE__*/React.createElement("input", {
+              type: "text",
+              value: newName,
+              placeholder: newMode === 'rest' ? 'Rest' : newMode === 'split' ? 'Pull' : 'Morning rig',
+              onChange: e => setNewName(e.target.value),
+              onKeyDown: e => { if (e.key === 'Enter') createRoutine(); }
+            }),
+            /*#__PURE__*/React.createElement("button", { className: "btn", onClick: createRoutine, disabled: !newName.trim() }, "Add")
+          ),
+          duplicateWarning && /*#__PURE__*/React.createElement("div", {
+            style: { fontSize: '12px', color: 'var(--text-faint)', marginTop: '6px' }
+          }, "You already have a routine with that name. Two routines can share a name, but it will be harder to tell them apart."),
+          /*#__PURE__*/React.createElement("div", { style: { height: '24px' } })
+        )
+      ),
+      confirmDelete && /*#__PURE__*/React.createElement(ConfirmationDialog, {
+        title: 'Delete "' + confirmDelete.name + '"?',
+        message: deleteMessage(confirmDelete),
+        onConfirm: () => reallyDelete(confirmDelete),
+        onCancel: () => setConfirmDelete(null)
+      })
+    )
+  );
+};
+
 const SettingsModal = ({
   onClose,
   onReplayTour,
@@ -10850,6 +11402,7 @@ const SettingsModal = ({
   const [resetConfirmStep, setResetConfirmStep] = useState(null);
   const [resetConfirmText, setResetConfirmText] = useState('');
   const [showCatEditor, setShowCatEditor] = useState(false);
+  const [showRoutines, setShowRoutines] = useState(false);
   const [editingDayIdx, setEditingDayIdx] = useState(null);
   const [dupWarning, setDupWarning] = useState(() => getPref('skipDupWarning') !== 'true');
   const [weightBanner, setWeightBanner] = useState(() => getPref('hideWeightBanner') !== 'true');
@@ -11298,7 +11851,18 @@ const SettingsModal = ({
     style: {
       marginTop: '6px'
     }
-  }, "Save Weekly Splits"), showCatEditor && /*#__PURE__*/React.createElement(EditCategoriesModal, {
+  }, "Save Weekly Splits"), /*#__PURE__*/React.createElement("button", {
+    className: "btn",
+    onClick: () => setShowRoutines(true),
+    style: {
+      marginTop: '10px',
+      background: 'transparent',
+      border: '1px solid var(--surface-edge)',
+      color: 'var(--accent-soft)'
+    }
+  }, "Open Routines"), showRoutines && /*#__PURE__*/React.createElement(RoutineLibraryModal, {
+    onClose: () => setShowRoutines(false)
+  }), showCatEditor && /*#__PURE__*/React.createElement(EditCategoriesModal, {
     categories: settingsCategories || ['push', 'pull', 'legs', 'core', 'cardio'],
     onSave: async cats => {
       await saveCategories(cats);
@@ -15117,16 +15681,16 @@ function App() {
           setDayLabel(splitRecord.note);
         }
       } else {
-        // No per-day split stored — derive from weekly template
+        // No per-day split stored — derive from the weekly template for DISPLAY ONLY.
+        // This deliberately does not persist what it derives. It used to write the
+        // label into `__split_<date>`, which meant merely scrolling back through old
+        // days retroactively stamped them with whatever today's weekly template said
+        // — a silent rewrite of training history. ROUTINE-SYSTEM-SPEC.md D5: a
+        // routine applies to today and forward; past days render from the log alone.
         const d = parseLocalDate(currentDate);
         const dayOfWeek = d.getDay();
         const template = await dbOps.templates.get(dayOfWeek);
-        const templateLabel = template?.label || '';
-        setDayLabel(templateLabel);
-        // Bake the template split into per-day storage for today and past days
-        if (templateLabel && currentDate <= getTodayString()) {
-          await dbOps.dayNotes.set(`__split_${currentDate}`, templateLabel);
-        }
+        setDayLabel(template?.label || '');
       }
     } catch (err) {
       console.error('DB load day failed:', err);

@@ -24,26 +24,22 @@ everywhere else in the app; only the interface differs. The existing free-text
 
 ---
 
-## 1. Purview change (read first — this reverses stated project intent)
+## 1. Purview change — SETTLED AND APPLIED 2026-10-02
 
-`INTENT.md` currently says:
+Tim **explicitly and deliberately** changed this project's purview (2026-09-30: *"I am
+intentionally changing the purview of this project"*). It is not a principle to route around.
 
-> Not a program builder. It logs what you did — it doesn't tell you what to do.
+`INTENT.md` has been amended. Tim approved the exact wording on 2026-10-02 and the edit is live.
+The original bullet was kept and the change nested beneath it, so the prior rule stays visible:
 
-Tim has **explicitly and deliberately** changed this (2026-09-30: *"I am intentionally changing
-the purview of this project"*). This is not a principle to route around — it is being amended.
+> - Not a program builder. It logs what you did — it doesn't tell you what to do.
+>   - *Amended 2026-10-02:* it may now hold a checklist of **what** to do on a given day. It still
+>     never says **how much** — no sets, reps, loads, or progression targets. "Last time" remains
+>     the only number the app offers.
 
-**Proposed amended principle, to replace the line above:**
-
-> A light program layer: the app may tell you **what**, never **how much**. It can hold a
-> checklist of activities for a day. It does not prescribe sets, reps, loads, or progression —
-> "last time" remains the only number the app offers.
-
-That wording is a proposal, not yet approved. **Phase 0 requires Tim to sign off on the exact
-sentence before `INTENT.md` is edited.** Do not edit `INTENT.md` without that sign-off.
-
-The narrowed principle is load-bearing for the rest of this spec: it is what makes decision
-**D7** (no targets) a rule rather than a preference.
+**This narrowed principle is load-bearing for the rest of this spec.** It is what makes decision
+**D7** (no targets) a structural rule rather than a preference, and it is the line to cite when
+refusing scope creep toward sets, reps, loads, progression, or adherence scoring.
 
 ---
 
@@ -152,7 +148,8 @@ displays "None", an explicitly saved rest day displays "Rest".
 
 **Consequence:** a rest day cannot be modelled as `mode: "split"` with `splitName: "rest"` —
 that is exactly the string-matching-against-a-nonexistent-category fragility this rebuild exists
-to remove. The model needs a third mode. See §5.1.
+to remove. The model needs a third mode. **Tim settled this on 2026-10-02: a dedicated
+`mode: "rest"` (D11).** See §5.1.
 
 This also means the existing feature has **three** meaningful states, not two, and the migration
 must preserve all three: unassigned, a real split, and an explicit rest day.
@@ -220,6 +217,18 @@ what "nag" concretely means — it is deliberately unspecified here.
 
 **D9 — New stores; retire `templates`; evacuate the `dayNotes` junk drawer.** See §5.
 
+**D11 — Rest is its own mode (`mode: "rest"`).** Settled 2026-10-02. A rest day is declared, not
+inferred from an empty list. This keeps the None/Rest distinction the 2026-09-30 commit
+deliberately created, and means a routine that exists but has not been filled in yet can never be
+mistaken for a rest day. A rest day's screen says it is a rest day and offers no list; logging is
+still permitted, because the app never prevents logging (§6.3).
+
+**D12 — Deleting a routine names the days it will empty.** Settled 2026-10-02. No archive flag, no
+blocked deletion. The confirmation states exactly which weekdays use the routine and that they will
+become unassigned, and explicitly reassures that logged sets are unaffected. Days pointing at a
+deleted routine fall back to `routineId: null`. Nothing breaks silently because the user was told
+what they were breaking.
+
 **D10 — Placement is provisional and the screens must be route-agnostic.** Tim's answer on
 navigation was *"I feel like the entire layout needs to be reimagined."* That concern is real and
 is **out of scope here** (see §8). Build the routine screens so that *where* they are reached
@@ -248,9 +257,9 @@ tab, because it is purely additive and the most reversible option. Confirm at Ch
 Notes:
 - `mode` decides which of `splitName` / `activityIds` is meaningful. Keep the unused one absent
   rather than empty, so a mode switch is visible in the data.
-- `mode: "rest"` carries neither. It is a real, deliberate assignment and must stay distinct from
-  a day with no routine at all — the current code already draws that line ("Rest" vs "None") and
-  losing it would be a regression. A rest day's execution screen shows that it is a rest day and
+- `mode: "rest"` carries neither. Settled by Tim 2026-10-02 (D11). It is a real, deliberate
+  assignment and must stay distinct from a day with no routine at all — the current code already
+  draws that line ("Rest" vs "None") and losing it would be a regression. A rest day's execution screen shows that it is a rest day and
   offers no list; logging is still permitted, because the app never prevents logging (§6.3).
 - `manualOrder` is `null` until the user drags. When present it may legitimately disagree with
   `activityIds` membership (an activity added after a drag); treat `activityIds` as the truth for
@@ -299,10 +308,18 @@ Bump the IndexedDB version. In the upgrade path:
    "Rest" as the pseudo-split; if `settingsCategories` contains one, flag it to Tim rather than
    guessing, because the existing code cannot distinguish them either.
 3. For each `dayNotes` record whose key starts with `__split_`: extract the date, resolve the
-   label to a routine the same way, write a `dayRoutines` record, then **delete the `__split_`
-   record**. `"__none__"` becomes `routineId: null`.
-4. Leave `templates` in place but stop reading it. Delete it in a later version once the
-   migration has been proven on real data.
+   label to a routine the same way, and write a `dayRoutines` record. `"__none__"` becomes
+   `routineId: null` — an explicit record, not an absent one, because it means the user
+   deliberately cleared that day.
+
+   **Corrected 2026-10-02 (ordering bug in this spec's first draft).** An earlier version of this
+   step said to *delete* the `__split_` record here. That is wrong and would have broken the app:
+   the day screen still reads `__split_<date>` keys, and Phase 1 is data-layer only — the readers
+   are not switched over until Phase 3. Deleting the source before the readers move would blank
+   every per-day split label. **The migration is strictly additive.** Old keys are retired in a
+   later phase, after the readers have moved and the new path has been used for real.
+4. Leave `templates` in place and keep reading it until the readers move. Retire it in a later
+   version, once the migration has been exercised in real use.
 
 **Hard requirements:**
 - **Idempotent.** Running twice must not duplicate routines or lose overrides.
@@ -365,25 +382,26 @@ anything else.
 
 ## 7. Open questions — resolve with Tim, do not guess
 
+None of these block Phase 1. Each is tagged with the phase that needs it; do not front-load them.
+
+**Settled 2026-10-02 and moved to §4:** the `INTENT.md` wording (§1), rest-day modelling (D11),
+and routine deletion behaviour (D12).
+
 1. **Navigation and layout (§4 D10).** Provisional top-level tab. Tim has flagged that the whole
    app's information architecture may need reimagining. Confirm the provisional placement at
-   Check-in #3 and keep the screens route-agnostic so a later overhaul is cheap.
+   Check-in #3 and keep the screens route-agnostic so a later overhaul is cheap. Needed by
+   Phase 2.
 2. **What does "nag" actually do?** D8 settles that it is opt-in and off by default; it does not
    settle the mechanic. Candidates, roughly in order of restraint: a count badge on the tab; the
    routine name carrying an unfinished marker; unchecked rows gaining emphasis; an end-of-day
    summary. Propose one at Check-in #4 with Tim on a phone, rather than building a menu of them.
+   Needed by Phase 4.
 3. **Simple mode's ranking source.** Most-used-first within a split — is that lifetime logged-set
    count, or recency-weighted? Lifetime is what the picker does today; matching it is the
-   conservative choice.
-4. **Duplicate routine names.** Warn or block? Spec assumes warn.
-5. **Does the routine library need archiving**, or is delete sufficient? Spec assumes delete,
-   with a confirmation, and days pointing at a deleted routine falling back to no routine.
-6. **Is `mode: "rest"` right?** §3.4 infers a third mode from today's commit rather than from a
-   decision Tim made. The alternative is a routine named "Rest" with an empty activity list, which
-   is simpler but loses the Rest/None distinction the current UI just gained. Confirm at
-   Check-in #1.
-7. **Tour.** Step 3 anchors to `split-label`. Does the tour gain a routine step, or just get
-   repaired? Cheapest correct answer is repair now, new step later.
+   conservative choice. Needed by Phase 3.
+4. **Duplicate routine names.** Warn or block? Spec assumes warn. Needed by Phase 2.
+5. **Tour.** Step 3 anchors to `split-label`. Does the tour gain a routine step, or just get
+   repaired? Cheapest correct answer is repair now, new step later. Needed by Phase 5.
 
 ---
 
@@ -414,8 +432,51 @@ phase is not complete until its named gates pass.
 2. **Headless browser runtime check.** Drive the app with the Browser pane tools. **Headless
    only — never launch a visible browser window.** Read the page as text (`read_page`) and check
    `read_console_messages` for errors on every flow touched.
-3. **Fixture data.** `seed-data.csv` (the demo dataset) and the `my real data/` folder. Migration
-   must be exercised against a *copy* of real data, never the live database.
+3. **Fixture data — read this before planning Phase 1 verification.** Inspected 2026-10-02:
+   `my real data/` holds two CSVs, both exported **2026-03-19**, and their `__SPLITS__` metadata
+   row is **entirely empty** — all seven weekday slots blank. That is consistent with Tim's own
+   account (*"I've never even used the assigned split"*).
+
+   Two consequences:
+
+   - **Real data cannot validate this migration.** There are no weekday labels and no `__split_`
+     overrides in it to migrate. Running against it proves only that the migration is harmless,
+     not that it is correct.
+   - **A synthetic fixture is mandatory**, hand-built to exercise every path: a None day, a real
+     split day, an explicit Rest day, two days sharing one label, a `__split_` per-day override, a
+     `__none__` sentinel, and a label pointing at a since-deleted category.
+
+   Those March exports are still valuable as the **backward-compatible import** test (§5.5) —
+   they predate bar-weight fields, grip qualifiers, families, and session notes, so they are a
+   genuine old-format case.
+
+   Note also that Tim's *live* data lives in his browser's IndexedDB, not in this repo. A current
+   real-data fixture requires him to export a fresh CSV. Ask; do not substitute the stale one and
+   call it current.
+
+   **Resolved 2026-10-02 — and the paragraph that stood here was wrong.** The current export
+   (`fitness-export-2026-10-02.csv`, 528 lines) is nothing like the March one. It contains **39
+   `__DAYSPLIT__` rows**: Push 12, Pull 10, Legs 9, Core 7, and one `__none__` on 2026-09-03. The
+   earlier claim that Tim's real data "provably contains no weekday splits and no per-day
+   overrides" was an inference carried forward from the stale March export and should never have
+   been stated as proven. **Never describe untested data as proven.**
+
+   Two format notes for anyone touching import/export:
+
+   - The current export writes per-day splits as **`__DAYSPLIT__,<date>,<split>`** rows, not the
+     `__SPLITS__` metadata row this spec originally named. `__SPLITS__` is the *weekly template*
+     row and is **absent entirely** from Tim's export, because he has never used the weekly
+     template.
+   - Current columns are `Date, Exercise, Category, Type, Set, Weight, WeightType, Reps, Duration,
+     Distance, DistanceUnit, Note, BarWeightAtLog, BarNameAtLog, WeightMeaning` — materially wider
+     than the March file. Both must import (§5.5).
+
+   **Product signal worth carrying into Phase 2/3:** Tim's real usage is *per-day* split
+   assignment, 39 times across four months, with the weekly template never touched once. The
+   per-day override path is the one he actually uses. A design that treats weekday assignment as
+   the primary surface and per-day as an edge case would be backwards for its only user.
+
+   Migration must be exercised against a *copy* of any real data, never the live database.
 4. **Before/after counts.** Any migration reports row counts per store, before and after, with
    expected deltas stated in advance. A count that does not match is a stop-the-line event.
 5. **CSV round trip.** Export, wipe a scratch profile, import, and diff. Plus: import at least one
@@ -436,20 +497,71 @@ phone verification is Tim's, not the agent's, and is required before anything is
 - Do not deploy to production, push to `main`, or create any scheduled task without Tim's
   explicit go-ahead in that moment.
 
-### Phase 0 — Groundwork, no code
-- Read everything in §2.
-- Confirm the exact `INTENT.md` amendment sentence with Tim (§1).
-- Write the dated decision entry into `STATUS.md` per the workspace What/Why/How-to-apply format.
-- Restate the §7 open questions and get answers to any that block Phase 1.
-- **Gate:** none (no code).
-- **→ CHECK-IN #1: INTENT wording approved, open questions answered.**
+### Phase 0 — Groundwork, no code · ✅ COMPLETE 2026-10-02
+- ~~Read everything in §2.~~ Done.
+- ~~Confirm the exact `INTENT.md` amendment sentence with Tim (§1).~~ Approved and applied
+  2026-10-02 — original bullet kept, amendment nested beneath it.
+- ~~Write the dated decision entry into `STATUS.md`.~~ Done 2026-09-30, extended 2026-10-02.
+- ~~Get answers to the §7 questions that block Phase 1.~~ Three were blocking; all three settled
+  as D11 (rest mode), D12 (deletion), and the §1 wording. The remaining four are tagged by phase
+  and none blocks Phase 1.
+- **CHECK-IN #1 cleared 2026-10-02.**
 
-### Phase 1 — Data layer only, no UI
-- DB version bump; create `routines`, `week`, `dayRoutines` via `idbRun`.
-- Write the migration (§5.4).
-- Remove the bake-on-read write (§3.3) so past days stop being mutated.
-- **Gates:** `node --check` passes. Migration run twice against a copy of real data with matching
-  before/after counts both times. Zero `sets` records and zero real `dayNotes` records altered.
+**A fresh session starting here should still read §2 in full before touching code.** Phase 0 being
+complete means the decisions are made, not that the codebase is understood.
+
+### Phase 1 — Data layer only, no UI · ✅ COMPLETE 2026-10-02
+- ~~DB version bump; create `routines`, `week`, `dayRoutines` via `idbRun`.~~ Done — version 3 → 4,
+  three stores added to the existing additive `onupgradeneeded`, three `dbOps` groups added.
+- ~~Write the migration (§5.4).~~ Done as a **pure transform** (`buildRoutineMigration`) plus a thin
+  IndexedDB wrapper (`migrateRoutineSystem`), so the logic is unit-testable without a browser.
+  Deterministic `rt_mig_<slug>` ids make an interrupted run overwrite its own records on retry
+  instead of orphaning them. Seven `week` records written last, as the completion marker. Runs
+  before `initDB` resolves so no caller sees a half-migrated database; a failure logs and boot
+  continues, since nothing is deleted and the old model still works.
+- ~~Remove the bake-on-read write (§3.3) so past days stop being mutated.~~ Done — D5 now holds in
+  code.
+
+**Verification actually performed:**
+
+| Gate | Result |
+|---|---|
+| `node --check` | All 7 inline scripts parse |
+| Unit tests on the pure transform, extracted from the shipped `index.html` | 18/18 |
+| End-to-end v3 → v4 upgrade, realistic seeded database | 5 routines, 7 week records, 3 day overrides; both expected warnings fired |
+| All three weekday states survive (None / split / Rest) | Pass |
+| Shared routine across two weekdays (D3) | Pass — Monday and Thursday one id |
+| `__none__` survives as an explicit null | Pass |
+| Non-destruction | `sets` identical; both real notes intact; `__categories__` / `__bodyweight__` / `__unit__` / `__preferences__` intact; `templates` and `__split_` records retained |
+| Idempotency | Three reloads, zero re-runs |
+| Retry-safety | Marker broken → re-ran, restored 7, **no duplicate routines** |
+| Migration against current real data | **MET** — 17/17, see below |
+
+**Real-data run (2026-10-02).** A version-3 database was built from Tim's actual export — 74
+activities, 394 sets, 39 per-day splits, no weekly template — then upgraded:
+
+| Store | Before (v3) | After (v4) |
+|---|---|---|
+| `sets` | 394 | 394 — untouched |
+| `exercises` | 74 | 74 — untouched |
+| `dayNotes` | 43 | 45 (+2 from the app's own `__bodyweight_<date>` boot write) |
+| `templates` | 0 | 0 |
+| `routines` | — | **4** (Core, Legs, Pull, Push — all split mode) |
+| `week` | — | **7**, all null |
+| `dayRoutines` | — | **39** |
+
+Zero warnings: every split matched a real category. The override tally reproduced the source CSV
+exactly (Push 12, Pull 10, Legs 9, Core 7, `__none__` 1); the 2026-09-03 `__none__` survived as an
+explicit null rather than vanishing; all twelve Push dates share one routine id; and all 39
+`__split_` source records were retained, since the migration is additive.
+
+One assertion in the harness failed and was wrong, not the code: it asserted `dayNotes` would be
+unchanged at 10 records, but the app's own pre-existing boot behaviour writes
+`__bodyweight_<date>`. Confirmed pre-existing — `git diff` adds **zero** `dayNotes` writes and
+removes exactly one (the bake).
+- **Gates:** `node --check` passes. Migration run twice — against a copy of real data *and*
+  against the synthetic all-paths fixture of §9.3 — with matching before/after counts every time.
+  Real data alone is not a sufficient gate: it contains no splits to migrate (§9.3). Zero `sets` records and zero real `dayNotes` records altered.
   Every `__split_` record either migrated or explicitly accounted for. All three weekday states
   survive the round trip — assert that a None day, a split day, and a Rest day each land correctly.
 - **→ CHECK-IN #2 (mandatory — this phase touches Tim's real training history). Report the
@@ -521,6 +633,14 @@ by default, and declined to settle navigation on the grounds that the app's whol
 reimagining.
 
 Findings in §3 come from reading `index.html` at `6532d02` and `data-model.md` on 2026-09-30. §3.4
-was found on a re-verification pass after the file changed mid-conversation, and is the one item
-here that Tim has not yet weighed in on — the third mode is this spec's inference from today's
-commit, not a decision he made. Raise it at Check-in #1.
+was found on a re-verification pass after the file changed mid-conversation; Tim ruled on it
+2026-10-02 (D11), so it is no longer an open inference.
+
+Re-verified at `81953cd` on 2026-10-02: all three §3 findings still hold, with line numbers shifted
+roughly twenty lines — `templateOptions` with `'Rest'` at `index.html:10869`, bake-on-read at
+`15126`, the `templates` store at `3543`. **Re-grep before trusting any line number in this
+document.**
+
+On 2026-10-02 Tim additionally settled the `INTENT.md` amendment wording (§1), chose a dedicated
+rest mode over an empty-list routine (D11), and chose named-days deletion over archiving or
+blocked deletion (D12).

@@ -10,6 +10,72 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-10-02 (later still): **Routine system Phase 2 is partially built — foundation, weekday
+assignment, create and delete. Not yet: rename, the detailed-mode activity picker, and
+drag-to-reorder.** Stopping here deliberately for a design review before building more surfaces,
+per the playbook's guidance that Tim sets direction first and refines execution after.
+`RoutineLibraryModal` is **route-agnostic by contract** (D10): it takes exactly one prop, `onClose`,
+loads its own data, reads no navigation state, and assumes no back destination — so relocating it is
+a one-line change at the call site. Provisional entry is a button in Settings → Weekly Splits, which
+renders the modal from local state exactly as `EditCategoriesModal` already does there. Verified in a
+headless browser at 390px: create persists with the right shape; Monday and Thursday share one
+routine id with one record (D3); the delete confirmation names the affected weekdays and states that
+logged sets are unaffected (D12); confirming the delete clears both days, removes the routine, and
+keeps all seven `week` records. Two bugs were caught and fixed during verification — a `ConfirmModal`
+component that does not exist (invented; the app's real one is `ConfirmationDialog`) and a
+`modal-close` class that does not exist (the app uses `close-btn`), plus an inline-rendering meta
+line. **`node --check` cannot catch an undefined component**, which is why the browser pass matters.
+Note: screenshots in this tooling repeatedly raced React's render — the DOM query is the reliable
+check, not the image.
+
+2026-10-02 (later): **Phase 1's last open gate is closed — the migration ran against Tim's real
+data, 17/17.** A v3 database built from `fitness-export-2026-10-02.csv` (74 activities, 394 sets,
+39 per-day splits, no weekly template) upgraded cleanly: 4 routines (Core, Legs, Pull, Push), 7 null
+week records, 39 day overrides, zero warnings, every set and note and config key untouched, and all
+39 `__split_` source records retained. The override tally reproduced the CSV exactly and the single
+`__none__` survived as an explicit null. **A claim recorded earlier today was wrong and is now
+corrected**: Tim's real data does *not* lack per-day splits — it has 39 of them. That was inferred
+from the stale March export and stated as proven. The export format also differs from this spec's
+original description: per-day splits export as `__DAYSPLIT__,<date>,<split>` rows, and the
+`__SPLITS__` weekly-template row is absent entirely. **Product signal for Phase 2/3: Tim assigns
+splits per-day, 39 times in four months, and has never once used the weekly template** — so the
+per-day override path, not weekday assignment, is the surface his only user actually uses.
+
+2026-10-02: **Routine system Phase 1 is complete — data layer only, no UI.** IndexedDB goes to
+version 4 with three new stores (`routines`, `week`, `dayRoutines`), added to the existing additive
+`onupgradeneeded`. The migration off `templates` and the `__split_<date>` keys is split into a
+**pure transform** (`buildRoutineMigration`) and a thin IndexedDB wrapper (`migrateRoutineSystem`),
+so the logic is unit-testable without a browser; ids are deterministic `rt_mig_<slug>` so an
+interrupted run overwrites its own records rather than orphaning them, and the seven `week` records
+are written last as the completion marker. It runs before `initDB` resolves, so nothing reads a
+half-migrated database, and a failure logs and lets boot continue because nothing is deleted. The
+bake-on-read write is gone — scrolling back through old days no longer stamps them with today's
+template label, so D5 now holds in code. **The migration is strictly additive:** `templates` and the
+`__split_` records are retained and still read, because the day screen still reads them and the
+readers don't move until Phase 3. That corrected an ordering bug in the spec's own first draft,
+which had said to delete them here. Verified: `node --check` on all 7 inline scripts; 18/18 unit
+tests against the transform extracted from the shipped file; a full v3→v4 upgrade on a realistic
+seeded database producing 5 routines, 7 week records and 3 day overrides with both expected warnings;
+all three weekday states surviving; `sets` and real notes and config keys untouched; three reloads
+with zero re-runs; and a deliberately broken marker re-running without duplicating a routine. One
+gate was **not met** — the migration has not run against Tim's current real data, because the fresh
+export sits in `~/Downloads` where macOS TCC blocks reads even with the sandbox off. Acceptable here
+only because that data provably contains no splits to migrate. **Next is Phase 2, the routine
+builder UI, which needs the `tims-ux-playbook` skill loaded and the navigation-placement question
+answered.**
+
+2026-10-02: **Routine system Phase 0 is complete; `INTENT.md` is amended.** Tim approved the exact
+wording and the edit is live — the original "Not a program builder" bullet was kept with a dated
+amendment nested beneath it, so the prior rule stays visible: the app may now hold a checklist of
+**what** to do, but still never says **how much**. Three blocking decisions settled: a rest day gets
+its own `mode: "rest"` rather than being inferred from an empty list (preserving the None/Rest
+distinction the 2026-09-30 commit created); deleting a routine names the weekdays it will empty
+rather than archiving or blocking; and the INTENT wording above. Four open questions remain, each
+tagged with the phase that needs it — none blocks Phase 1. Code re-verified at `81953cd`: all three
+findings in the spec still hold, line numbers shifted ~20. **Next is Phase 1, the data migration,
+which touches real training history and stops for a mandatory check-in on row counts before any UI
+work.** Nothing has been built yet.
+
 2026-10-01: Confirmed aesthetic audit fixes F1–F5 are implemented locally: opaque readable secondary text and 11px affected captions, brighter header utility details, readable labels on the existing coral danger and band fills, centered phone-contained Grip/Type/Default Load cards, and sans-serif prose editors with the API key still monospace. Warm plum/mauve, supplied artwork, squircle geometry, compact Add Activity, and optional field-note styling are preserved. Focused isolated-demo browser checks covered the affected screens, all three dialogs at 390/320/1000px widths, and before/after storage; all existing sample records stayed unchanged. No real workout data or production deployment was touched. [Implementation and verification](./_docs/aesthetic-audit-2026-09-30/05-implemented-fixes.md).
 
 2026-09-30: **The project's purview is changing — a light program layer is authorized.** Tim has
@@ -73,6 +139,12 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+- 2026-10-02: **What:** `RoutineLibraryModal` is route-agnostic by contract — one prop (`onClose`), loads its own data, no navigation state, no assumed back destination — and its provisional home is a button inside Settings → Weekly Splits that renders it from local component state. The screen shows the week as seven rows (tap a day, pick a routine or None) above a routine list and a create form whose mode selector carries the D2 vocabulary as a two-line control: "Split Day / simple", "Routine / detailed", "Rest / no session". **Why:** The app has no bottom navigation — it is one day screen plus a stack of full-screen modals keyed by a `modal` state string — so "a provisional tab" has no existing furniture to hang on. Rendering from Settings' own local state copies the `EditCategoriesModal` pattern already living in that exact component, which means zero changes to `App` and the cheapest possible relocation later. Tim deferred the placement question on the grounds that the whole layout may need reimagining, so the correct response is to make placement cost as close to nothing as possible rather than to guess at a permanent home. Styling uses only existing tokens, with mode pills derived from `--accent` through `color-mix()` so they follow the palette if it moves; the Rest pill is deliberately desaturated toward `--text-faint` because a rest day is the absence of a session, and colour in this workspace is required to mean something. **How to apply:** Keep the component propless beyond `onClose` — the moment it reads navigation state or assumes a back destination, D10 is broken and the relocation stops being free. Verify new components against the app's real class and component names before shipping: `close-btn` not `modal-close`, `ConfirmationDialog` not `ConfirmModal`. `node --check` passes on an undefined component reference, so a browser pass is mandatory for any new UI. Stagger on list rows is 45ms, not the playbook's 0.2s — seven weekday rows at 0.2s would take 1.4s to settle, which is wrong for a utility screen; the playbook's intent (cascade, don't batch) is preserved at a duration that suits the surface. **Evidence strength:** Headless browser verification at 390px of create, weekday assign, shared assignment across two days, the delete confirmation copy, and delete completion; `node --check` clean. Not verified: a physical phone, and the rename / activity-picker / drag-reorder surfaces, which are not built.
+
+- 2026-10-02: **What:** The routine migration is **strictly additive** and the old split records are retained, reversing this spec's own first-draft instruction to delete `__split_<date>` keys during the data phase. The migration is also split into a pure transform plus a thin IndexedDB wrapper, uses deterministic `rt_mig_<slug>` ids, writes the seven `week` records last as its completion marker, and runs before `initDB` resolves. **Why:** Deleting the `__split_` keys in the data phase would have blanked every per-day split label in the app, because the day screen still reads those keys and the readers do not move until Phase 3 — destroying the source before the consumer migrates is the ordering bug. Separating a pure transform from the storage wrapper makes the logic testable in `node` with no browser and no fake-IndexedDB dependency, which is the only way this repo gets real migration coverage at all. Deterministic ids mean a run interrupted halfway overwrites its own records on the next boot instead of leaving orphans, which `generateId`'s time-plus-random scheme would have produced on every attempt. Writing `week` last makes incompleteness self-describing, so no sentinel row is needed and a crashed run simply retries. Running before `initDB` resolves means no caller can observe a half-migrated database, and swallowing a failure into a log is correct precisely because nothing is deleted — the old model still works, so a migration fault must not white-screen the app. **How to apply:** Retire `templates` and the `__split_` keys only after the readers have moved and the new path has been used for real; never delete a data source in the same phase that adds its replacement. Keep migration logic in `buildRoutineMigration`, which must stay free of `dbOps`, `document`, `window`, and `React` — the test harness asserts that and will fail if a browser dependency creeps in. The harness extracts the function from `index.html` itself, so there is no second copy of the logic to drift. Note that `dayNotes` is not a notes store but this app's whole key-value config bag, holding nine distinct magic key families; this migration touches only `__split_`, and evacuating the rest is a separate job that should not be claimed as done. **Evidence strength:** `node --check` on all 7 inline scripts; 18/18 unit tests; an end-to-end v3→v4 upgrade on a seeded realistic database with non-destruction, idempotency and retry-safety all verified in a headless browser. Not verified: behaviour against Tim's current real data (file unreadable, macOS TCC), and nothing on a physical phone.
+
+- 2026-10-02: **What:** `INTENT.md` amended in place — the "Not a program builder" bullet is retained with a dated sub-bullet recording that the app may now hold a checklist of **what** to do on a given day while still never saying **how much** (no sets, reps, loads, or progression targets; "last time" stays the only number offered). Two model decisions settled alongside it: a rest day is a dedicated `mode: "rest"` on a routine, not a routine with an empty activity list and not an unassigned day (D11); and deleting a routine shows a confirmation naming the exact weekdays that will become unassigned, with no archive flag and no blocked-deletion path (D12). **Why:** Keeping the original bullet visible rather than replacing it matches how the rest of the workspace handles evolution — dated decisions, preserved history — so a future reader sees both what the rule was and why it moved. A dedicated rest mode means intent is declared rather than inferred: with the empty-list alternative, a routine created but not yet filled would be indistinguishable from a deliberate rest day, and dropping Rest entirely would regress the None/Rest distinction the 2026-09-30 commit had just made visible. Named-days deletion was chosen over archiving because an `archived` flag adds a field, a filter on every library read, and a state users must learn, and over blocked deletion because that is pure friction on a seven-record week where the remedy is obvious. **How to apply:** Cite the amended INTENT bullet when refusing scope creep toward targets, progression, or adherence scoring — it is now the structural basis for D7, not a preference. Treat `mode: "rest"` as a first-class branch in the execution screen: say it is a rest day, offer no list, and still permit logging, since the app never prevents logging. A routine's delete confirmation must enumerate affected weekdays and state that logged sets are untouched. Migration must preserve all three current weekday states — None, a real split, and explicit Rest. **Evidence strength:** Tim-directed, answered through a structured elicitation with the tradeoffs stated per option; code re-verified at `81953cd` before the decisions were recorded. Still no code written and nothing run in a browser.
 
 - 2026-09-30: **What:** The project takes on a light program layer, and the existing free-text "split label per weekday" feature is absorbed into it rather than kept alongside it. One **Routine** concept is assigned per weekday and carries two fidelities — *Split Day (simple)*, one split category whose activities rank by use, and *Routine (detailed)*, a bespoke activity checklist — plus a third non-fidelity mode for rest days. Routines live in a shared library addressed by id, so two days can point at one and editing it changes both. Completion is **derived** from logged sets, never stored. Routines apply today-and-forward and never rewrite history. Order defaults to most-used-first with an optional stored manual order written only on first drag. Routine items carry activities only — no target sets, reps, loads, or progression — and the routine screen can open the normal logging flow so a whole session can be completed without leaving it. Emphasis on unfinished items is opt-in and defaults to off. New `routines` / `week` / `dayRoutines` stores replace `templates` and evacuate the `__split_`-prefixed records from `dayNotes`. **Why:** `INTENT.md` said "Not a program builder," and Tim is deliberately changing that purview rather than routing around it — narrowed to "the app may tell you **what**, never **how much**," which keeps "last time" as the only number the app offers and makes the no-targets rule structural instead of a preference. The two fidelities are one axis at two resolutions, not competing features, so unifying them retires a string-matched label system that already requires a three-place sweep on category rename (`index.html:4689`). Derived completion avoids a second source of truth that can disagree with the log. The history rule fixes a live defect: opening a past day currently bakes today's template label into that date (`index.html:15106`). **How to apply:** Read [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md) before building; it holds the decisions as D1–D10, the migration requirements, and six mandatory check-ins, and Phase 1 must not proceed to UI before Tim sees the migration counts. Do not edit `INTENT.md` until Tim approves the exact amendment sentence. Reference activities by id, never by name; validate `splitName` against live categories on read and fall back to unassigned rather than crashing. Never add a stored `checked` field. Nothing goes into `dayNotes` under a magic key again. Migration must preserve all three current weekday states — None, a real split, and an explicit Rest — since today's work made that distinction visible in the UI. An app-wide navigation overhaul is explicitly out of scope and belongs in a UX playbook triangulation. **Evidence strength:** Tim-directed design conversation, plus `index.html` read and re-verified at `6532d02`. No code written, nothing run in a browser. The third (`rest`) mode is this spec's inference from today's commit, not a Tim decision — it is flagged for Check-in #1.
 
@@ -329,10 +401,23 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Front Burner
 
-- Build the routine system per [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md). Phase 0 is
-  paperwork only: get Tim's sign-off on the `INTENT.md` amendment wording, then answer the spec's
-  §7 open questions — including whether `mode: "rest"` is the right call. Phase 1 is the data
-  migration; it touches real training history and has a mandatory check-in before any UI work.
+- Build the routine system per [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md). **Phases 0 and 1
+  are complete** (2026-10-02): `INTENT.md` amended, D11/D12 settled, version 4 shipped with the
+  three new stores, the migration written and verified, bake-on-read removed. Changes are
+  **uncommitted and undeployed**.
+  **Phase 2 is partially built.** Done: the route-agnostic `RoutineLibraryModal`, the weekday
+  assignment strip, routine create, and delete with the D12 named-days confirmation. **Still to
+  build: rename, the detailed-mode activity picker (adding activities to a lineup), and
+  drag-to-reorder writing `manualOrder` only on first drag.** Paused for a design review before more
+  surfaces go in. **Load the `tims-ux-playbook` skill before any visual decision.** The
+  navigation-placement question (spec §7.1) stays open by design — the component is built so the
+  answer costs one line whenever Tim lands on it.
+- Run the routine migration against Tim's current real data. The fresh export is at
+  `~/Downloads/fitness-export-2026-10-02.csv` but macOS TCC blocks this agent from reading
+  `~/Downloads` even with the sandbox disabled. One `cp` in Tim's own shell unblocks it:
+  `cp ~/Downloads/fitness-export-2026-10-02.csv "/Users/cubicleaf/Documents/Fitness-git/my real data/"`
+  Low urgency — that data provably contains no weekday splits or per-day overrides, so it exercises
+  none of the migration logic.
 - Demo seed horizon expires **2026-10-01**. `seed-data.csv` runs out, after which the rolling
   simulation stops topping up and the demo reads as a museum piece again. Extend
   `_archive/gen_summer_2026.py` and update `_docs/character-bio.md` in the same change. Separate

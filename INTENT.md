@@ -23,6 +23,10 @@ Make it fast and frictionless to log a set while you're standing at a machine. T
 
 - Not a social app. No sharing, no leaderboards, no coach features.
 - Not a program builder. It logs what you did — it doesn't tell you what to do.
+  - *Amended 2026-10-02:* it may now hold a checklist of **what** to do on a given day. It still
+    never says **how much** — no sets, reps, loads, or progression targets. "Last time" remains
+    the only number the app offers. See
+    [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md).
 - Not a nutrition tracker. Workouts only.
 - Not cross-device synced. Data is local. CSV export is the backup strategy.
 
