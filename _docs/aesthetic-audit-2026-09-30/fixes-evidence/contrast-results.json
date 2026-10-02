@@ -1,0 +1,17 @@
+{
+  "secondary_page": 5.45,
+  "secondary_picker_row": 4.7,
+  "secondary_selected_load": 5.07,
+  "header_details": 5.99,
+  "danger": 6.9,
+  "bands": {
+    "Red": 5.02,
+    "Black": 10.98,
+    "Purple": 4.67,
+    "Green": 6.67,
+    "Blue": 6.08,
+    "Orange": 6.73,
+    "Yellow": 8.74,
+    "Gray": 5.51
+  }
+}

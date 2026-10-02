@@ -2,13 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-09-30
+updated: 2026-10-01
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-09-30
+**Last updated:** 2026-10-01
 
 ## Where I left off
+
+2026-10-01: Confirmed aesthetic audit fixes F1–F5 are implemented locally: opaque readable secondary text and 11px affected captions, brighter header utility details, readable labels on the existing coral danger and band fills, centered phone-contained Grip/Type/Default Load cards, and sans-serif prose editors with the API key still monospace. Warm plum/mauve, supplied artwork, squircle geometry, compact Add Activity, and optional field-note styling are preserved. Focused isolated-demo browser checks covered the affected screens, all three dialogs at 390/320/1000px widths, and before/after storage; all existing sample records stayed unchanged. No real workout data or production deployment was touched. [Implementation and verification](./_docs/aesthetic-audit-2026-09-30/05-implemented-fixes.md).
 
 2026-09-30: **The project's purview is changing — a light program layer is authorized.** Tim has
 approved adding a **Routine** section: a routine assigned per weekday, in one of two fidelities —

@@ -1,0 +1,66 @@
+{
+  "FitnessTracker": {
+    "dayNotes": {
+      "beforeCount": 1,
+      "afterCount": 1,
+      "existingRecordsUnchanged": true
+    },
+    "exercises": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    },
+    "movementFamilies": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    },
+    "sessionNotes": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    },
+    "sets": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    },
+    "templates": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    }
+  },
+  "FitnessTrackerDemo": {
+    "dayNotes": {
+      "beforeCount": 252,
+      "afterCount": 252,
+      "existingRecordsUnchanged": true
+    },
+    "exercises": {
+      "beforeCount": 34,
+      "afterCount": 34,
+      "existingRecordsUnchanged": true
+    },
+    "movementFamilies": {
+      "beforeCount": 0,
+      "afterCount": 0,
+      "existingRecordsUnchanged": true
+    },
+    "sessionNotes": {
+      "beforeCount": 479,
+      "afterCount": 480,
+      "existingRecordsUnchanged": true
+    },
+    "sets": {
+      "beforeCount": 3793,
+      "afterCount": 3793,
+      "existingRecordsUnchanged": true
+    },
+    "templates": {
+      "beforeCount": 7,
+      "afterCount": 7,
+      "existingRecordsUnchanged": true
+    }
+  }
+}
