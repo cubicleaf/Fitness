@@ -2,13 +2,16 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-10-01
+updated: 2026-10-05
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-10-01
+**Last updated:** 2026-10-05
 
 ## Where I left off
+
+2026-10-05: Groq key failures in Log Coach now report HTTP 401 and the final four characters of the key the browser actually sent, so a newly created key can be distinguished from an older device-local saved key. HTTP 403 is identified separately. The optional Qwen model was updated from retired `qwen/qwen3.6-27b` to `qwen/qwen3.8-27b`; GPT OSS 120B remains the default. The phone's actual key has not been inspected or retested.
+
 
 2026-10-02 (later still): **Routine system Phase 2 is partially built — foundation, weekday
 assignment, create and delete. Not yet: rename, the detailed-mode activity picker, and

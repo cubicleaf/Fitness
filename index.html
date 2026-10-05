@@ -4496,8 +4496,8 @@ const FITLOGS_AI_MODELS = [{
   label: 'GPT OSS 120B',
   helper: 'Better default for app-aware help, long answers, and spec-heavy questions.'
 }, {
-  id: 'qwen/qwen3.6-27b',
-  label: 'Qwen3.6 27B',
+  id: 'qwen/qwen3.8-27b',
+  label: 'Qwen3.8 27B',
   helper: 'Useful if you want vision and strong coding, but it costs more on Groq.'
 }];
 const getStoredGroqApiKey = () => {
@@ -4546,10 +4546,13 @@ const setStoredCoachMessages = messages => {
     localStorage.setItem(FITLOGS_CHAT_STORAGE, JSON.stringify(messages.slice(-24)));
   } catch (error) {}
 };
-const formatGroqError = rawMessage => {
+const formatGroqError = (rawMessage, status, key) => {
   const msg = rawMessage || '';
-  if (/invalid api key|authentication/i.test(msg) || msg.includes('401')) {
-    return 'That Groq key was rejected. Open Settings, paste a working key, and try again.';
+  if (status === 401 || /invalid api key|authentication/i.test(msg)) {
+    return `Groq returned 401 for the saved key ending ${key.slice(-4)}. Check that those last four characters match your new FITNESS key in Groq, then replace the saved key in Settings if they differ.`;
+  }
+  if (status === 403) {
+    return 'Groq returned 403: this key or project is not allowed to use the selected model. Try GPT OSS 120B in Settings.';
   }
   if (/tokens per day|requests per day/i.test(msg)) {
     return 'Groq says this key hit its daily limit. Try again later or switch keys.';
@@ -13551,7 +13554,7 @@ ${summarizeExercises()}`;
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
         const rawError = data?.error?.message || data?.message || '';
-        throw new Error(formatGroqError(rawError));
+        throw new Error(formatGroqError(rawError, resp.status, apiKey));
       }
       const reply = data?.choices?.[0]?.message?.content?.trim() || 'The coach came back empty. Try asking again.';
       setMessages(prev => [...prev, {
