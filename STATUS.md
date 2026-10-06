@@ -2,7 +2,7 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-10-05
+updated: 2026-10-06
 live_url: https://fit-logs.vercel.app
 ---
 
@@ -142,6 +142,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-06 — Tim sorted Fitness's open work
+
+**What:** Front Burner is the routine system (with the migration), the demo-data refresh, the IDFK button, cadence reminders, bundled activities, smarter search, auto-sort into splits, and one "code tune-up" item. Back Burner is naming, onboarding Part B, the warm-up helper, API research, and the parked color overhaul. The old `## Open` became `## Background for the work above`, which is reference only.
+
+**Why:** Triage counted 85 "items" here because every sub-bullet of about 20 topics counted separately, and most were written by past sessions, not Tim. This sort is part of the Check-in that replaces the Morning Brief.
+
+**How to apply:** Offer Tim only Front Burner lines. Never present code-health details individually; they roll up into the tune-up item. New findings go into Background or are proposed to Tim, not added to Front Burner unasked.
 
 ### 2026-10-05 — Favicon assets match the deployed paths
 
@@ -415,8 +423,8 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 - Build the routine system per [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md). **Phases 0 and 1
   are complete** (2026-10-02): `INTENT.md` amended, D11/D12 settled, version 4 shipped with the
-  three new stores, the migration written and verified, bake-on-read removed. Changes are
-  **uncommitted and undeployed**.
+  three new stores, the migration written and verified, bake-on-read removed. Committed and pushed
+  to `main` on 2026-10-02 (`5800a96`); corrected 2026-10-06, the line had said uncommitted.
   **Phase 2 is partially built.** Done: the route-agnostic `RoutineLibraryModal`, the weekday
   assignment strip, routine create, and delete with the D12 named-days confirmation. **Still to
   build: rename, the detailed-mode activity picker (adding activities to a lineup), and
@@ -434,8 +442,40 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
   simulation stops topping up and the demo reads as a museum piece again. Extend
   `_archive/gen_summer_2026.py` and update `_docs/character-bio.md` in the same change. Separate
   job from the routine build — do not fold it in.
+- **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your
+  history. Background: "IDFK workout helper" below.
+- **Opt-in cadence reminders** ("remind me if I haven't done this in 2 weeks"). Background:
+  "Opt-in cadence reminders" below.
+- **Bundled activities** (supersets/circuits). Tim wants this soon (2026-10-06) even though the
+  earlier advice was not to build a generic bundling system yet. Settle the open design questions
+  with Tim before building. Background: "Paired / bundled activities" below.
+- **Smarter activity search** that understands synonyms, not just exact names. Background:
+  "Retrieval follow-ups from the 09-07 pass" below.
+- **Auto-sort new activities into splits** when they're created; the prototype is mostly done.
+  Background: "Activity-to-split classification" below.
+- **Code tune-up and leftover fixes.** One item for Tim. Claude owns the detailed list in these
+  Background sections: Remaining unguarded database calls, IndexedDB migration path, Feedback
+  endpoint hardening, Deliberately not changed on 08-14, Bodyweight unit-aware storage, Modifier
+  storage shape, Verify the 08-14 correctness pass, Desktop phone-frame consistency, Duplicate
+  merge flow, Set-screen and Bar-screen follow-ups.
 
-## Open
+## Back Burner
+
+Tim chose to keep these, but not soon (sorted 2026-10-06).
+
+- **Settle the name** ("Tim's Logbook" working name; keep `fit-logs.vercel.app` or not).
+  Background: "Naming / brand cleanup" below.
+- **Onboarding tips, Part B** (four just-in-time hints). Background: "Onboarding tour — Part B" below.
+- **Warm-up helper.** Background: "Warm-up adjuster" below.
+- **Exercise-database / API research.** Background: "API / data enrichment research" below.
+- **Color overhaul** stays parked. Background: "Color overhaul parked" below.
+
+## Background for the work above
+
+Reference detail for the Front and Back Burner items. **Not a to-do list:** nothing here is open
+work unless an item above points to it. The repeated "not exercised on a phone" notes below are
+historical. Tim tests on his phone constantly (2026-10-06), so they are not a separate task.
+
 
 ### Set-screen follow-ups from the 09-14 pass
 
