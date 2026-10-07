@@ -18,7 +18,16 @@ Key things to know:
 
 ## Object Stores (The "Tables")
 
-We need four stores. That's it.
+The original four-store model below is historical. IndexedDB v4 currently includes `exercises`, `sets`, `dayNotes`, `templates` (retained legacy data), `sessionNotes`, `movementFamilies`, `routines`, `week`, and `dayRoutines`.
+
+### Routine additions — October 2026
+
+- `routines`: shared records keyed by `id`; `name`, `mode` (`split`, `lineup`, `rest`), `splitName` or `activityIds`, nullable `manualOrder`, `createdAt`.
+- `week`: seven records keyed by `dayOfWeek` (0–6), each with nullable `routineId`.
+- `dayRoutines`: overrides keyed by ISO `date`, each with nullable `routineId`. A present null record explicitly means None; an absent record permits the weekday default for today/future. Past dates never acquire a current weekday plan.
+- Completion is derived from `sets`, with no stored checkboxes. Default order counts measured sets; presence/neutral records do not inflate usage ranking. Explicitly logging neutral activity still completes its routine item.
+- CSV metadata tags `__ACTIVITY__`, `__ROUTINE__`, `__ROUTINE_WEEK__`, `__DAY_ROUTINE__`, `__ROUTINE_PREFS__` preserve library records (including zero-set activities), IDs, order, assignments, and emphasis. Import remaps activity IDs to existing same-name records; legacy `__SPLITS__` / `__DAYSPLIT__` are converted additively. Old `templates` and dated labels are retained for compatibility.
+
 
 ### 1. `exercises` — The Exercise Library
 

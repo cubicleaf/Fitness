@@ -1,6 +1,6 @@
 # Related Activities and Picker Spec
 
-**Last updated:** 2026-09-23
+**Last updated:** 2026-10-07
 
 ## Model
 
@@ -14,7 +14,7 @@ The existing `movementFamilies` store and activity fields remain the data model.
 
 ## One management workflow
 
-**Related Activities** is the discoverable action in Activity Context → Edit and on the picker's relationship icon. Both routes open `RelatedActivitiesModal` and use `writeRelatedActivities` for all relationship writes. The old Family Link, Family View, Create Variation, and Family Linking routes have been removed.
+**Related Activities** is the discoverable action in Activity Context → Edit. It opens `RelatedActivitiesModal` and uses `writeRelatedActivities` for all relationship writes. The Add Activity picker is selection-only; family selection does not open the management modal. The old Family Link, Family View, Create Variation, and Family Linking routes have been removed.
 
 - **Standalone:** Explain that the activity is tracked on its own. Offer **Relate to another activity** and **Create a variation**. If the chosen other activity is standalone, the person must explicitly name the family; the same transaction links both activities. If the other activity already has a valid family, link the current activity to it.
 - **Manual choice:** The relate step searches all saved activity names, including personal names the classifier does not know. Search only finds a candidate; linking still requires a deliberate selection and the existing confirmation rules.
@@ -29,7 +29,8 @@ Every relationship command changes only activity relationship fields and the fam
 
 The Add Activity picker remains a selection surface, separate from relationship management:
 
-- Standalone activities appear as normal rows. A family gets one compact row only when at least two of its activities are eligible under the current filter. A single eligible member appears as an ordinary activity row, never as “1 variation.” The family row offers both a variation count button for gated selection and a direct Related Activities review control. Neither selection surface becomes the management modal.
+- Standalone activities appear as normal cards in a two-column grid without a family SVG. A family gets one full-width button only when at least two of its activities are eligible under the current filter. Its label ends in “Family”; a flow-chart SVG is a family-only cue, and the variation count is display text, not a nested button. Tapping anywhere on the family row opens the gated selection sheet. A single eligible member appears as an ordinary activity card, never as “1 variation.” Manage family relationships from Activity Context → Edit.
+- The picker toolbar puts the compact daily-view Add Activity button on the left and the Master Reader search icon on the right. Search opens as an input over the toolbar only, leaving the activity list uncovered; closing it clears the query.
 - A non-All split is a hard boundary for browsing, search, pairing, and the family selection modal. All allows every activity.
 - Search matches activity names only. Family names, variation labels, categories, and split metadata cannot make an unrelated activity appear.
 - Eligible activities order by real qualifying logged-set count for that exact activity, then alphabetically. Neutral anchors and presence-only sets do not count. The family row follows its eligible members' highest count, then family name.
@@ -37,4 +38,4 @@ The Add Activity picker remains a selection surface, separate from relationship 
 
 ## Verification boundary
 
-Use isolated demo browser data for relationship checks and a phone-sized viewport. Confirm standalone open/close is read-only; both sides link when relating standalone activities; creation from standalone and inside a family; moves; detachment and empty-family cleanup; separate histories and presets; history navigation; compact family rows and counts; split-gated selection; name-only search and usage ordering; and no inferred family on creation or boot. Run all inline-script syntax checks and the relevant split-classifier fixtures. A physical phone pass remains useful before release.
+Use isolated demo browser data for relationship checks and a phone-sized viewport. Confirm standalone open/close is read-only; both sides link when relating standalone activities; creation from standalone and inside a family; moves; detachment and empty-family cleanup; separate histories and presets; history navigation; full-row family selection and counts; two-column standalone cards; absence of family SVGs on standalone rows; toolbar search opening over only the controls and clearing on close; split-gated selection; name-only search and usage ordering; and no inferred family on creation or boot. Run all inline-script syntax checks and the relevant split-classifier fixtures. A physical phone pass remains useful before release.

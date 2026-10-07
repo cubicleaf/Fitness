@@ -1,0 +1,264 @@
+{
+  "checks": [
+    {
+      "name": "bar-controls",
+      "width": 358,
+      "cells": [
+        {
+          "x": 16,
+          "right": 64.625,
+          "width": 48.625,
+          "height": 48.625
+        },
+        {
+          "x": 76.3125,
+          "right": 124.953125,
+          "width": 48.640625,
+          "height": 48.640625
+        },
+        {
+          "x": 136.640625,
+          "right": 253.359375,
+          "width": 116.71875,
+          "height": 56
+        },
+        {
+          "x": 265.046875,
+          "right": 313.671875,
+          "width": 48.625,
+          "height": 48.625
+        },
+        {
+          "x": 325.359375,
+          "right": 374,
+          "width": 48.640625,
+          "height": 48.640625
+        }
+      ],
+      "gaps": [
+        11.6875,
+        11.6875,
+        11.6875,
+        11.6875
+      ],
+      "scroll": 358
+    },
+    {
+      "name": "bar-controls",
+      "width": 288,
+      "cells": [
+        {
+          "x": 16,
+          "right": 60,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 70,
+          "right": 114,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 124,
+          "right": 196,
+          "width": 72,
+          "height": 56
+        },
+        {
+          "x": 206,
+          "right": 250,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 260,
+          "right": 304,
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "gaps": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "scroll": 288
+    },
+    {
+      "name": "bar-controls",
+      "width": 368,
+      "cells": [
+        {
+          "x": 16,
+          "right": 65.4375,
+          "width": 49.4375,
+          "height": 49.4375
+        },
+        {
+          "x": 78.328125,
+          "right": 127.765625,
+          "width": 49.4375,
+          "height": 49.4375
+        },
+        {
+          "x": 140.65625,
+          "right": 259.328125,
+          "width": 118.671875,
+          "height": 56
+        },
+        {
+          "x": 272.21875,
+          "right": 321.65625,
+          "width": 49.4375,
+          "height": 49.4375
+        },
+        {
+          "x": 334.546875,
+          "right": 384,
+          "width": 49.453125,
+          "height": 49.453125
+        }
+      ],
+      "gaps": [
+        12.890625,
+        12.890625,
+        12.890625,
+        12.890625
+      ],
+      "scroll": 368
+    },
+    {
+      "name": "bar-controls",
+      "width": 368,
+      "cells": [
+        {
+          "x": 301,
+          "right": 349.75,
+          "width": 48.75,
+          "height": 48.75
+        },
+        {
+          "x": 363.75,
+          "right": 412.5,
+          "width": 48.75,
+          "height": 48.75
+        },
+        {
+          "x": 426.5,
+          "right": 543.5,
+          "width": 117,
+          "height": 56
+        },
+        {
+          "x": 557.5,
+          "right": 606.25,
+          "width": 48.75,
+          "height": 48.75
+        },
+        {
+          "x": 620.25,
+          "right": 669,
+          "width": 48.75,
+          "height": 48.75
+        }
+      ],
+      "gaps": [
+        14,
+        14,
+        14,
+        14
+      ],
+      "scroll": 368
+    },
+    {
+      "name": "fixed-controls",
+      "width": 358,
+      "cells": [
+        {
+          "x": 16,
+          "right": 64.625,
+          "width": 48.625,
+          "height": 48.625
+        },
+        {
+          "x": 76.3125,
+          "right": 124.953125,
+          "width": 48.640625,
+          "height": 48.640625
+        },
+        {
+          "x": 136.640625,
+          "right": 253.359375,
+          "width": 116.71875,
+          "height": 56
+        },
+        {
+          "x": 265.046875,
+          "right": 313.671875,
+          "width": 48.625,
+          "height": 48.625
+        },
+        {
+          "x": 325.359375,
+          "right": 374,
+          "width": 48.640625,
+          "height": 48.640625
+        }
+      ],
+      "gaps": [
+        11.6875,
+        11.6875,
+        11.6875,
+        11.6875
+      ],
+      "scroll": 358
+    },
+    {
+      "name": "fixed-controls",
+      "width": 288,
+      "cells": [
+        {
+          "x": 16,
+          "right": 60,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 70,
+          "right": 114,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 124,
+          "right": 196,
+          "width": 72,
+          "height": 56
+        },
+        {
+          "x": 206,
+          "right": 250,
+          "width": 44,
+          "height": 44
+        },
+        {
+          "x": 260,
+          "right": 304,
+          "width": 44,
+          "height": 44
+        }
+      ],
+      "gaps": [
+        10,
+        10,
+        10,
+        10
+      ],
+      "scroll": 288
+    }
+  ],
+  "interactions": "All four buttons, decimal input, zero clamp, keyboard Enter, whole-ring focus, fixed-weight logging and reload persistence pass.",
+  "errors": []
+}

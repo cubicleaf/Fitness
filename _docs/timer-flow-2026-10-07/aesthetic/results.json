@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "Quick logging uses compact buttons at 320/390/1000px; the 44px weight SVG has no visible wrapper, extra plate, or weight text.",
+    "SVG opens the load sheet; Escape restores focus, Bodyweight/No load work, and Add weight logs the selected 45 lbs.",
+    "Stopwatch, paused controls, countdown, completed actions, and actual-time editor all keep compact targets at 320px; timing and edited logging still work.",
+    "Shared-duration pairs keep their explanation and omit the irrelevant load trigger; no page errors."
+  ],
+  "errors": []
+}

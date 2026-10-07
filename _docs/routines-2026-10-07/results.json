@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Create, rename, and include five exact activities without changing history; order remains derived until changed.",
+    "Up/down and actual pointer dragging persist manual order; Sort by use restores derived ranking.",
+    "Monday and Thursday share one routine; renaming updates both assignments.",
+    "Logging reps opens the existing picker directly, saves an ordinary set, and returns to the updated checklist.",
+    "Timed, neutral, and weighted activities log through their normal paths and update completion.",
+    "Cancel returns safely; completion and opt-in emphasis survive reload; sets appear in the daily view.",
+    "Actual CSV download/import into a fresh browser preserves routines, shared weekdays, date override, manual order, and an activity with zero sets.",
+    "Backup import remaps routine membership when an activity already exists under another ID.",
+    "Malformed routine metadata is rejected before any writes.",
+    "Confirmed deletion clears both weekdays and date overrides atomically, preserving all logged sets."
+  ],
+  "errors": []
+}

@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Simple Split Day lists matching activities without detailed-mode checkboxes.",
+    "Rest and None are distinct; explicit None overrides a weekday and restoring the default removes that override.",
+    "An extra logged activity does not check off an unrelated routine item.",
+    "Past session shows only recorded activities; opening it writes no sets, notes, or overrides.",
+    "A removed split is treated as unavailable.",
+    "Both real pre-routine March and October CSV formats import in isolated profiles; October preserves all 39 dated splits."
+  ],
+  "errors": []
+}

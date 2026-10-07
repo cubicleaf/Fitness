@@ -2,13 +2,39 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-10-06
+updated: 2026-10-07
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-10-05
+**Last updated:** 2026-10-07
 
 ## Where I left off
+
+2026-10-07 (main push authorized): Tim requested pushing all local FITNESS changes to `main`, including the routine first version, picker/header refresh, timer/equipment work, Clarity assets, documentation, and verification evidence. This supersedes the earlier local-only hold for this snapshot. Browser checks are recorded below; physical-phone critique remains open. A Git push alone does not confirm production deployment.
+
+2026-10-07 (routine first version): Tim authorized completing the routines to best judgment while keeping the existing Settings location and deferring an app-wide overhaul. The local build now supports rename, exact activity selection, split/simple and detailed modes, Rest, default usage ranking, drag/keyboard ordering, shared weekday assignments, and single-date overrides. Session logs through the existing pickers, returns to the checklist, derives completion from recorded sets, and offers optional unfinished emphasis (off by default). Past sessions show only recorded activities. CSV backs up routines, assignments, order, preferences, and activities with no sets; older exports remain supported. Isolated browser verification covers the complete logging loop, reload, atomic deletion, backup round-trip, historical read-only behavior, and both real March/October CSV formats (October: 39 dated splits). No real browser records changed. Uncommitted and not deployed; Tim's physical-phone critique remains next. [Previews and verification](./_docs/routines-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (approved Clarity Squircle): Tim selected option A, the organic squircle, to replace the stretched middle Clarity Ring. The weight value now uses that exact path with a uniform, non-scaling 4px outline; the four side rings, gaps, and weight-entry behavior remain as before. Named the companion shape **Clarity Squircle** and saved it as an SVG plus inline component. Browser checks passed at 320/390/430/1000px for layout, full touch targets, stroke behavior, adjustment, keyboard entry, decimal logging, and reload persistence. Uncommitted and not deployed. [Current previews and artwork reference](./assets/README.md).
+
+2026-10-07 (Clarity Ring weight-control trial): Tim chose the weight stepper as the ring’s first Fitness placement. All five controls now use Clarity Rings: four round adjustment rings and an elongated editable-value ring. Equal gaps increased from 6px to 10–14px, with transparent hosts and 44px minimum touch targets. The unit sits beside the value, or beneath it inside the ring on narrow screens. Browser checks passed at 320/390/430/1000px, including adjustment, decimal entry, keyboard activation, full-ring focus, and logging/reload persistence. Local styling trial, uncommitted and not deployed. [Previews and asset reference](./assets/README.md).
+
+2026-10-07 (FITNESS picker and header refresh): Implemented Tim’s five requested improvements locally. Rep entry now renders the complete latest measured session in original set order with the daily view’s `set-box` styles, formatter, and three-depth color ramp; removed deduplicated/usual/common rep suggestions. The wide custom-reps input is now a compact Clarity Ring field. Header reads **FITNESS** at 22.1px (30% larger); header SVGs use the day-arrow accent, scale has no faded dial, calendar shares the occupied height, and the gear’s background-colored void ring is wider. Add Activity uses a compact creation icon, wraps every split/All/Edit without horizontal scrolling, and removes redundant deletion prose. Picker context survives activity-history navigation, including search, selected split, family, and list scroll; the search X clears text in one tap. Settings → Weekly Splits → **Activities without a split** lists unsplit activities and saves multi-split assignments. Isolated Chromium checks pass at 320/390/1000px for layout, navigation, custom logging, and IndexedDB writes; no real records were touched. Uncommitted and not deployed; physical iPhone review remains open. [Previews and verification](./_docs/picker-refresh-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (Clarity Ring asset): Tim requested the organic circle around the Progress & Clarity feedback-notes count in Master Reader. Copied the exact `pc-count-circle` path into `assets/clarity-ring.svg` and inlined `IconClarityRing` for offline-safe reuse. Shared name: **Clarity Ring**. Geometry and transparent center are preserved; color inherits from the host. Verified the component at 28/38/44px and all seven app scripts pass syntax checks. Imported and available locally; live-screen placements are awaiting Tim’s selection. [Asset, usage reference, and preview](./assets/README.md).
+
+2026-10-07 (per-set equipment and weight-entry rebuild): Tim rejected the Bar math accordion and activity-wide equipment restriction. The weight screen now has a compact drawn equipment menu beside the bare load SVG: Fixed weight, Bar + plates, and Per hand. Bar mode enters plates per side and always shows the bar + two sides = total calculation; the Use action and presets stay compact. Each set saves its own weight meaning and optional bar snapshot, so one skull-crusher activity can alternate fixed 40/50 lb bars with loadable EZ/custom bars. Repeat-set shortcuts preserve the recorded equipment, and new bar entries display their full total in history. Existing records are not rewritten. Isolated browser checks cover mixed logging, custom bars, repeat shortcuts, backup round-trip, timers, and narrow/desktop layouts. Uncommitted and not deployed; physical-phone review remains open. [Verification and previews](./_docs/weight-equipment-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (timer aesthetic refinement): Tim requested compact buttons and weight controls hidden behind the same SVG used in the other set pickers. Timer actions now size to their contents, duration presets use a grid capped at 280px, and the always-visible load toolbar and header weight text are removed. A bare 44px dumbbell SVG opens the existing load sheet with Bodyweight, No load, and Add weight; shared-duration pairs omit it. Weight selection and timing/logging were checked in isolated browser contexts, with previews at 320/390/1000px. Uncommitted and not deployed. [Verification and updated previews](./_docs/timer-flow-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (morning decisions and timer implementation): Tim confirmed that pairing means logging one shared duration for two timed activities, such as 15 minutes of sauna and stretching. Tim then chose immediate preset logging with a separate **Time this activity** screen for stopwatch/countdown. Implemented locally: quick-log presets always save completed durations; countdown targets only start timing; both timer tools preserve actual-time editing and paired logging. Fixed the pre-existing parse blockers in the untested timer/date-sheet edits and removed a duplicate stopwatch time editor. Isolated browser checks passed for logging, distance, preset editing, stopwatch controls, running/completed countdown edits, cancellation, pairing, reload persistence, reduced motion, and 320/390/1000px layout. Physical-phone review remains open. Uncommitted and not deployed. [Verification and previews](./_docs/timer-flow-2026-10-07/VERIFICATION.md).
+
+2026-10-07: New Activity split help now recommends the active day's split when a recognized activity has no fixed split mapping, with Core as the starting suggestion for a loaded carry such as Farmer's Walk when no day split is available; multi-split selection remains available. Removed the activity picker’s “Find activities to merge” button. Timed activity entry now has the existing shrug “Did some” action, its Quick log/Countdown choices explain their outcomes, and the timer uses a uniform 12px section rhythm. Log Coach messages are now aligned as distinct left/right bubbles with a measured composer row; its new Purge control confirms before removing only the `fitlogsCoachMessages` localStorage key. Long history rows fade at the clipped edge and open every set in a full list; the set-entry weight control now relies on its SVG and “Log a Set” remains text for now. Source review only; tests were not run.
+
+2026-10-07: The timed activity picker now clears the original search when pairing starts, presents a clear second-activity choice, and explains that one duration creates linked entries for both activities; an empty split-filtered result can switch to all splits. Canceling a paired timed set clears the pending pair so it cannot leak into the next log. The timer has explicit Quick log and Countdown modes, shows one timing tool at a time, and lets an in-progress or completed countdown save an edited actual duration. The timer view is visually simplified, preset deletion uses the trash icon without the old jiggle, and the daily hand-placement action only appears for expanded activities. Source review only; tests were not run.
+
+2026-10-07: The Add Activity picker now presents each multi-activity family as one full-row selection button labeled “<Name> Family,” with its variation count as text and a family-only flow-chart cue. Standalone activities have no family SVG and use a two-column grid; family buttons span the full row. The compact daily-view Add Activity control is at top left, and the Master Reader magnifier at top right opens a search field over that toolbar without covering results. Relationship management remains in Activity Context → Edit. Field-note and modal cards are borderless, the set-picker Load/Grip buttons share 44px targets and similarly sized icons, and the date sheet uses the dynamic viewport with its Find or assign action kept above the bottom inset. Daily activity separators are gone; only the first-ranked badge keeps the bright accent while other badges use a small press scale. New Activity split-choice colors are pending Tim's selection among four proposed directions; the source colors are unchanged. Smart per-set weight buttons are a new iterative design discussion; no recommendation logic has been chosen or built.
+
+2026-10-07: Routine weekday editing now takes over the full routine screen, labels the selected day at the top, and presents assignments as large choices with a selected check. Routine deletion uses the existing trash SVG. In the daily split view, an activity with a work set on that date shows a check instead of its rank. The bodyweight control shows only the weight value, without the Bodyweight heading or last-logged date. Activity, Change Split, bodyweight, and help are separate natural-width controls with matching 44px heights.
 
 2026-10-05: Groq key failures in Log Coach now report HTTP 401 and the final four characters of the key the browser actually sent, so a newly created key can be distinguished from an older device-local saved key. HTTP 403 is identified separately. The optional Qwen model was updated from retired `qwen/qwen3.6-27b` to `qwen/qwen3.8-27b`; GPT OSS 120B remains the default. The phone's actual key has not been inspected or retested.
 
@@ -143,6 +169,73 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Decisions
 
+- 2026-10-07: Use the **Clarity Squircle** (approved option A) for the middle weight value. **What:** organic rectangular SVG with a transparent center and a uniform 4px outline; keep the original Clarity Rings for the four adjustment buttons. **Why:** stretching the circle made the ends too heavy; the organic squircle bridges that artwork and the app’s existing squircle shapes. **How to apply:** use `IconClaritySquircle` / `assets/clarity-squircle.svg`, inherit color from the host, and retain `vector-effect="non-scaling-stroke"` as the width changes.
+
+### 2026-10-07 — Copy the last session before revisiting smart rep suggestions
+**What:** Rep entry uses the exact daily set rendering for the latest session, keeping every set and repeated rep count. Header branding is FITNESS, with monochrome day-arrow-colored icons. All split filters are directly visible, and activity-history Back preserves the picker context.
+**Why:** Tim prioritized visual consistency and removing navigation friction before developing smarter recommendations.
+**Rejected:** Deduplicated and sorted suggested reps with usual/common fallbacks; horizontally hidden split destinations; resetting search on return.
+**How to apply:** Reuse the daily formatter, set-box classes, and color function. Do not restore predictive suggestions without a new design decision. Keep unsplit cleanup under Settings → Weekly Splits as the provisional location; preserve multi-split membership.
+**Evidence strength:** Tim-directed for display and navigation; provisional for the cleanup placement and compact Clarity Ring field.
+
+### 2026-10-07 — Equipment is chosen per set, with visible plate math
+
+**What:** One activity can use fixed weights or a bar with plates on different sets. A compact equipment menu sits beside the load SVG. Bar mode asks for plates **on each side** and always shows the bar, two sides, and full total—for example, a 15 lb bar + 20 lb × 2 = 55 lb total. Fixed weight asks for the complete weight; Per hand preserves the dumbbell mode.
+
+**Why:** Tim explicitly rejected the current interaction as unintuitive and cluttered. Skull crushers must work with either a fixed 40/50 lb bar or a loadable EZ bar, without changing the activity just to switch equipment.
+
+**How to apply:** Store the selected weight meaning on the set, alongside total load and the bar snapshot when applicable. Do not replace that selection with the activity default when saving, carrying weight, or copying a set. Restore the latest logged mode and keep separate fixed/bar values during a picker visit. Keep the calculation visible, action buttons at natural widths, and the equipment selector in the SVG row. This supersedes the 2026-09-29 combined-added-weight entry and hidden Bar math design; historical records retain their stored totals and snapshots. CSV backup carries the existing per-set fields.
+
+**Evidence strength:** Tim-directed equipment requirement; implementation choices applied locally with isolated browser verification. Physical phone not yet reviewed.
+
+### 2026-10-07 — Compact timer buttons and optional load behind the SVG
+
+**What:** Timer buttons fit their contents instead of spanning the screen. Duration presets stay in a three-column grid capped at 280px. Load controls and the current weight appear only after tapping the bare dumbbell SVG in the header, with a 44px target; shared-duration pairs omit this control.
+
+**Why:** Tim said the stretched buttons looked awful and weight was almost always irrelevant for timed activities. He wanted weight retained as an option behind the SVG, consistent with the other set-entry sections.
+
+**How to apply:** Keep Did some, Time this activity, timer tools, and timer actions at natural widths, wrapping as needed on narrow screens. Preserve the existing palette and squircle treatment. Reuse the load sheet for Bodyweight, No load, and Add weight. Opening the separate weight picker requires an idle timer because that navigation unmounts it; direct Bodyweight/No load choices stay available during timing. Keep weight labels out of the main timed-entry view.
+
+**Evidence strength:** Tim-directed; isolated browser verification. Physical phone not yet reviewed.
+
+### 2026-10-07 — Keep quick duration logging separate from live timing
+
+**What:** The initial duration screen logs a completed duration immediately when a preset is tapped. A secondary **Time this activity** action opens a separate screen for Stopwatch and Countdown, with **Back to logging** available while idle. A timer requires an explicit log action and supports correcting actual time before saving.
+
+**Why:** Tim pointed out that selecting a duration and then pressing Log would mostly rearrange the existing interaction and add a tap. He approved keeping quick logging fast while separating it from measuring an activity in progress.
+
+**Rejected:** The proposed duration-first screen with Log and Start countdown actions, and the existing top-level Log/Countdown mode toggle that gave the same preset different meanings.
+
+**How to apply:** Quick-log presets call the logging action directly, independent of the selected timer type. Countdown presets and the dial only start a countdown; entering timing, switching tools, canceling, resetting, and timer completion never save automatically. Preserve optional distance, editable presets, actual-time correction, and the confirmed one-duration-for-two-activities pairing. Keep the existing palette and squircle treatment. New screen entrances use 200ms with `cubic-bezier(0.25, 0.1, 0.25, 1)` and no animation under reduced motion. [Verification](./_docs/timer-flow-2026-10-07/VERIFICATION.md).
+
+**Evidence strength:** Claude-suggested, Tim-approved; isolated browser checks passed. Physical phone not yet reviewed.
+
+### 2026-10-07 — Pairing logs one shared duration for two timed activities
+
+**What:** Pairing is a shortcut that logs the same duration against two timed activities. For example, 15 minutes of sauna and stretching creates a 15-minute entry for each activity, each retaining its own history.
+
+**Why:** Tim selected this meaning when asked whether pairing should share one duration, group separate logs, or support both.
+
+**How to apply:** Preserve the current shared-duration pairing flow and its cancel cleanup. Any timer redesign must clearly name both activities when logging a pair. Do not expand this feature into separate durations, supersets, or circuits on the basis of this decision; broader bundling remains a separate discussion. This confirms the interaction's meaning, not its untested implementation correctness.
+
+**Evidence strength:** Tim-directed.
+
+### 2026-10-07 — Focus weekday assignment and simplify daily split controls
+
+**What:** Selecting a weekday in Routines opens a full-screen assignment view headed by the weekday name; choices are large, and the current assignment is checked. The routine delete action uses the existing trash SVG. In the daily split list, an activity with a work set logged on that date shows a check mark in place of its rank. The bodyweight control shows the value without a Bodyweight heading or last-logged date. Bodyweight, activity, Change Split, and field-note help are four independent 44px-high controls sized to their contents.
+
+**Why:** Editing a weekday should give the choice list the screen and attention it needs. The daily view should make completed activities visible and keep its primary controls distinct, compact, and easy to reach.
+
+**How to apply:** Keep check-off derived from dated work sets; never store a second completion flag. Ignore neutral placeholder and presence-only records. Retain the existing bodyweight date/history model and show the value without its provenance line. Keep each daily-view action as its own labeled control with at least a 44px touch height.
+
+### 2026-10-07 — Keep family selection full-row and relationship management in Edit
+
+**What:** In Add Activity, a family uses one full-row button labeled with its family name and plain variation-count text. The flow-chart cue appears only on family rows; standalone activities have no family SVG. Tapping a family row opens its eligible variations. Related Activities management stays in Activity Context → Edit. Modal cards, including field notes, have no border. The daily split list has no horizontal row separators; only the first-ranked badge uses the bright accent, while all badges keep a quiet press-scale response.
+
+**Why:** The family row should read as one large selection target, and its count should inform without looking like a separate control. Standalone rows should not imply family actions. The date list and modal edges should match the supplied phone screenshots.
+
+**How to apply:** Keep the selected split boundary and variation ordering unchanged. Keep the family button at least 44px high and do not nest the count in a second control. Preserve relationship editing in Activity Context → Edit. Keep modal-card borders at zero. Continue using a 44px minimum for the Load and Grip touch targets and leave non-first rank badges in their normal colors while pressed.
+
 ### 2026-10-06 — Tim sorted Fitness's open work
 
 **What:** Front Burner is the routine system (with the migration), the demo-data refresh, the IDFK button, cadence reminders, bundled activities, smarter search, auto-sort into splits, and one "code tune-up" item. Back Burner is naming, onboarding Part B, the warm-up helper, API research, and the parked color overhaul. The old `## Open` became `## Background for the work above`, which is reference only.
@@ -174,7 +267,7 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 - 2026-09-30: **What:** Use filled, fixed-pixel squircle plates across rectangular action and row surfaces: 20px number/small buttons, 26px wide buttons, and 30px larger rows. Use a solid mauve tint for secondary surfaces instead of a dark center with a mauve outline. Retain the current overall palette. **Why:** Tim chose the squircle mockup values and rejected hollow buttons and the proposed color overhaul. **How to apply:** Preserve the exact `fixedCornerSquirclePath` geometry and redraw it when dimensions or state change; never use CSS borders around plated elements. Keep note-only dates out of measured histories without deleting saved notes. The compact Did some action remains available for intentionally imprecise activity logs. **Evidence strength:** Tim-directed visual choice and local demo-browser review; physical phone review pending.
 
-- 2026-09-29: **What:** For bar activities, enter and display the weight added across both sides; reveal the bar and total calculation through an always-visible Bar math control. **Why:** The logger should match what the lifter loads while keeping total weight available without crowding the set screen. **How to apply:** Store the total plus a per-set bar snapshot for new logs; show older records without a snapshot as totals. Changing an activity's bar must not reinterpret history. Preserve the snapshot in CSV backup and in copied sets. **Evidence strength:** Tim-directed interaction choice; local demo-browser and fresh-origin CSV round-trip checks, pending physical-phone use.
+- 2026-09-29 (**interaction superseded locally on 2026-10-07; historical decision**): **What:** For bar activities, enter and display the weight added across both sides; reveal the bar and total calculation through an always-visible Bar math control. **Why:** The logger should match what the lifter loads while keeping total weight available without crowding the set screen. **How to apply:** Store the total plus a per-set bar snapshot for new logs; show older records without a snapshot as totals. Changing an activity's bar must not reinterpret history. Preserve the snapshot in CSV backup and in copied sets. **Evidence strength:** Tim-directed interaction choice; local demo-browser and fresh-origin CSV round-trip checks, pending physical-phone use. The new per-set equipment decision above replaces this entry's interaction guidance.
 
 - 2026-09-29: **What:** Add “Find or assign an activity” to the split-day directory. In search results for a named split, identify unassigned matches and let the user add one to the selected split in one explicit action. **Why:** Leg Press appeared in all-splits search but had no saved split, so the Legs directory correctly omitted it while giving no direct way to repair the mismatch. **How to apply:** Keep the search broad for discovery, name the missing assignment plainly, and require the user to tap before writing a split. Preserve existing assignments and all workout history.
 
@@ -419,25 +512,14 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - 2026-06-24: Diagnosed live crash (unpinned Babel 8 breaking change). Confirmed local index.html is babel-free and passes a node syntax check. Planning onboarding tour (data-tour anchors required since UI renders dynamically into #root). Naming front-runner: "Benchmark".
 - 2026-06-04: Resumed project. Created INTENT.md and STATUS.md. Shelved color work.
 
+### 2026-10-07 — Build routines in place
+
+**What:** Complete the routine builder and session flow now in Settings → Weekly Splits, keeping placement changeable. **Why:** Tim prefers a working version to critique and explicitly deferred the full layout overhaul. **How to apply:** `RoutineLibraryModal` loads its own records and takes date/action callbacks (`onClose`, `date`, `onLogActivity`, `refreshKey`, `isVisible`, `initialView`); the App host owns navigation and logging. Routine activities have no targets. Completion derives from any logged set on that date; sorting counts measured sets. Unfinished emphasis is an optional surface treatment, off by default. **Evidence:** Tim-directed authorization in this chat; isolated interaction and backup checks linked above. Physical-phone taste/flow approval remains open.
+
 ## Front Burner
 
-- Build the routine system per [ROUTINE-SYSTEM-SPEC.md](./ROUTINE-SYSTEM-SPEC.md). **Phases 0 and 1
-  are complete** (2026-10-02): `INTENT.md` amended, D11/D12 settled, version 4 shipped with the
-  three new stores, the migration written and verified, bake-on-read removed. Committed and pushed
-  to `main` on 2026-10-02 (`5800a96`); corrected 2026-10-06, the line had said uncommitted.
-  **Phase 2 is partially built.** Done: the route-agnostic `RoutineLibraryModal`, the weekday
-  assignment strip, routine create, and delete with the D12 named-days confirmation. **Still to
-  build: rename, the detailed-mode activity picker (adding activities to a lineup), and
-  drag-to-reorder writing `manualOrder` only on first drag.** Paused for a design review before more
-  surfaces go in. **Load the `tims-ux-playbook` skill before any visual decision.** The
-  navigation-placement question (spec §7.1) stays open by design — the component is built so the
-  answer costs one line whenever Tim lands on it.
-- Run the routine migration against Tim's current real data. The fresh export is at
-  `~/Downloads/fitness-export-2026-10-02.csv` but macOS TCC blocks this agent from reading
-  `~/Downloads` even with the sandbox disabled. One `cp` in Tim's own shell unblocks it:
-  `cp ~/Downloads/fitness-export-2026-10-02.csv "/Users/cubicleaf/Documents/Fitness-git/my real data/"`
-  Low urgency — that data provably contains no weekday splits or per-day overrides, so it exercises
-  none of the migration logic.
+- Review the 2026-10-07 FITNESS picker/header refresh on a physical iPhone before deployment. [Local previews and verified flows](./_docs/picker-refresh-2026-10-07/VERIFICATION.md).
+- Review the complete local routine first version on a physical phone: Settings → Weekly Splits → Open Routines. Placement remains provisional; app-wide navigation changes are deferred. Implementation and isolated checks are complete; deployment still requires Tim's decision. [Previews and verified flows](./_docs/routines-2026-10-07/VERIFICATION.md).
 - Demo seed horizon expires **2026-10-01**. `seed-data.csv` runs out, after which the rolling
   simulation stops topping up and the demo reads as a museum piece again. Extend
   `_archive/gen_summer_2026.py` and update `_docs/character-bio.md` in the same change. Separate
@@ -449,6 +531,9 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 - **Bundled activities** (supersets/circuits). Tim wants this soon (2026-10-06) even though the
   earlier advice was not to build a generic bundling system yet. Settle the open design questions
   with Tim before building. Background: "Paired / bundled activities" below.
+- **Smart per-set weight buttons** (iterative design). Explore how the activity's recent weight
+  range and set position could inform likely choices. Keep the existing “Last” value distinct and
+  every suggestion optional; settle the interaction with Tim before building recommendation logic.
 - **Smarter activity search** that understands synonyms, not just exact names. Background:
   "Retrieval follow-ups from the 09-07 pass" below.
 - **Auto-sort new activities into splits** when they're created; the prototype is mostly done.
@@ -575,6 +660,7 @@ historical. Tim tests on his phone constantly (2026-10-06), so they are not a se
 
 ### Paired / bundled activities
 
+- Confirmed 2026-10-07: the existing two-activity timed pairing logs one shared duration and creates an entry in each activity's history. The broader bundle ideas and questions below are separate from that settled shortcut.
 - Idea: allow multiple activities to be grouped into one bundle, pairing, superset, circuit, or recovery block.
 - Strong fit cases:
   - Supersets/circuits where the grouped items are simple and repeated together.
@@ -587,7 +673,7 @@ historical. Tim tests on his phone constantly (2026-10-06), so they are not a se
 - Open questions:
   - Is the bundle itself logged as an activity, or is it only a shortcut that creates multiple activity entries?
   - Should bundled activities share notes/timing, or keep separate histories?
-  - Does pairing help during a workout, or mainly help summarize what happened afterward?
+  - Would a broader bundle help during a workout, or mainly help summarize what happened afterward?
 
 ### Opt-in cadence reminders
 
@@ -611,7 +697,7 @@ historical. Tim tests on his phone constantly (2026-10-06), so they are not a se
 - The consolidated flow is live; a physical-phone session remains open.
 - The released follow-up lets a person review multi-activity groups from the picker and explicitly clean up one-activity groups from Settings → Data. Tim's phone-local legacy Run links cannot be inspected or repaired from this workspace; review those members on the phone before changing them. This cleanup control is included in production `main`.
 - An activity owns its exact history, notes, presets, categories, and load behavior. A family is an optional named umbrella. A variation is an activity’s relative role inside Related Activities, not another storage entity.
-- Related Activities is the only management surface. The Add Activity picker keeps its compact family row and a variation-selection sheet that includes only in-split activities. Duplicate merging stays separate and is the only flow that combines histories.
+- Related Activities is the only management surface, reached from Activity Context → Edit. The Add Activity picker presents a full-row family button and a variation-selection sheet that includes only in-split activities. Duplicate merging stays separate and is the only flow that combines histories.
 - Search stays activity-name-only; non-All splits remain hard boundaries; qualifying logged-set count followed by alphabetical name orders eligible activities. Do not restore older metadata search guidance from historical decisions.
 - The canonical implementation contract is [FAMILY-SYSTEM-AND-PICKER-SPEC.md](/Users/cubicleaf/Documents/Fitness-git/FAMILY-SYSTEM-AND-PICKER-SPEC.md). No automatic grouping on ordinary creation or boot.
 

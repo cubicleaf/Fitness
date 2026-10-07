@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "FITNESS label enlarged 30%; header controls use one accent color and fit at 320/390/1000.",
+    "All eight splits, All, and Edit wrap and remain directly accessible.",
+    "Activity history Back restores the search and scroll position.",
+    "Prior session preserves all sets and repeated reps, using daily-view formatter, 13px size, padding, and color ramp. Compact custom field accepts 33.",
+    "Returning from a family activity restores the family sheet and selected split.",
+    "Settings cleanup lists unsplit activities; multiple split assignment saves and completed rows disappear, including after reopening."
+  ],
+  "errors": []
+}

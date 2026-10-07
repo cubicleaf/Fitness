@@ -1,6 +1,9 @@
 # Routine System — Implementation Spec & Handoff
 
-**Authored:** 2026-09-30 · **Status:** Active spec, not yet built · **Authority:** Tim-directed
+**Authored:** 2026-09-30 · **Status:** Local first version implemented; phone review/deploy pending · **Authority:** Tim-directed
+
+
+**2026-10-07 implementation update:** Tim authorized building a complete first version to best judgment, keeping the existing Settings location and deferring an app-wide overhaul. That authorization supersedes the intermediate build pauses below; physical-phone review and an explicit deploy decision remain outstanding. Builder, execution, opt-in emphasis, and CSV repair are implemented locally. See [_docs/routines-2026-10-07/VERIFICATION.md](./_docs/routines-2026-10-07/VERIFICATION.md). The workspace remains route-agnostic via host-supplied date/action callbacks; the previous one-prop contract has expanded to support logging return and refreshing while hidden. Duplicate names warn, activity selection uses search and wrapping split filters, and unfinished emphasis uses a subtle background.
 
 This document is a handoff for a fresh session. It carries the settled decisions from the
 2026-09-30 design conversation, the existing-code findings that constrain the build, the data

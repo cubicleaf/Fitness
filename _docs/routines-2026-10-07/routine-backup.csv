@@ -1,0 +1,24 @@
+Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note,BarWeightAtLog,BarNameAtLog,WeightMeaning
+2026-10-06,Push-up,push,reps,1,,bodyweight,12,,,,,,,total
+2026-10-07,Push-up,push,reps,1,,bodyweight,10,,,,,,,total
+2026-10-07,Sauna,other,timed,1,,none,,900,,,,,,total
+2026-10-07,Recovery,push,neutral,1,,bodyweight,,,,,,,,total
+2026-10-07,Bench,push,reps,1,45,lbs,8,,,,,,,total
+
+__META__,,,,,,,,,
+__ACTIVITY__,"{""categories"":[""push""],""type"":""reps"",""weightDefault"":""weight"",""createdAt"":1,""lastUsed"":""2026-10-07"",""id"":""bar"",""name"":""Bench"",""weightMeaning"":""total"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""reps""],""gripTrackingEnabled"":false}"
+__ACTIVITY__,"{""categories"":[""push""],""type"":""neutral"",""weightDefault"":""none"",""createdAt"":1,""lastUsed"":""2026-10-07"",""id"":""neutral"",""name"":""Recovery"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""neutral""],""gripTrackingEnabled"":false}"
+__ACTIVITY__,"{""categories"":[""push""],""type"":""reps"",""weightDefault"":""bodyweight"",""createdAt"":1,""lastUsed"":""2026-10-07"",""id"":""press"",""name"":""Push-up"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""reps""],""gripTrackingEnabled"":false}"
+__ACTIVITY__,"{""categories"":[""push""],""type"":""reps"",""weightDefault"":""bodyweight"",""createdAt"":1,""lastUsed"":null,""id"":""row"",""name"":""Row"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""reps""],""gripTrackingEnabled"":false}"
+__ACTIVITY__,"{""categories"":[""other""],""type"":""timed"",""weightDefault"":""none"",""createdAt"":1,""lastUsed"":""2026-10-07"",""id"":""sauna"",""name"":""Sauna"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""timed""],""gripTrackingEnabled"":false}"
+__ACTIVITY__,"{""categories"":[""push""],""type"":""reps"",""weightDefault"":""bodyweight"",""createdAt"":1,""lastUsed"":null,""id"":""unused"",""name"":""Unlogged Carry"",""movementFamilyId"":null,""movementFamilyName"":"""",""variationLabel"":"""",""measurementModes"":[""reps""],""gripTrackingEnabled"":false}"
+__ROUTINE__,"{""id"":""rt_1791411547332_vqpwnch0l"",""name"":""Morning mobility"",""mode"":""lineup"",""activityIds"":[""press"",""sauna"",""unused"",""neutral"",""bar""],""manualOrder"":[""sauna"",""press"",""bar"",""neutral"",""unused""],""createdAt"":1791411547332}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":0,""routineId"":null}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":1,""routineId"":""rt_1791411547332_vqpwnch0l""}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":2,""routineId"":null}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":3,""routineId"":null}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":4,""routineId"":""rt_1791411547332_vqpwnch0l""}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":5,""routineId"":null}"
+__ROUTINE_WEEK__,"{""dayOfWeek"":6,""routineId"":null}"
+__DAY_ROUTINE__,"{""date"":""2026-10-07"",""routineId"":""rt_1791411547332_vqpwnch0l""}"
+__ROUTINE_PREFS__,"{""emphasis"":true}"
