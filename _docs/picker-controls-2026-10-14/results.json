@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "checks": [
+    "Creation has a labeled filled squircle button at 320/390/430px; all splits and Edit occupy one independently scrolling row, without page overflow.",
+    "Split selection, Edit/Cancel, search/clear/close, and Create New Activity entry work."
+  ],
+  "errors": []
+}

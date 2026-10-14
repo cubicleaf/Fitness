@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-10-14 (picker creation and split row): Tim requested restoring a clear creation button and changing the split choices to one horizontally scrolling row. Add Activity now has a filled, labeled **Create activity** squircle button with the existing supplied icon pair. The split rail contains All, each split, and Edit; it scrolls independently, keeps a restored selected split visible, and retains 44px targets. This supersedes the 2026-10-07 two-row/all-visible preference for this picker. Search and existing creation/split editor flows remain available. Phone-width verification and screenshots: [`_docs/picker-controls-2026-10-14/`](./_docs/picker-controls-2026-10-14/).
+
 2026-10-14 (daily activity motion recovered and implemented): Recovered Tim's exact “Space, then contents” recipe from `[ FITNESS ] 10/7 DONE` (chat `01a11821-fdc0-7910-a206-f0d1d934d1fa`): 700ms both directions, cubic-bezier(.4,0,.2,1), 100ms content staging, -6px content travel. The prior chat had stopped after treating the pasted study disclaimer as an approval gate. Main daily cards now coordinate height, padding, accent wash, and contents through independent cancellable animations, retain closing content inertly, reverse from the visible frame, and reject stale completions. Removed the shared closing slot, opening timeout, and trembling outline. The motion reference now records this exact contract rather than the obsolete 280/520ms guidance. Headless checks cover timing, intermediate frames, reversals, A→B→C, reduced motion, 320/390/430px, real logging and reload; physical iPhone critique remains. Broader dialog/picker exit lifecycles from the recipe are not included in this focused daily-card fix. [Verification](./_docs/activity-motion-2026-10-14/VERIFICATION.md).
 
 2026-10-14 (publish local fixes): Tim authorized committing and pushing all pending Fitness work to `main`. This release includes the creation blank-screen fix, typed permanent deletion safeguard, daily split editor, compact rep picker/history rail, per-activity workout context and supplied info SVG, toolbar refinements, and demo extension through 2026-11-09, plus their existing verification artifacts. Seven inline scripts and the service worker parse; demo CSV preserves every previous byte and consistent column counts; whitespace check passes with CSV CRLF respected. The entries below describe historical local states; their ‘uncommitted/not deployed’ labels are superseded by this release. Published in commit `382bebf`; GitHub recorded the production deployment on 2026-10-14, and production `index.html`, `sw.js`, and `seed-data.csv` were verified byte-for-byte equal to the local release through `timslogbook.vercel.app`. Local `main` and GitHub `main` are synchronized. Physical-phone behavior remains for Tim to assess.
@@ -194,6 +196,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-14 — Explicit creation action and one scrolling split row
+
+**What:** Use a filled button labeled “Create activity” and a single horizontally scrolling split rail in Add Activity.
+
+**Why:** Tim found the bare creation icons insufficiently recognizable and requested one row for the splits.
+
+**How to apply:** Preserve the existing icon pair and squircle system, 44px targets, independent horizontal scrolling, and selected-split visibility. This replaces the earlier requirement to show every split without horizontal scrolling on this screen.
 
 ### 2026-10-14 — Preserve the exact daily activity motion recipe
 

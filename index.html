@@ -2868,11 +2868,13 @@
         .rt-row-action.is-danger { color: var(--danger); }
 
 
-        /* Picker refresh: content-sized controls; all split destinations visible. */
-        .exercise-picker-content .category-tabs { flex-wrap: wrap; overflow: visible; gap: 6px; padding-bottom: 0; margin-bottom: 12px; }
+        /* Picker: one scrolling split row and an explicit creation action. */
+        .exercise-picker-content .category-tabs { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; gap: 6px; padding-bottom: 6px; margin-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-behavior: auto; }
+        .exercise-picker-content .category-tabs:focus-visible { outline: none; background-color: color-mix(in srgb, var(--accent) 5%, transparent); }
         .exercise-picker-content .category-tab { min-height: 44px; padding: 6px 10px; border: 0; }
         .exercise-picker-toolbar { min-height: 44px; margin-bottom: 8px; }
-        .btn.exercise-picker-create-button { flex: 0 0 64px; width: 64px; min-height: 44px; padding: 0; background: transparent; color: var(--accent-soft); }
+        .btn.exercise-picker-create-button { flex: 0 1 auto; width: auto; min-height: 48px; padding: 0 14px; gap: 10px; background: var(--accent); color: var(--text-bright); font-size: 13px; font-weight: 600; white-space: nowrap; }
+        .exercise-picker-create-button .add-activity-icon-pair { flex: none; }
         .exercise-picker-search-overlay .search-input { height: 44px; }
         .rep-last-session { margin: 4px 0 12px; }
         .rep-last-session .section-title { margin-bottom: 2px; }
@@ -6021,6 +6023,14 @@ const ExercisePickerModal = ({
   const [isSearchOpen, setIsSearchOpen] = useState(savedContext?.isSearchOpen || false);
   const searchInputRef = useRef(null);
   const [category, setCategory] = useState(savedContext?.category || defaultCategory || 'all');
+  const splitRailRef = useRef(null);
+  React.useLayoutEffect(() => {
+    const rail = splitRailRef.current, selected = rail?.querySelector('.category-tab.active');
+    if (!selected) return;
+    const viewport = rail.getBoundingClientRect(), item = selected.getBoundingClientRect();
+    if (item.left < viewport.left) rail.scrollLeft -= viewport.left - item.left;
+    else if (item.right > viewport.right) rail.scrollLeft += item.right - viewport.right;
+  }, [category]);
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [usageByExerciseId, setUsageByExerciseId] = useState({});
@@ -6420,7 +6430,7 @@ const ExercisePickerModal = ({
   }, /*#__PURE__*/React.createElement("span", {
     className: "add-activity-icon-pair",
     "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement(IconActivityPlus, { size: 22 }), /*#__PURE__*/React.createElement(IconStretching, { size: 26 }))), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(IconActivityPlus, { size: 22 }), /*#__PURE__*/React.createElement(IconStretching, { size: 26 })), React.createElement("span", null, "Create activity")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "exercise-picker-search-toggle",
     "aria-label": "Search activities",
@@ -6455,7 +6465,11 @@ const ExercisePickerModal = ({
     "aria-label": search ? "Clear activity search" : "Close activity search",
     onClick: () => { if (search) { setSearch(''); setSelectedFamilyId(null); searchInputRef.current?.focus(); } else closeActivitySearch(); }
   }, /*#__PURE__*/React.createElement(IconX, { size: 20 })))), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "category-tabs"
+    className: "category-tabs",
+    ref: splitRailRef,
+    role: "region",
+    "aria-label": "Activity splits",
+    tabIndex: 0
   }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
     key: cat,
     className: `category-tab ${category === cat ? 'active' : ''}`,
