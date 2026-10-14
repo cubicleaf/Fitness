@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "Recent activities come from actual stored sets despite missing legacy lastUsed; current split does not hide recent/typed choices. Never-logged activities are not invented as recents.",
+    "Actual name matcher handles aliases/typos; four suggestions maximum; View all exposes all five bench matches without duplicate background results.",
+    "Keyboard selection opens the real activity context; Back preserves query; Escape/outside dismissal and split restoration work; no sets logged by choosing. Empty library stays honest.",
+    "Body portal stays within 320/390/430px; focus remains ring-free; closing the picker removes the panel."
+  ],
+  "errors": []
+}

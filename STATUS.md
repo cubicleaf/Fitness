@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-10-14 (search suggestions approved for release): Tim reviewed the WDM Search Suggestions Lab and said “Looks good. Ship it.” Add Activity search now opens a body-portal shortlist over the split rail: up to four most recently logged activities when blank, and four strong existing-name matches while typing. Recent dates come from actual sets (including presence entries), not the legacy lastUsed field. The existing matcher/aliases remain authoritative; weak broad matches are reachable through View all. Selection opens the existing activity route without logging; Back retains query; Escape/outside dismissal, full results, split/scroll restoration, keyboard and ring-free focus are preserved. Pairing/family overlays suppress the shortlist. No AI/network dependency or persistence schema added. Headless actual-app checks pass at 320/390/430px with populated and empty isolated data. [Verification](./_docs/search-suggestions-2026-10-14/VERIFICATION.md). Distance ruler remains WDM-only pending explicit live-field replacement approval.
+
 2026-10-14 (focus, edge accents, history fade, distance study): Tim authorized an app-wide pass against the permanent focus-ring and edge-accent bans. Runtime source has no remaining left-border declarations; the retired deletion-card stripe was already absent, and the timer separator was removed. Custom outlines are replaced with fill/whole-control brightness, and a shared focus rule suppresses native rings while preserving focus and keyboard use. History sets fade only in the final **10px at the right edge** of an overflowing strip; fitting rows remain unmasked. Headless verification covers short/long rows with/without notes, complete-set expansion, phone widths and actual focused controls. [Evidence](./_docs/visual-policy-2026-10-14/VERIFICATION.md). A separate **Fitness: Distance Drag Lab** in `webdev/wdm.html` previews horizontal distance scrubbing (0.1/0.01, exact typing, unit conversion); live distance entry is unchanged. [Search suggestions proposal](./_docs/SEARCH-SUGGESTIONS-PROPOSAL.md) recommends recent items / actual name matches with a four-row panel covering splits; no search behavior was changed.
 
 2026-10-14 (picker creation and split row): Tim requested restoring a clear creation button and changing the split choices to one horizontally scrolling row. Add Activity now has a filled, labeled **Create activity** squircle button with the existing supplied icon pair. The split rail contains All, each split, and Edit; it scrolls independently, keeps a restored selected split visible, and retains 44px targets. This supersedes the 2026-10-07 two-row/all-visible preference for this picker. Search and existing creation/split editor flows remain available. Phone-width verification and screenshots: [`_docs/picker-controls-2026-10-14/`](./_docs/picker-controls-2026-10-14/).
@@ -198,6 +200,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-14 — Ship actual-library search suggestions
+
+**What:** Recent four when blank; strong saved-name matches while typing; View all retains complete search results. The approved panel covers the split row.
+
+**Why:** Tim reviewed the WDM study and authorized shipping it.
+
+**How to apply:** Use actual set-history dates for recency. Keep exact/prefix ranking above frequency, the existing local matcher and threshold 650 for suggestions. Avoid speculative names, inferred families, duplicate underlying result lists, or logging on selection. Keep query context, full-result access, mobile keyboard sizing, and independent portal cleanup.
 
 ### 2026-10-14 — No rings or edge accents; narrow overflow cue
 

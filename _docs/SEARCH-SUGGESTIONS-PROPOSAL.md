@@ -1,7 +1,9 @@
+**Document status: Archived — 2026-10-14.** Approved by Tim and implemented; current behavior is recorded in STATUS and `_docs/search-suggestions-2026-10-14/VERIFICATION.md`.
+
 # Add Activity search suggestions — proposal, 2026-10-14
 
 Tim requested thinking through useful suggestions beneath search, temporarily
-covering the split row. This is a proposal; no search behavior is changed.
+covering the split row. This was the proposal used for the approved implementation.
 
 ## Recommended first version
 

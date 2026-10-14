@@ -2971,6 +2971,14 @@
         @media (forced-colors: active) {
             :focus-visible { background-color: Highlight !important; color: HighlightText !important; }
         }
+        .activity-search-suggestions { position: fixed; z-index: 12010; overflow-y: auto; overscroll-behavior: contain; padding: 8px; border-radius: 14px; background: color-mix(in srgb, var(--accent) 12%, var(--bg-page)); box-shadow: 0 16px 38px rgba(12,6,10,.38); }
+        .activity-search-suggestions-heading { padding: 6px 8px 8px; color: var(--text-faint); font-size: 11px; }
+        .activity-search-option { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; padding: 10px 12px; min-height: 58px; border: 0; background: transparent; color: var(--text-bright); font: inherit; cursor: pointer; }
+        .activity-search-option strong { display: block; font-size: 14px; overflow-wrap: anywhere; }
+        .activity-search-option small { display: block; margin-top: 3px; color: var(--text-faint); font-size: 11px; }
+        .activity-search-option[aria-selected="true"] { background: color-mix(in srgb, var(--accent) 28%, var(--bg-page)); }
+        .activity-search-view-all { width: 100%; min-height: 44px; padding: 10px 12px; border: 0; background: none; color: var(--accent-soft); font: inherit; font-size: 12px; text-align: left; cursor: pointer; }
+        .activity-search-empty { padding: 10px 12px; color: var(--text-faint); font-size: 13px; }
     </style>
 </head>
 <body>
@@ -6017,6 +6025,44 @@ const ActivityDeleteDialog = ({ exercise, onCancel, onDeleted }) => {
     ));
 };
 
+// Approved Search Suggestions Lab: actual history, strong saved-name matches.
+const ActivitySearchSuggestions = ({ inputRef, options, query, totalMatches, activeIndex, onChoose, onViewAll, onDismiss }) => {
+  const panelRef = useRef(null);
+  const [position, setPosition] = useState(null);
+  React.useLayoutEffect(() => {
+    const anchor = inputRef.current?.closest('.exercise-picker-toolbar');
+    if (!anchor) return;
+    const reposition = () => {
+      const box = anchor.getBoundingClientRect(), viewport = window.visualViewport;
+      const bottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight;
+      setPosition({ left: box.left, top: box.bottom + 6, width: box.width, maxHeight: Math.max(80, Math.min(420, bottom - box.bottom - 18)) });
+    };
+    reposition();
+    const observer = new ResizeObserver(reposition); observer.observe(anchor);
+    window.addEventListener('resize', reposition); window.addEventListener('scroll', reposition, true);
+    window.visualViewport?.addEventListener('resize', reposition);
+    window.visualViewport?.addEventListener('scroll', reposition);
+    const outside = event => { if (!anchor.contains(event.target) && !panelRef.current?.contains(event.target)) onDismiss(); };
+    document.addEventListener('pointerdown', outside);
+    return () => {
+      observer.disconnect(); window.removeEventListener('resize', reposition); window.removeEventListener('scroll', reposition, true);
+      window.visualViewport?.removeEventListener('resize', reposition); window.visualViewport?.removeEventListener('scroll', reposition);
+      document.removeEventListener('pointerdown', outside);
+    };
+  }, []);
+  useEffect(() => { panelRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }, [activeIndex]);
+  if (!position) return null;
+  const h = React.createElement;
+  return ReactDOM.createPortal(h('div', { className: 'activity-search-suggestions', ref: panelRef, style: position },
+    h('div', { className: 'activity-search-suggestions-heading' }, query ? 'Matches · all splits' : 'Recent activities'),
+    h('div', { id: 'activity-search-listbox', role: 'listbox', 'aria-label': query ? 'Activity matches' : 'Recent activities' },
+      options.map((exercise, index) => h('button', { key: exercise.id, id: `activity-search-option-${index}`, type: 'button', role: 'option', className: 'activity-search-option', 'aria-selected': activeIndex === index, onClick: () => onChoose(exercise) },
+        h('span', null, h('strong', null, exercise.name || exercise.exerciseName), exercise._lastLoggedDate && h('small', null, 'Last · ', formatDateShort(exercise._lastLoggedDate))), h('span', { 'aria-hidden': true }, '›')))),
+    !options.length && h('div', { className: 'activity-search-empty', role: 'status' }, query ? 'No strong name matches.' : 'No recently logged activities yet.'),
+    query && totalMatches > options.length && h('button', { type: 'button', className: 'activity-search-view-all', onClick: onViewAll }, `View all ${totalMatches} matches ›`)
+  ), document.body);
+};
+
 const ExercisePickerModal = ({
   onSelect,
   onCreateNew,
@@ -6032,6 +6078,9 @@ const ExercisePickerModal = ({
   const [search, setSearch] = useState(savedContext?.search || '');
   const [isSearchOpen, setIsSearchOpen] = useState(savedContext?.isSearchOpen || false);
   const searchInputRef = useRef(null);
+  const [suggestionsDismissed, setSuggestionsDismissed] = useState(savedContext?.suggestionsDismissed || false);
+  const [suggestionIndex, setSuggestionIndex] = useState(-1);
+  const splitScrollRef = useRef(savedContext?.splitScrollLeft || 0);
   const [category, setCategory] = useState(savedContext?.category || defaultCategory || 'all');
   const splitRailRef = useRef(null);
   React.useLayoutEffect(() => {
@@ -6051,8 +6100,8 @@ const ExercisePickerModal = ({
   const [selectedFamilyId, setSelectedFamilyId] = useState(savedContext?.selectedFamilyId || null);
   const pickerContentRef = useRef(null);
   useEffect(() => {
-    contextRef.current = { date: selectedDate, search, isSearchOpen, category, selectedFamilyId, scrollTop: contextRef.current?.scrollTop || 0 };
-  }, [selectedDate, search, isSearchOpen, category, selectedFamilyId]);
+    contextRef.current = { date: selectedDate, search, isSearchOpen, suggestionsDismissed, category, selectedFamilyId, splitScrollLeft: splitScrollRef.current, scrollTop: contextRef.current?.scrollTop || 0 };
+  }, [selectedDate, search, isSearchOpen, suggestionsDismissed, category, selectedFamilyId]);
   useEffect(() => {
     if (!isLoadingExercises && pickerContentRef.current) pickerContentRef.current.scrollTop = savedContext?.scrollTop || 0;
   }, [isLoadingExercises]);
@@ -6074,10 +6123,15 @@ const ExercisePickerModal = ({
           }
           return counts;
         }, {});
+        const lastLogged = (allSets || []).reduce((dates, set) => {
+          if (set?.exerciseId && !isNeutralAnchorSet(set) && set.date && (!dates[set.exerciseId] || set.date > dates[set.exerciseId])) dates[set.exerciseId] = set.date;
+          return dates;
+        }, {});
         setUsageByExerciseId(usage);
         setExercises((all || []).map(exercise => ({
           ...exercise,
-          _usageCount: usage[exercise.id] || 0
+          _usageCount: usage[exercise.id] || 0,
+          _lastLoggedDate: lastLogged[exercise.id] || ''
         })));
         setExerciseLoadError(false);
       } catch (error) {
@@ -6147,6 +6201,9 @@ const ExercisePickerModal = ({
     setIsSearchOpen(false);
     setSearch('');
     setSelectedFamilyId(null);
+    setSuggestionsDismissed(false);
+    setSuggestionIndex(-1);
+    requestAnimationFrame(() => { if (splitRailRef.current) splitRailRef.current.scrollLeft = splitScrollRef.current; });
   };
   const familyMap = {};
   exercises.forEach(ex => {
@@ -6160,6 +6217,10 @@ const ExercisePickerModal = ({
     familyMap[familyKey].members.push(ex);
   });
   const queryText = normalizeActivitySearch(search);
+  const suggestionsOpen = isSearchOpen && !suggestionsDismissed && !pairingSource && !selectedFamilyId && !showEditCategories && !isLoadingExercises && !exerciseLoadError;
+  // The shortlist is strict; View all retains the existing permissive finder.
+  const suggestionOptions = queryText ? filtered.filter(ex => ex._searchScore >= 650).slice(0, 4) : exercises.filter(ex => ex._lastLoggedDate).sort((a, b) => b._lastLoggedDate.localeCompare(a._lastLoggedDate) || b._usageCount - a._usageCount || a.name.localeCompare(b.name)).slice(0, 4);
+  const chooseSuggestion = exercise => { setSuggestionIndex(-1); onSelect(exercise); };
   const visibleActivities = filtered;
   // Category/family matches are discovery results, not evidence of a duplicate.
   // Keep the repair prompt limited to direct activity-name matches.
@@ -6397,7 +6458,7 @@ const ExercisePickerModal = ({
 
   // Search results show the matching activities directly; family doors are
   // useful for browsing but can hide the exact name being searched for.
-  const activitySections = queryText ? visibleActivities.map(renderActivityRow) : buildSections(visibleActivities, 'all');
+  const activitySections = suggestionsOpen ? null : queryText ? visibleActivities.map(renderActivityRow) : buildSections(visibleActivities, 'all');
   const selectedFamilyVariants = selectedFamilyId ? visibleActivities.filter(ex => ex.movementFamilyId === selectedFamilyId).sort(compareActivitySearchResults) : [];
   const selectedFamily = selectedFamilyVariants.length >= 2 ? familyMap[selectedFamilyId] : null;
 
@@ -6448,7 +6509,10 @@ const ExercisePickerModal = ({
     onClick: () => {
       if (isSearchOpen) closeActivitySearch();
       else {
+        splitScrollRef.current = splitRailRef.current?.scrollLeft || 0;
         setSelectedFamilyId(null);
+        setSuggestionsDismissed(false);
+        setSuggestionIndex(-1);
         setIsSearchOpen(true);
       }
     }
@@ -6460,25 +6524,42 @@ const ExercisePickerModal = ({
     className: "search-input",
     placeholder: "Search your activities...",
     "aria-label": "Search your activities",
+    role: 'combobox',
+    'aria-autocomplete': 'list',
+    'aria-expanded': suggestionsOpen,
+    'aria-controls': suggestionsOpen ? 'activity-search-listbox' : undefined,
+    'aria-activedescendant': suggestionsOpen && suggestionIndex >= 0 ? `activity-search-option-${suggestionIndex}` : undefined,
     value: search,
     onKeyDown: event => {
-      if (event.key === 'Escape') closeActivitySearch();
+      if (event.key === 'Escape') { event.preventDefault(); if (suggestionsOpen) setSuggestionsDismissed(true); else closeActivitySearch(); }
+      else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault(); setSuggestionsDismissed(false);
+        if (suggestionOptions.length) setSuggestionIndex(index => index < 0 ? (event.key === 'ArrowDown' ? 0 : suggestionOptions.length - 1) : (index + (event.key === 'ArrowDown' ? 1 : -1) + suggestionOptions.length) % suggestionOptions.length);
+      } else if (event.key === 'Enter' && suggestionsOpen && suggestionIndex >= 0 && suggestionOptions[suggestionIndex]) { event.preventDefault(); chooseSuggestion(suggestionOptions[suggestionIndex]); }
     },
     onChange: e => {
       const nextSearch = e.target.value;
       setSearch(nextSearch);
       setSelectedFamilyId(null);
+      setSuggestionsDismissed(false);
+      setSuggestionIndex(-1);
     }
   }), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "exercise-picker-search-close",
     "aria-label": search ? "Clear activity search" : "Close activity search",
-    onClick: () => { if (search) { setSearch(''); setSelectedFamilyId(null); searchInputRef.current?.focus(); } else closeActivitySearch(); }
-  }, /*#__PURE__*/React.createElement(IconX, { size: 20 })))), mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    onClick: () => { if (search) { setSearch(''); setSelectedFamilyId(null); setSuggestionsDismissed(false); setSuggestionIndex(-1); searchInputRef.current?.focus(); } else closeActivitySearch(); }
+  }, /*#__PURE__*/React.createElement(IconX, { size: 20 })))), suggestionsOpen && React.createElement(ActivitySearchSuggestions, {
+    inputRef: searchInputRef, options: suggestionOptions, query: queryText, totalMatches: filtered.length, activeIndex: suggestionIndex,
+    onChoose: chooseSuggestion, onViewAll: () => { setSuggestionsDismissed(true); setSuggestionIndex(-1); }, onDismiss: () => setSuggestionsDismissed(true)
+  }), !suggestionsOpen && mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "category-tabs",
     ref: splitRailRef,
     role: "region",
     "aria-label": "Activity splits",
+    inert: suggestionsOpen ? '' : undefined,
+    style: { visibility: suggestionsOpen ? 'hidden' : undefined },
+    onScroll: event => { if (!isSearchOpen) { splitScrollRef.current = event.currentTarget.scrollLeft; if (contextRef.current) contextRef.current.splitScrollLeft = splitScrollRef.current; } },
     tabIndex: 0
   }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
     key: cat,
@@ -6554,7 +6635,8 @@ const ExercisePickerModal = ({
       marginBottom: 20
     }
   }, "Couldn't load activities. Close and reopen Add Activity.") : visibleActivities.length > 0 ? /*#__PURE__*/React.createElement("div", {
-    className: "exercise-picker-section"
+    className: "exercise-picker-section",
+    hidden: suggestionsOpen
   }, (pairingSource || queryText) && React.createElement("div", { className: "section-title" }, pairingSource ? 'Choose a timed activity' : 'Matches · all splits'), /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-grid"
   }, activitySections)) : /*#__PURE__*/React.createElement("div", {
@@ -6564,7 +6646,7 @@ const ExercisePickerModal = ({
       marginTop: 20,
       marginBottom: 20
     }
-  }, pairingSource ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { style: { marginBottom: '10px' } }, category === 'all' ? 'No other timed activities are available to pair.' : `No other timed activities are assigned to ${category}.`), category !== 'all' && /*#__PURE__*/React.createElement("button", {
+  }, suggestionsOpen ? null : pairingSource ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", { style: { marginBottom: '10px' } }, category === 'all' ? 'No other timed activities are available to pair.' : `No other timed activities are assigned to ${category}.`), category !== 'all' && /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setCategory('all'),
     style: { minHeight: '44px', padding: '0 14px', border: 'none', borderRadius: '10px', background: 'var(--surface)', color: 'var(--accent-soft)', fontWeight: '700' }
