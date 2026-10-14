@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-10-14 (focus, edge accents, history fade, distance study): Tim authorized an app-wide pass against the permanent focus-ring and edge-accent bans. Runtime source has no remaining left-border declarations; the retired deletion-card stripe was already absent, and the timer separator was removed. Custom outlines are replaced with fill/whole-control brightness, and a shared focus rule suppresses native rings while preserving focus and keyboard use. History sets fade only in the final **10px at the right edge** of an overflowing strip; fitting rows remain unmasked. Headless verification covers short/long rows with/without notes, complete-set expansion, phone widths and actual focused controls. [Evidence](./_docs/visual-policy-2026-10-14/VERIFICATION.md). A separate **Fitness: Distance Drag Lab** in `webdev/wdm.html` previews horizontal distance scrubbing (0.1/0.01, exact typing, unit conversion); live distance entry is unchanged. [Search suggestions proposal](./_docs/SEARCH-SUGGESTIONS-PROPOSAL.md) recommends recent items / actual name matches with a four-row panel covering splits; no search behavior was changed.
+
 2026-10-14 (picker creation and split row): Tim requested restoring a clear creation button and changing the split choices to one horizontally scrolling row. Add Activity now has a filled, labeled **Create activity** squircle button with the existing supplied icon pair. The split rail contains All, each split, and Edit; it scrolls independently, keeps a restored selected split visible, and retains 44px targets. This supersedes the 2026-10-07 two-row/all-visible preference for this picker. Search and existing creation/split editor flows remain available. Phone-width verification and screenshots: [`_docs/picker-controls-2026-10-14/`](./_docs/picker-controls-2026-10-14/).
 
 2026-10-14 (daily activity motion recovered and implemented): Recovered Tim's exact “Space, then contents” recipe from `[ FITNESS ] 10/7 DONE` (chat `01a11821-fdc0-7910-a206-f0d1d934d1fa`): 700ms both directions, cubic-bezier(.4,0,.2,1), 100ms content staging, -6px content travel. The prior chat had stopped after treating the pasted study disclaimer as an approval gate. Main daily cards now coordinate height, padding, accent wash, and contents through independent cancellable animations, retain closing content inertly, reverse from the visible frame, and reject stale completions. Removed the shared closing slot, opening timeout, and trembling outline. The motion reference now records this exact contract rather than the obsolete 280/520ms guidance. Headless checks cover timing, intermediate frames, reversals, A→B→C, reduced motion, 320/390/430px, real logging and reload; physical iPhone critique remains. Broader dialog/picker exit lifecycles from the recipe are not included in this focused daily-card fix. [Verification](./_docs/activity-motion-2026-10-14/VERIFICATION.md).
@@ -196,6 +198,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-14 — No rings or edge accents; narrow overflow cue
+
+**What:** Enforce Tim's permanent focus-ring and decorative edge-accent bans throughout the app; use a 10px right-edge fade only on overflowing history set strips.
+
+**Why:** Native Safari focus and several authored focus outlines remained, while a percentage fade hid valid set data too early.
+
+**How to apply:** Retain native focus and ordinary field borders; use fill or whole-control brightness as a non-ring cue. Do not add outline/ring shadows or status stripes through CSS, inline styles, SVG decorations or pseudo-elements. Supplied icon artwork and normal layout separators are separate. Keep the set-overflow measurement and full-set peek, with a fixed 10px fade at the strip's actual right boundary.
 
 ### 2026-10-14 — Explicit creation action and one scrolling split row
 

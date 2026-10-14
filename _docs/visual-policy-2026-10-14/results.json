@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "Native focus and keyboard Tab remain functional; visible search uses fill without outline/shadow. Every mounted control on daily/Add Activity/search is ring-free.",
+    "Focused controls also checked on New Activity, expanded daily card, weight picker, rep picker and Settings; all are ring-free.",
+    "Actual shared history rows at 320/390/430px: short sets (with/without notes) stay unmasked; long sets fade only at final right 10px; View all retains all 12 sets."
+  ],
+  "errors": []
+}
