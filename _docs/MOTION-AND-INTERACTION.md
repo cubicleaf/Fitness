@@ -29,7 +29,7 @@ to decorate or delay a critical action.
 | --- | ---: | --- |
 | Press feedback | immediate | `scale(0.95)` or a color/border state; no intentional delay |
 | Small control transition | 200–300ms | color, border, opacity |
-| Inline content reveal | 280ms | opacity + `translateY(-6px → 0)` with the standard ease-out |
+| Daily activity open/close | 700ms | `cubic-bezier(.4,0,.2,1)`, 100ms content lead, `translateY(-6px → 0)` |
 | Modal/panel entrance | 250ms | backdrop fade + `scale(0.96 → 1)` + `translateY(8px → 0)` |
 | Ambient atmosphere | 1–1.5s | only when it does not compete with the task |
 
@@ -37,18 +37,33 @@ to decorate or delay a critical action.
 
 ### Activity-card expansion
 
-The expanded activity region uses a restrained `280ms` standard ease-out:
+Approved source: Tim's exact pasted **Space, then contents** recipe in the
+Codex chat **[ FITNESS ] 10/7 DONE**, recovered and implemented 2026-10-14.
+This supersedes the old 280ms reference and 520ms September experiment.
 
-- Opening: `opacity: 0 → 1`, `translateY(-6px) → translateY(0)`.
-- Closing: keep the content mounted for `280ms`, play the same transition in
-  reverse, then unmount it.
-- The expanded surface may remain visually anchored while its controls settle.
-- Do not add bounce or a large scale effect to this core logging interaction.
-- Reduced motion removes the transform and transition but preserves immediate
-  expansion/collapse.
+- Opening and closing: **700ms `cubic-bezier(.4,0,.2,1)`**.
+- Opening: height, padding (0 → 8px), and accent wash (transparent → 7%)
+  start immediately. Contents fade 0 → 1 and move -6px → 0 after **100ms**;
+  everything finishes at 700ms.
+- Closing: contents start immediately; space, padding, and wash follow after
+  100ms and finish at the same 700ms endpoint. Content remains mounted until
+  closing finishes and is inert as soon as closing is requested.
+- Each card owns its animations and completion version. Capture computed
+  values before cancellation. Reverse from that visible frame, skip the
+  content delay on interruption, and scale duration to remaining distance
+  (20–100% of 700ms). Only the current completion can restore auto height or
+  release retained content. Never use an uncancelled opening timeout.
+- Use a stable accent wash rather than the trembling outline.
+- Reduced motion commits immediately, with no delay or transform.
+- Keep logging, autosave, history, colors, icons, and SVG geometry intact.
 
-Implementation currently lives in `.exercise-expanded-content` in
-`index.html`.
+Implementation: `ACTIVITY_MOTION` and `ActivityMotionCard` in `index.html`.
+Verification: [2026-10-14 checks](./activity-motion-2026-10-14/VERIFICATION.md).
+
+The recovered recipe also describes dialog lifecycle changes (zero travel,
+retained exits, nested focus/stack handling). This implementation addresses
+Tim's reported **main daily activity open/close** interaction; modal/picker
+lifecycle changes remain a separate scope and must not be claimed as shipped.
 
 ### Modals and focused editors
 

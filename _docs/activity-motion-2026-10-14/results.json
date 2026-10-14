@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "checks": [
+    "Exact 700ms clock, easing, 100ms staged contents, animated padding/wash; close retains DOM and blocks interaction until completion.",
+    "Repeated reversals settle correctly; A → B → C leaves only C open, without stale height timers or a shared closing slot.",
+    "Reduced motion commits immediately with no animation or content delay.",
+    "320/390/430px geometry fits; Add Set logs 105 lbs × 11 through the real pickers, preserves original records, and persists after reload."
+  ],
+  "opening": {
+    "height": 0.140625,
+    "auto": "0px",
+    "inert": false,
+    "children": 3,
+    "padding": 0.00987005,
+    "opacity": 0,
+    "transform": "matrix(1, 0, 0, 1, 0, -6)",
+    "expanded": "true",
+    "animations": [
+      {
+        "target": "card",
+        "duration": 700,
+        "delay": 0,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 16.636
+      },
+      {
+        "target": "height",
+        "duration": 700,
+        "delay": 0,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 16.636
+      },
+      {
+        "target": "contents",
+        "duration": 600,
+        "delay": 100,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 16.636
+      }
+    ]
+  },
+  "closing": {
+    "height": 117,
+    "auto": "117px",
+    "inert": true,
+    "children": 3,
+    "padding": 8,
+    "opacity": 1,
+    "transform": "matrix(1, 0, 0, 1, 0, 0)",
+    "expanded": "false",
+    "animations": [
+      {
+        "target": "card",
+        "duration": 600,
+        "delay": 100,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 0
+      },
+      {
+        "target": "height",
+        "duration": 600,
+        "delay": 100,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 0
+      },
+      {
+        "target": "contents",
+        "duration": 700,
+        "delay": 0,
+        "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "current": 0
+      }
+    ]
+  },
+  "errors": []
+}

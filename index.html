@@ -1370,26 +1370,12 @@
             white-space: nowrap;
         }
 
-        /* Activity controls use a measured height transition for reliable motion on mobile Safari. */
-        .exercise-expanded-content {
-            height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(-4px);
-            transition: opacity 420ms cubic-bezier(.22,1,.36,1),
-                        transform 420ms cubic-bezier(.22,1,.36,1);
-        }
-
-        .exercise-expanded-content.is-open {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        /* Approved WDM recipe: 700ms, 100ms content lead, 6px travel.
+           ActivityMotionCard owns one cancellable clock per card. */
+        .exercise-expanded-content { height: 0; overflow: hidden; }
         .exercise-expanded-content.is-closing { pointer-events: none; }
-        .exercise-expanded-content__clip { min-height: 0; overflow: hidden; }
-        @media (prefers-reduced-motion: reduce) {
-            .exercise-expanded-content,.exercise-expanded-content.is-open { transition: none; transform: none; }
-        }
+        .exercise-expanded-content__clip { min-height: 0; overflow: hidden; opacity: 0; transform: translateY(-6px); }
+        .exercise-group { border-radius: 12px; }
 
         .exercise-group-inner {
             position: relative;
@@ -1736,48 +1722,9 @@
         }
         .exercise-picker-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 
-        /* Micro Tremor: the history-jump cue belongs to the expanded card only. */
-        .exercise-group-expanded {
-            position: relative;
-            isolation: isolate;
-        }
-
-        .exercise-group-expanded > * {
-            position: relative;
-            z-index: 2;
-        }
-
-        .exercise-group-expanded::before,
-        .exercise-group-expanded::after {
-            content: '';
-            position: absolute;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .exercise-group-expanded::before {
-            inset: -2px;
-            border: 1px solid color-mix(in srgb, var(--accent-soft) 75%, transparent);
-            border-radius: 14px;
-            animation: micro-tremor var(--duration) steps(4, end) infinite;
-            opacity: var(--opacity);
-        }
-
-        .exercise-group-expanded::after {
-            inset: 0;
-            border-radius: 12px;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .exercise-group-expanded::before,
-            .exercise-group-expanded::after {
-                animation: none !important;
-            }
-
-            .exercise-group-expanded::before {
-                opacity: 0.32 !important;
-            }
-        }
+        /* The approved card recipe uses a stable accent wash, without tremor. */
+        .exercise-group-expanded { position: relative; isolation: isolate; }
+        .exercise-group-expanded > * { position: relative; z-index: 2; }
 
         @keyframes micro-tremor {
             0%, 100% { transform: translate(0); }
@@ -15527,6 +15474,73 @@ const CalendarMonthModal = ({
     onClick: () => setMonthOffset(0)
   }, "Back to ", monthNames[anchor.getMonth()]))));
 };
+// Exact recipe supplied by Tim in “[ FITNESS ] 10/7 DONE”.
+const ACTIVITY_MOTION = Object.freeze({ duration: 700, lead: 100, travel: 6, easing: 'cubic-bezier(.4,0,.2,1)' });
+const ActivityMotionCard = ({ open, firstLogHint, children, ...props }) => {
+  const rootRef = useRef(null), motionRef = useRef({ version: 0, animations: [], initialized: false });
+  const desiredRef = useRef(open);
+  desiredRef.current = open;
+  const [retained, setRetained] = useState(open);
+  React.useLayoutEffect(() => {
+    const card = rootRef.current, panel = card.querySelector('.exercise-expanded-content');
+    const detail = panel.firstElementChild, record = motionRef.current;
+    const version = ++record.version;
+    // Capture BEFORE cancel: reversing starts at exactly the visible frame.
+    const properties = (element, keys) => {
+      const style = getComputedStyle(element);
+      return Object.fromEntries(keys.map(key => [key, style[key]]));
+    };
+    const visibleHeight = panel.getBoundingClientRect().height;
+    const cardFrom = properties(card, ['paddingTop','paddingBottom','paddingLeft','paddingRight','backgroundColor']);
+    const detailFrom = properties(detail, ['opacity','transform']);
+    const interrupted = record.animations.some(animation => animation.playState === 'running' || animation.playState === 'pending');
+    Object.assign(card.style, cardFrom); Object.assign(detail.style, detailFrom);
+    panel.style.height = `${visibleHeight}px`;
+    record.animations.forEach(animation => animation.cancel()); record.animations = [];
+    panel.inert = !open;
+    panel.setAttribute('aria-hidden', String(!open));
+    const toggle = card.querySelector('.exercise-collapsible');
+    toggle?.setAttribute('aria-expanded', String(open));
+    const natural = detail.scrollHeight;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduced ? 0 : interrupted ? ACTIVITY_MOTION.duration * Math.min(1, Math.max(.2, Math.abs((open ? natural : 0) - visibleHeight) / Math.max(1, natural))) : ACTIVITY_MOTION.duration;
+    const lead = reduced || interrupted ? 0 : ACTIVITY_MOTION.lead;
+    const cardTo = { paddingTop: open ? '8px' : '0px', paddingBottom: open ? '8px' : '0px', paddingLeft: open ? '8px' : '0px', paddingRight: open ? '8px' : '0px', backgroundColor: open ? 'color-mix(in srgb, var(--accent) 7%, transparent)' : 'rgba(0, 0, 0, 0)' };
+    const detailTo = { opacity: open ? '1' : '0', transform: `translateY(${open ? 0 : -ACTIVITY_MOTION.travel}px)` };
+    const commit = () => {
+      if (record.version !== version || desiredRef.current !== open) return;
+      Object.assign(card.style, cardTo); Object.assign(detail.style, detailTo);
+      panel.style.height = open ? 'auto' : '0px';
+      record.animations.forEach(animation => animation.cancel()); record.animations = [];
+      setRetained(open);
+    };
+    if ((!record.initialized && !open) || !duration) {
+      record.initialized = true; commit(); return;
+    }
+    record.initialized = true;
+    if (open) setRetained(true);
+    const run = (element, from, to, ms, delay = 0) => {
+      const animation = element.animate([from, to], { duration: ms, delay, easing: ACTIVITY_MOTION.easing, fill: 'both' });
+      record.animations.push(animation);
+      return animation.finished;
+    };
+    const spaceDelay = open ? 0 : lead;
+    Promise.all([
+      run(card, cardFrom, cardTo, duration - spaceDelay, spaceDelay),
+      run(panel, { height: `${visibleHeight}px` }, { height: `${open ? natural : 0}px` }, duration - spaceDelay, spaceDelay),
+      run(detail, detailFrom, detailTo, duration - (open ? lead : 0), open ? lead : 0)
+    ]).then(commit).catch(() => { /* Cancellation belongs to the next request. */ });
+  }, [open]);
+  useEffect(() => () => {
+    const record = motionRef.current;
+    ++record.version;
+    record.animations.forEach(animation => animation.cancel());
+  }, []);
+  return React.createElement('div', { ...props, ref: rootRef,
+    className: `exercise-group${open || retained ? ' exercise-group-expanded' : ''}${firstLogHint ? ' exercise-group-firstlog' : ''}`
+  }, children(!open && retained));
+};
+
 function App() {
   const safariChromeColor = '#1a0a12';
   const [currentDate, setCurrentDate] = useState(() => {
@@ -15570,29 +15584,6 @@ function App() {
   const [confirmation, setConfirmation] = useState(null);
   const [activityToDelete, setActivityToDelete] = useState(null);
   const [expandedExercise, setExpandedExercise] = useState(null);
-  const [closingExercise, setClosingExercise] = useState(null);
-  const collapseTimerRef = useRef(null);
-  const exercisePanelRefs = useRef(new Map());
-  const animateExercisePanel = (exerciseId, opening, duration = 460) => {
-    const panel = exercisePanelRefs.current.get(exerciseId);
-    if (!panel) return;
-    const startHeight = panel.getBoundingClientRect().height;
-    const targetHeight = opening ? panel.scrollHeight : 0;
-    panel.style.height = `${startHeight}px`;
-    panel.style.overflow = 'hidden';
-    panel.style.transition = 'none';
-    panel.offsetHeight;
-    panel.style.transition = `height ${duration}ms cubic-bezier(.22,1,.36,1)`;
-    panel.style.height = `${targetHeight}px`;
-    if (opening) {
-      window.setTimeout(() => {
-        if (exercisePanelRefs.current.get(exerciseId) !== panel) return;
-        panel.style.height = 'auto';
-        panel.style.overflow = '';
-        panel.style.transition = '';
-      }, duration + 24);
-    }
-  };
   const [selectedSetForEdit, setSelectedSetForEdit] = useState(null);
   const [setNumber, setSetNumber] = useState(1);
   const [prefilledReps, setPrefilledReps] = useState(null);
@@ -15632,49 +15623,13 @@ function App() {
   const [firstLogHintId, setFirstLogHintId] = useState(null);
   const [firstMoodPromptId, setFirstMoodPromptId] = useState(null);
   const toggleExpandedExercise = exerciseId => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = reduceMotion ? 0 : 460;
-    if (expandedExercise === exerciseId) {
-      if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
-      setClosingExercise(exerciseId);
-      animateExercisePanel(exerciseId, false, duration);
-      setFirstLogHintId(current => current === exerciseId ? null : current);
-      setFirstMoodPromptId(current => current === exerciseId ? null : current);
-      collapseTimerRef.current = setTimeout(() => {
-        setExpandedExercise(null);
-        setClosingExercise(null);
-        collapseTimerRef.current = null;
-      }, duration);
-      return;
-    }
-    if (collapseTimerRef.current) clearTimeout(collapseTimerRef.current);
-    if (expandedExercise) {
-      const previousExerciseId = expandedExercise;
-      setClosingExercise(previousExerciseId);
-      animateExercisePanel(previousExerciseId, false, duration);
-      collapseTimerRef.current = setTimeout(() => {
-        setClosingExercise(null);
-        collapseTimerRef.current = null;
-      }, duration);
-    } else {
-      setClosingExercise(null);
-    }
+    setExpandedExercise(current => current === exerciseId ? null : exerciseId);
     setFirstLogHintId(null);
     setFirstMoodPromptId(null);
-    setExpandedExercise(exerciseId);
-    requestAnimationFrame(() => animateExercisePanel(exerciseId, true, duration));
   };
-  // Open after the first set of each activity. Show the words only for the
-  // day's first logged activity; later new activities get the quiet dial cue.
   const revealFirstLogOfDay = exerciseId => {
     if (!exerciseId) return;
-    if (collapseTimerRef.current) {
-      clearTimeout(collapseTimerRef.current);
-      collapseTimerRef.current = null;
-    }
-    setClosingExercise(null);
     setExpandedExercise(exerciseId);
-    requestAnimationFrame(() => animateExercisePanel(exerciseId, true));
     setFirstLogHintId(exerciseId);
     setFirstMoodPromptId(daySets.length ? null : exerciseId);
   };
@@ -17094,28 +17049,15 @@ function App() {
     className: "empty-state"
   }, currentDate === getTodayString() ? /*#__PURE__*/React.createElement(React.Fragment, null, "No activities logged yet today.") : /*#__PURE__*/React.createElement(React.Fragment, null, "No activities on this day.")) : exercises.map(exercise => {
     const isExpanded = expandedExercise === exercise.exerciseId;
-    const isClosing = closingExercise === exercise.exerciseId;
     const visibleSets = getVisibleSets(exercise.sets);
     const measuredSets = getMeasuredSets(exercise.sets);
     const latestVisibleSet = measuredSets.length > 0 ? measuredSets[measuredSets.length - 1] : null;
     const gripSets = visibleSets.filter(set => formatGripLabel(set));
     const isFirstLogHint = firstLogHintId === exercise.exerciseId;
-    return /*#__PURE__*/React.createElement("div", {
-      key: exercise.exerciseId,
-      className: `${isExpanded || isClosing ? "exercise-group exercise-group-expanded" : "exercise-group"}${isFirstLogHint ? ' exercise-group-firstlog' : ''}`,
-      style: isExpanded || isClosing ? {
-        background: 'color-mix(in srgb, var(--accent) 7%, transparent)',
-        borderRadius: '12px',
-        padding: '8px',
-        border: '1px solid color-mix(in srgb, var(--accent) 10%, transparent)',
-        overflow: 'visible',
-        '--duration': '1ms',
-        '--opacity': '0.45',
-        '--glow-radius': '1px',
-        '--travel': '3px',
-        '--travel-neg': '-3px',
-        '--travel-y': '3px'
-      } : {},
+    return React.createElement(ActivityMotionCard, {
+      key: `${currentDate}:${exercise.exerciseId}`,
+      open: isExpanded,
+      firstLogHint: isFirstLogHint,
       onTouchStart: e => {
         if (isExpanded) return;
         const el = e.currentTarget;
@@ -17139,7 +17081,7 @@ function App() {
           el._longPressTimer = null;
         }
       }
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }, isClosing => /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
       className: "exercise-collapsible",
       "data-tour": "activity-row",
       onClick: () => toggleExpandedExercise(exercise.exerciseId)
@@ -17244,9 +17186,6 @@ function App() {
       className: "set-box-content"
     }, formatSetBox(set, visibleSets[idx - 1], unit)))))), /*#__PURE__*/React.createElement("div", {
       className: `exercise-expanded-content${isExpanded ? ' is-open' : ''}${isClosing ? ' is-closing' : ''}`,
-      ref: element => {
-        if (element) exercisePanelRefs.current.set(exercise.exerciseId, element);else exercisePanelRefs.current.delete(exercise.exerciseId);
-      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-expanded-content__clip"
     }, (isExpanded || isClosing) && (() => {

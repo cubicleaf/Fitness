@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+2026-10-14 (daily activity motion recovered and implemented): Recovered Tim's exact “Space, then contents” recipe from `[ FITNESS ] 10/7 DONE` (chat `01a11821-fdc0-7910-a206-f0d1d934d1fa`): 700ms both directions, cubic-bezier(.4,0,.2,1), 100ms content staging, -6px content travel. The prior chat had stopped after treating the pasted study disclaimer as an approval gate. Main daily cards now coordinate height, padding, accent wash, and contents through independent cancellable animations, retain closing content inertly, reverse from the visible frame, and reject stale completions. Removed the shared closing slot, opening timeout, and trembling outline. The motion reference now records this exact contract rather than the obsolete 280/520ms guidance. Headless checks cover timing, intermediate frames, reversals, A→B→C, reduced motion, 320/390/430px, real logging and reload; physical iPhone critique remains. Broader dialog/picker exit lifecycles from the recipe are not included in this focused daily-card fix. [Verification](./_docs/activity-motion-2026-10-14/VERIFICATION.md).
+
 2026-10-14 (publish local fixes): Tim authorized committing and pushing all pending Fitness work to `main`. This release includes the creation blank-screen fix, typed permanent deletion safeguard, daily split editor, compact rep picker/history rail, per-activity workout context and supplied info SVG, toolbar refinements, and demo extension through 2026-11-09, plus their existing verification artifacts. Seven inline scripts and the service worker parse; demo CSV preserves every previous byte and consistent column counts; whitespace check passes with CSV CRLF respected. The entries below describe historical local states; their ‘uncommitted/not deployed’ labels are superseded by this release. Published in commit `382bebf`; GitHub recorded the production deployment on 2026-10-14, and production `index.html`, `sw.js`, and `seed-data.csv` were verified byte-for-byte equal to the local release through `timslogbook.vercel.app`. Local `main` and GitHub `main` are synchronized. Physical-phone behavior remains for Tim to assess.
 
 2026-10-12 (demo seed extended): `seed-data.csv` now runs 2026-10-01 → **2026-11-09** (28 new sessions, ~5/week, 256 training days). Append-only: the first 4,034 rows are byte-identical and a script asserts it. New generator `_archive/gen_autumn_2026.py` (refuses to run unless the input ends on 2026-10-01). Arc continues the clean climb with smaller steps: bench 205 PR on 10-12, eleven pull-ups on 10-27, squat 270, outdoor runs to 13K. `_docs/character-bio.md` gained Phase 11 and updated Final Numbers; `sw.js` cache bumped to `fitlogs-v6` so a cached seed cannot outlive the deploy; the one comment in `index.html` naming the horizon was updated (no code change). Verified in a clean browser profile: entering the demo imports 3,913 sets through today (2026-10-12) with no future days and no console errors. **Not deployed** — `seed-data.csv`, `sw.js` and `index.html` are uncommitted alongside the routine-system work.
@@ -192,6 +194,14 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-14 — Preserve the exact daily activity motion recipe
+
+**What:** Apply Tim's recovered 700ms “Space, then contents” recipe to main daily activity cards, including 100ms staging and 6px content travel.
+
+**Why:** The selected motion never reached the app; earlier implementation and documents disagreed. Independent animation ownership also removes reversal and multi-card closing races.
+
+**How to apply:** Use `ACTIVITY_MOTION` / `ActivityMotionCard` and [`_docs/MOTION-AND-INTERACTION.md`](./_docs/MOTION-AND-INTERACTION.md). Preserve the complete timing/lifecycle contract when changing the renderer; do not substitute generic animation defaults. Verify actual browser timing and interrupted transitions. Dialog lifecycle work remains separate.
 
 ### 2026-10-08 — Keep the scale SVG; use the supplied info artwork
 
