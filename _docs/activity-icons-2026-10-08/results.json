@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "Each activity uses the supplied info SVG in its own 44px context button at the far right, vertically aligned with its summary/date. Independent rows open, stay open, and close without changing other rows.",
+    "250ms fade-out/fade-in works; rapid taps settle correctly; keyboard and reduced-motion switching work; all 14 long set badges are retained.",
+    "Scale SVG is restored without weight text, opens the editor, and fits one toolbar row with both split controls and the bare question SVG at 320/390/430/1000px. All four toolbar items are visually scaled to 85%, preserving 44px touch targets; both labels use 13.6px text. Help, split editing, and separate history navigation work."
+  ],
+  "errors": []
+}

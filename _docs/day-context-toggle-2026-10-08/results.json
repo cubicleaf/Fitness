@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "Screenshot layout restored: date heading, scale/value, split controls, numbered rail, usage summaries, and full-width activity finder. Context has a 44px target and fits 320/390/1000px.",
+    "Measured intermediate opacity confirms sequential 250ms fade-out/fade-in; only secondary details fade. All last-workout badges preserve order, repeated values, and shared formatting; long workouts wrap.",
+    "Toggle reverses, rapid repeat clicks settle correctly, keyboard Space/Enter works, and reduced motion switches immediately without a delay.",
+    "Existing shared split editor and activity-history navigation still work."
+  ],
+  "errors": []
+}

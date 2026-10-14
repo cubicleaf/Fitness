@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "Create opens and Cancel returns to the activity picker.",
+    "New rep activity saves to IndexedDB through actual form.",
+    "Carry recommendation and timed creation work.",
+    "Neutral creation works."
+  ],
+  "errors": []
+}

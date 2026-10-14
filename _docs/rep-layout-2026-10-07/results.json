@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "Previous workout retains every badge/order; sits beside Load at 320/390/1000px; checkmark validates and saves 33 reps with the selected load.",
+    "Load and Grip remain fixed before history; 14 long banded sets scroll without page overflow and fades switch at both ends.",
+    "Grip sheet still opens; no-history activities stay clean; Enter submits a valid custom count."
+  ],
+  "errors": []
+}

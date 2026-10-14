@@ -1114,7 +1114,7 @@
         .day-activity-row::before { content: ''; position: absolute; left: 21px; top: 0; bottom: 0; width: 1.5px; background: color-mix(in srgb, var(--accent-soft) 36%, transparent); pointer-events: none; }
         .day-activity-list > li:first-child .day-activity-row::before { top: 50%; }
         .day-activity-list > li:last-child .day-activity-row::before { bottom: 50%; }
-        .day-activity-node { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1.5px solid var(--accent); border-radius: 11px; background: var(--bg-page); color: var(--accent-soft); font-size: 12px; font-variant-numeric: tabular-nums; transition: transform 120ms ease-out; }
+        .day-activity-node { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1.5px solid var(--accent); border-radius: 11px; background: var(--bg-page); color: var(--accent-soft); font-size: 15.6px; font-variant-numeric: tabular-nums; transition: transform 120ms ease-out; }
         .day-activity-row.is-most-used .day-activity-node { background: var(--accent); color: #fff; }
         .day-activity-row:active .day-activity-node { transform: scale(0.95); }
         .day-activity-copy { display: grid; gap: 4px; min-width: 0; }
@@ -1178,18 +1178,38 @@
             appearance: none;
         }
         .day-detail-control:active { transform: scale(0.96); }
-        .day-detail-weight-control { gap: 2px; padding: 0 2px; }
-        .day-detail-weight-value { overflow: hidden; text-overflow: ellipsis; }
         .day-detail-tab.is-active { background: var(--accent); color: #fff; }
-        .day-detail-actions .day-detail-help {
-            width: 44px !important;
-            height: 44px !important;
-            min-width: 44px;
-            min-height: 44px;
-            border-radius: 12px !important;
-            background: var(--surface) !important;
-            color: var(--accent-soft) !important;
-        }
+        .day-detail-actions { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px; gap: 6px; }
+        .day-detail-scale { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--accent-soft); cursor: pointer; }
+        .day-detail-scale:active { transform: scale(0.95); }
+        .day-detail-scale:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+        .day-detail-tab { min-width: 0; padding: 0 6px; font-size: 13.6px; white-space: normal; }
+        .day-detail-split { gap: 5.1px; min-width: 76px; padding: 0 10px; white-space: nowrap; }
+        .day-detail-split > svg:not(.auto-squircle-svg) { flex: none; width: 15.3px; height: 15.3px; }
+        /* Scale only visible plates/artwork; preserve the 44px touch targets. */
+        .day-detail-actions .day-detail-tab > .auto-squircle-svg { transform: scale(0.85); transform-origin: center; }
+        .day-detail-actions .day-detail-help { width: 44px !important; height: 44px !important; min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 0 !important; background: transparent !important; color: var(--accent-soft) !important; }
+        .day-detail-help svg { flex: none; width: 34.51px; height: 34.51px; }
+        .day-activity-row { cursor: default; }
+        .day-activity-list > .day-activity-row { padding: 7px 2px; flex-shrink: 0; }
+        .day-activity-list > .day-activity-row:first-child::before { top: 50%; }
+        .day-activity-list > .day-activity-row:last-child::before { bottom: 50%; }
+        .day-activity-open { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; z-index: 1; }
+        .day-activity-open:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: -2px; }
+        .day-activity-copy { flex: 1; pointer-events: none; }
+        .day-activity-name { overflow-wrap: anywhere; }
+        .day-activity-node { pointer-events: none; }
+        .day-activity-detail-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; align-items: center; }
+        .day-activity-context { display: grid; place-items: center; position: relative; z-index: 2; pointer-events: auto; width: 44px; height: 44px; min-width: 44px; padding: 0; border: 0; background: transparent; color: var(--accent-soft); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .day-activity-context[aria-pressed="true"] { color: var(--text-bright); align-self: start; }
+        .day-activity-context:active { transform: scale(0.95); }
+        .day-activity-context:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: -2px; }
+        .day-activity-detail { display: block; min-width: 0; opacity: 1; transition: opacity 250ms cubic-bezier(0.25, 0.1, 0.25, 1); }
+        .day-activity-detail.is-fading { opacity: 0; }
+        .day-activity-detail .day-activity-meta { display: block; }
+        .day-activity-last-workout { min-width: 0; }
+        .day-activity-last-workout .set-box { max-width: calc(100% - 4px); white-space: normal; overflow-wrap: anywhere; }
+        @media (prefers-reduced-motion: reduce) { .day-activity-detail { transition: none; } }
 
         .rt-day-editor-overlay {
             position: absolute;
@@ -2915,11 +2935,41 @@
         .custom-reps-ring input { position: relative; width: 52px; height: 44px; background: transparent; border: 0; padding: 0; text-align: center; font: inherit; font-size: 20px; color: var(--text-bright); appearance: textfield; }
         .custom-reps-ring input::-webkit-inner-spin-button { appearance: none; }
         .btn.custom-reps-use { flex: none; width: auto; min-height: 44px; padding: 8px 16px; }
+        .rep-picker-toolbar { align-items: center; gap: 10px; min-width: 0; }
+        .rep-picker-toolbar > .picker-chip { flex: 0 0 48px; }
+        .rep-picker-toolbar .rep-last-session { flex: 1; min-width: 0; margin: 0 0 0 auto; }
+        .rep-picker-toolbar .rep-last-session .section-title { font-size: 10px; margin: 0 0 5px; white-space: nowrap; }
+        .rep-session-rail { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .rep-session-rail::-webkit-scrollbar { display: none; }
+        .rep-session-rail:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 3px; }
+        .rep-session-rail[data-fade-left="false"][data-fade-right="true"] { mask-image: linear-gradient(to right, #000 calc(100% - 22px), transparent); }
+        .rep-session-rail[data-fade-left="true"][data-fade-right="false"] { mask-image: linear-gradient(to right, transparent, #000 22px); }
+        .rep-session-rail[data-fade-left="true"][data-fade-right="true"] { mask-image: linear-gradient(to right, transparent, #000 22px, #000 calc(100% - 22px), transparent); }
+        .rep-session-rail .set-boxes-container { flex-wrap: nowrap; width: max-content; margin: 0; padding: 2px 0; }
+        .rep-session-rail .set-box { flex: none; white-space: nowrap; cursor: default; }
+        .custom-reps-row { gap: 6px; margin: 0 0 10px; }
+        .custom-reps-label { color: var(--text-faint); font-size: 13px; }
+        .custom-reps-confirm { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent-soft); cursor: pointer; }
+        .custom-reps-confirm:disabled { opacity: .3; cursor: default; }
+        .custom-reps-confirm:active { transform: scale(.95); }
+        .custom-reps-confirm:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+
         .unsplit-row { margin: 0 0 12px; padding: 12px; background: var(--surface); border-radius: 12px; }
         .unsplit-row h3 { margin: 0 0 8px; font-size: 15px; }
         .unsplit-options { display: flex; flex-wrap: wrap; gap: 6px; }
         .unsplit-options button { min-height: 44px; border: 0; padding: 8px 12px; border-radius: 8px; background: color-mix(in srgb, var(--accent) 20%, var(--bg-page)); color: var(--text-bright); }
         @media (max-width: 350px) { .top-nav { padding-inline: 12px; } .top-nav-actions { gap: 0; } }
+
+        .activity-delete-overlay { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(12,6,10,.8); }
+        .activity-delete-dialog { position: relative; top: auto; left: auto; transform: none; width: 100%; max-width: 398px; max-height: calc(100dvh - 32px); overflow-y: auto; padding: 22px; text-align: left; }
+        .activity-delete-dialog h2 { font-size: 18px; overflow-wrap: anywhere; margin: 0 0 12px; }
+        .activity-delete-dialog p, .activity-delete-dialog label { font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+        .activity-delete-dialog label { display: block; margin: 16px 0 8px; }
+        .activity-delete-dialog .form-input { width: 100%; min-height: 44px; }
+        .activity-delete-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+        .activity-delete-actions button { min-height: 44px; flex: 1; }
+        .activity-delete-submit { background: var(--danger); color: var(--bg-page); }
+        .activity-delete-submit:disabled { opacity: .4; cursor: default; }
 
         .routine-workspace .modal-header { flex-shrink: 0; }
         .routine-workspace .modal-content { overflow-y: auto; min-height: 0; }
@@ -3313,6 +3363,10 @@ const Icon = ({
     ...style
   }
 }, rest), children);
+const IconSwap = ({ size = 18 }) => React.createElement(Icon, {
+  size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2,
+  strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true
+}, React.createElement('path', { d: 'M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4' }));
 const IconArrowLeft = ({
   size,
   style
@@ -3845,6 +3899,10 @@ const IconBubble = ({
     display: 'inline-flex'
   }
 }, children));
+// Supplied info-svgrepo-com.svg: exact geometry and opacity, themed currentColor.
+const IconActivityInfo = ({ size = 32, style }) => React.createElement(Icon, {
+  size, style, viewBox: '0 0 24 24', fill: 'none', stroke: 'none', strokeWidth: 1
+}, React.createElement("path", {"d": "M3.35288 8.95043C4.00437 6.17301 6.17301 4.00437 8.95043 3.35288C10.9563 2.88237 13.0437 2.88237 15.0496 3.35288C17.827 4.00437 19.9956 6.17301 20.6471 8.95043C21.1176 10.9563 21.1176 13.0437 20.6471 15.0496C19.9956 17.827 17.827 19.9956 15.0496 20.6471C13.0437 21.1176 10.9563 21.1176 8.95044 20.6471C6.17301 19.9956 4.00437 17.827 3.35288 15.0496C2.88237 13.0437 2.88237 10.9563 3.35288 8.95043Z", "fill": "currentColor", "fillOpacity": "0.15", "stroke": "currentColor", "strokeWidth": "1.5"}), React.createElement("path", {"fillRule": "evenodd", "clipRule": "evenodd", "d": "M12 15.5V11.5V15.5Z", "fill": "currentColor", "fillOpacity": "0.15"}), React.createElement("path", {"d": "M12 15.5V11.5", "stroke": "currentColor", "strokeWidth": "1.5", "strokeLinecap": "round", "strokeLinejoin": "round"}), React.createElement("circle", {"cx": "12", "cy": "9", "r": "0.5", "fill": "currentColor", "fillOpacity": "0.15", "stroke": "currentColor", "strokeLinecap": "round", "strokeLinejoin": "round"}));
 const IconFieldNote = ({
   size,
   style
@@ -3909,7 +3967,7 @@ const DEMO_DB_NAME = 'FitnessTrackerDemo';
 const DEMO_ACTIVE_FLAG = 'wp_demo_active';
 const DEMO_OFFERED_FLAG = 'wp_demo_offered';
 const DEMO_SEED_URL = './seed-data.csv';
-// The seed runs to 2026-10-01, past "now". The demo imports only dates up to the
+// The seed runs to 2026-11-09, past "now". The demo imports only dates up to the
 // real current date and tops itself up as days pass, so Marcus's log reads as a
 // live log someone is still writing rather than a finished archive. Future days
 // are genuinely absent from the database, so they render empty exactly like any
@@ -5015,6 +5073,10 @@ const getGripSelectionForDate = async (exerciseId, date) => {
   } : null;
 };
 const FIELD_NOTES = {
+  dayActivities: {
+    eyebrow: 'Field Note', title: 'Split activities',
+    body: ['Activities are ranked by how many sets you have logged. A check means you logged that activity on the selected day.', 'Tap an activity’s ( i ) to replace its usage summary with every set from its latest workout. Tap it again to return to the summary. Tap the activity name to open its history.']
+  },
   bodyweight: {
     eyebrow: 'Field Note',
     title: 'Why log bodyweight here?',
@@ -5942,6 +6004,60 @@ const activitySearchScore = (exercise, rawQuery) => {
 };
 const compareActivitySearchResults = (a, b) => (b._searchScore || 0) - (a._searchScore || 0) || (b._usageCount || 0) - (a._usageCount || 0) || String(a.name || a.exerciseName || '').localeCompare(String(b.name || b.exerciseName || ''));
 
+// A typed phrase gates permanent activity/history deletion. Activity, sets, and session notes commit together.
+const ActivityDeleteDialog = ({ exercise, onCancel, onDeleted }) => {
+  const h = React.createElement;
+  const phrase = `Delete ${exercise.name}`;
+  const [typed, setTyped] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const inFlight = useRef(false), dialogRef = useRef(null), inputRef = useRef(null);
+  useEffect(() => {
+    const opener = document.activeElement;
+    inputRef.current?.focus({ preventScroll: true });
+    const key = event => {
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (!inFlight.current) onCancel(); }
+      if (event.key === 'Tab') {
+        const items = [...dialogRef.current.querySelectorAll('input,button:not([disabled])')];
+        const first = items[0], last = items[items.length-1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener('keydown', key, true);
+    return () => { window.removeEventListener('keydown', key, true); opener?.focus?.(); };
+  }, []);
+  const remove = async event => {
+    event.preventDefault();
+    if (typed !== phrase || inFlight.current) return;
+    inFlight.current = true; setBusy(true); setError('');
+    try {
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(['exercises','sets','sessionNotes'], 'readwrite');
+        tx.objectStore('exercises').delete(exercise.id);
+        for (const store of ['sets','sessionNotes']) {
+          const request = tx.objectStore(store).openCursor();
+          request.onsuccess = () => { const cursor=request.result; if(!cursor)return; if(cursor.value.exerciseId===exercise.id)cursor.delete(); cursor.continue(); };
+        }
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error || new Error('Deletion aborted'));
+      });
+      onDeleted(exercise.id);
+    } catch (err) { console.error('Activity deletion failed',err); setError('Could not delete this activity. Nothing was removed. Try again.'); }
+    finally { inFlight.current = false; setBusy(false); }
+  };
+  return h('div',{className:'activity-delete-overlay',onClick:()=>{if(!inFlight.current)onCancel();}},
+    h('form',{className:'confirmation-dialog activity-delete-dialog',ref:dialogRef,role:'alertdialog','aria-modal':'true','aria-labelledby':'activity-delete-title','aria-describedby':'activity-delete-warning',onClick:event=>event.stopPropagation(),onSubmit:remove},
+      h('h2',{id:'activity-delete-title'},`Delete ${exercise.name}?`),
+      h('p',{id:'activity-delete-warning'},'This permanently deletes the activity and all of its logged history.'),
+      h('label',{htmlFor:'activity-delete-phrase'},'Type ',h('strong',null,phrase),' to confirm.'),
+      h('input',{id:'activity-delete-phrase',ref:inputRef,className:'form-input',value:typed,onChange:event=>setTyped(event.target.value),autoComplete:'off',autoCapitalize:'off',spellCheck:false,disabled:busy,'aria-label':'Deletion confirmation phrase'}),
+      error && h('p',{role:'alert'},error),
+      h('div',{className:'activity-delete-actions'},h('button',{type:'button',className:'btn btn-secondary',disabled:busy,onClick:onCancel},'Cancel'),h('button',{type:'submit',className:'btn activity-delete-submit',disabled:typed!==phrase||busy},busy?'Deleting…':'Delete permanently'))
+    ));
+};
+
 const ExercisePickerModal = ({
   onSelect,
   onCreateNew,
@@ -6405,58 +6521,7 @@ const ExercisePickerModal = ({
       color: '#d4845a'
     },
     onClick: () => setShowEditCategories(true)
-  }, "Edit"))), deleteConfirm && /*#__PURE__*/React.createElement("div", {
-    style: {
-      padding: '12px',
-      marginBottom: '12px',
-      borderRadius: '10px',
-      border: '1px solid color-mix(in srgb, var(--danger) 40%, transparent)',
-      borderLeft: '3px solid var(--danger)',
-      background: 'color-mix(in srgb, var(--danger) 9%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: { fontSize: '13px', color: 'var(--text-bright)', marginBottom: '8px', lineHeight: 1.45 }
-  }, "You are about to delete \"", deleteConfirm.name, "\" and its history permanently."), /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '8px'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: async () => {
-      await safeDb(() => dbOps.exercises.delete(deleteConfirm.id), 'delete exercise');
-      const allSets = await dbOps.sets.getByExerciseId(deleteConfirm.id);
-      for (const s of allSets) {
-        await safeDb(() => dbOps.sets.delete(s.id), 'delete set');
-      }
-      setExercises(prev => prev.filter(e => e.id !== deleteConfirm.id));
-      setDeleteConfirm(null);
-    },
-    style: {
-      flex: 1,
-      padding: '10px',
-      borderRadius: '8px',
-      border: 'none',
-      background: 'rgba(220,60,60,0.3)',
-      color: '#ff8888',
-      fontSize: '13px',
-      fontWeight: '600',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Delete"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setDeleteConfirm(null),
-    style: {
-      flex: 1,
-      padding: '10px',
-      borderRadius: '8px',
-      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)',
-      color: 'var(--accent-soft)',
-      fontSize: '13px',
-      cursor: 'pointer',
-      WebkitAppearance: 'none'
-    }
-  }, "Cancel"))), pairingSource && /*#__PURE__*/React.createElement("div", {
+  }, "Edit"))), deleteConfirm && React.createElement(ActivityDeleteDialog, { key: deleteConfirm.id, exercise: deleteConfirm, onCancel: () => setDeleteConfirm(null), onDeleted: id => { setExercises(prev => prev.filter(ex => ex.id !== id)); setDeleteConfirm(null); } }), pairingSource && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: '14px 16px',
       marginBottom: '12px',
@@ -6519,17 +6584,7 @@ const ExercisePickerModal = ({
     }
   }, "Couldn't load activities. Close and reopen Add Activity.") : visibleActivities.length > 0 ? /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-section"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-title"
-    // The list always holds every activity now, so the outer title no longer
-    // names the split — the split has its own heading inside the list.
-  }, pairingSource ? `Timed activities · ${category === 'all' ? 'all splits' : category}` : queryText ? 'Matches · all splits' : category !== 'all' ? category : 'All Activities'), !pairingSource && visibleActivities.length > 0 && /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '11px',
-      color: 'var(--text-faint)',
-      marginBottom: '8px'
-    }
-  }, "Long press to delete"), /*#__PURE__*/React.createElement("div", {
+  }, (pairingSource || queryText) && React.createElement("div", { className: "section-title" }, pairingSource ? 'Choose a timed activity' : 'Matches · all splits'), /*#__PURE__*/React.createElement("div", {
     className: "exercise-picker-grid"
   }, activitySections)) : /*#__PURE__*/React.createElement("div", {
     style: {
@@ -7694,7 +7749,7 @@ const catalog=[
   }
 ]
 ;
-return {classify:input=>classify(input,catalog),normalize};
+return {classify:input=>classify(input,catalog),normalize,categoryKey};
 })();
 const CreateExerciseModal = ({
   onSave,
@@ -7716,9 +7771,9 @@ const CreateExerciseModal = ({
   const savedSplitChoices = (() => { try { return JSON.parse(getPref('activitySplitChoices','{}')) || {}; } catch { return {}; } })();
   const savedChoice = savedSplitChoices[ActivitySplitHelper.normalize(settledName)];
   const splitSuggestion = ActivitySplitHelper.classify({name:settledName,categories, ...(Array.isArray(savedChoice)?{confirmedSplits:savedChoice}:{})});
-  const currentDaySplit = categories.find(category => categoryKey(category) === categoryKey(dayLabel));
+  const currentDaySplit = categories.find(category => ActivitySplitHelper.categoryKey(category) === ActivitySplitHelper.categoryKey(dayLabel));
   const isLoadedCarryName = /farmer|carry/.test(ActivitySplitHelper.normalize(settledName));
-  const carrySplit = isLoadedCarryName ? categories.find(category => categoryKey(category) === 'core') : null;
+  const carrySplit = isLoadedCarryName ? categories.find(category => ActivitySplitHelper.categoryKey(category) === 'core') : null;
   const recommendedContextSplit = currentDaySplit || carrySplit;
   const currentDaySplitSuggestion = splitSuggestion.status === 'ask' && recommendedContextSplit && splitSuggestion.candidates?.some(candidate => candidate.distance == null) ? [recommendedContextSplit] : null;
   const chooseSplits = next => {setSplitChoiceMade(true);setSelectedCats(next);};
@@ -8728,6 +8783,28 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
     showEquipment && h(WeightEquipmentMenu, { anchor: equipmentRef, mode, onMode: changeMode, barKind, onBarKind: setBarKind, customBarWeight, onCustomBarWeight: setCustomBarWeight, unit, onClose: closeEquipment })
   );
 };
+// Keep every historical badge intact while reserving the toolbar's left side for controls.
+const RepSessionStrip = ({ session, selectedDate }) => {
+  const h = React.createElement, railRef = useRef(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+  const measure = () => {
+    const rail = railRef.current;
+    if (rail) setEdges({ left: rail.scrollLeft > 1, right: rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 1 });
+  };
+  React.useLayoutEffect(() => {
+    const rail = railRef.current;
+    rail.scrollLeft = 0; measure();
+    const observer = new ResizeObserver(measure); observer.observe(rail);
+    return () => observer.disconnect();
+  }, [session]);
+  return h('div',{className:'rep-last-session'},
+    h('div',{className:'section-title'},'Last · ',session.date === selectedDate ? 'Today' : formatDateShort(session.date)),
+    h('div',{className:'rep-session-rail',ref:railRef,role:'region','aria-label':`Last workout, ${session.date}. Scroll to see all ${session.sets.length} sets.`,tabIndex:0,onScroll:measure,'data-fade-left':edges.left,'data-fade-right':edges.right},
+      h('div',{className:'set-boxes-container'},session.sets.map((set,index)=>h('div',{key:set.id,className:'set-box',style:{backgroundColor:getSetBoxColor(index)}},h('div',{className:'set-box-content'},formatSetBox(set,session.sets[index-1])))))
+    )
+  );
+};
+
 const RepPickerModal = ({
   exercise,
   weight,
@@ -8795,7 +8872,7 @@ const RepPickerModal = ({
       padding: '12px 16px'
     }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "picker-chip-row"
+    className: "picker-chip-row rep-picker-toolbar"
   }, onChangeWeight && onRequestWeight && /*#__PURE__*/React.createElement(PickerChip, {
     icon: /*#__PURE__*/React.createElement(IconDumbbell, { size: 20 }),
     label: weightType === 'bodyweight' ? 'BW' : weightType === 'none' ? 'No load' : 'Load',
@@ -8809,12 +8886,10 @@ const RepPickerModal = ({
     iconOwnsSurface: true,
     ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip',
     onClick: () => setOpenSheet('grip')
-  })), lastRepSession && React.createElement("div", { className: "rep-last-session" },
-    React.createElement("div", { className: "section-title" }, "Last · ", lastRepSession.date === selectedDate ? "Today" : `${formatDateShort(lastRepSession.date)} · ${formatDaysSince(lastRepSession.date)}`),
-    React.createElement("div", { className: "set-boxes-container" }, lastRepSession.sets.map((set, index) => React.createElement("div", { key: set.id, className: "set-box", style: { backgroundColor: getSetBoxColor(index) } }, React.createElement("div", { className: "set-box-content" }, formatSetBox(set, lastRepSession.sets[index - 1])))))
-  ), React.createElement("div", { className: "custom-reps-row" },
+  }), lastRepSession && React.createElement(RepSessionStrip, { session: lastRepSession, selectedDate })), React.createElement("form", { className: "custom-reps-row", onSubmit: event => { event.preventDefault(); const value=Number(customReps); if(Number.isInteger(value)&&value>0)onSelectReps(value); } },
     React.createElement("label", { className: "custom-reps-ring" }, React.createElement(IconClarityRing, { size: '100%' }), React.createElement("input", { type: "number", inputMode: "numeric", min: 1, step: 1, "data-tour": "log-row", "aria-label": "Custom reps", placeholder: "#", value: customReps, onChange: event => setCustomReps(event.target.value) })),
-    React.createElement("button", { className: "btn custom-reps-use", disabled: !Number.isInteger(Number(customReps)) || Number(customReps) <= 0, onClick: () => { const value = Number(customReps); if (Number.isInteger(value) && value > 0) onSelectReps(value); } }, "Use ", customReps || '#', " reps")
+    React.createElement("span", { className: "custom-reps-label", "aria-hidden": true }, "reps"),
+    React.createElement("button", { type: "submit", className: "custom-reps-confirm", "aria-label": customReps ? `Log ${customReps} reps` : 'Log custom reps', disabled: !Number.isInteger(Number(customReps)) || Number(customReps) <= 0 }, React.createElement(IconCheck, { size: 28 }))
   ), /*#__PURE__*/React.createElement("div", {
     className: "rep-grid"
   }, reps.map(r => /*#__PURE__*/React.createElement("button", {
@@ -12694,17 +12769,57 @@ const getCategories = async () => {
 const saveCategories = async cats => {
   await dbOps.dayNotes.set('__categories__', JSON.stringify(cats));
 };
-const DayActivityList = ({ activities, splitLabel, onSelect }) => /*#__PURE__*/React.createElement("ol", { className: "day-activity-list", "aria-label": `${splitLabel} activities ranked by logged use` }, activities.length === 0 ? /*#__PURE__*/React.createElement("li", { style: { textAlign: 'center', color: 'var(--text-placeholder)', padding: '32px 16px' } }, "No ", splitLabel.toLowerCase(), " activities found yet") : activities.map((activity, index) => {
-  const useCount = activity._useCount || 0;
-  const lastUsed = activity._lastLoggedDate ? formatDateShort(activity._lastLoggedDate) : null;
-  const meta = useCount > 0 ? `${useCount} ${useCount === 1 ? 'set' : 'sets'} logged${lastUsed ? ` · Last used ${lastUsed}` : ''}` : 'Not logged yet';
-  return /*#__PURE__*/React.createElement("li", { key: activity.id }, /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: `day-activity-row${index === 0 ? ' is-most-used' : ''}`,
-    onClick: () => onSelect(activity),
-    "aria-label": `${index + 1}. ${activity.name}, ${meta}${activity._loggedOnDate ? ', logged on this date' : ''}`
-  }, /*#__PURE__*/React.createElement("span", { className: "day-activity-node", "aria-hidden": "true" }, activity._loggedOnDate ? /*#__PURE__*/React.createElement(IconCheck, { size: 20 }) : String(index + 1).padStart(2, '0')), /*#__PURE__*/React.createElement("span", { className: "day-activity-copy" }, /*#__PURE__*/React.createElement("span", { className: "day-activity-name" }, activity.name), /*#__PURE__*/React.createElement("span", { className: "day-activity-meta" }, meta))));
-}));
+const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
+  const [showWorkouts, setShowWorkouts] = useState(false);
+  const [displayWorkouts, setDisplayWorkouts] = useState(showWorkouts);
+  const [fading, setFading] = useState(false);
+  const displayedRef = useRef(showWorkouts);
+  useEffect(() => {
+    if (showWorkouts === displayedRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      displayedRef.current = showWorkouts;
+      setDisplayWorkouts(showWorkouts);
+      setFading(false);
+      return;
+    }
+    setFading(true);
+    const timer = setTimeout(() => {
+      displayedRef.current = showWorkouts;
+      setDisplayWorkouts(showWorkouts);
+      setFading(false);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [showWorkouts]);
+  const h = React.createElement;
+      const latest = (allHistory[activity.id] || [])[0];
+      const sets = getVisibleSets(latest?.sets);
+      const summary = sets.map((set, i) => formatSetBox(set, sets[i - 1], unit)).join(', ');
+      const useCount = activity._useCount || 0;
+      const lastUsed = activity._lastLoggedDate ? formatDateShort(activity._lastLoggedDate) : null;
+      const meta = useCount > 0 ? `${useCount} ${useCount === 1 ? 'set' : 'sets'} logged${lastUsed ? ` · Last used ${lastUsed}` : ''}` : 'Not logged yet';
+      const badges = sets.length > 0 && h('span', { className: 'set-boxes-container day-activity-last-workout' },
+        sets.map((set, i) => h('span', { key: set.id || i, className: 'set-box', style: { backgroundColor: getSetBoxColor(i) } },
+          h('span', { className: 'set-box-content' }, formatSetBox(set, sets[i - 1], unit)))));
+      return h('li', { className: `day-activity-row${index === 0 ? ' is-most-used' : ''}` }, h('button', {
+        type: 'button',
+        className: 'day-activity-open',
+        onClick: () => onSelect(activity),
+        'aria-label': `${index + 1}. ${activity.name}${displayWorkouts ? (summary ? `, last workout: ${summary}` : ', no sets logged') : `, ${meta}`}${activity._loggedOnDate ? ', logged on this date' : ''}`
+      }), h('span', { className: 'day-activity-node', 'aria-hidden': 'true' }, activity._loggedOnDate ? h(IconCheck, { size: 20 }) : String(index + 1).padStart(2, '0')),
+      h('span', { className: 'day-activity-copy' }, h('span', { className: 'day-activity-name' }, activity.name),
+        h('span', { className: 'day-activity-detail-row' }, h('span', { id: `day-activity-details-${activity.id}`, className: `day-activity-detail${fading ? ' is-fading' : ''}`, 'data-view': displayWorkouts ? 'workout' : 'summary' },
+          displayWorkouts ? (badges || h('span', { className: 'day-activity-meta' }, 'No workout logged yet')) : h('span', { className: 'day-activity-meta' }, meta)),
+          h('button', {
+            type: 'button', className: 'day-activity-context',
+            'aria-label': `${showWorkouts ? 'Show usage summary' : 'Show last workout'} for ${activity.name}`,
+            'aria-pressed': showWorkouts, 'aria-controls': `day-activity-details-${activity.id}`,
+            onClick: () => setShowWorkouts(value => !value)
+          }, h(IconActivityInfo, { size: 32 })))));
+};
+const DayActivityList = ({ activities, splitLabel, allHistory, unit, onSelect }) => React.createElement('ol', {
+  className: 'day-activity-list', 'aria-label': `${splitLabel} activities ranked by logged use`
+}, activities.length === 0 ? React.createElement('li', { style: { textAlign: 'center', color: 'var(--text-placeholder)', padding: '32px 16px' } }, `No ${splitLabel.toLowerCase()} activities found yet`) : activities.map((activity, index) => React.createElement(DayActivityRow, {
+  key: activity.id, activity, index, allHistory, unit, onSelect
+})));
 
 const DayDetailModal = ({
   date,
@@ -12712,15 +12827,15 @@ const DayDetailModal = ({
   dayLabel,
   categories,
   onSplitChange,
+  onCategoriesChanged,
   unit,
-  bodyweight,
   onEditBodyweight,
   onOpenFieldNote,
   onActivitySelect,
   onAddActivity
 }) => {
+  const [showSplitEditor, setShowSplitEditor] = useState(false);
   const [activeTab, setActiveTab] = useState(dayLabel ? 'activities' : 'split');
-  const bodyweightLabel = bodyweight?.kind === 'exact' || bodyweight?.kind === 'last' ? `${bodyweight.value} ${unit}` : bodyweight?.kind === 'loading' ? '…' : 'No weight';
   const [activities, setActivities] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [sessionNotes, setSessionNotes] = useState({});
@@ -12735,7 +12850,7 @@ const DayDetailModal = ({
     const d = parseLocalDate(date);
     const dow = d.getDay();
     dbOps.week.get(dow).then(async assignment => { const routine = assignment?.routineId ? await dbOps.routines.get(assignment.routineId) : null; setTemplateSplit(routine?.mode === 'split' ? routine.splitName : ''); }).catch(() => setTemplateSplit(''));
-  }, [date]);
+  }, [date, categories]);
   useEffect(() => {
     if (!dayLabel) return;
     const load = async () => {
@@ -12760,11 +12875,11 @@ const DayDetailModal = ({
         lastUsedMap[ex.id] = workSets.reduce((latest, set) => !latest || set.date > latest ? set.date : latest, '');
         loggedOnDateMap[ex.id] = workSets.some(set => set.date === date);
         const byDate = {};
-        (allSets || []).forEach(set => {
+        (allSets || []).filter(set => !isNeutralAnchorSet(set)).forEach(set => {
           if (!byDate[set.date]) byDate[set.date] = [];
           byDate[set.date].push(set);
         });
-        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({ date, sets: byDate[date].sort((a, b) => a.setOrder - b.setOrder) }));
+        histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({ date, sets: byDate[date].sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0)) }));
         (notes || []).forEach(note => { noteMap[`${note.exerciseId}_${note.date}`] = note; });
       }));
       const rankedActivities = matching.map(ex => ({ ...ex, _useCount: usageMap[ex.id] || 0, _lastLoggedDate: lastUsedMap[ex.id] || '', _loggedOnDate: loggedOnDateMap[ex.id] || false }))
@@ -12774,7 +12889,7 @@ const DayDetailModal = ({
       setSessionNotes(noteMap);
     };
     load();
-  }, [dayLabel, date]);
+  }, [dayLabel, date, categories]);
   const handleDetailTouchStart = e => {
     if (activeTab !== 'activities') return;
     detailTouchRef.current = {
@@ -12876,6 +12991,11 @@ const DayDetailModal = ({
   const act = activities[currentIdx];
   const history = act ? allHistory[act.id] || [] : [];
   const splitOptions = [...new Set([...(categories || [])].map(c => c.charAt(0).toUpperCase() + c.slice(1)))];
+  if (showSplitEditor) return React.createElement(EditCategoriesModal, {
+    categories,
+    onSave: async newCats => { await saveCategories(newCats); await onCategoriesChanged?.(newCats); setShowSplitEditor(false); },
+    onCancel: () => setShowSplitEditor(false)
+  });
   return /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay",
     onClick: onClose
@@ -12925,42 +13045,36 @@ const DayDetailModal = ({
     }
   }, /*#__PURE__*/React.createElement("div", {
     className: "day-detail-actions"
-  }, /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    className: "day-detail-control day-detail-weight-control",
-    "aria-label": `Edit bodyweight, ${bodyweightLabel}`,
-    onClick: () => onEditBodyweight && onEditBodyweight(date)
-  }, /*#__PURE__*/React.createElement(IconBodyweight, {
-    size: 44,
-    style: { color: 'var(--accent-soft)', opacity: 0.9 }
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "day-detail-weight-value"
-  }, bodyweightLabel)), dayLabel && /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("button", {
+    type: "button", className: "day-detail-scale", "aria-label": "Log bodyweight",
+    onClick: () => onEditBodyweight?.(date)
+  }, React.createElement(IconBodyweight, { size: 37.4 })), dayLabel && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: 'day-detail-control day-detail-tab' + (activeTab === 'activities' ? ' is-active' : ''),
     "aria-pressed": activeTab === 'activities',
     onClick: () => setActiveTab('activities')
   }, dayLabel, " Day Activities"), dayLabel && /*#__PURE__*/React.createElement("button", {
     type: "button",
-    className: 'day-detail-control day-detail-tab' + (activeTab === 'split' ? ' is-active' : ''),
+    className: 'day-detail-control day-detail-tab day-detail-split' + (activeTab === 'split' ? ' is-active' : ''),
     "data-tour": "splits",
     "aria-pressed": activeTab === 'split',
     onClick: () => setActiveTab('split')
-  }, "Change Split"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
-    noteId: "bodyweight",
+  }, React.createElement(IconSwap, { size: 15.3 }), "Split"), /*#__PURE__*/React.createElement(FieldNoteTrigger, {
+    noteId: "dayActivities",
     onOpen: onOpenFieldNote,
-    ariaLabel: "Why log bodyweight here?",
+    ariaLabel: "About split activities",
     className: "day-detail-help",
-    iconSize: 24,
+    iconSize: 34.51,
     style: {
       width: '44px',
       height: '44px',
-      background: 'var(--surface)',
-      borderRadius: '12px'
+      background: 'transparent'
     }
   })), dayLabel ? /*#__PURE__*/React.createElement(React.Fragment, null, activeTab === 'activities' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DayActivityList, {
     activities: activities,
     splitLabel: dayLabel,
+    allHistory: allHistory,
+    unit: unit,
     onSelect: onActivitySelect
   }), /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -13133,7 +13247,12 @@ const DayDetailModal = ({
     key: opt,
     className: `btn ${dayLabel === opt ? 'active' : ''}`,
     onClick: () => handleSplitSelect(opt)
-  }, opt))), dayLabel && /*#__PURE__*/React.createElement("button", {
+  }, opt)), React.createElement("button", {
+    type: "button",
+    className: "category-tab",
+    onClick: () => setShowSplitEditor(true),
+    style: { minHeight: '44px', padding: '6px 10px', border: 0, backgroundColor: 'rgba(180, 80, 50, 0.3)', borderColor: 'rgba(180, 80, 50, 0.5)', color: '#d4845a', justifySelf: 'start' }
+  }, "Edit")), dayLabel && /*#__PURE__*/React.createElement("button", {
     className: "btn btn-secondary",
     onClick: () => {
       onSplitChange('');
@@ -15449,6 +15568,7 @@ function App() {
   const [previousWeight, setPreviousWeight] = useState(null);
   const [loggedSetCount, setLoggedSetCount] = useState(0);
   const [confirmation, setConfirmation] = useState(null);
+  const [activityToDelete, setActivityToDelete] = useState(null);
   const [expandedExercise, setExpandedExercise] = useState(null);
   const [closingExercise, setClosingExercise] = useState(null);
   const collapseTimerRef = useRef(null);
@@ -16626,26 +16746,7 @@ function App() {
     if (action === 'delete') {
       handleDeleteExercise(exercise);
     } else if (action === 'deletePermanent') {
-      const exerciseId = exercise.exerciseId;
-      setConfirmation({
-        title: `You are about to delete ${exercise.exerciseName} and its history permanently.`,
-        message: '',
-        onConfirm: async () => {
-          const allSets = await dbOps.sets.getByExerciseId(exerciseId);
-          for (const set of allSets) {
-            await safeDb(() => dbOps.sets.delete(set.id), 'delete activity set');
-          }
-          const allNotes = await dbOps.sessionNotes.getByExerciseId(exerciseId);
-          for (const note of allNotes) {
-            await safeDb(() => dbOps.sessionNotes.delete(note.id), 'delete activity note');
-          }
-          await safeDb(() => dbOps.exercises.delete(exerciseId), 'delete activity');
-          setConfirmation(null);
-          setExpandedExercise(null);
-          await loadDayData();
-        },
-        onCancel: () => setConfirmation(null)
-      });
+      setActivityToDelete({ id: exercise.exerciseId, name: exercise.exerciseName });
     } else if (action === 'sessionNote') {
       setSelectedExercise(exercise.sets[0] ? {
         id: exercise.exerciseId,
@@ -18259,13 +18360,13 @@ function App() {
     date: currentDate,
     dayLabel: dayLabel,
     categories: categories,
+    onCategoriesChanged: async cats => { setCategories(cats); await loadDayData(); },
     onClose: () => setModal(null),
     onSplitChange: async newSplit => {
       await setDaySplit(currentDate, newSplit);
       await loadDayData();
     },
     unit: unit,
-    bodyweight: bodyweightContext,
     onEditBodyweight: openBodyweightEditor,
     onOpenFieldNote: openFieldNote,
     onAddActivity: () => setModal('exercisePicker', 'dayDetail'),
@@ -18286,6 +18387,11 @@ function App() {
   }), activeFieldNoteId && /*#__PURE__*/React.createElement(FieldNoteModal, {
     note: getFieldNote(activeFieldNoteId),
     onClose: closeFieldNote
+  }), activityToDelete && React.createElement(ActivityDeleteDialog, {
+    key: activityToDelete.id,
+    exercise: activityToDelete,
+    onCancel: () => setActivityToDelete(null),
+    onDeleted: async () => { setActivityToDelete(null); setExpandedExercise(null); await loadDayData(); }
   }), confirmation && /*#__PURE__*/React.createElement(ConfirmationDialog, {
     title: confirmation.title,
     message: confirmation.message,

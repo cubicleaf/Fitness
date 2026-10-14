@@ -28,3 +28,9 @@ Say **“use the Clarity Ring around …”** to identify this exact artwork in 
 ## Field-note question mark
 
 [`question-field-note.svg`](question-field-note.svg) is the supplied field-note artwork, inlined as `IconFieldNote`. See the project guidance in [`CLAUDE.md`](../CLAUDE.md).
+
+## Activity context info
+
+[`activity-info.svg`](activity-info.svg) is Tim's supplied `info-svgrepo-com.svg`, inlined as `IconActivityInfo` for offline use. Original `0 0 24 24` geometry, stroke widths, and 0.15 fill opacity are preserved; the source's `#363853` becomes `currentColor` to inherit Fitness's accent. Each per-activity context button displays this at 32px within a transparent 44px touch target. The SVG owns its outline and tint; the host must have no backing, border, or additional frame.
+
+Day Detail uses the existing `IconBodyweight` without a value, units, or placeholder. Following the toolbar’s 15% visual reduction, scale artwork is 37.4px, question artwork is 34.51px, and both text buttons use 13.6px type with 85%-scale squircle surfaces. The swap arrow is 15.3px. All four controls retain 44px touch targets.

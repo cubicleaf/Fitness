@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "Each activity has its own 44px context button at the far right, vertically aligned with its summary/date. Independent rows open, stay open, and close without changing other rows.",
+    "250ms fade-out/fade-in works; rapid taps settle correctly; keyboard and reduced-motion switching work; all 14 long set badges are retained.",
+    "No weight concept remains on this screen. Both split controls and bare question SVG fit one top row at 320/390/430/1000px. Help, split editing, and separate history navigation work."
+  ],
+  "errors": []
+}

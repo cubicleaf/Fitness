@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Long press opens a focused confirmation; wrong name, wrong case, trailing space, and Enter cannot delete; Cancel preserves records.",
+    "Phrase resets for each attempt; exact match enables Delete; keyboard focus stays in dialog and Escape cancels; fits 320/390px.",
+    "Simulated database failure leaves activity and history intact and offers retry.",
+    "Exact confirmed deletion removes only the selected activity and its sets, persists after reload, and leaves other records.",
+    "Daily-view permanent deletion uses the same exact-name protection."
+  ],
+  "errors": []
+}

@@ -2,13 +2,37 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-10-07
+updated: 2026-10-14
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-10-07
+**Last updated:** 2026-10-14
 
 ## Where I left off
+
+2026-10-14 (publish local fixes): Tim authorized committing and pushing all pending Fitness work to `main`. This release includes the creation blank-screen fix, typed permanent deletion safeguard, daily split editor, compact rep picker/history rail, per-activity workout context and supplied info SVG, toolbar refinements, and demo extension through 2026-11-09, plus their existing verification artifacts. Seven inline scripts and the service worker parse; demo CSV preserves every previous byte and consistent column counts; whitespace check passes with CSV CRLF respected. The entries below describe historical local states; their ‘uncommitted/not deployed’ labels are superseded by this release. Production deployment and served-file equality are being checked after push. Physical-phone behavior remains for Tim to assess.
+
+2026-10-12 (demo seed extended): `seed-data.csv` now runs 2026-10-01 → **2026-11-09** (28 new sessions, ~5/week, 256 training days). Append-only: the first 4,034 rows are byte-identical and a script asserts it. New generator `_archive/gen_autumn_2026.py` (refuses to run unless the input ends on 2026-10-01). Arc continues the clean climb with smaller steps: bench 205 PR on 10-12, eleven pull-ups on 10-27, squat 270, outdoor runs to 13K. `_docs/character-bio.md` gained Phase 11 and updated Final Numbers; `sw.js` cache bumped to `fitlogs-v6` so a cached seed cannot outlive the deploy; the one comment in `index.html` naming the horizon was updated (no code change). Verified in a clean browser profile: entering the demo imports 3,913 sets through today (2026-10-12) with no future days and no console errors. **Not deployed** — `seed-data.csv`, `sw.js` and `index.html` are uncommitted alongside the routine-system work.
+
+2026-10-08 (scale and supplied info correction): Tim clarified that the scale SVG must remain. Restored its bare 44px editor trigger without any weight text; reduced the bare question artwork exactly 30% (58px → 40.6px, same 44px target). Replaced each textual `( i )` with Tim's supplied info SVG, preserving geometry/opacity and inheriting Fitness color. Inlined offline and saved as assets/activity-info.svg. Scale, activities, Change Split, and help fit one top row. Independent row contexts and fades are unchanged. Browser checks cover 320/390/430/1000px, scale editing, icon sizing/artwork, and existing context/navigation flows. Local, uncommitted, not pushed/deployed. [Current previews and verification](./_docs/activity-icons-2026-10-08/VERIFICATION.md).
+
+2026-10-08 (per-activity context correction): Tim clarified that each activity needs its own `( i )` at the far right beyond the summary date. Implemented independent per-row context with the same sequential 250ms fades, complete shared-format last-workout sets, reversal, rapid-tap handling, and reduced-motion/keyboard support. Removed all bodyweight UI/props from Day Detail. Split activities, Change Split, and the supplied bare question SVG now fit one top row; help explains the current screen. Activity names still open history independently, and existing split editing is retained. Isolated checks pass at 320/390/430/1000px. Local, uncommitted, not pushed/deployed. [Current previews and verification](./_docs/activity-row-context-2026-10-08/VERIFICATION.md).
+
+2026-10-08 (daily context pivot — superseded by the per-activity correction above): Tim rejected the always-visible last-workout redesign and requested the original screenshot layout with an `(i)` context toggle. Restored the date header, bodyweight, original split controls/help, numbered rail, uppercase usage summaries, and full-width activity finder; retained the shared split editor and unrelated local fixes. One 44px `(i)` toggles all activity details between usage summaries and complete last-workout badges using a sequential 250ms fade-out / 250ms fade-in. Names remain visible; rapid toggles cancel stale swaps, and reduced motion switches immediately. Isolated checks pass at 320/390/1000px for both modes, intermediate opacity, full set order/content, reversal, rapid clicks, keyboard/reduced motion, split editing, and history navigation. Local, uncommitted, not pushed/deployed. [Current previews and verification](./_docs/day-context-toggle-2026-10-08/VERIFICATION.md).
+
+2026-10-08 (daily split last-workout cleanup — rejected and superseded by the context pivot above): Removed the scale/bodyweight control and activity-finder footer from Day Detail. Help uses the existing SVG directly beside Choose Split and now explains split ranking, completion checks, and last-workout badges. Each activity replaces lifetime-set/last-used metadata with every visible set from its latest workout, using the main log's formatter, order, color ramp, and presence/placeholder rules. Badges wrap fully; consistent toolbar and row spacing preserves vertical scrolling. Isolated browser checks pass at 320/390/430/1000px, including long workouts, mixed record types, split editing, help, and matching activity-history badges. Fetched GitHub: main matches origin/main at f471b97; no unpushed commits, but all six earlier local updates remain uncommitted and preserved. This change is also local, uncommitted, and not deployed. [Previews and verification](./_docs/day-last-workout-2026-10-08/VERIFICATION.md).
+
+2026-10-07 (daily icon controls): Removed visible bodyweight text/value/units from the daily split view; the scale alone opens the existing editor, with the recorded value retained in its accessible label. Moved the bodyweight help trigger beside Activities / Choose Split, removed its surface, and scaled the supplied question-circle artwork to approximately the full 44px control height (58px SVG viewport accommodates its built-in whitespace). Existing SVG paths unchanged. Isolated browser checks verify hidden 171.4 lbs value, opening its actual editor with 171.4 preserved, transparent help background/full-size artwork, help navigation, and 320/390/1000px layout. Local only, not pushed/deployed. [Previews](./_docs/day-icon-controls-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (daily split view cleanup): Tim authorized an autonomous visual cleanup of the date/split activity screen. Split name now leads the header with the date underneath; compact weight/help controls sit beside Close. Tabs read Activities / Choose Split, with a quiet selected surface. Removed the large rank tiles and connecting spine; retained ranks/checks in smaller artwork, sentence-case history metadata, and existing ranking logic. The footer is a compact plus / Find activity action. Existing shared split editor remains available. Browser checks cover 320/390/1000px, ten activity names including wrapping, list scrolling/footer availability, help, split add/rename/remove/cancel, and shared picker consistency. Local, not pushed/deployed; no motion-recipe implementation included. [Previews and verification](./_docs/daily-view-cleanup-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (compact rep picker): Moved the complete last measured workout into the same top row after Load and optional Grip, preserving daily-view badge formatting/colors/order. Controls stay fixed; the history rail scrolls horizontally with edge fades that update on scroll/resize. Replaced the wide custom “Use # reps” button with the existing compact number ring, “reps,” and a bare 44px checkmark; validation and Enter submission remain available. Shared RepPickerModal applies this to relevant rep activities. Isolated browser checks pass for standard weighted logging/reload, repeated historical reps, no-history mode, Grip sheet, and 14 long banded sets at 320/390/1000px. Local, not pushed/deployed; prior local fixes retained. [Previews and verification](./_docs/rep-layout-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (daily split editor link): Added the picker-style orange Edit button below the daily split choices. It opens the existing `EditCategoriesModal` and returns to the daily chooser on save/cancel; save refreshes split choices, current-day label, activities, and weekly-default label. Renamed this screen's “Change Split” action to “Choose Split.” Broader cleanup deferred per Tim's “for now” scope. Isolated browser checks cover add, rename, remove, cancel, preservation of the date assignment, shared-library consistency with Add Activity, and 320/390px touch/layout. Local, not pushed/deployed. [Verification](./_docs/daily-split-editor-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (typed deletion safeguard): Tim requested keeping picker long-press deletion with an exact-name phrase gate and removing the repeated split heading / “Long press to delete” hint. Permanent activity deletion now requires `Delete <activity name>` exactly before Delete enables. The shared dialog protects both picker long-press and the daily activity menu; activity, sets, and session notes delete in one transaction with retry on failure. The picker retains its split tabs but removes the redundant browsing heading/hint. Isolated browser checks cover wrong phrase/name/case/spacing, Enter bypass, cancellation, attempt reset, keyboard focus/Escape, database failure, exact deletion/reload, unrelated record preservation, both entry points, and 320/390px layout. Local, not pushed/deployed; previous new-activity crash fix also remains local. [Verification and previews](./_docs/activity-deletion-2026-10-07/VERIFICATION.md).
+
+2026-10-07 (new activity blank-screen fix and icon exploration): Tim reported that the picker’s creation button opens a blank screen and requested physical-object SVG ideas distinct from daily logging. Fixed `CreateExerciseModal` calling the private `categoryKey` helper outside its scope by exposing it on `ActivitySplitHelper` and using the namespace. Isolated browser checks pass for opening/cancel, rep/timed/neutral saves, reload persistence, and carry split recommendation; all seven scripts parse. Three drawn concepts (card/pencil, notebook/plus, rubber stamp) are previews only; no icon replacement applied. Local, not pushed/deployed. [Concepts and verification](./_docs/create-activity-2026-10-07/VERIFICATION.md).
 
 2026-10-07 (main push authorized): Tim requested pushing all local FITNESS changes to `main`, including the routine first version, picker/header refresh, timer/equipment work, Clarity assets, documentation, and verification evidence. This supersedes the earlier local-only hold for this snapshot. Browser checks are recorded below; physical-phone critique remains open. A Git push alone does not confirm production deployment.
 
@@ -168,6 +192,42 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-08 — Keep the scale SVG; use the supplied info artwork
+
+**What:** Keep the bare scale SVG in Day Detail with no numeric weight or placeholder. Shrink the question SVG by exactly 30%. Replace textual activity context controls with Tim's supplied info SVG.
+
+**Why:** Tim clarified that removing the weight concept did not mean removing the scale artwork.
+
+**How to apply:** The scale remains an editor trigger. All controls retain 44px touch targets. Use the info SVG's exact geometry/opacity with inherited color and no extra host surface; preserve independent contexts and fades. This corrects the scale-removal portion of the prior decision.
+
+### 2026-10-08 — Context belongs to each activity; bodyweight leaves this screen
+
+**What:** Put a bare `( i )` at the far right of each summary/date row. It swaps only that activity's summary and last-workout sets. Remove the weight concept entirely from Day Detail and keep the supplied question SVG bare beside the split controls on the top row.
+
+**Why:** Tim clarified the required placement and independence after rejecting the list-wide toggle and retained weight control.
+
+**How to apply:** Each row owns temporary context state. Preserve the 250ms fade-out / 250ms fade-in, all recorded sets, reduced-motion support, and separate history action. Keep 44px touch targets and keep the collapse button at the top of long workouts. This supersedes the list-wide context decision below.
+
+### 2026-10-08 — Keep the original split list; reveal workouts through context
+
+Superseded by the per-activity context correction above; do not restore a global toggle or bodyweight controls on this screen.
+
+**What:** Restore the original screenshot layout and usage summaries. One `(i)` context toggle replaces summaries with each activity's complete latest workout, and toggles back.
+
+**Why:** Tim rejected the always-visible workout redesign and asked for a graceful fade between the two details.
+
+**How to apply:** Keep activity names and controls visible. Fade only secondary details out for 250ms, swap at zero opacity, and fade in for 250ms with the playbook easing. Support immediate reduced-motion switching and cancellation of stale swaps. Preserve the existing shared workout formatting and all sets. This supersedes the earlier same-day decision below.
+
+### 2026-10-08 — Show the last workout directly in the daily split list
+
+Superseded the same day: Tim rejected this appearance; use the context-toggle decision above.
+
+**What:** Remove bodyweight and activity-finder controls from this screen. Put the supplied help SVG beside Choose Split. Replace usage totals and last-used dates with the complete latest workout's set badges.
+
+**Why:** Tim wants this screen to be evenly spaced and useful for seeing exactly what happened last time.
+
+**How to apply:** Reuse the main log's visible-set filtering, formatter, set order, and color ramp. Wrap every set without truncation or deduplication. Keep usage ranking internal, preserve completion checks, and leave bodyweight entry available on the main screen.
 
 - 2026-10-07: Use the **Clarity Squircle** (approved option A) for the middle weight value. **What:** organic rectangular SVG with a transparent center and a uniform 4px outline; keep the original Clarity Rings for the four adjustment buttons. **Why:** stretching the circle made the ends too heavy; the organic squircle bridges that artwork and the app’s existing squircle shapes. **How to apply:** use `IconClaritySquircle` / `assets/clarity-squircle.svg`, inherit color from the host, and retain `vector-effect="non-scaling-stroke"` as the width changes.
 
@@ -520,10 +580,6 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 - Review the 2026-10-07 FITNESS picker/header refresh on a physical iPhone before deployment. [Local previews and verified flows](./_docs/picker-refresh-2026-10-07/VERIFICATION.md).
 - Review the complete local routine first version on a physical phone: Settings → Weekly Splits → Open Routines. Placement remains provisional; app-wide navigation changes are deferred. Implementation and isolated checks are complete; deployment still requires Tim's decision. [Previews and verified flows](./_docs/routines-2026-10-07/VERIFICATION.md).
-- Demo seed horizon expires **2026-10-01**. `seed-data.csv` runs out, after which the rolling
-  simulation stops topping up and the demo reads as a museum piece again. Extend
-  `_archive/gen_summer_2026.py` and update `_docs/character-bio.md` in the same change. Separate
-  job from the routine build — do not fold it in.
 - **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your
   history. Background: "IDFK workout helper" below.
 - **Opt-in cadence reminders** ("remind me if I haven't done this in 2 weeks"). Background:
@@ -572,7 +628,7 @@ historical. Tim tests on his phone constantly (2026-10-06), so they are not a se
 
 - **Not exercised on a phone.** Verified in a desktop browser at a 375×812 viewport. The import writes ~3,500 sets; check how long that takes on an actual iPhone before showing this to anyone, and whether the "Loading…" state is honest enough at that speed.
 - **The demo has no bodyweight-unit story.** `__BODYWEIGHT_DAY__` rows now seed dated bodyweight entries; if bodyweight ever becomes unit-aware (see below), the seed data needs a unit per record too.
-- **Refresh horizon: 2026-10-01.** The seed runs out that day and the demo begins ageing again. Extending it is a generator edit plus a bio update — see the 2026-09-04 decision. A date-shifting scheme that keeps the log permanently current was considered and rejected: the notes reference real intervals ("six months and one day since I started"), so shifting the dates would make the story contradict itself.
+- **Refresh horizon: 2026-11-09.** The seed next runs out on 9 November (extended 2026-10-12). Extending it again is a new generator copied from `_archive/gen_autumn_2026.py` plus a bio update; the 2026-09-04 decision still explains why dates are not shifted.
 - **Exiting is irreversible by design and has no confirm step.** Tapping "Start my own" deletes the demo immediately. That is correct — nothing of the user's is at risk — but if a future version lets people log into the demo, it needs a confirmation.
 
 ### Bar-screen follow-ups from the 09-03 pass

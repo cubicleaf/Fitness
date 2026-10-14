@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "Latest saved session only, original set order, repeated loads/reps, bodyweight, timed distance, presence-only, empty history, and neutral placeholders render with shared log formatting.",
+    "320/390/430/1000px layouts fit; help sits directly beside Choose Split with a 44px target; all 14 long set badges wrap and remain reachable by vertical scrolling.",
+    "Help describes the current screen; shared split editor still opens/returns; activity tap opens history whose latest measured workout matches these badges."
+  ],
+  "errors": []
+}

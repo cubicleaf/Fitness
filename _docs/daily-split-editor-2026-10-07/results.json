@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Daily chooser Edit opens the existing editor; Cancel returns to the same chooser without adding a split.",
+    "Save returns to the chooser with new splits immediately and preserves the selected date assignment.",
+    "Renaming the current split refreshes choices and existing routine/activity references.",
+    "Removing a split refreshes the daily chooser.",
+    "Both entry points share the same saved split library; Edit fits narrow screens."
+  ],
+  "errors": []
+}

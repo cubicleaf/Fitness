@@ -1,8 +1,8 @@
 # Marcus Chen — The Seed Data Character
 
-**Dataset currency:** the seed CSV runs **2025-10-13 → 2026-10-01** (228 training
+**Dataset currency:** the seed CSV runs **2025-10-13 → 2026-11-09** (256 training
 days). Phases 1–9 below describe the story up to 1 May 2026; Phase 10 covers
-May–October. When the dataset is extended again, extend this document in the
+May–October, Phase 11 the weeks after. When the dataset is extended again, extend this document in the
 same change — a stale bio is how the May/June extension went undocumented for
 three months.
 
@@ -207,6 +207,26 @@ September adds the one thing the dataset had never contained: **distance**. Outd
 is the only activity in eleven months that logs kilometres, and it is also a brand-new
 activity appearing near the end of a long history, which is worth seeing.
 
+## Phase 11 — October to early November 2026: After the Goals
+
+The two goals closed on 1 October, so this stretch is what follows a goal landing:
+no new drama, just smaller steps. Marcus writes a fresh list on the 2nd — *"Eleven
+pull-ups, bench 205, and the long run keeps getting longer."* — and then simply
+works through it at about five sessions a week.
+
+**Bench:** 205 PR on 12 October (*"Five pounds over the number I set in July"*), 205
+on every set by the 26th, and 205 is the working weight by 9 November.
+**Pull-ups:** three clean tens on the 20th, then **eleven** on the 27th — *"Ten was the
+goal. Eleven is the first one nobody asked for."*
+**Squat:** 265 on the 14th, 270 on the 28th.
+**Outdoor Run:** one long run a fortnight — 11K on 4 October, 12K on the 18th, 13K on
+1 November (*"The half marathon is 21. Not this year, but it stopped sounding silly."*).
+Mobility stays fortnightly (8 and 22 October, 5 November), and he is still not doing
+enough of it.
+
+Step sizes are deliberately no larger than July–September's: barbell loads rise by 5lbs
+at a time, rows go 285 → 305 over five weeks, bodyweight drifts 184 → 185.
+
 ## The Banded Pullup Journey (Complete Summary)
 
 - Jan 5: Green band, 8-7-6 (first session with bands)
@@ -252,21 +272,21 @@ activity appearing near the end of a long history, which is worth seeing.
 
 Phases 1–9 cover October 13, 2025 to May 1, 2026 — nearly seven months across 127 training days. The dataset continues past that point; see Phase 10.
 
-## Final Numbers — October 1, 2026
+## Final Numbers — November 9, 2026
 
-- Bench Press: 132lbs → **200lbs PR** / 190-195lbs working weight
-- Squat: 154lbs → **260lbs**
-- Barbell Rows: 132lbs → **285lbs**
-- Overhead Press: 88lbs → **150lbs**
-- Romanian Deadlift: 154lbs → **245lbs**
-- Outdoor Run: nothing → **10.2km in 63 minutes**
-- Incline Dumbbell Press: 46lbs → **90lbs**
-- Pullups: zero → **10 unassisted** (bands retired August 11)
-- Dips: 7 reps → **31**
-- Push Ups: 16 reps → **47**
-- Plank: 25 seconds → **115 seconds**
+- Bench Press: 132lbs → **205lbs PR** / 200-205lbs working weight
+- Squat: 154lbs → **270lbs**
+- Barbell Rows: 132lbs → **305lbs**
+- Overhead Press: 88lbs → **160lbs**
+- Romanian Deadlift: 154lbs → **255lbs**
+- Outdoor Run: nothing → **13km in 80 minutes**
+- Incline Dumbbell Press: 46lbs → **105lbs**
+- Pullups: zero → **11 unassisted** (bands retired August 11)
+- Dips: 7 reps → **38**
+- Push Ups: 16 reps → **54**
+- Plank: 25 seconds → **130 seconds**
 - Treadmill: 8 minutes → **40 minutes**
-- Bodyweight: ~191lbs → **183lbs**
+- Bodyweight: ~191lbs → **185lbs**
 
 ## Strengths
 
