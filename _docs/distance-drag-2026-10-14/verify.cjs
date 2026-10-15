@@ -5,14 +5,14 @@ const root=path.resolve(__dirname,'../..');
  const browser=await chromium.launch({headless:true,executablePath:'/Users/cubicleaf/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell'});
  const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block',hasTouch:true}),page=await context.newPage(),errors=[];
  page.setDefaultTimeout(8000);page.on('pageerror',e=>errors.push(e.message));
- await page.route('http://fitness.test/**',async route=>{const file=path.resolve(root,decodeURIComponent(new URL(route.request().url()).pathname).replace(/^\//,'')||'index.html');if(!file.startsWith(root+'/')||!fs.existsSync(file))return route.fulfill({status:404,body:''});await route.fulfill({body:fs.readFileSync(file),contentType:file.endsWith('.html')?'text/html':file.endsWith('.js')?'text/javascript':'application/octet-stream'});});
+ if(!process.env.FITNESS_URL) await page.route('http://fitness.test/**',async route=>{const file=path.resolve(root,decodeURIComponent(new URL(route.request().url()).pathname).replace(/^\//,'')||'index.html');if(!file.startsWith(root+'/')||!fs.existsSync(file))return route.fulfill({status:404,body:''});await route.fulfill({body:fs.readFileSync(file),contentType:file.endsWith('.html')?'text/html':file.endsWith('.js')?'text/javascript':'application/octet-stream'});});
  const button=n=>page.getByRole('button',{name:n,exact:true});
  const input=page.getByRole('textbox',{name:'Exact distance',exact:true}),ruler=page.getByRole('slider',{name:'Distance; drag right to increase, left to decrease'});
  async function open(name='Run'){await button('Add New Activity').click();await page.locator('.exercise-picker-item').filter({has:page.getByText(name,{exact:true})}).click();await button('Log a Set').click();await page.getByText('Log a completed duration',{exact:true}).waitFor();}
  async function gesture(dx,dy=0,cancel=false){await ruler.scrollIntoViewIfNeeded();const b=await ruler.boundingBox(),x=b.x+b.width/2,y=b.y+30;await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x+dx,y+dy,{steps:4});if(cancel)await ruler.dispatchEvent('pointercancel',{pointerId:1});await page.mouse.up();}
  const sets=()=>page.evaluate(()=>dbOps.sets.getAll());
  try{
- await page.goto('http://fitness.test/');await button("I'll start my own").click();
+ await page.goto(process.env.FITNESS_URL || 'http://fitness.test/');await button("I'll start my own").click();
  await page.evaluate(async()=>{
   for(const [id,name] of [['run','Run'],['sauna','Sauna']])await dbOps.exercises.add({id,name,type:'timed',categories:[],weightDefault:'none',weightMeaning:'total',createdAt:Date.now()});
   await dbOps.sets.add({id:'last-run',exerciseId:'run',exerciseName:'Run',date:addDays(getTodayString(),-1),setOrder:1,weight:0,weightType:'none',duration:1200,distance:3.1,distanceUnit:'mi'});

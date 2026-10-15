@@ -27,4 +27,8 @@ Physical iPhone feel remains for Tim to assess; emulated touch is not a physical
 
 ## Release
 
-Pending verification of the GitHub-triggered production deployment.
+Published app commit **46b609c6d8a624b0c1d53fbbf4d9bd10fa4f199d** to GitHub `main`. GitHub production deployment **7081649141** reports **success** (2026-10-15 01:42 UTC / October 14 evening local).
+
+Both `https://fit-logs.vercel.app/index.html` and `https://timslogbook.vercel.app/index.html` returned HTTP 200 and matched the tested local `index.html` byte-for-byte by SHA-256. The full browser verification then passed directly against `https://fit-logs.vercel.app` using `FITNESS_URL=https://fit-logs.vercel.app node _docs/distance-drag-2026-10-14/verify.cjs`, including real touch dispatch, logging, persistence and reload in a fresh isolated profile, with zero page errors. No personal workout data was accessed.
+
+The existing service worker is network-first for app HTML; an online refresh retrieves this release. No supporting asset or service-worker cache change was required.
