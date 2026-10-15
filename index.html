@@ -2979,7 +2979,25 @@
         .activity-search-option[aria-selected="true"] { background: color-mix(in srgb, var(--accent) 28%, var(--bg-page)); }
         .activity-search-view-all { width: 100%; min-height: 44px; padding: 10px 12px; border: 0; background: none; color: var(--accent-soft); font: inherit; font-size: 12px; text-align: left; cursor: pointer; }
         .activity-search-empty { padding: 10px 12px; color: var(--text-faint); font-size: 13px; }
-    </style>
+
+        /* Approved WDM distance ruler: immediate scrubbing, vertical scroll retained. */
+        .distance-drag { margin-bottom:14px; padding:14px 0 8px; border-radius:18px; background:color-mix(in srgb,var(--accent) 12%,var(--bg-page)); }
+        .distance-value-row { display:flex; align-items:center; gap:8px; padding:0 14px; }
+        .distance-value-row label { flex:1; color:var(--accent-soft); font-size:13px; font-weight:600; }
+        .distance-value-row input { width:112px; min-width:0; min-height:44px; border:0; background:transparent; color:var(--text-body); font-family:inherit; font-weight:600; line-height:1.2; font-size:28px; text-align:right; font-variant-numeric:tabular-nums; padding:0 4px; border-radius:8px; }
+        .distance-value-row input:focus { background:color-mix(in srgb,var(--accent) 35%,var(--bg-page)); }
+        .distance-unit, .distance-last { border:0; background:transparent; color:var(--accent-soft); min-height:44px; padding:0 8px; cursor:pointer; }
+        .distance-unit { min-width:44px; font-weight:650; }
+        .distance-ruler { height:90px; position:relative; overflow:hidden; touch-action:pan-y; cursor:ew-resize; user-select:none; -webkit-user-select:none; }
+        .distance-ruler svg { display:block; width:100%; height:82px; pointer-events:none; }
+        .distance-marker { position:absolute; top:0; bottom:23px; left:50%; width:2px; background:var(--accent-soft); pointer-events:none; }
+        .distance-ruler:focus-visible { background:color-mix(in srgb,var(--accent) 20%,transparent); }
+        .distance-hint { text-align:center; color:var(--text-faint); font-size:11px; padding:0 8px; }
+        .distance-footer { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:0 14px; min-height:44px; }
+        .distance-footer small { color:var(--text-faint); font-size:11px; margin-left:auto; }
+        .distance-unit:active, .distance-last:active { transform:scale(.95); transition-duration:0s; }
+
+</style>
 </head>
 <body>
     <div id="root"></div>
@@ -9313,6 +9331,57 @@ const SoundSettingsModal = ({
     }
   }, "Play Full Preview"))));
 };
+// Live port of the approved Fitness Distance Drag Lab; no inertia or fixed maximum.
+const DistanceDrag = ({ value, unit, onChange, onUnitChange, lastDistance }) => {
+  const rulerRef = useRef(null), gestureRef = useRef(null);
+  const [width, setWidth] = useState(320);
+  const number = Number(value) || 0;
+  const tidy = n => n > Number.MAX_SAFE_INTEGER / 100 ? n : Math.round(Math.max(0, n) * 100) / 100;
+  const set = n => { if (Number.isFinite(n)) onChange(String(tidy(n))); };
+  useEffect(() => {
+    const el = rulerRef.current;
+    const observer = new ResizeObserver(() => setWidth(el.clientWidth));
+    observer.observe(el);
+    return () => { observer.disconnect(); gestureRef.current = null; };
+  }, []);
+  const finish = e => {
+    if (gestureRef.current?.id !== e.pointerId) return;
+    gestureRef.current = null;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+  const ticks = [], step = .1, pixels = 16, base = Math.floor(number / step), count = Math.ceil(width / pixels / 2) + 2;
+  for (let offset = -count; offset <= count; offset++) {
+    const n = base + offset;
+    if (n < 0 || !Number.isFinite(n)) continue;
+    const x = width / 2 + (n * step - number) / step * pixels;
+    if (x < 0 || x > width) continue;
+    const major = n % 5 === 0;
+    ticks.push(React.createElement('line', {key:'l'+offset,x1:x,y1:15,x2:x,y2:major?43:32,stroke:'var(--accent-soft)',opacity:major?.8:.35}));
+    if (major) ticks.push(React.createElement('text', {key:'t'+offset,x,y:64,textAnchor:'middle',fill:'var(--text-faint)',fontSize:11}, (n * step).toFixed(1)));
+  }
+  const last = lastDistance ? tidy(lastDistance.distance * (lastDistance.distanceUnit === unit ? 1 : unit === 'km' ? 1.609344 : 1 / 1.609344)) : null;
+  return React.createElement('section', {className:'distance-drag', 'aria-label':'Distance entry'},
+    React.createElement('div', {className:'distance-value-row'},
+      React.createElement('label', {htmlFor:'distance-input'}, 'Distance'),
+      React.createElement('input', {id:'distance-input',type:'text',inputMode:'decimal',autoComplete:'off',placeholder:'Optional',value,
+        'aria-label':'Exact distance',
+        onChange:e=>{const raw=e.target.value.replace(',', '.');if (/^\d*(?:\.\d*)?$/.test(raw) && (raw === '' || raw === '.' || Number.isFinite(Number(raw)))) onChange(raw);},
+        onBlur:()=>{if(value.trim() && value !== '.') onChange(tidy(Number(value)).toFixed(2));else onChange('');},
+        onKeyDown:e=>{if(e.key==='Enter'){e.currentTarget.blur();rulerRef.current.focus();}}}),
+      React.createElement('button', {type:'button',className:'distance-unit','aria-label':'Change distance unit; currently '+unit,
+        onClick:()=>{if(value.trim() && value!=='.') set(unit==='mi'?number*1.609344:number/1.609344);onUnitChange(unit==='mi'?'km':'mi');}}, unit)),
+    React.createElement('div', {className:'distance-ruler',ref:rulerRef,role:'slider',tabIndex:0,'aria-label':'Distance; drag right to increase, left to decrease','aria-valuemin':0,'aria-valuenow':number,'aria-valuetext':number+' '+(unit==='mi'?'miles':'kilometres'),
+      onPointerDown:e=>{if(e.button!==0 || !e.isPrimary)return;gestureRef.current={id:e.pointerId,x:e.clientX,y:e.clientY,value:number,axis:null};},
+      onPointerMove:e=>{const g=gestureRef.current;if(!g || g.id!==e.pointerId)return;const dx=e.clientX-g.x,dy=e.clientY-g.y;
+        if(!g.axis){if(Math.max(Math.abs(dx),Math.abs(dy))<8)return;g.axis=Math.abs(dx)>Math.abs(dy)?'x':'y';if(g.axis==='x')e.currentTarget.setPointerCapture(e.pointerId);}
+        if(g.axis!=='x')return;e.preventDefault();set(g.value+Math.round(dx/pixels)*step);},
+      onPointerUp:finish,onPointerCancel:finish,onLostPointerCapture:()=>{gestureRef.current=null;},
+      onKeyDown:e=>{if(!['ArrowRight','ArrowLeft','ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();set(e.key==='Home'?0:number+(e.key==='ArrowRight'||e.key==='ArrowUp'?1:-1)*(e.shiftKey?.01:step));}},
+      React.createElement('svg', {viewBox:'0 0 '+width+' 82','aria-hidden':true}, ticks), React.createElement('span',{className:'distance-marker'})),
+    React.createElement('div',{className:'distance-hint'},'Drag to adjust · tap the number to type'),
+    React.createElement('div',{className:'distance-footer'}, last!==null && React.createElement('button',{type:'button',className:'distance-last',onClick:()=>set(last)},'Use last · '+last+' '+unit), React.createElement('small',null,'0.1 '+unit+' per tick')));
+};
+
 const TimedDurationModal = ({
   exercise,
   weight,
@@ -9324,6 +9393,8 @@ const TimedDurationModal = ({
   onChangeWeight,
   onRequestWeight,
   distanceEnabled = false,
+  distanceValue, setDistanceValue, distanceUnit, setDistanceUnit,
+  selectedDate,
   setNumber,
   gripTrackingEnabled = false,
   initialGrip = null,
@@ -9334,8 +9405,17 @@ const TimedDurationModal = ({
   pairedActivityName = null,
   onLogPresence
 }) => {
-  const [distanceValue, setDistanceValue] = useState('');
-  const [distanceUnit, setDistanceUnit] = useState('mi');
+  const [lastDistance, setLastDistance] = useState(null);
+  useEffect(() => {
+    if (!distanceEnabled) return;
+    let active = true;
+    dbOps.sets.getByExerciseId(exercise.id).then(sets => {
+      const previous = sets.filter(s => s.date <= selectedDate && Number.isFinite(s.distance) && s.distance > 0 && ['mi','km'].includes(s.distanceUnit))
+        .sort((a,b) => b.date.localeCompare(a.date) || (b.setOrder || 0) - (a.setOrder || 0))[0];
+      if (active) setLastDistance(previous || null);
+    }).catch(error => console.warn('Could not load last distance', error));
+    return () => { active = false; };
+  }, [exercise.id, distanceEnabled, selectedDate]);
   const onSelectDuration = value => {
     if (value === null || !distanceEnabled) return persistDuration(value);
     const duration = typeof value === 'object' ? value.duration : value;
@@ -9756,59 +9836,7 @@ const TimedDurationModal = ({
     className: 'btn btn-secondary',
     onClick: onLogPresence,
     style: { alignSelf: 'flex-start', width: 'auto', minHeight: '52px', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '12px', textAlign: 'left' }
-  }, /*#__PURE__*/React.createElement('span', { style: { fontSize: '16px', lineHeight: 1, flexShrink: 0 } }, "¯\\_(ツ)_/¯"), /*#__PURE__*/React.createElement('span', { style: { display: 'flex', flexDirection: 'column', gap: '1px' } }, /*#__PURE__*/React.createElement('strong', { style: { fontSize: '13px' } }, 'Did some'), /*#__PURE__*/React.createElement('small', { style: { fontSize: '10px', color: 'var(--text-faint)' } }, 'No sets or reps'))), distanceEnabled && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '8px',
-      alignItems: 'center',
-      marginBottom: '14px',
-      padding: '10px 12px',
-      border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)',
-      borderRadius: '10px',
-      background: 'color-mix(in srgb, var(--accent) 5%, transparent)'
-    }
-  }, /*#__PURE__*/React.createElement("label", {
-    htmlFor: "distance-input",
-    style: {
-      color: 'var(--accent-soft)',
-      fontSize: '12px',
-      fontWeight: '600',
-      whiteSpace: 'nowrap'
-    }
-  }, "Distance"), /*#__PURE__*/React.createElement("input", {
-    id: "distance-input",
-    type: "number",
-    inputMode: "decimal",
-    min: "0",
-    step: "0.01",
-    placeholder: "optional",
-    value: distanceValue,
-    onChange: e => setDistanceValue(e.target.value),
-    style: {
-      minWidth: 0,
-      flex: 1,
-      padding: '8px 10px',
-      borderRadius: '7px',
-      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
-      background: 'rgba(255,255,255,0.04)',
-      color: 'var(--text-body)',
-      fontSize: '13px'
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: () => setDistanceUnit(distanceUnit === 'mi' ? 'km' : 'mi'),
-    style: {
-      minWidth: '44px',
-      minHeight: '44px',
-      padding: '0 8px',
-      borderRadius: '7px',
-      border: '1px solid color-mix(in srgb, var(--accent) 25%, transparent)',
-      background: 'color-mix(in srgb, var(--accent) 12%, transparent)',
-      color: 'var(--accent-soft)',
-      fontSize: '12px',
-      fontWeight: '700'
-    }
-  }, distanceUnit)), editMode ? /*#__PURE__*/React.createElement("div", { className: 'timer-edit-view' }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement('span', { style: { fontSize: '16px', lineHeight: 1, flexShrink: 0 } }, "¯\\_(ツ)_/¯"), /*#__PURE__*/React.createElement('span', { style: { display: 'flex', flexDirection: 'column', gap: '1px' } }, /*#__PURE__*/React.createElement('strong', { style: { fontSize: '13px' } }, 'Did some'), /*#__PURE__*/React.createElement('small', { style: { fontSize: '10px', color: 'var(--text-faint)' } }, 'No sets or reps'))), distanceEnabled && React.createElement(DistanceDrag, {value:distanceValue,unit:distanceUnit,onChange:setDistanceValue,onUnitChange:setDistanceUnit,lastDistance}), editMode ? /*#__PURE__*/React.createElement("div", { className: 'timer-edit-view' }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -15682,6 +15710,10 @@ function App() {
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [pendingNewExerciseId, setPendingNewExerciseId] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
+  // A distance draft survives the load/weight sheet, but never leaks to another activity/day.
+  const [distanceValue, setDistanceValue] = useState('');
+  const [distanceUnit, setDistanceUnit] = useState('mi');
+  useEffect(() => { setDistanceValue(''); setDistanceUnit('mi'); }, [selectedExercise?.id, currentDate]);
   const [selectedGrip, setSelectedGrip] = useState(null);
   const [gripLockedForDay, setGripLockedForDay] = useState(false);
   const [previousWeight, setPreviousWeight] = useState(null);
@@ -17851,6 +17883,8 @@ function App() {
     onRequestWeight: () => setModal('weightPicker', 'timedDuration'),
     setNumber: setNumber,
     distanceEnabled: inferMeasurementModes(selectedExercise).includes('distance'),
+    distanceValue, setDistanceValue, distanceUnit, setDistanceUnit,
+    selectedDate: currentDate,
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,

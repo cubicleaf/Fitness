@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "errors": [],
+  "checks": [
+    "Drag direction, sensitivity, threshold, vertical intent, zero clamp and keyboard hundredths",
+    "Exact typed decimals/comma, clearing, unit conversion and actual prior distance excluding future sessions",
+    "320/390/430px layout, 44px controls, ring-free focus",
+    "Actual preset and stopwatch logging, stored unit/distance/duration and reload; optional empty distance; no ruler on non-distance activity",
+    "Real touch scrubbing and vertical modal scrolling, pointer cancellation, reduced motion, weight-picker draft retention"
+  ]
+}
