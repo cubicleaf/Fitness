@@ -10,9 +10,9 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
-- **2026-10-27 — round 5 (uncommitted).** Add Activity: family cards are half height with "N variants" under the name; variant cards are shorter with a 10px gap. Weight picker: "Use N lbs" is now a gold filled check ring right of +5 (stepper is six columns, buttons 44px+). Timed logging first screen: the single "Time this activity" door is replaced by Stopwatch and Countdown tiles; nothing else from the old timer screen was removed (Sound settings, Edit presets, Edit actual time all still exist behind them).
+- **2026-10-27 — round 5 (pushed 9946700).** Add Activity: family cards are half height with "N variants" under the name; variant cards are shorter with a 10px gap. Weight picker: "Use N lbs" is now a gold filled check ring right of +5 (stepper is six columns, buttons 44px+). Timed logging first screen: the single "Time this activity" door is replaced by Stopwatch and Countdown tiles; nothing else from the old timer screen was removed (Sound settings, Edit presets, Edit actual time all still exist behind them).
 
-- **2026-10-27 — round 4 (uncommitted).** Weight picker shows 10 quick presets (two rows) before "More". Activities-without-a-split now saves on each tap (no Assign button). Split helper guesses push/pull/legs from name keywords when an activity isn't in the catalog (Seated Fly → push). Day sheet: header row spacing, logged rows gold with a gold/burgundy rail, Pair time button is now a link icon. Set chips in the day sheet's expanded (i) view never wrap: as many as fit one line, then a "+N more" chip (Tim picked option D, 2026-10-27).
+- **2026-10-27 — round 4 (pushed e8faaac).** Weight picker shows 10 quick presets (two rows) before "More". Activities-without-a-split now saves on each tap (no Assign button). Split helper guesses push/pull/legs from name keywords when an activity isn't in the catalog (Seated Fly → push). Day sheet: header row spacing, logged rows gold with a gold/burgundy rail, Pair time button is now a link icon. Set chips in the day sheet's expanded (i) view never wrap: as many as fit one line, then a "+N more" chip (Tim picked option D, 2026-10-27).
 
 2026-10-27 (minutes dial back, darker (i), one-line activity meta): Tim's phone review of the shipped build. (1) The 60-minute dial, which had been left only in the countdown screen after the 10/7 timer rework, is back on the quick-log screen under the presets: drag to any minute up to 60, then “Log N min” saves that completed duration (shared dial code, so countdown is unchanged). (2) The daily-split activity (i) is now the darker accent when closed and the former lighter accent-soft when the sets are expanded; the near-white state is gone. (3) The activity meta line never wraps and reads “25 workouts · Last: Oct 13”; a workout is a distinct day with real work sets (ranking still uses set counts). Verified in the in-app browser against the demo data: single-line rows, colors, dial drag to 20 min saved a 1200-second set, no console errors. Not committed or deployed.
 
@@ -210,6 +210,22 @@ The real product test is still real usage — logging actual workouts over sever
 Color token *plumbing* is now done (2026-07-16): a `:root` token block exists and all core colors route through it. The larger color-showcase/palette-comparison project remains shelved — but future color changes are now one-line edits.
 
 ## Decisions
+
+### 2026-10-27 — The app never assigns splits or makes routines on its own
+
+**What:** No weekday split is ever assigned automatically, and no routines (Core, Other, Rest…) are pre-made. Weekday splits are set only by Tim's explicit choice in "Split assignments". System-made routines carry `auto: true` and stay hidden from the Routines list. Routine ideas live in a corner field note, not as real routines.
+
+**Why:** Tim found weekdays assigned and routines he never created ("MASSIVE pain"); legacy-template migration and import were the sources.
+
+**How to apply:** Any new code that writes `week` or creates a routine needs an explicit user action. Never seed or migrate assignments.
+
+### 2026-10-27 — Name-based split guess; gold means logged; long set rows end in "+N more"
+
+**What:** (1) Activities missing from the catalog get a keyword guess (fly/press/pushdown → push; row/curl/reverse → pull; leg/squat/calf → legs), always confirmable. (2) On the day sheet, gold marks activities logged on that date and the rail is the gold/burgundy midpoint. (3) Tim picked option D for long set lists: chips that fit one line, then "+N more" (not tappable yet).
+
+**Why:** Seated Fly got no recommendation; Tim rejected mauve checks and any wrapping of set chips.
+
+**How to apply:** Extend `guessByName` rather than the catalog for common gym names. Never wrap set chips.
 
 ### 2026-10-14 — Ship actual-library search suggestions
 
