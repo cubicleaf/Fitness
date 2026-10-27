@@ -34,6 +34,7 @@
             /* accent family */
             --accent: #8b3a62;
             --accent-soft: #c77da0;
+            --gold: #d4a63a;
             --accent-bright: #a04574;
             --accent-deep: #6e2d4e;
             /* text */
@@ -1111,11 +1112,12 @@
         .day-activity-list { position: relative; display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding: 0 0 8px; margin: 0; list-style: none; }
         .day-activity-list > li { list-style: none; margin: 0; padding: 0; }
         .day-activity-row { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 68px; padding: 7px 2px; border: 0; background: transparent; color: var(--text-body); text-align: left; cursor: pointer; -webkit-appearance: none; appearance: none; }
-        .day-activity-row::before { content: ''; position: absolute; left: 21px; top: 0; bottom: 0; width: 1.5px; background: color-mix(in srgb, var(--accent-soft) 36%, transparent); pointer-events: none; }
+        .day-activity-row::before { content: ''; position: absolute; left: 21px; top: 0; bottom: 0; width: 1.5px; background: color-mix(in srgb, color-mix(in srgb, var(--gold) 50%, var(--accent)) 55%, transparent); pointer-events: none; }
         .day-activity-list > li:first-child .day-activity-row::before { top: 50%; }
         .day-activity-list > li:last-child .day-activity-row::before { bottom: 50%; }
         .day-activity-node { position: relative; z-index: 1; display: grid; place-items: center; flex: 0 0 42px; width: 42px; height: 42px; border: 1.5px solid var(--accent); border-radius: 11px; background: var(--bg-page); color: var(--accent-soft); font-size: 15.6px; font-variant-numeric: tabular-nums; transition: transform 120ms ease-out; }
         .day-activity-row.is-most-used .day-activity-node { background: var(--accent); color: #fff; }
+        .day-activity-row.is-logged .day-activity-node { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 18%, var(--bg-page)); color: var(--gold); }
         .day-activity-row:active .day-activity-node { transform: scale(0.95); }
         .day-activity-copy { display: grid; gap: 4px; min-width: 0; }
         .day-activity-name { color: var(--text-bright); font-size: 14px; line-height: 1.2; font-weight: 650; }
@@ -1179,12 +1181,12 @@
         }
         .day-detail-control:active { transform: scale(0.96); }
         .day-detail-tab.is-active { background: var(--accent); color: #fff; }
-        .day-detail-actions { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px; gap: 6px; }
+        .day-detail-actions { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px; gap: 10px; align-items: center; }
         .day-detail-scale { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--accent-soft); cursor: pointer; }
         .day-detail-scale:active { transform: scale(0.95); }
         .day-detail-scale:focus-visible { outline: none; filter: brightness(1.22); }
-        .day-detail-tab { min-width: 0; padding: 0 6px; font-size: 13.6px; white-space: normal; }
-        .day-detail-split { gap: 5.1px; min-width: 76px; padding: 0 10px; white-space: nowrap; }
+        .day-detail-tab { min-width: 0; padding: 0 14px; font-size: 13px; white-space: nowrap; text-transform: capitalize; justify-content: center; }
+        .day-detail-split { gap: 6px; min-width: 76px; padding: 0 14px; white-space: nowrap; }
         .day-detail-split > svg:not(.auto-squircle-svg) { flex: none; width: 15.3px; height: 15.3px; }
         /* Scale only visible plates/artwork; preserve the 44px touch targets. */
         .day-detail-actions .day-detail-tab > .auto-squircle-svg { transform: scale(0.85); transform-origin: center; }
@@ -6322,19 +6324,24 @@ const ExercisePickerModal = ({
         setSelectedFamilyId(null);
       },
       style: {
+        minWidth: '44px',
         minHeight: '44px',
-        padding: '0 12px',
+        padding: 0,
+        display: 'grid',
+        placeItems: 'center',
         borderRadius: '10px',
         flexShrink: 0,
         border: 'none',
         background: 'color-mix(in srgb, var(--accent) 14%, transparent)',
         color: 'var(--accent-soft)',
-        fontSize: '12px',
-        fontWeight: '700',
         cursor: 'pointer',
         WebkitAppearance: 'none'
-      }
-    }, "Pair time") : null;
+      },
+      "aria-label": `Pair time with ${getActivityName(ex)}`,
+      title: "Pair time"
+    }, React.createElement("svg", {
+      width: 22, height: 22, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true"
+    }, React.createElement("path", { d: "M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5" }), React.createElement("path", { d: "M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5" }))) : null;
     const assignSplitButton = !pairingSource && queryText && category !== 'all' && activitySplits.length === 0 ? /*#__PURE__*/React.createElement("button", {
       type: "button",
       "aria-label": `Add ${getActivityName(ex)} to ${splitDisplayName}`,
@@ -6716,6 +6723,15 @@ function distance(a, b) {
   }
   return prev[b.length];
 }
+// Name-keyword fallback for activities missing from the catalog. Order matters: legs and
+// reverse/rear movements are claimed before the generic push and pull words.
+function guessByName(input) {
+  const has=re=>re.test(input);
+  if (has(/\b(leg|squat|lunge|calf|deadlift|hip thrust|glute|hamstring|quad)\b/)) return 'legs';
+  if (has(/\b(reverse|rear)\b/) || has(/\b(row|pulldown|pull down|pull up|pullup|chin up|chinup|curl|shrug|face pull|lat)\b/)) return 'pull';
+  if (has(/\b(fl(y|ye|ie|ies)|press|push|pushdown|pushup|dip|tricep|skullcrusher|pec|chest|bench|lateral raise|front raise)\b/)) return 'push';
+  return null;
+}
 function classify({name, categories=defaultCategories, confirmedSplits, exerciseSplitOverrides={}}, catalog) {
   const abstain = (reason, candidates=[]) => ({status:'ask', splits:[], reason, candidates, confidence:null});
   // Caller must supply an explicit saved choice for THIS activity, never inferred history.
@@ -6727,6 +6743,11 @@ function classify({name, categories=defaultCategories, confirmedSplits, exercise
   const input=normalize(name);
   if (!input) return abstain('Enter an activity name.');
   const matches=catalog.filter(e=>[e.name,...e.aliases].some(a=>normalize(a)===input));
+  if (matches.length === 0) {
+    const guess=guessByName(input);
+    const guessed=guess && categories.filter(c=>categoryKey(c)===guess);
+    if (guessed && guessed.length) return {status:'suggest',splits:guessed,reason:'Guessed from the activity name; confirm it fits your program.',confidence:null};
+  }
   if (matches.length !== 1) {
     const candidates=catalog.map(e=>({id:e.id,name:e.name,distance:Math.min(...[e.name,...e.aliases].map(a=>distance(input,normalize(a))))}))
       .filter(e=>e.distance<=Math.max(1,Math.floor(input.length*0.2))).sort((a,b)=>a.distance-b.distance).slice(0,3);
@@ -8650,7 +8671,7 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
   const common = isBarExercise ? unit === 'kg' ? [0, 2.5, 5, 7.5, 10, 15, 20, 25, 30, 40, 50] : [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 90] : unit === 'kg' ? [2.5, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100] : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 90, 100, 120, 135, 150, 180, 200, 225];
   const recent = [...new Set(matchingHistory.map(set => isBarExercise ? roundLoad(barLoadForSet(set).added / 2) : set.weight))].slice(0, 5);
   const options = [...recent, ...common.filter(value => !recent.includes(value))];
-  const visibleOptions = showAllWeightPresets ? options : options.slice(0, 5);
+  const visibleOptions = showAllWeightPresets ? options : options.slice(0, 10);
   const selectMeasuredWeight = value => {
     if (!ready || isBarExercise && barWeight <= 0) return;
     onSelectWeight({ weight: value, weightType: unit, weightMeaning, ...(isBarExercise ? { barWeightAtLog: barWeight, barNameAtLog: barName } : {}) });
@@ -8850,7 +8871,7 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
           isBarExercise && barWeight <= 0 && h('div', { className: 'weight-entry-hint', role: 'status' }, 'Choose the bar’s weight in the equipment menu.'),
           h('button', { type: 'button', className: 'btn weight-use-button', disabled: !ready || isBarExercise && barWeight <= 0, onClick: () => selectMeasuredWeight(weight) }, `Use ${weight} ${unit}${isBarExercise ? ' total' : mode === 'per-side' ? ' each' : ''}`),
           lastMeasured && h('div', { className: 'weight-entry-hint' }, `Last ${formatRecordedWeight(lastMeasured)} · ${lastMeasured.date === selectedDate ? 'Today' : formatDateShort(lastMeasured.date)}`),
-          h('div', { className: 'weight-presets-heading' }, h('div', { className: 'section-title' }, isBarExercise ? 'Per side' : mode === 'per-side' ? 'Per hand' : 'Weights'), options.length > 5 && h('button', { type: 'button', className: 'weight-presets-toggle', 'aria-expanded': showAllWeightPresets, onClick: () => setShowAllWeightPresets(value => !value) }, showAllWeightPresets ? 'Fewer' : 'More')),
+          h('div', { className: 'weight-presets-heading' }, h('div', { className: 'section-title' }, isBarExercise ? 'Per side' : mode === 'per-side' ? 'Per hand' : 'Weights'), options.length > 10 && h('button', { type: 'button', className: 'weight-presets-toggle', 'aria-expanded': showAllWeightPresets, onClick: () => setShowAllWeightPresets(value => !value) }, showAllWeightPresets ? 'Fewer' : 'More')),
           h('div', { id: 'weight-preset-options', className: `weight-grid${showAllWeightPresets ? '' : ' is-quick'}` }, visibleOptions.map(value => h('button', { type: 'button', key: value, className: 'weight-btn', 'aria-label': isBarExercise ? `Use ${value} ${unit} per side, ${roundLoad(barWeight + value * 2)} ${unit} total` : `Use preset ${value} ${unit}${mode === 'per-side' ? ' each' : ''}`, disabled: !ready || isBarExercise && barWeight <= 0, onClick: () => selectMeasuredWeight(isBarExercise ? roundLoad(barWeight + value * 2) : value) }, value)))
         )
       ),
@@ -11850,20 +11871,23 @@ const UnsplitActivitiesModal = ({ categories, onClose }) => {
   const [busy, setBusy] = useState(null);
   const [assignment, setAssignment] = useState({});
   useEffect(() => { dbOps.exercises.getAll().then(all => setActivities(all.filter(ex => !getExCategories(ex).some(c => String(c).trim())).sort((a,b) => a.name.localeCompare(b.name)))).catch(() => setError('Could not load activities. Close and try again.')); }, []);
-  const save = async activity => {
+  // Each tap saves right away; rows stay put until the modal closes so several splits can be picked.
+  const toggleSplit = async (activity, category) => {
     if (busy) return;
+    const current = assignment[activity.id] || [];
+    const next = current.includes(category) ? current.filter(c => c !== category) : [...current, category];
     setBusy(activity.id);
-    const ok = await safeDb(() => dbOps.exercises.update({ ...activity, category: '', categories: assignment[activity.id] || [] }), 'assign splits');
-    if (ok) setActivities(items => items.filter(item => item.id !== activity.id));
+    const ok = await safeDb(() => dbOps.exercises.update({ ...activity, category: '', categories: next }), 'assign splits');
+    if (ok) setAssignment(prev => ({ ...prev, [activity.id]: next }));
     setBusy(null);
   };
   return h('div', { className: 'modal-overlay', onClick: onClose }, h('div', { className: 'modal', onClick: e => e.stopPropagation() },
     h('div', { className: 'modal-header', ...makeSwipeDownHandlers(onClose) }, h('h2', null, 'Activities without a split'), h('button', { className: 'close-btn', 'aria-label': 'Close', onClick: onClose }, h(IconX, { size: 20 }))),
-    h('div', { className: 'modal-content' }, h('p', { style: { color: 'var(--text-faint)', margin: '0 0 12px', fontSize: '13px' } }, 'Choose one or more splits for each activity.'),
+    h('div', { className: 'modal-content' }, h('p', { style: { color: 'var(--text-faint)', margin: '0 0 12px', fontSize: '13px' } }, 'Tap a split to assign it. Changes save automatically.'),
       error ? h('p', { role: 'alert' }, error) : !activities ? h('p', null, 'Loading activities…') : !activities.length ? h('p', { role: 'status' }, 'Every activity has a split.') : activities.map(activity => h('section', { key: activity.id, className: 'unsplit-row' }, h('h3', null, activity.name), h('div', { className: 'unsplit-options' }, categories.map(category => {
         const chosen = (assignment[activity.id] || []).includes(category);
-        return h('button', { key: category, type: 'button', 'aria-pressed': chosen, disabled: busy === activity.id, style: chosen ? { background: 'var(--accent)' } : {}, onClick: () => setAssignment(prev => ({ ...prev, [activity.id]: chosen ? (prev[activity.id] || []).filter(c => c !== category) : [...(prev[activity.id] || []), category] })) }, category);
-      }), h('button', { type: 'button', disabled: !!busy || !assignment[activity.id]?.length, onClick: () => save(activity) }, busy === activity.id ? 'Assigning…' : 'Assign splits'))))
+        return h('button', { key: category, type: 'button', 'aria-pressed': chosen, disabled: busy === activity.id, style: chosen ? { background: 'var(--accent)' } : {}, onClick: () => toggleSplit(activity, category) }, category);
+      }))))
     )
   ));
 };
@@ -12913,7 +12937,7 @@ const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
       const badges = sets.length > 0 && h('span', { className: 'set-boxes-container day-activity-last-workout' },
         sets.map((set, i) => h('span', { key: set.id || i, className: 'set-box', style: { backgroundColor: getSetBoxColor(i) } },
           h('span', { className: 'set-box-content' }, formatSetBox(set, sets[i - 1], unit)))));
-      return h('li', { className: `day-activity-row${index === 0 ? ' is-most-used' : ''}` }, h('button', {
+      return h('li', { className: `day-activity-row${index === 0 ? ' is-most-used' : ''}${activity._loggedOnDate ? ' is-logged' : ''}` }, h('button', {
         type: 'button',
         className: 'day-activity-open',
         onClick: () => onSelect(activity),
