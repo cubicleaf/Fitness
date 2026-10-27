@@ -2930,6 +2930,8 @@
         .rt-control.is-selected { background: var(--accent); }
         .rt-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0; }
         .rt-tabs { display: flex; gap: 6px; margin-bottom: 20px; }
+        .rt-heading-actions { display: inline-flex; align-items: center; gap: 4px; }
+        .rt-create-activity { width: 100%; justify-content: flex-start; margin-bottom: 8px; }
         .rt-tabs button { flex: 1; }
         .rt-tabs button[aria-pressed="true"] { background: var(--accent); }
         .rt-muted { color: var(--text-faint); font-size: 13px; line-height: 1.5; margin: 12px 0; }
@@ -4425,6 +4427,7 @@ const buildRoutineMigration = (templates, daySplitRecords, categoryNames, makeId
         id: makeId(key),
         name: REST_ROUTINE_NAME,
         mode: 'rest',
+        auto: true,
         manualOrder: null,
         createdAt: now
       };
@@ -4434,6 +4437,7 @@ const buildRoutineMigration = (templates, daySplitRecords, categoryNames, makeId
         name: raw,
         mode: 'split',
         splitName: key,
+        auto: true,
         manualOrder: null,
         createdAt: now
       };
@@ -4445,19 +4449,15 @@ const buildRoutineMigration = (templates, daySplitRecords, categoryNames, makeId
     routines.push(routine);
     return routine.id;
   };
-  // All seven weekday records are always written, including empty ones. Seven
-  // present is the migration's own completion marker, so no sentinel row is needed.
-  const labelByDow = new Map();
-  (templates || []).forEach(t => {
-    if (t && typeof t.dayOfWeek === 'number' && t.dayOfWeek >= 0 && t.dayOfWeek <= 6) {
-      labelByDow.set(t.dayOfWeek, t.label);
-    }
-  });
+  // All seven weekday records are always written, and always empty. Seven present
+  // is the migration's own completion marker. The weekday split is only ever set by
+  // Tim choosing it (or restoring his own backup): an old template label, a demo
+  // file or a re-run of this migration must never assign a day by itself.
   const week = [];
   for (let dow = 0; dow <= 6; dow++) {
     week.push({
       dayOfWeek: dow,
-      routineId: resolveLabel(labelByDow.get(dow))
+      routineId: null
     });
   }
   const dayRoutines = [];
@@ -5076,6 +5076,10 @@ const FIELD_NOTES = {
     eyebrow: 'Field Note',
     title: 'How do related activities work?',
     body: ['A family is an organizational group, such as Row or Run. The activity you log owns its own sets, notes, presets, and history.', 'Related Activities can link, move, or detach activities and create a variation. Those actions never combine histories. Merge Activities is a separate action for true duplicates.']
+  },
+  routineIdeas: {
+    eyebrow: 'Field Note', title: 'Routine ideas',
+    body: ['Nothing is set up for you. A routine is a checklist of activities you repeat, so make one only when it earns its place.', 'Ideas to start from: Morning routine, Stretching, Warm-up, Mobility, Cool-down, Evening wind-down, Physio exercises, Travel workout.']
   },
   gripTracking: {
     eyebrow: 'Field Note',
@@ -7827,10 +7831,11 @@ const CreateExerciseModal = ({
   onCancel,
   categories,
   dayLabel,
-  onOpenFieldNote
+  onOpenFieldNote,
+  initialName = ''
 }) => {
   const activityRecommenderEnabled = true;
-  const [name, setName] = useState('');
+  const [name, setName] = useState(initialName);
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
   const saveInFlight = useRef(false);
@@ -7932,6 +7937,7 @@ const CreateExerciseModal = ({
     if (dupCheckRef.current) clearTimeout(dupCheckRef.current);
     dupCheckRef.current = setTimeout(() => checkDuplicates(val.trim()), 400);
   };
+  useEffect(() => { if (initialName && allExercises.length) checkDuplicates(initialName.trim()); }, [allExercises]);
   const doSave = async () => {
     if (saveInFlight.current) return;
     saveInFlight.current = true; setSaving(true); setFormError('');
@@ -11361,11 +11367,12 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
     await saveCategories([...new Set([...categories,...additions])]);
   }
 
-  // PHASE 7: Write weekly splits if present
+  // PHASE 7: A file's old weekly template (including the demo's) is kept in the
+  // legacy store only. It never assigns a weekday: only a routine backup that
+  // carries its own week records (restored below) or Tim's own choice does.
   if (importedSplits && !routineBackup.week.length) {
     for (let i = 0; i < 7; i++) {
       await dbOps.templates.set(i, importedSplits[i] || '');
-      await dbOps.week.set(i, await ensureSplitRoutine(importedSplits[i] || ''));
     }
   }
 
@@ -11618,13 +11625,16 @@ const resolveRoutineDate = async (date, categories) => {
   const routine = assignment?.routineId ? await dbOps.routines.get(assignment.routineId) : null;
   return validRoutine(routine, categories) ? routine : null;
 };
+// A routine the app made only so a split or Rest can be assigned to a day. These stay
+// out of the Routines list: the user makes their own routines.
+const isAutoRoutine = routine => !!routine && (routine.auto === true || String(routine.id).indexOf('rt_mig_') === 0);
 const ensureSplitRoutine = async label => {
   if (!label || label === '__none__') return null;
   const routines = await dbOps.routines.getAll();
   const rest = label.toLowerCase() === 'rest';
   const found = routines.find(r => rest ? r.mode === 'rest' : r.mode === 'split' && r.splitName?.toLowerCase() === label.toLowerCase());
   if (found) return found.id;
-  const routine = { id: generateId('rt'), name: label, mode: rest ? 'rest' : 'split', ...(rest ? {} : { splitName: label.toLowerCase() }), manualOrder: null, createdAt: Date.now() };
+  const routine = { id: generateId('rt'), name: label, mode: rest ? 'rest' : 'split', ...(rest ? {} : { splitName: label.toLowerCase() }), auto: true, manualOrder: null, createdAt: Date.now() };
   await dbOps.routines.put(routine);
   return routine.id;
 };
@@ -11637,13 +11647,14 @@ const deleteRoutineAndAssignments = async id => new Promise((resolve, reject) =>
   }
   tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); tx.onabort = () => reject(tx.error || new Error('Routine deletion aborted'));
 });
-const RoutineLibraryModal = ({ onClose, date, onLogActivity, refreshKey = 0, isVisible = true, initialView = 'library' }) => {
+const RoutineLibraryModal = ({ onClose, date, onLogActivity, refreshKey = 0, isVisible = true, initialView = 'library', onCreateActivity, onOpenFieldNote, onCategoriesChanged }) => {
   const h = React.createElement;
   const [data, setData] = useState(null);
   const [view, setView] = useState(initialView);
   const [editingId, setEditingId] = useState(null);
   const [nameDraft, setNameDraft] = useState('');
   const [openDay, setOpenDay] = useState(null);
+  const [showSplitEditor, setShowSplitEditor] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [query, setQuery] = useState('');
   const [splitFilter, setSplitFilter] = useState('all');
@@ -11688,9 +11699,10 @@ const RoutineLibraryModal = ({ onClose, date, onLogActivity, refreshKey = 0, isV
     writeQueue.current = next.catch(err => { console.error(err); setError('That change could not be saved. Please try again.'); });
     return next.finally(() => setBusy(false));
   };
-  const routines = data?.routines || [], categories = data?.categories || [];
-  const editing = routines.find(r => r.id === editingId);
-  const byId = Object.fromEntries(routines.map(r => [r.id,r]));
+  const allRoutines = data?.routines || [], categories = data?.categories || [];
+  const routines = allRoutines.filter(r => !isAutoRoutine(r));
+  const editing = allRoutines.find(r => r.id === editingId);
+  const byId = Object.fromEntries(allRoutines.map(r => [r.id,r]));
   const dayRecord = data?.overrides.find(r => r.date === date) || (date >= getTodayString() ? data?.week.find(w => w.dayOfWeek === parseLocalDate(date).getDay()) : null);
   const selected = validRoutine(byId[dayRecord?.routineId], categories) ? byId[dayRecord?.routineId] : null;
   const past = date < getTodayString();
@@ -11759,17 +11771,23 @@ const RoutineLibraryModal = ({ onClose, date, onLogActivity, refreshKey = 0, isV
     !past && toolbar(button('Choose routine',()=>setView('choose')), selected && button('Edit routine',()=>startEdit(selected)), data?.overrides.some(d=>d.date===date) && button('Use weekday default',async()=>{if(await write(()=>dbOps.dayRoutines.delete(date),'restore weekday routine')) setView('session');})),
     !past && selected?.mode === 'lineup' && button(emphasis ? 'Emphasize unfinished: on' : 'Emphasize unfinished: off',()=>{const next=!emphasis;setEmphasis(next);setPref('routineEmphasis',String(next));},{'aria-pressed':emphasis})
   );
-  const choices = view === 'choose' || openDay !== null ? h(React.Fragment,null,
-    h('p',{className:'rt-muted'},openDay !== null ? `Choose the routine for ${RT_DAY_NAMES[openDay]}.` : `Choose a routine for ${displayDate}. This changes only this date.`),
-    [null,...routines].map(r=>{
-      const selectedId = openDay !== null ? data.week.find(w=>w.dayOfWeek===openDay)?.routineId : dayRecord?.routineId;
-      const enabled = !r || validRoutine(r,categories);
-      return button(h(React.Fragment,null,h('span',null,r?.name || 'None'),r && h(RoutineModePill,{mode:r.mode}),selectedId === (r?.id || null) && h(IconCheck,{size:20})),async()=>{
-        const ok = await write(()=>openDay !== null ? dbOps.week.set(openDay,r?.id || null) : dbOps.dayRoutines.set(date,r?.id || null),'assign routine');
-        if(ok){setOpenDay(null);setView(openDay !== null?'library':'session');}
-      },{key:r?.id || 'none',className:'rt-choice','aria-pressed':selectedId===(r?.id||null),disabled:busy||!enabled});
-    })
-  ) : null;
+  const choices = view === 'choose' || openDay !== null ? (() => {
+    const currentId = openDay !== null ? data.week.find(w=>w.dayOfWeek===openDay)?.routineId : dayRecord?.routineId;
+    const current = byId[currentId];
+    const options = [
+      { key: 'none', label: 'None', matches: !currentId, resolve: async () => null },
+      ...categories.map(cat => ({ key: 'split-' + cat, label: cat, mode: 'split', matches: current?.mode === 'split' && String(current.splitName).toLowerCase() === cat.toLowerCase(), resolve: () => ensureSplitRoutine(cat) })),
+      { key: 'rest', label: 'Rest', mode: 'rest', matches: current?.mode === 'rest', resolve: () => ensureSplitRoutine('Rest') },
+      ...routines.map(r => ({ key: r.id, label: r.name, mode: r.mode, matches: currentId === r.id, enabled: validRoutine(r,categories), resolve: async () => r.id }))
+    ];
+    return h(React.Fragment,null,
+      h('p',{className:'rt-muted'},openDay !== null ? `Choose the split for ${RT_DAY_NAMES[openDay]}.` : `Choose a split or routine for ${displayDate}. This changes only this date.`),
+      options.map(option=>button(h(React.Fragment,null,h('span',null,option.label),option.mode && h(RoutineModePill,{mode:option.mode}),option.matches && h(IconCheck,{size:20})),async()=>{
+        const ok = await write(async()=>{ const routineId = await option.resolve(); await (openDay !== null ? dbOps.week.set(openDay,routineId) : dbOps.dayRoutines.set(date,routineId)); },'assign routine');
+        if(ok){setOpenDay(null);setView(openDay !== null?'assignments':'session');}
+      },{key:option.key,className:'rt-choice','aria-pressed':option.matches,disabled:busy||option.enabled===false}))
+    );
+  })() : null;
   const editor = editing && h(React.Fragment,null,
     h('label',{className:'rt-label',htmlFor:'routine-name'},'Routine name'), h('input',{id:'routine-name',className:'search-input',value:nameDraft,onChange:e=>setNameDraft(e.target.value),onBlur:saveName,onKeyDown:e=>{if(e.key==='Enter')e.currentTarget.blur();},'aria-label':'Routine name'}),
     routines.some(r=>r.id!==editing.id&&r.name.toLowerCase()===nameDraft.trim().toLowerCase()) && h('p',{className:'rt-muted'},'Another routine has this name.'),
@@ -11784,28 +11802,34 @@ const RoutineLibraryModal = ({ onClose, date, onLogActivity, refreshKey = 0, isV
       editing.mode==='lineup' && (editing.activityIds||[]).filter(id=>!data.activities.some(ex=>ex.id===id)).map(id=>h('div',{key:id,className:'rt-order-row'},h('span',null,'Unavailable activity'),button('Remove',()=>setMembership(id),{disabled:busy}))),
       editing.mode==='lineup' && h(React.Fragment,null,h('h3',{className:'rt-editor-heading'},'Add activities'), h('div',{className:'rt-search-row'},h('input',{className:'search-input','aria-label':'Find routine activities',placeholder:'Find activities',value:query,onChange:e=>setQuery(e.target.value)}),query && button(h(IconX,{size:18}),()=>setQuery(''),{'aria-label':'Clear routine activity search'})),
         h('div',{className:'category-tabs'},['all',...categories].map(cat=>button(cat==='all'?'All':cat,()=>setSplitFilter(cat),{key:cat,'aria-pressed':splitFilter===cat,className:`category-tab${splitFilter===cat?' active':''}`}))),
+        query.trim() && !data.activities.some(ex=>ex.name.trim().toLowerCase()===query.trim().toLowerCase()) && button(h(React.Fragment,null,h(IconPlus,{size:18}),`Create “${query.trim()}” as a new activity`),()=>{saveName();onCreateActivity?.(query.trim(),editing.id);setQuery('');},{className:'rt-control rt-create-activity',disabled:busy||!onCreateActivity}),
         h('div',{className:'rt-activity-choices'},data.activities.filter(ex=>(splitFilter==='all'||exerciseInSplit(ex,splitFilter))&&(!query||activitySearchScore(ex,normalizeActivitySearch(query))>0)).sort((a,b)=>a.name.localeCompare(b.name)).map(ex=>button(h(React.Fragment,null,h('span',null,ex.name),(editing.activityIds||[]).includes(ex.id)?h(IconCheck,{size:20}):h(IconPlus,{size:18})),()=>setMembership(ex.id),{key:ex.id,'aria-label':`Include ${ex.name}`,'aria-pressed':(editing.activityIds||[]).includes(ex.id),className:'rt-choice',disabled:busy}))))
     ),
     h('p',{className:'rt-muted'},'Changes apply to every weekday that uses this routine. Past days show only your logged activities.'),
     toolbar(!past && button(`Use for ${displayDate.toLowerCase()}`,async()=>{saveName();if(await write(()=>dbOps.dayRoutines.set(date,editing.id),'assign this date'))setView('session');},{disabled:busy||!validRoutine(editing,categories)}),button('Delete routine',()=>setConfirmDelete(editing),{className:'rt-control is-danger',disabled:busy}))
   );
   const library = data && h(React.Fragment,null,
-    h('div',{className:'rt-editor-heading'},h('h3',null,'Your routines'),button(h(React.Fragment,null,h(IconPlus,{size:18}),'New'),create,{'aria-label':'Create routine',disabled:busy})),
-    !routines.length && h('p',{className:'rt-muted'},'Create a routine, choose its activities, then assign it to your week.'),
-    routines.map(r=>button(h(React.Fragment,null,h('span',null,h('strong',null,r.name),h('small',{className:'rt-routine-meta'},r.mode==='lineup'?`${(r.activityIds||[]).length} activities`:r.mode==='rest'?'Rest day':validRoutine(r,categories)?r.splitName:'Split no longer available')),h(RoutineModePill,{mode:r.mode}),h(IconEdit2,{size:18})),()=>startEdit(r),{key:r.id,className:'rt-choice','aria-label':`Edit ${r.name}`})),
-    h('h3',{className:'rt-editor-heading'},'Your week'),h('div',{className:'rt-week-grid'},RT_DAY_NAMES.map((day,index)=>{
+    h('div',{className:'rt-editor-heading'},h('h3',null,'Your routines'),h('span',{className:'rt-heading-actions'},onOpenFieldNote && h(FieldNoteTrigger,{noteId:'routineIdeas',onOpen:onOpenFieldNote,ariaLabel:'Routine ideas'}),button(h(React.Fragment,null,h(IconPlus,{size:18}),'New'),create,{'aria-label':'Create routine',disabled:busy}))),
+    !routines.length && h('p',{className:'rt-muted'},'You have no routines yet. Tap New to build your own, such as a morning routine or a stretching list. The question mark has ideas.'),
+    routines.map(r=>button(h(React.Fragment,null,h('span',null,h('strong',null,r.name),h('small',{className:'rt-routine-meta'},r.mode==='lineup'?`${(r.activityIds||[]).length} activities`:r.mode==='rest'?'Rest day':validRoutine(r,categories)?r.splitName:'Split no longer available')),h(RoutineModePill,{mode:r.mode}),h(IconEdit2,{size:18})),()=>startEdit(r),{key:r.id,className:'rt-choice','aria-label':`Edit ${r.name}`}))
+  );
+  const assignments = data && h(React.Fragment,null,
+    h('div',{className:'rt-editor-heading'},h('h3',null,'Split assignments'),button('Manage splits',()=>setShowSplitEditor(true),{'aria-label':'Add or remove splits',disabled:busy})),
+    h('p',{className:'rt-muted'},'Choose the split you train on each weekday. Nothing is assigned until you choose it.'),
+    h('div',{className:'rt-week-grid'},RT_DAY_NAMES.map((day,index)=>{
       const id=data.week.find(w=>w.dayOfWeek===index)?.routineId,r=byId[id];
       return button(h(React.Fragment,null,h('small',null,day.slice(0,3)),h('strong',null,validRoutine(r,categories)?r.name:'None')),()=>setOpenDay(index),{key:day,'aria-label':`Assign ${day}`,className:'rt-week-day'});
-    })),h('p',{className:'rt-muted'},'Two days can share one routine. You can choose something different for a single date in Session.')
+    })),h('p',{className:'rt-muted'},'You can choose something different for a single date in Session.')
   );
   const closeView = () => { if (openDay!==null) setOpenDay(null); else if(view==='edit'||view==='choose') {saveName();setView(view==='edit'?'library':'session');} else onClose(); };
   return h('div',{className:'modal-overlay',onClick:closeView},h('div',{className:'modal routine-workspace',ref:modalRef,role:'dialog','aria-modal':'true','aria-label':'Routines',onClick:e=>e.stopPropagation()},
-    h('div',{className:'modal-header',...makeSwipeDownHandlers(closeView)},h('h2',null,openDay!==null?RT_DAY_NAMES[openDay]:view==='edit'?'Edit routine':'Routines'),h('button',{className:'close-btn','aria-label':view==='edit'||view==='choose'||openDay!==null?'Back to routines':'Close routines',onClick:closeView},h(IconX,{size:20}))),
+    h('div',{className:'modal-header',...makeSwipeDownHandlers(closeView)},h('h2',null,openDay!==null?RT_DAY_NAMES[openDay]:view==='edit'?'Edit routine':view==='assignments'?'Split assignments':'Routines'),h('button',{className:'close-btn','aria-label':view==='edit'||view==='choose'||openDay!==null?'Back to routines':'Close routines',onClick:closeView},h(IconX,{size:20}))),
     h('div',{className:'modal-content',ref:contentRef},error&&h('p',{role:'alert'},error),!data?h('p',null,'Loading routines…'):h(React.Fragment,null,
-      view!=='edit'&&view!=='choose'&&openDay===null&&h('div',{className:'rt-tabs'},button('Session',()=>setView('session'),{'aria-pressed':view==='session'}),button('Library',()=>setView('library'),{'aria-pressed':view==='library'})),
-      openDay!==null||view==='choose'?choices:view==='edit'?editor:view==='session'?session:library,
+      view!=='edit'&&view!=='choose'&&openDay===null&&h('div',{className:'rt-tabs'},button('Session',()=>setView('session'),{'aria-pressed':view==='session'}),button('Split assignments',()=>setView('assignments'),{'aria-pressed':view==='assignments'}),button('Routines',()=>setView('library'),{'aria-pressed':view==='library'})),
+      openDay!==null||view==='choose'?choices:view==='edit'?editor:view==='session'?session:view==='assignments'?assignments:library,
       h('div',{className:'rt-save-status',role:'status'},busy?'Saving…':'Changes save automatically')
     ))),
+    showSplitEditor&&h('div',{onClick:e=>e.stopPropagation()},h(EditCategoriesModal,{categories,onSave:async cats=>{await saveCategories(cats);onCategoriesChanged?.(cats);setShowSplitEditor(false);reload();},onCancel:()=>setShowSplitEditor(false)})),
     confirmDelete&&h('div',{onClick:e=>e.stopPropagation(),style:{position:'fixed',inset:0,zIndex:300}},h(ConfirmationDialog,{title:`Delete “${confirmDelete.name}”?`,message:`${data.week.filter(w=>w.routineId===confirmDelete.id).map(w=>RT_DAY_NAMES[w.dayOfWeek]).join(', ')||'No weekdays'} use this routine. Assigned weekdays and date overrides become unassigned. Logged sets are unaffected.`,onCancel:()=>setConfirmDelete(null),onConfirm:async()=>{if(await write(()=>deleteRoutineAndAssignments(confirmDelete.id),'delete routine')){setConfirmDelete(null);setEditingId(null);setView('library');}}}))
   );
 };
@@ -12158,8 +12182,8 @@ const SettingsModal = ({
       borderRadius: '0 8px 8px 0'
     }
   }, "Preferences")), activeTab === 'weekly' && React.createElement("div", null,
-    React.createElement("button", { className: "btn", onClick: onOpenRoutines }, "Open Routines"),
-    React.createElement("p", { className: "rt-muted" }, "Build activity lists, assign your week, and log from your routine."),
+    React.createElement("button", { className: "btn", onClick: onOpenRoutines }, "Split assignments & routines"),
+    React.createElement("p", { className: "rt-muted" }, "Choose your weekday splits, build your own routines, and log from them."),
     React.createElement("div", { className: "rt-toolbar" }, ['lbs','kg'].map(value => React.createElement("button", { key: value, className: "rt-control", "aria-pressed": unit === value, onClick: async () => { if (await safeDb(() => dbOps.dayNotes.set('__unit__',value), 'save unit')) setUnit(value); } }, value))),
     React.createElement("button", { className: "btn btn-secondary", onClick: () => setShowCatEditor(true) }, "Manage splits"),
     React.createElement("button", { className: "btn btn-secondary", style: { marginTop: 8 }, onClick: () => setShowUnsplit(true) }, "Activities without a split"),
@@ -15687,6 +15711,9 @@ function App() {
   const [routineWorkspaceOpen, setRoutineWorkspaceOpen] = useState(false);
   const routineLogOrigin = useRef(false);
   const routineInitialView = useRef('library');
+  // Set while the New Activity form was opened from a routine's search, so saving or
+  // cancelling lands back on that routine instead of the daily screen.
+  const routineCreateRef = useRef(null);
   const [modal, setModalRaw] = useState(null);
   const pickerContextRef = useRef(null);
   const [demoActive, setDemoActive] = useState(isDemoActive());
@@ -17772,10 +17799,20 @@ function App() {
       setModal('timedDuration', 'exercisePicker');
     }
   }), modal === 'createExercise' && /*#__PURE__*/React.createElement(CreateExerciseModal, {
+    key: routineCreateRef.current ? 'routine-create' : 'create',
     categories: categories,
     dayLabel: dayLabel,
-    onSave: handleCreateExercise,
-    onCancel: () => setModal('exercisePicker'),
+    initialName: routineCreateRef.current?.name || '',
+    onSave: routineCreateRef.current ? async exercise => {
+      const { routineId } = routineCreateRef.current;
+      routineCreateRef.current = null;
+      await safeDb(async () => {
+        const routine = await dbOps.routines.get(routineId);
+        if (routine && routine.mode === 'lineup' && !(routine.activityIds || []).includes(exercise.id)) await dbOps.routines.put({ ...routine, activityIds: [...(routine.activityIds || []), exercise.id] });
+      }, 'add new activity to routine');
+      setModal('routines');
+    } : handleCreateExercise,
+    onCancel: () => { if (routineCreateRef.current) { routineCreateRef.current = null; setModal('routines'); } else setModal('exercisePicker'); },
     onOpenFieldNote: openFieldNote
   }), modal === 'activityHistory' && selectedExercise && /*#__PURE__*/React.createElement(HistoryModal, {
     exercise: selectedExercise,
@@ -17922,6 +17959,9 @@ function App() {
     initialView: routineInitialView.current,
     refreshKey: `${loggedSetCount}-${modal === 'routines'}`,
     isVisible: modal === 'routines',
+    onOpenFieldNote: openFieldNote,
+    onCategoriesChanged: cats => setCategories(cats),
+    onCreateActivity: (name, routineId) => { routineCreateRef.current = { name, routineId }; setModal('createExercise', 'routines'); },
     onClose: () => { routineLogOrigin.current = false; setRoutineWorkspaceOpen(false); setModal('settings'); loadDayData(); },
     onLogActivity: async exercise => {
       routineLogOrigin.current = true;
@@ -17929,7 +17969,7 @@ function App() {
       await handleLogSet(exercise, 'routines');
     }
   })), modal === 'settings' && /*#__PURE__*/React.createElement(SettingsModal, {
-    onOpenRoutines: () => { routineInitialView.current = 'library'; setRoutineWorkspaceOpen(true); setModal('routines'); },
+    onOpenRoutines: () => { routineInitialView.current = 'assignments'; setRoutineWorkspaceOpen(true); setModal('routines'); },
     onClose: () => {
       setModal(null);
       setSettingsFocusCoach(false);

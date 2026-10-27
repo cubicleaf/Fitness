@@ -2,13 +2,15 @@
 attention: Active
 state: Live
 form: Website
-updated: 2026-10-14
+updated: 2026-10-27
 live_url: https://fit-logs.vercel.app
 ---
 
-**Last updated:** 2026-10-14
+**Last updated:** 2026-10-27
 
 ## Where I left off
+
+2026-10-27 (no more automatic weekday splits or routines): Tim found weekdays assigned and routines (Core, Other, Rest) created without his choosing. Causes found in code: the routine migration copied every old weekly-template label into the week and turned every split label into a routine; CSV import (and the demo seed's `__SPLITS__` row) wrote weekday assignments; picking a split for a single day silently created a routine. Fixed: the migration now writes seven empty weekday records only; import keeps a file's weekly template in the legacy store and never assigns a weekday (a backup's own `__ROUTINE_WEEK__` rows still restore); routines the app makes so a day can hold a split or Rest are flagged `auto` and hidden from the Routines list. Routines & splits now has three tabs: Session, **Split assignments** (weekday grid choosing from your splits, Rest, or your own routines, with Manage splits opening the add/remove split editor) and **Routines** (empty until Tim makes one; the question-mark field note lists ideas such as Morning routine and Stretching). In a routine's Add activities search, a name with no match offers “Create ‘X’ as a new activity”: it opens the normal New Activity form with the name filled in and the duplicate check running, then returns to that routine with the activity added (Cancel also returns to the routine). Verified in the in-app browser at 375px against a database seeded with old Push/Pull/Legs template rows: week stayed empty, explicit weekday choice saved, create-from-search round trip worked, no console errors. Not deployed; Tim's phone test remains. His phone's database may still hold routines or assignments made before this fix.
 
 2026-10-14 (approved distance ruler implemented): Tim explicitly authorized replacing the live distance field and shipping it. Ported the approved WDM ruler into distance-enabled timed logging: drag right increases by 0.1 per 16px, 8px axis-intent threshold, zero clamp, immediate movement without inertia; vertical touch scrolling remains native. Tap the number to type (including comma decimal), clear to omit distance, switch mi/km with physical conversion, or Use last from this activity's latest valid measured set on/before the selected date. No invented default distance or future-session suggestion. Keyboard arrows adjust tenths, Shift+arrows hundredths, Home zero. Distance drafts survive the separate weight picker and reset across activity/day changes. Uses existing distance/unit storage, history formatting and CSV columns; no schema, network dependency or data migration. Headless checks pass for actual touch/vertical scrolling, cancellation, reduced motion, keyboard, 44px controls, 320/390/430px layout, weight-picker round trip, preset/stopwatch writes, optional empty distance, reload and non-distance activities, with no browser errors. [Verification](./_docs/distance-drag-2026-10-14/VERIFICATION.md). This supersedes the earlier WDM-only hold. Published app commit `46b609c` via GitHub main → Vercel. Production deployment succeeded; both production addresses match the tested local HTML byte-for-byte, and the full isolated browser flow also passes directly against fit-logs.vercel.app. Details are recorded in the linked report.
 
