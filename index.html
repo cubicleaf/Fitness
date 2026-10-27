@@ -1200,13 +1200,13 @@
         .day-activity-name { overflow-wrap: anywhere; }
         .day-activity-node { pointer-events: none; }
         .day-activity-detail-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; align-items: center; }
-        .day-activity-context { display: grid; place-items: center; position: relative; z-index: 2; pointer-events: auto; width: 44px; height: 44px; min-width: 44px; padding: 0; border: 0; background: transparent; color: var(--accent-soft); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
-        .day-activity-context[aria-pressed="true"] { color: var(--text-bright); align-self: start; }
+        .day-activity-context { display: grid; place-items: center; position: relative; z-index: 2; pointer-events: auto; width: 44px; height: 44px; min-width: 44px; padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .day-activity-context[aria-pressed="true"] { color: var(--accent-soft); align-self: start; }
         .day-activity-context:active { transform: scale(0.95); }
         .day-activity-context:focus-visible { outline: none; filter: brightness(1.22); }
         .day-activity-detail { display: block; min-width: 0; opacity: 1; transition: opacity 250ms cubic-bezier(0.25, 0.1, 0.25, 1); }
         .day-activity-detail.is-fading { opacity: 0; }
-        .day-activity-detail .day-activity-meta { display: block; }
+        .day-activity-detail .day-activity-meta { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .day-activity-last-workout { min-width: 0; }
         .day-activity-last-workout .set-box { max-width: calc(100% - 4px); white-space: normal; overflow-wrap: anywhere; }
         @media (prefers-reduced-motion: reduce) { .day-activity-detail { transition: none; } }
@@ -9741,6 +9741,89 @@ const TimedDurationModal = ({
     draggingRef.current = false;
   };
 
+  const renderDial = () => /*#__PURE__*/React.createElement("svg", {
+    ref: dialRef,
+    viewBox: "0 0 200 200",
+    style: {
+      width: '150px',
+      height: '150px',
+      touchAction: 'none'
+    },
+    onMouseDown: dialStart,
+    onMouseMove: dialMove,
+    onMouseUp: dialEnd,
+    onMouseLeave: dialEnd,
+    onTouchStart: dialStart,
+    onTouchMove: dialMove,
+    onTouchEnd: dialEnd
+  }, Array.from({
+    length: 60
+  }, (_, i) => {
+    const a = (i * 6 - 90) * Math.PI / 180;
+    const isMajor = i % 5 === 0;
+    return /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: 100 + (isMajor ? 63 : 67) * Math.cos(a),
+      y1: 100 + (isMajor ? 63 : 67) * Math.sin(a),
+      x2: 100 + 70 * Math.cos(a),
+      y2: 100 + 70 * Math.sin(a),
+      stroke: isMajor ? 'color-mix(in srgb, var(--accent-soft) 35%, transparent)' : 'color-mix(in srgb, var(--accent) 20%, transparent)',
+      strokeWidth: isMajor ? 1.5 : 0.8
+    });
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "100",
+    cy: "100",
+    r: "80",
+    fill: "none",
+    stroke: "color-mix(in srgb, var(--accent) 15%, transparent)",
+    strokeWidth: "10",
+    strokeLinecap: "round"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "100",
+    cy: "100",
+    r: "80",
+    fill: "none",
+    stroke: "var(--accent)",
+    strokeWidth: "10",
+    strokeLinecap: "round",
+    strokeDasharray: circumference,
+    strokeDashoffset: dialOffset,
+    transform: "rotate(-90 100 100)",
+    style: {
+      filter: 'drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 40%, transparent))',
+      transition: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("text", {
+    x: "100",
+    y: "93",
+    textAnchor: "middle",
+    dominantBaseline: "central",
+    style: {
+      fontSize: '28px',
+      fontWeight: '300',
+      fill: 'var(--text-body)'
+    }
+  }, dialMinutes, ":00"), /*#__PURE__*/React.createElement("text", {
+    x: "100",
+    y: "115",
+    textAnchor: "middle",
+    style: {
+      fontSize: '11px',
+      fill: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)'
+    }
+  }, "minutes"), /*#__PURE__*/React.createElement("circle", {
+    cx: hX,
+    cy: hY,
+    r: "12",
+    fill: "var(--accent-soft)",
+    stroke: "#fff",
+    strokeWidth: "2",
+    style: {
+      filter: 'drop-shadow(0 2px 4px rgba(12, 6, 10, 0.3))',
+      cursor: 'grab'
+    }
+  }));
+
   // Shared preset button style
   const presetBtnStyle = {
     minHeight: '56px',
@@ -10048,7 +10131,14 @@ const TimedDurationModal = ({
     style: { minHeight: '44px', padding: '0 12px', border: 'none', borderRadius: '9px', background: 'color-mix(in srgb, var(--accent) 10%, transparent)', color: 'var(--accent-soft)', fontSize: '12px', fontWeight: '700', flexShrink: 0 }
   }, "Edit presets")), /*#__PURE__*/React.createElement("div", {
     style: { color: 'var(--text-faint)', fontSize: '12px', lineHeight: '1.45' }
-  }, "Tap a duration to log it."), renderPresetGrid(onSelectDuration, 'Log'), /*#__PURE__*/React.createElement("button", {
+  }, "Tap a duration to log it."), renderPresetGrid(onSelectDuration, 'Log'), /*#__PURE__*/React.createElement("div", {
+    className: 'timer-dial-log', style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { color: 'var(--text-faint)', fontSize: '12px', lineHeight: '1.45' }
+  }, "Or drag the dial to set any minutes, up to 60."), renderDial(), /*#__PURE__*/React.createElement("button", {
+    type: 'button', className: 'btn', disabled: dialMinutes < 1, onClick: () => onSelectDuration(dialSeconds),
+    style: { width: 'auto', minHeight: '44px', padding: '0 20px' }
+  }, dialMinutes < 1 ? 'Drag to set minutes' : `Log ${dialMinutes} min`)), /*#__PURE__*/React.createElement("button", {
     type: 'button', className: 'btn btn-secondary', onClick: () => setTimingScreen(true),
     style: { alignSelf: 'flex-start', minHeight: '52px', width: 'auto', maxWidth: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', padding: '10px 16px', gap: '3px', textAlign: 'left' }
   }, /*#__PURE__*/React.createElement("strong", { style: { fontSize: '14px' } }, "Time this activity"), /*#__PURE__*/React.createElement("span", {
@@ -10330,88 +10420,7 @@ const TimedDurationModal = ({
       flexDirection: 'column',
       alignItems: 'center'
     }
-  }, /*#__PURE__*/React.createElement("svg", {
-    ref: dialRef,
-    viewBox: "0 0 200 200",
-    style: {
-      width: '150px',
-      height: '150px',
-      touchAction: 'none'
-    },
-    onMouseDown: dialStart,
-    onMouseMove: dialMove,
-    onMouseUp: dialEnd,
-    onMouseLeave: dialEnd,
-    onTouchStart: dialStart,
-    onTouchMove: dialMove,
-    onTouchEnd: dialEnd
-  }, Array.from({
-    length: 60
-  }, (_, i) => {
-    const a = (i * 6 - 90) * Math.PI / 180;
-    const isMajor = i % 5 === 0;
-    return /*#__PURE__*/React.createElement("line", {
-      key: i,
-      x1: 100 + (isMajor ? 63 : 67) * Math.cos(a),
-      y1: 100 + (isMajor ? 63 : 67) * Math.sin(a),
-      x2: 100 + 70 * Math.cos(a),
-      y2: 100 + 70 * Math.sin(a),
-      stroke: isMajor ? 'color-mix(in srgb, var(--accent-soft) 35%, transparent)' : 'color-mix(in srgb, var(--accent) 20%, transparent)',
-      strokeWidth: isMajor ? 1.5 : 0.8
-    });
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: "100",
-    cy: "100",
-    r: "80",
-    fill: "none",
-    stroke: "color-mix(in srgb, var(--accent) 15%, transparent)",
-    strokeWidth: "10",
-    strokeLinecap: "round"
-  }), /*#__PURE__*/React.createElement("circle", {
-    cx: "100",
-    cy: "100",
-    r: "80",
-    fill: "none",
-    stroke: "var(--accent)",
-    strokeWidth: "10",
-    strokeLinecap: "round",
-    strokeDasharray: circumference,
-    strokeDashoffset: dialOffset,
-    transform: "rotate(-90 100 100)",
-    style: {
-      filter: 'drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 40%, transparent))',
-      transition: 'none'
-    }
-  }), /*#__PURE__*/React.createElement("text", {
-    x: "100",
-    y: "93",
-    textAnchor: "middle",
-    dominantBaseline: "central",
-    style: {
-      fontSize: '28px',
-      fontWeight: '300',
-      fill: 'var(--text-body)'
-    }
-  }, dialMinutes, ":00"), /*#__PURE__*/React.createElement("text", {
-    x: "100",
-    y: "115",
-    textAnchor: "middle",
-    style: {
-      fontSize: '11px',
-      fill: 'color-mix(in srgb, var(--accent-soft) 50%, transparent)'
-    }
-  }, "minutes"), /*#__PURE__*/React.createElement("circle", {
-    cx: hX,
-    cy: hY,
-    r: "12",
-    fill: "var(--accent-soft)",
-    stroke: "#fff",
-    strokeWidth: "2",
-    style: {
-      filter: 'drop-shadow(0 2px 4px rgba(12, 6, 10, 0.3))',
-      cursor: 'grab'
-    }
-  })), dialMinutes > 0 && /*#__PURE__*/React.createElement("button", {
+  }, renderDial(), dialMinutes > 0 && /*#__PURE__*/React.createElement("button", {
     onClick: () => startCountdown(dialSeconds),
     style: {
       width: 'auto',
@@ -12899,7 +12908,8 @@ const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
       const summary = sets.map((set, i) => formatSetBox(set, sets[i - 1], unit)).join(', ');
       const useCount = activity._useCount || 0;
       const lastUsed = activity._lastLoggedDate ? formatDateShort(activity._lastLoggedDate) : null;
-      const meta = useCount > 0 ? `${useCount} ${useCount === 1 ? 'set' : 'sets'} logged${lastUsed ? ` · Last used ${lastUsed}` : ''}` : 'Not logged yet';
+      const workouts = activity._workoutCount || 0;
+      const meta = useCount > 0 ? `${workouts} ${workouts === 1 ? 'workout' : 'workouts'}${lastUsed ? ` · Last: ${lastUsed}` : ''}` : 'Not logged yet';
       const badges = sets.length > 0 && h('span', { className: 'set-boxes-container day-activity-last-workout' },
         sets.map((set, i) => h('span', { key: set.id || i, className: 'set-box', style: { backgroundColor: getSetBoxColor(i) } },
           h('span', { className: 'set-box-content' }, formatSetBox(set, sets[i - 1], unit)))));
@@ -12968,6 +12978,7 @@ const DayDetailModal = ({
       const histMap = {};
       const noteMap = {};
       const usageMap = {};
+      const workoutMap = {};
       const lastUsedMap = {};
       const loggedOnDateMap = {};
       // Count real work sets to match activity-picker ranking; ignore neutral
@@ -12976,6 +12987,7 @@ const DayDetailModal = ({
         const [allSets, notes] = await Promise.all([dbOps.sets.getByExerciseId(ex.id), dbOps.sessionNotes.getByExerciseId(ex.id)]);
         const workSets = (allSets || []).filter(set => !isNeutralAnchorSet(set) && !isPresenceOnlySet(set));
         usageMap[ex.id] = workSets.length;
+        workoutMap[ex.id] = new Set(workSets.map(set => set.date)).size;
         lastUsedMap[ex.id] = workSets.reduce((latest, set) => !latest || set.date > latest ? set.date : latest, '');
         loggedOnDateMap[ex.id] = workSets.some(set => set.date === date);
         const byDate = {};
@@ -12986,7 +12998,7 @@ const DayDetailModal = ({
         histMap[ex.id] = Object.keys(byDate).sort().reverse().map(date => ({ date, sets: byDate[date].sort((a, b) => (a.setOrder || 0) - (b.setOrder || 0)) }));
         (notes || []).forEach(note => { noteMap[`${note.exerciseId}_${note.date}`] = note; });
       }));
-      const rankedActivities = matching.map(ex => ({ ...ex, _useCount: usageMap[ex.id] || 0, _lastLoggedDate: lastUsedMap[ex.id] || '', _loggedOnDate: loggedOnDateMap[ex.id] || false }))
+      const rankedActivities = matching.map(ex => ({ ...ex, _useCount: usageMap[ex.id] || 0, _workoutCount: workoutMap[ex.id] || 0, _lastLoggedDate: lastUsedMap[ex.id] || '', _loggedOnDate: loggedOnDateMap[ex.id] || false }))
         .sort((a, b) => b._useCount - a._useCount || b._lastLoggedDate.localeCompare(a._lastLoggedDate) || a.name.localeCompare(b.name));
       setActivities(rankedActivities);
       setAllHistory(histMap);
