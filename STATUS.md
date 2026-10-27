@@ -10,6 +10,8 @@ live_url: https://fit-logs.vercel.app
 
 ## Where I left off
 
+- **2026-10-27 — round 5 (uncommitted).** Add Activity: family cards are half height with "N variants" under the name; variant cards are shorter with a 10px gap. Weight picker: "Use N lbs" is now a gold filled check ring right of +5 (stepper is six columns, buttons 44px+). Timed logging first screen: the single "Time this activity" door is replaced by Stopwatch and Countdown tiles; nothing else from the old timer screen was removed (Sound settings, Edit presets, Edit actual time all still exist behind them).
+
 - **2026-10-27 — round 4 (uncommitted).** Weight picker shows 10 quick presets (two rows) before "More". Activities-without-a-split now saves on each tap (no Assign button). Split helper guesses push/pull/legs from name keywords when an activity isn't in the catalog (Seated Fly → push). Day sheet: header row spacing, logged rows gold with a gold/burgundy rail, Pair time button is now a link icon. Set chips in the day sheet's expanded (i) view never wrap: as many as fit one line, then a "+N more" chip (Tim picked option D, 2026-10-27).
 
 2026-10-27 (minutes dial back, darker (i), one-line activity meta): Tim's phone review of the shipped build. (1) The 60-minute dial, which had been left only in the countdown screen after the 10/7 timer rework, is back on the quick-log screen under the presets: drag to any minute up to 60, then “Log N min” saves that completed duration (shared dial code, so countdown is unchanged). (2) The daily-split activity (i) is now the darker accent when closed and the former lighter accent-soft when the sets are expanded; the near-white state is gone. (3) The activity meta line never wraps and reads “25 workouts · Last: Oct 13”; a workout is a distinct day with real work sets (ranking still uses set counts). Verified in the in-app browser against the demo data: single-line rows, colors, dial drag to 20 min saved a 1200-second set, no console errors. Not committed or deployed.
@@ -626,6 +628,7 @@ Superseded the same day: Tim rejected this appearance; use the context-toggle de
 
 ## Front Burner
 
+- **Add activity families to the demo data** (`seed-data.csv` / `enterDemoMode`): the sample log has no activity families, so the family cards ("N variants" under the name, the variants sheet) can't be checked in the demo. Seed at least two families (e.g. a Press family and a Curl family with 3+ variants each) so every family screen is testable without real data. Raised by Tim 2026-10-27 after round 5.
 - Review the 2026-10-07 FITNESS picker/header refresh on a physical iPhone before deployment. [Local previews and verified flows](./_docs/picker-refresh-2026-10-07/VERIFICATION.md).
 - Review the complete local routine first version on a physical phone: Settings → Weekly Splits → Open Routines. Placement remains provisional; app-wide navigation changes are deferred. Implementation and isolated checks are complete; deployment still requires Tim's decision. [Previews and verified flows](./_docs/routines-2026-10-07/VERIFICATION.md).
 - **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your
