@@ -1209,8 +1209,9 @@
         .day-activity-detail { display: block; min-width: 0; opacity: 1; transition: opacity 250ms cubic-bezier(0.25, 0.1, 0.25, 1); }
         .day-activity-detail.is-fading { opacity: 0; }
         .day-activity-detail .day-activity-meta { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .day-activity-last-workout { min-width: 0; }
-        .day-activity-last-workout .set-box { max-width: calc(100% - 4px); white-space: normal; overflow-wrap: anywhere; }
+        .day-activity-last-workout { min-width: 0; flex-wrap: nowrap; overflow: hidden; }
+        .day-activity-last-workout .set-box { flex: none; white-space: nowrap; }
+        .day-activity-last-workout .set-box.is-more { background: color-mix(in srgb, var(--accent) 22%, var(--bg-page)); color: var(--accent-soft); cursor: inherit; }
         @media (prefers-reduced-motion: reduce) { .day-activity-detail { transition: none; } }
 
         .rt-day-editor-overlay {
@@ -12911,6 +12912,8 @@ const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
   const [displayWorkouts, setDisplayWorkouts] = useState(showWorkouts);
   const [fading, setFading] = useState(false);
   const displayedRef = useRef(showWorkouts);
+  const chipsRef = useRef(null);
+  const [shownChips, setShownChips] = useState(null);
   useEffect(() => {
     if (showWorkouts === displayedRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       displayedRef.current = showWorkouts;
@@ -12926,6 +12929,41 @@ const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
     }, 250);
     return () => clearTimeout(timer);
   }, [showWorkouts]);
+  // Show as many set chips as fit on one line, then a "+N more" chip.
+  useEffect(() => {
+    const box = chipsRef.current;
+    if (!displayWorkouts || !box) return;
+    const measure = () => {
+      const chips = [...box.querySelectorAll('.set-box:not(.is-more)')];
+      if (!chips.length) return;
+      const widths = chips.map(chip => chip.offsetWidth + 8);
+      const moreWidth = 84;
+      const avail = box.clientWidth;
+      let used = 0, fit = 0;
+      if (widths.reduce((sum, w) => sum + w, 0) <= avail) { setShownChips(prev => prev === null ? prev : null); return; }
+      for (let k = 0; k < widths.length; k++) {
+        const needsMore = k < widths.length - 1;
+        if (used + widths[k] + (needsMore ? moreWidth : 0) > avail) break;
+        used += widths[k]; fit = k + 1;
+      }
+      const next = fit >= widths.length ? null : Math.max(1, fit);
+      setShownChips(prev => prev === next ? prev : next);
+    };
+    setShownChips(null);
+    const frame = requestAnimationFrame(measure);
+    const timer = setTimeout(measure, 350);
+    // Chips past the limit aren't rendered, so a width change re-renders them all before re-measuring.
+    let lastWidth = box.clientWidth;
+    const onResize = () => {
+      if (box.clientWidth === lastWidth) return;
+      lastWidth = box.clientWidth;
+      setShownChips(null);
+      requestAnimationFrame(measure);
+    };
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(onResize) : null;
+    if (observer) observer.observe(box); else window.addEventListener('resize', onResize);
+    return () => { cancelAnimationFrame(frame); clearTimeout(timer); if (observer) observer.disconnect(); else window.removeEventListener('resize', onResize); };
+  }, [displayWorkouts, activity.id, allHistory]);
   const h = React.createElement;
       const latest = (allHistory[activity.id] || [])[0];
       const sets = getVisibleSets(latest?.sets);
@@ -12934,9 +12972,11 @@ const DayActivityRow = ({ activity, index, allHistory, unit, onSelect }) => {
       const lastUsed = activity._lastLoggedDate ? formatDateShort(activity._lastLoggedDate) : null;
       const workouts = activity._workoutCount || 0;
       const meta = useCount > 0 ? `${workouts} ${workouts === 1 ? 'workout' : 'workouts'}${lastUsed ? ` · Last: ${lastUsed}` : ''}` : 'Not logged yet';
-      const badges = sets.length > 0 && h('span', { className: 'set-boxes-container day-activity-last-workout' },
-        sets.map((set, i) => h('span', { key: set.id || i, className: 'set-box', style: { backgroundColor: getSetBoxColor(i) } },
-          h('span', { className: 'set-box-content' }, formatSetBox(set, sets[i - 1], unit)))));
+      const chipLimit = shownChips == null ? sets.length : Math.min(shownChips, sets.length);
+      const badges = sets.length > 0 && h('span', { ref: chipsRef, className: 'set-boxes-container day-activity-last-workout' },
+        sets.slice(0, chipLimit).map((set, i) => h('span', { key: set.id || i, className: 'set-box', style: { backgroundColor: getSetBoxColor(i) } },
+          h('span', { className: 'set-box-content' }, formatSetBox(set, sets[i - 1], unit)))),
+        chipLimit < sets.length && h('span', { className: 'set-box is-more' }, h('span', { className: 'set-box-content' }, `+${sets.length - chipLimit} more`)));
       return h('li', { className: `day-activity-row${index === 0 ? ' is-most-used' : ''}${activity._loggedOnDate ? ' is-logged' : ''}` }, h('button', {
         type: 'button',
         className: 'day-activity-open',
