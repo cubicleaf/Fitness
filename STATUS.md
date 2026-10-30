@@ -211,6 +211,14 @@ Color token *plumbing* is now done (2026-07-16): a `:root` token block exists an
 
 ## Decisions
 
+### 2026-10-30 — Demo data seeds three activity families
+
+**What:** `enterDemoMode` now runs `seedDemoFamilies()` after the CSV import, grouping existing demo activities into Press (Bench, Incline DB, Overhead), Vertical Pull (Pullups, Banded, Lat Pulldowns) and Squat (Squat, Leg Press, Lunges), each with variant labels. Checked headless: 3 families, 9 linked activities.
+
+**Why:** The demo had no families, so the family cards and variants sheet couldn't be checked without real data (Tim, 2026-10-27).
+
+**How to apply:** Families come from `DEMO_FAMILIES` in `index.html`, not the CSV. A demo already running keeps its old data; exit and re-enter the demo to see them. Not yet committed or pushed.
+
 ### 2026-10-27 — The app never assigns splits or makes routines on its own
 
 **What:** No weekday split is ever assigned automatically, and no routines (Core, Other, Rest…) are pre-made. Weekday splits are set only by Tim's explicit choice in "Split assignments". System-made routines carry `auto: true` and stay hidden from the Routines list. Routine ideas live in a corner field note, not as real routines.
@@ -644,7 +652,6 @@ Superseded the same day: Tim rejected this appearance; use the context-toggle de
 
 ## Front Burner
 
-- **Add activity families to the demo data** (`seed-data.csv` / `enterDemoMode`): the sample log has no activity families, so the family cards ("N variants" under the name, the variants sheet) can't be checked in the demo. Seed at least two families (e.g. a Press family and a Curl family with 3+ variants each) so every family screen is testable without real data. Raised by Tim 2026-10-27 after round 5.
 - Review the 2026-10-07 FITNESS picker/header refresh on a physical iPhone before deployment. [Local previews and verified flows](./_docs/picker-refresh-2026-10-07/VERIFICATION.md).
 - Review the complete local routine first version on a physical phone: Settings → Weekly Splits → Open Routines. Placement remains provisional; app-wide navigation changes are deferred. Implementation and isolated checks are complete; deployment still requires Tim's decision. [Previews and verified flows](./_docs/routines-2026-10-07/VERIFICATION.md).
 - **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your

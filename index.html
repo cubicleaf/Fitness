@@ -11523,6 +11523,33 @@ const topUpDemoIfDue = async () => {
   }
 };
 
+// The seed CSV carries no family links, so the family cards and the variants
+// sheet would have nothing to show in the demo. Group activities that already
+// have history; the first listed is the anchor the others are variations of.
+const DEMO_FAMILIES = [
+  { name: 'Press', members: [['Bench Press', 'Flat barbell'], ['Incline Dumbbell Press', 'Incline dumbbell'], ['Overhead Press', 'Overhead']] },
+  { name: 'Vertical Pull', members: [['Pullups', 'Bodyweight'], ['Banded Pullups', 'Banded'], ['Lat Pulldowns', 'Cable pulldown']] },
+  { name: 'Squat', members: [['Squat', 'Barbell back squat'], ['Leg Press', 'Machine'], ['Walking Lunges', 'Lunge']] }
+];
+
+const seedDemoFamilies = async () => {
+  const activities = await dbOps.exercises.getAll();
+  for (const def of DEMO_FAMILIES) {
+    const members = def.members
+      .map(([name, label]) => ({ ex: activities.find(a => a.name === name), label }))
+      .filter(m => m.ex);
+    if (members.length < 2) continue;
+    const family = { id: generateId('fam'), name: def.name, createdAt: Date.now() };
+    await idbRun('movementFamilies', 'readwrite', store => store.add(family));
+    for (const [i, { ex, label }] of members.entries()) {
+      await dbOps.exercises.update({
+        ...ex, movementFamilyId: family.id, movementFamilyName: family.name,
+        variationLabel: label, variationOf: i === 0 ? null : members[0].ex.id
+      });
+    }
+  }
+};
+
 // Loads Marcus Chen's dataset into the demo database and switches the app to it.
 // The seed CSV is fetched rather than inlined: it is 200KB, and inlining would
 // tax every cold start for a feature most sessions never touch. Same-origin, so
@@ -11550,6 +11577,7 @@ const enterDemoMode = async (onStatus = () => {}) => {
     // of itself, doubling every set.
     await Promise.all(['exercises', 'sets', 'dayNotes', 'templates', 'sessionNotes', 'movementFamilies', 'routines', 'week', 'dayRoutines'].map(store => idbRun(store, 'readwrite', s => s.clear(), () => undefined).catch(() => undefined)));
     await importWorkoutCSV(seedSlice.csv, onStatus);
+    await seedDemoFamilies();
     await dbOps.dayNotes.set(DEMO_SEEDED_THROUGH_KEY, today);
     // Land on the most recent training day rather than an empty "today". The
     // whole point of the demo is opening onto a populated screen; prefs live in
