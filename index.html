@@ -11115,10 +11115,10 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
   // Check for metadata rows and extract data
   let importedSplits = null;
   const importedDaySplits = [];
-  let importedUnit = 'lbs';
-  let importedBodyweight = null;
+  // Null until the file actually states a unit: a file without one must leave the current unit alone.
+  let importedUnit = null;
   const importedBodyweightDays = [];
-  const routineBackup = { activities: [], routines: [], week: [], days: [], prefs: null };
+  const routineBackup = { activities: [], routines: [], week: [], days: [], prefs: null, families: [], settings: {} };
 
   const lines = allLines.filter(l => {
     const parts = parseCSVLine(l);
@@ -11131,20 +11131,37 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
       routineBackup[routineTags[parts[0]]].push(value);
       return false;
     }
+    if (parts[0] === '__FAMILY__') {
+      let value;
+      try { value = JSON.parse(parts[1]); } catch (_) { throw new Error('Invalid family backup record'); }
+      if (!value || typeof value !== 'object' || Array.isArray(value) || typeof value.id !== 'string') throw new Error('Invalid family backup record');
+      routineBackup.families.push(value);
+      return false;
+    }
+    const settingTags = { __PREFS__: 'prefs', __DURATION_PRESETS__: 'durationPresets', __QUICKNOTE_FREQ__: 'quickNoteFreq', __CATEGORIES__: 'categories' };
+    if (settingTags[parts[0]]) {
+      // A damaged settings row is skipped rather than failing the whole restore.
+      try { routineBackup.settings[settingTags[parts[0]]] = JSON.parse(parts[1]); } catch (_) {}
+      return false;
+    }
     if (parts[0] === '__ROUTINE_PREFS__') {
       try { routineBackup.prefs = JSON.parse(parts[1]); } catch (_) { throw new Error('Invalid routine preferences'); }
       return false;
     }
 
     if (parts[0] === '__UNIT__') {
-      importedUnit = parts[1] || 'lbs';
+      importedUnit = parts[1] || null;
       return false;
     }
     if (parts[0] === '__BODYWEIGHT__') {
-      importedBodyweight = parts[1] || null;
+      // Legacy "today's" weight from an old backup. Read and dropped: stamping it onto today
+      // would invent a confirmed entry. Dated __BODYWEIGHT_DAY__ rows carry the real history.
       return false;
     }
     if (parts[0] === '__BODYWEIGHT_DAY__') {
+      // Old backups wrote confirmation flags as "confirmed_<date>,true" rows. They are not
+      // weights; importing them used to delete that date's confirmation. Ignore them.
+      if (String(parts[1] || '').startsWith('confirmed_')) return false;
       importedBodyweightDays.push({
         date: parts[1],
         value: parts[2] || null
@@ -11170,10 +11187,13 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
       });
       return false;
     }
+    // Any other metadata row from a newer or older version is skipped, never read as a workout row.
+    if (/^__[A-Z_]+__$/.test(parts[0])) return false;
     return true;
   });
   const backupActivityIds = new Set(routineBackup.activities.map(ex => ex.id));
   const backupRoutineIds = new Set(routineBackup.routines.map(r => r.id));
+  for (const f of routineBackup.families) if (!f || typeof f.id !== 'string') throw new Error('Invalid backup family');
   for (const ex of routineBackup.activities) if (typeof ex.id !== 'string' || typeof ex.name !== 'string' || !ex.name.trim()) throw new Error('Invalid backup activity');
   for (const routine of routineBackup.routines) {
     if (typeof routine.id !== 'string' || typeof routine.name !== 'string' || !routine.name.trim() || !['split','lineup','rest'].includes(routine.mode)) throw new Error('Invalid backup routine');
@@ -11253,6 +11273,9 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
         duration: parts[8] && parts[8] !== '' ? parseInt(parts[8]) : null,
         distance: parts[9] && parts[9] !== '' ? parseFloat(parts[9]) : null,
         distanceUnit: parts[10] || null,
+        gripType: parts[15] || undefined,
+        gripWidth: parts[16] || undefined,
+        pairedWithName: parts[17] || undefined,
         bandedColor: weightType === 'banded' && note ? note.split('|')[0].trim() : undefined,
         note: weightType === 'banded' && note && note.includes('|') ? note.split('|').slice(1).join('|').trim() : weightType !== 'banded' ? note : ''
       });
@@ -11294,6 +11317,9 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
         barWeightAtLog: row.barWeightAtLog,
         barNameAtLog: row.barNameAtLog,
         bandedColor: row.bandedColor,
+        ...(row.gripType ? { gripType: row.gripType } : {}),
+        ...(row.gripWidth ? { gripWidth: row.gripWidth } : {}),
+        ...(row.pairedWithName && exerciseMap.get(row.pairedWithName) ? { pairedWith: exerciseMap.get(row.pairedWithName).id } : {}),
         reps: row.reps,
         duration: row.duration,
         distance: row.distance,
@@ -11400,15 +11426,29 @@ const importWorkoutCSV = async (text, onStatus = () => {}) => {
   if (importedUnit) {
     await dbOps.dayNotes.set('__unit__', importedUnit);
   }
-  if (importedBodyweight) {
-    await setStoredBodyweightForDate(getTodayString(), importedBodyweight);
-  }
   for (const bw of importedBodyweightDays) {
     if (bw.date && bw.value) {
       await setStoredBodyweightForDate(bw.date, bw.value);
     }
   }
 
+  if (routineBackup.families.length) {
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction('movementFamilies', 'readwrite');
+      for (const family of routineBackup.families) tx.objectStore('movementFamilies').put(family);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error || new Error('Family import aborted'));
+    });
+  }
+  const { durationPresets, quickNoteFreq, categories: savedCategories, prefs: savedPrefs } = routineBackup.settings;
+  if (Array.isArray(durationPresets)) await dbOps.dayNotes.set('__duration_presets__', JSON.stringify(durationPresets));
+  if (quickNoteFreq && typeof quickNoteFreq === 'object' && !Array.isArray(quickNoteFreq)) await dbOps.dayNotes.set('__quicknote_freq__', JSON.stringify(quickNoteFreq));
+  if (Array.isArray(savedCategories) && savedCategories.length) await saveCategories(savedCategories);
+  if (savedPrefs && typeof savedPrefs === 'object' && !Array.isArray(savedPrefs)) {
+    for (const [k, v] of Object.entries(savedPrefs)) if (k !== 'lastViewedDate' && k !== '_migrated') _prefCache[k] = v;
+    await _savePrefs();
+  }
   if (routineBackup.activities.length || routineBackup.routines.length) {
     const categories = await getCategories();
     const additions = [...routineBackup.activities.flatMap(getExCategories), ...routineBackup.routines.filter(r => r.mode === 'split').map(r => r.splitName)];
@@ -12019,6 +12059,7 @@ const SettingsModal = ({
       // Load all session notes for export
       const allSessionNotes = await dbOps.sessionNotes.getAll();
       const noteMap = {};
+      const exerciseNameById = {};
       allSessionNotes.forEach(sn => {
         noteMap[`${sn.exerciseId}_${sn.date}`] = sn;
       });
@@ -12032,26 +12073,42 @@ const SettingsModal = ({
       routineLines += routineWeek.map(w => metadataRow('__ROUTINE_WEEK__', { ...w, routineId: backupRoutineIds.has(w.routineId) ? w.routineId : null })).join('');
       routineLines += routineDays.map(d => metadataRow('__DAY_ROUTINE__', { ...d, routineId: backupRoutineIds.has(d.routineId) ? d.routineId : null })).join('');
       routineLines += metadataRow('__ROUTINE_PREFS__', { emphasis: getPref('routineEmphasis') === 'true' });
+      // Family records (activities already carry their familyId; the records themselves were missing).
+      const familyRecords = await dbOps.families.getAll();
+      routineLines += familyRecords.map(f => metadataRow('__FAMILY__', f)).join('');
       // Also export per-day split overrides
       const allDayNotes = await dbOps.dayNotes.getAll();
       let daySplitLines = '';
       let unitLine = '';
-      let bwLine = '';
       let bwDayLines = '';
+      let prefLines = '';
+      // Backup-worthy settings Tim chose. Left out on purpose: lastViewedDate (just where he last
+      // looked), _migrated (internal flag), qnCollapsed_* (panel open/closed), routineEmphasis (own row above).
+      const parseJson = text => { try { return JSON.parse(text); } catch (_) { return undefined; } };
       allDayNotes.forEach(dn => {
+        if (dn.date === '__duration_presets__' || dn.date === '__quicknote_freq__' || dn.date === '__categories__') {
+          const value = parseJson(dn.note);
+          if (value !== undefined) prefLines += metadataRow({ __duration_presets__: '__DURATION_PRESETS__', __quicknote_freq__: '__QUICKNOTE_FREQ__', __categories__: '__CATEGORIES__' }[dn.date], value);
+        } else if (dn.date === '__preferences__') {
+          const prefs = parseJson(dn.note);
+          if (prefs && typeof prefs === 'object') {
+            const kept = Object.fromEntries(Object.entries(prefs).filter(([k]) => k !== 'lastViewedDate' && k !== '_migrated' && k !== 'routineEmphasis' && !k.startsWith('qnCollapsed_')));
+            if (Object.keys(kept).length) prefLines += metadataRow('__PREFS__', kept);
+          }
+        }
         if (dn.date.startsWith('__split_')) {
           const splitDate = dn.date.replace('__split_', '');
           daySplitLines += csvRow(['__DAYSPLIT__', splitDate, dn.note, '', '', '', '', '', '', '']);
         } else if (dn.date === '__unit__') {
           unitLine = csvRow(['__UNIT__', dn.note, '', '', '', '', '', '', '', '']);
-        } else if (dn.date === '__bodyweight__') {
-          bwLine = csvRow(['__BODYWEIGHT__', dn.note, '', '', '', '', '', '', '', '']);
-        } else if (dn.date.startsWith('__bodyweight_')) {
+        } else if (dn.date.startsWith('__bodyweight_') && dn.date !== '__bodyweight__' && !dn.date.startsWith('__bodyweight_confirmed_')) {
+          // Skips the confirmation flags (__bodyweight_confirmed_<date>) and the legacy
+          // __bodyweight__ copy; the dated rows already carry every entry.
           const bwDate = dn.date.replace('__bodyweight_', '');
           bwDayLines += csvRow(['__BODYWEIGHT_DAY__', bwDate, dn.note, '', '', '', '', '', '', '']);
         }
       });
-      let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note,BarWeightAtLog,BarNameAtLog,WeightMeaning\n';
+      let csv = 'Date,Exercise,Category,Type,Set,Weight,WeightType,Reps,Duration,Distance,DistanceUnit,Note,BarWeightAtLog,BarNameAtLog,WeightMeaning,GripType,GripWidth,PairedWith\n';
       // Recalculate setOrder on export to fix any stored inconsistencies
       allSets.sort((a, b) => a.date.localeCompare(b.date) || a.exerciseOrder - b.exerciseOrder || a.setOrder - b.setOrder || a.createdAt - b.createdAt);
       const setOrderCounters = {};
@@ -12060,6 +12117,7 @@ const SettingsModal = ({
         setOrderCounters[key] = (setOrderCounters[key] || 0) + 1;
         set._exportSetOrder = setOrderCounters[key];
       });
+      allExercises.forEach(e => { exerciseNameById[e.id] = e.name; });
       allSets.forEach(set => {
         const ex = allExercises.find(e => e.id === set.exerciseId) || {};
         const weightStr = set.weight !== null ? set.weight : '';
@@ -12077,6 +12135,7 @@ const SettingsModal = ({
               if (sn.mood) parts.push(`Mood:${sn.mood}`);
               if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
               if (sn.freeText) parts.push(`General:${sn.freeText}`);
+              (sn.tags || []).forEach(t => parts.push(t));
               if (parts.length > 0) noteStr += '|' + parts.join('|');
             }
           }
@@ -12087,16 +12146,17 @@ const SettingsModal = ({
             if (sn.mood) parts.push(`Mood:${sn.mood}`);
             if (sn.formCueText) parts.push(`Form:${sn.formCueText}`);
             if (sn.freeText) parts.push(`General:${sn.freeText}`);
+            (sn.tags || []).forEach(t => parts.push(t));
             noteStr = parts.join('|');
           }
         }
-        csv += csvRow([set.date, set.exerciseName, getExCategories(ex).join(';') || '', ex.type || '', set._exportSetOrder, weightStr, set.weightType, repsStr, durationStr, distanceStr, distanceUnitStr, noteStr, set.barWeightAtLog ?? '', set.barNameAtLog || '', set.weightMeaning || 'total']);
+        csv += csvRow([set.date, set.exerciseName, getExCategories(ex).join(';') || '', ex.type || '', set._exportSetOrder, weightStr, set.weightType, repsStr, durationStr, distanceStr, distanceUnitStr, noteStr, set.barWeightAtLog ?? '', set.barNameAtLog || '', set.weightMeaning || 'total', set.gripType || '', set.gripWidth || '', set.pairedWith ? exerciseNameById[set.pairedWith] || '' : '']);
       });
       // Metadata section at bottom — used for re-import, safe to ignore when reading
       csv += '\n__META__,,,,,,,,,\n';
       if (unitLine) csv += unitLine;
-      if (bwLine) csv += bwLine;
       if (bwDayLines) csv += bwDayLines;
+      csv += prefLines;
       if (daySplitLines) csv += daySplitLines;
       csv += routineLines;
       const blob = new Blob([csv], {
