@@ -297,6 +297,8 @@ Phase 1 must decide and document whether "explicitly none" needs distinguishing 
 
 ### 5.4 Migration (Phase 1, highest-risk work in this build)
 
+> **Superseded in part (2026-11-20 audit correction).** Step 2 (turn every `templates` label into a routine and a weekday assignment) and the day-note half of step 3 (turn `__split_<date>` notes into `dayRoutines` records for every day) were removed on 2026-10-27 in `c0b75a4`, by Tim's decision "The app never assigns splits or makes routines on its own" (STATUS Decisions). The migration now only creates the seven empty week records, plus hidden `auto` routines for old per-day splits. **Do not re-implement the label-to-routine mapping.** Routines and assignments created by the old behaviour between 2026-10-02 and 2026-10-27 may still be on Tim's phone; nothing removes them yet (audit D-6).
+
 Bump the IndexedDB version. In the upgrade path:
 
 1. Create `routines`, `week`, `dayRoutines`.
@@ -331,6 +333,8 @@ Bump the IndexedDB version. In the upgrade path:
 - **Counted.** Log before/after counts for every store and assert they match expectations.
 
 ### 5.5 CSV export / import
+
+> **Superseded in part (2026-11-20 audit correction).** The last Import bullet below still says an old file's `__SPLITS__` row maps through the same label-to-routine resolution as the migration. Since 2026-10-27 (`c0b75a4`) import writes **no weekday assignments** from `__SPLITS__`, including the demo seed's row. It still creates a hidden `auto` routine and a day record for each `__DAYSPLIT__` row. The export does not yet write grip, pair links, family records or several preferences (audit section 3.3); that is on STATUS Front Burner.
 
 Export currently writes a `__SPLITS__` metadata row plus per-day split lines; import writes them
 back at `index.html:10606`. This model change breaks that format.

@@ -74,6 +74,8 @@ Flow:
 
 ## 4. Part A — the welcome tour (auto-plays over the demo)
 
+> **Out of date (2026-11-20 audit correction).** The tour is **7 steps**, not 6 (`settings-replay`, `activity-row` and `demo-exit` were added; step A5 was re-anchored; see the box in section 3). It is **offered, never auto-played**: `TourOfferModal` appears when the demo loads, and declining marks it seen. Part B (coachmarks) was never built (`wp_coach_` appears nowhere in the code). A June test trigger, opening the site with `#tour`, is still live (`index.html:18868-18870`); it is on STATUS Questions for removal.
+
 Short by design — long auto-tours get skipped. 6 steps, terse copy (matches the app's no-nonsense voice). Each step lights one element.
 
 | # | Anchor (element) | Copy (terse) |

@@ -27,6 +27,12 @@ Every relationship command changes only activity relationship fields and the fam
 
 ## Picker contract
 
+> **Where the app differs from this contract (2026-11-20 audit correction).**
+> 1. **Search is not a hard boundary.** Since the 2026-09-25 decision, a non-All split narrows *browsing* only; typing a query searches the whole library so activities in another split or in none stay findable (`index.html:6191-6196`). The line below saying a non-All split is a hard boundary for browsing, search, pairing and the family modal is true now only for browsing, pairing and the family modal.
+> 2. **The word is "variants" on the cards.** 2026-10-27 round 5 (`9946700`) shipped half-height family cards reading "N variants" and a sheet that says "variant(s)" (`index.html:6460`, `6715`). The "never variant/variants" line below is contradicted by the live app. Tim has not said whether the app or the spec should change; STATUS Questions will carry it if he wants it decided.
+> 3. **The family button is no longer a full-width row.** The same commit made family cards half height. Standalone cards stay in the two-column grid.
+> 4. **Added after this spec's last edit (2026-10-07):** a suggestions panel (recent four, matched four) and one horizontally scrolling split row (2026-10-14).
+
 The Add Activity picker remains a selection surface, separate from relationship management:
 
 - Standalone activities appear as normal cards in a two-column grid without a family SVG. A family gets one full-width button only when at least two of its activities are eligible under the current filter. Its label ends in “Family”; a flow-chart SVG is a family-only cue, and the variation count is display text, not a nested button. Tapping anywhere on the family row opens the gated selection sheet. A single eligible member appears as an ordinary activity card, never as “1 variation.” Manage family relationships from Activity Context → Edit.
