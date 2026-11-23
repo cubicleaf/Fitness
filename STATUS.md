@@ -31,7 +31,7 @@ The dated build diary ("Where I left off", July to 2026-10-27) and the Activity 
 
 **Why:** Tim never asked for routines and was disturbed that the app made them (2026-11-23).
 
-**How to apply:** Never write to `routines` except from an explicit create action. Old backups with routine-pointing assignments still import. On branch `no-auto-routines` (stacked on `fix/backup-roundtrip`); not merged, not on `main`. Verified in the Browser pane on a fresh database only; Tim's phone not checked.
+**How to apply:** Never write to `routines` except from an explicit create action. Old backups with routine-pointing assignments still import. On branch `no-auto-routines` (now based on `main`); not merged, not on `main`. Verified in the Browser pane on a fresh database only; Tim's phone not checked.
 
 ### 2026-11-23 — Finish the weekday builder before day-specific routines
 
@@ -442,7 +442,7 @@ Superseded the same day: Tim rejected this appearance; use the context-toggle de
 ## Front Burner
 
 - **Audit fixes Tim accepted 2026-11-20** (details: `_docs/audit-2026-11-15/REPORT.md`; run in this order, one branch and Vercel preview each, merged to `main` only on Tim's yes):
-  1. **Backup that restores** (audit D-3, section 3.3, S-5, S-6): stop exporting stray `confirmed_` bodyweight rows and stop import clearing confirmations; add grip, pair links, family records and the missing preferences to the CSV; import must not stamp today with the backup's old bodyweight or reset the unit. Done when an export-then-import round trip on demo data matches field by field. **Checked 2026-11-23** on demo data (Browser pane): sets, notes, activities, families, routines, weekdays, bodyweight, unit, presets and categories match; pair links and grip survive. Differences: set `createdAt` and note `updatedAt` are re-stamped on import, and the legacy `templates` store is not restored. Code is on `fix/backup-roundtrip`, not merged; awaiting Tim's yes.
+  1. **Backup that restores** (audit D-3, section 3.3, S-5, S-6): stop exporting stray `confirmed_` bodyweight rows and stop import clearing confirmations; add grip, pair links, family records and the missing preferences to the CSV; import must not stamp today with the backup's old bodyweight or reset the unit. Done when an export-then-import round trip on demo data matches field by field. **Checked 2026-11-23** on demo data (Browser pane): sets, notes, activities, families, routines, weekdays, bodyweight, unit, presets and categories match; pair links and grip survive. Differences: set `createdAt` and note `updatedAt` are re-stamped on import, and the legacy `templates` store is not restored. **Merged to `main` 2026-11-23 (`f527a88`, `2c6aa8b`); Vercel deploys it.**
   2. **Bodyweight is no longer copied into each new day** (D-2). Tim said yes to stopping the pre-fill. Cleaning the stray rows already on his phone needs Tim.
   3. **History / Notes / Edit on an open activity card to 44px** (section 3.6), then measure the screens the audit skipped.
   4. **Demo never expires**: dates shift forward at load time (Tim chose this 2026-11-20).
