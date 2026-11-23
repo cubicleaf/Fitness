@@ -25,6 +25,14 @@ The dated build diary ("Where I left off", July to 2026-10-27) and the Activity 
 
 ## Decisions
 
+### 2026-11-23 — Routines are a separate lane from splits
+
+**What:** Tim: a routine is a special checklist such as a morning routine or a whole-day routine. It is not a muscle-group split and is not limited to fitness (reading or similar is fine). Items are any activity the user creates (Tim chose this over free-text checklist items). Routines sit in their own lane and are started by the user; they are not assigned to weekdays by default. Splits stay on weekdays as Split assignments.
+
+**Why:** Splits and routines were competing for one weekday slot, and Split Day and Rest were being modelled as routines (which is how the auto-made routines arose).
+
+**How to apply:** Build plan is awaiting Tim's approval; no code yet. Do not add free-text checklist items. See Front Burner "Routines as their own lane".
+
 ### 2026-11-23 — The app never makes a routine: assignments hold the split themselves
 
 **What:** The routine migration is deleted. Choosing a split or Rest for a weekday or date now stores the split on the `week` / `dayRoutines` record (`split: 'push'` or `'__rest__'`, `routineId: null`); a read-only stand-in is built when needed (`assignmentRoutine`). The CSV importer does the same. Only the New button writes to `routines`. One-time "Clear hidden routines" (Settings → Data) converts leftover `auto` / `rt_mig_` routines and keeps their weekday splits. Test: `tests/no-auto-routines.js` (fails on `main`, passes here).
@@ -447,6 +455,7 @@ Superseded the same day: Tim rejected this appearance; use the context-toggle de
   3. **History / Notes / Edit on an open activity card to 44px** (section 3.6), then measure the screens the audit skipped.
   4. **Demo never expires**: dates shift forward at load time (Tim chose this 2026-11-20).
   5. **Specs corrected to match the app** (audit item 10): done 2026-11-20 in ROUTINE-SYSTEM-SPEC, FAMILY-SYSTEM-AND-PICKER-SPEC and TOUR-SPEC.
+- **Routines as their own lane** (decided 2026-11-23, plan awaiting Tim's yes): detailed routines only (activity checklists), started by the user, separate from weekday splits; remove Split Day / Rest modes from the routine editor; a date can carry a split and a started routine together.
 - **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your
   history. Background: "IDFK workout helper" below.
 - **Opt-in cadence reminders** ("remind me if I haven't done this in 2 weeks"). Background:
