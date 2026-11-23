@@ -25,6 +25,22 @@ The dated build diary ("Where I left off", July to 2026-10-27) and the Activity 
 
 ## Decisions
 
+### 2026-11-23 — The app never makes a routine: assignments hold the split themselves
+
+**What:** The routine migration is deleted. Choosing a split or Rest for a weekday or date now stores the split on the `week` / `dayRoutines` record (`split: 'push'` or `'__rest__'`, `routineId: null`); a read-only stand-in is built when needed (`assignmentRoutine`). The CSV importer does the same. Only the New button writes to `routines`. One-time "Clear hidden routines" (Settings → Data) converts leftover `auto` / `rt_mig_` routines and keeps their weekday splits. Test: `tests/no-auto-routines.js` (fails on `main`, passes here).
+
+**Why:** Tim never asked for routines and was disturbed that the app made them (2026-11-23).
+
+**How to apply:** Never write to `routines` except from an explicit create action. Old backups with routine-pointing assignments still import. On branch `no-auto-routines` (stacked on `fix/backup-roundtrip`); not merged, not on `main`. Verified in the Browser pane on a fresh database only; Tim's phone not checked.
+
+### 2026-11-23 — Finish the weekday builder before day-specific routines
+
+**What:** Tim decided the weekday builder is finished first; day-specific routines come after it.
+
+**Why:** Tim's call at the 2026-11-22 check-in follow-up; day-specific routines build on the weekday model.
+
+**How to apply:** Do not start day-specific routine work until the weekday builder is done. The stray-routine list (audit D-6) is still owed by Tim and stays under Questions; nothing has been cleared or deleted.
+
 ### 2026-11-15 — "Not deployed" is never left standing in STATUS
 
 **What:** `main` auto-deploys. An entry may say "not deployed" only while the work is uncommitted. The chat that pushes it rewrites that line to the commit hash in the same change.
@@ -466,7 +482,7 @@ Tim chose to keep these, but not soon (sorted 2026-10-06).
 
 Audit items not yet accepted or dropped (2026-11-20), and approvals Tim still owes.
 
-- **Old routines and weekday assignments on the phone** (audit D-6). Tim to look at Routines and Split assignments and say what he did not make; then a one-time clear or hand deletion.
+- **Hidden routines already on the phone** (audit D-6). Tim deleted every visible routine by hand 2026-11-23 and set all weekday splits himself. Hidden `auto` routines can remain; branch `no-auto-routines` adds Settings → Data → "Clear hidden routines" (appears only if any exist; keeps weekday splits). Pending Tim's check on the Vercel preview and his yes to merge.
 - **Log Coach sends the day's workout to Groq, and the key and chat sit in localStorage** (audit V-1, V-2). INTENT says neither happens. Tim to pick: amend INTENT as was done for feedback and move the key to IndexedDB, remove the feature, or keep it behind an explicit "this sends workout data" confirmation.
 - **Leftovers** (audit section 5): `#tour` test trigger, unused merge-search modal, eight dead functions, then the legacy `templates` store and `__split_` notes still being written. Scheduled last; the legacy writers are a data change, not cleanup.
 - **The four app names** (audit item 12). Folds into Back Burner "Settle the name".
