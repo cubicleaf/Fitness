@@ -19,7 +19,7 @@ window.noAutoRoutinesTest = async phase => {
     await saveAssignment('week', 1, splitAssignment('Push'));
     await saveAssignment('week', 2, splitAssignment('Rest'));
     await saveAssignment('day', '2099-01-05', splitAssignment('Legs'));
-    const a = await resolveRoutineDate('2099-01-05', cats);
+    const a = await resolveSplitDate('2099-01-05', cats);
     check((await dbOps.routines.getAll()).length === 0, 'assigning weekday and date splits makes no routines');
     check(a && a.mode === 'split' && a.splitName === 'legs', 'date split still resolves to Legs');
     const w1 = await dbOps.week.get(1), w2 = await dbOps.week.get(2);
@@ -30,7 +30,17 @@ window.noAutoRoutinesTest = async phase => {
     const res = await clearAutoRoutines(), left = (await dbOps.routines.getAll()).map(r => r.id), w4 = await dbOps.week.get(4);
     check(res.count === 1 && left.join() === 'rt_x', 'cleanup removes only the hidden routine');
     check(w4.routineId === null && w4.split === 'push', 'cleanup keeps that weekday on Push');
-    await dbOps.routines.delete('rt_x');
+    // a date can hold a split AND a started routine, independently
+    await dbOps.routines.put({ id: 'rt_m', name: 'Morning', mode: 'lineup', activityIds: [], manualOrder: null, createdAt: 3 });
+    await mergeDayRoutine('2099-02-01', { split: splitAssignment('Pull').split });
+    await mergeDayRoutine('2099-02-01', { routineId: 'rt_m' });
+    const sp = await resolveSplitDate('2099-02-01', cats), st = await resolveStartedRoutine('2099-02-01');
+    check(sp && sp.splitName === 'pull' && st && st.id === 'rt_m', 'a date keeps its split and a started routine together');
+    await mergeDayRoutine('2099-02-01', { routineId: null });
+    check((await resolveStartedRoutine('2099-02-01')) === null && (await resolveSplitDate('2099-02-01', cats))?.splitName === 'pull', 'stopping a routine leaves the split');
+    await mergeDayRoutine('2099-02-04', { routineId: 'rt_m' }); // a Wednesday: no weekday split set
+    check((await resolveStartedRoutine('2099-02-04'))?.id === 'rt_m' && (await resolveSplitDate('2099-02-04', cats)) === null, 'a started routine alone does not invent a split');
+    await dbOps.routines.delete('rt_x'); await dbOps.routines.delete('rt_m');
   } catch (e) { check(false, 'new assignment helpers missing or threw: ' + e); }
   const src = await (await fetch(location.pathname)).text();
   check(!/ensureSplitRoutine|migrateRoutineSystem\(\)/.test(src.replace(/\/\/.*$/gm, '')), 'source has no routine-making helper or migration call');
