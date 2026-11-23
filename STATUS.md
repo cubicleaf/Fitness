@@ -31,7 +31,7 @@ The dated build diary ("Where I left off", July to 2026-10-27) and the Activity 
 
 **Why:** Splits and routines were competing for one weekday slot, and Split Day and Rest were being modelled as routines (which is how the auto-made routines arose).
 
-**How to apply:** Build plan is awaiting Tim's approval; no code yet. Do not add free-text checklist items. See Front Burner "Routines as their own lane".
+**How to apply:** Built and merged 2026-11-23. Do not add free-text checklist items. See Front Burner "Routines as their own lane".
 
 ### 2026-11-23 — The app never makes a routine: assignments hold the split themselves
 
@@ -455,7 +455,7 @@ Superseded the same day: Tim rejected this appearance; use the context-toggle de
   3. **History / Notes / Edit on an open activity card to 44px** (section 3.6), then measure the screens the audit skipped.
   4. **Demo never expires**: dates shift forward at load time (Tim chose this 2026-11-20).
   5. **Specs corrected to match the app** (audit item 10): done 2026-11-20 in ROUTINE-SYSTEM-SPEC, FAMILY-SYSTEM-AND-PICKER-SPEC and TOUR-SPEC.
-- **Routines as their own lane** (decided 2026-11-23; built on branch `routines-lane`, Vercel preview pending Tim's phone check, not merged): routines are activity checklists only, started by the user, separate from weekday splits. A date holds its split and a started routine independently (`dayRoutines`: `{date, routineId, split}`). Split Day / Rest choices are gone from the routine editor (older ones show "Turn into a checklist routine"). Weekdays take splits only. Checked in the Browser pane on a fresh database; not on a phone.
+- **Routines as their own lane** (decided 2026-11-23; merged to `main` 2026-11-23 at Tim's go-ahead, before a phone check): routines are activity checklists only, started by the user, separate from weekday splits. A date holds its split and a started routine independently (`dayRoutines`: `{date, routineId, split}`). Split Day / Rest choices are gone from the routine editor (older ones show "Turn into a checklist routine"). Weekdays take splits only. Checked in the Browser pane on a fresh database; not on a phone.
 - **"IDFK" button** for gym moments when you don't know what to do: suggests a workout from your
   history. Background: "IDFK workout helper" below.
 - **Opt-in cadence reminders** ("remind me if I haven't done this in 2 weeks"). Background:
