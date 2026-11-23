@@ -31,7 +31,7 @@ The dated build diary ("Where I left off", July to 2026-10-27) and the Activity 
 
 **Why:** Tim never asked for routines and was disturbed that the app made them (2026-11-23).
 
-**How to apply:** Never write to `routines` except from an explicit create action. Old backups with routine-pointing assignments still import. On branch `no-auto-routines` (now based on `main`); not merged, not on `main`. Verified in the Browser pane on a fresh database only; Tim's phone not checked.
+**How to apply:** Never write to `routines` except from an explicit create action. Old backups with routine-pointing assignments still import. Merged to `main` 2026-11-23. Verified in the Browser pane on a fresh database; Tim checked the Vercel preview on his phone before merging.
 
 ### 2026-11-23 — Finish the weekday builder before day-specific routines
 
