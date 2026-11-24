@@ -891,6 +891,8 @@
         }
 
         .modal-header h2 {
+            min-width: 0;
+            overflow-wrap: anywhere;
             font-size: 18px;
             font-weight: 600;
         }
@@ -1156,10 +1158,10 @@
         .day-detail-modal .modal-content { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
         .day-detail-actions {
-            display: flex;
+            display: grid;
+            grid-template-columns: 44px minmax(0, 1fr) auto 44px;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 3px;
+            gap: 8px;
             margin-bottom: 12px;
             flex: 0 0 auto;
         }
@@ -1168,7 +1170,6 @@
             align-items: center;
             justify-content: center;
             flex: 0 0 auto;
-            height: 44px;
             min-height: 44px;
             padding: 0 3px;
             border: 0;
@@ -1186,15 +1187,12 @@
         }
         .day-detail-control:active { transform: scale(0.96); }
         .day-detail-tab.is-active { background: var(--accent); color: #fff; }
-        .day-detail-actions { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto 44px; gap: 10px; align-items: center; }
         .day-detail-scale { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--accent-soft); cursor: pointer; }
         .day-detail-scale:active { transform: scale(0.95); }
         .day-detail-scale:focus-visible { outline: none; filter: brightness(1.22); }
-        .day-detail-tab { min-width: 0; padding: 0 14px; font-size: 13px; white-space: nowrap; text-transform: capitalize; justify-content: center; }
+        .day-detail-tab { min-width: 0; padding: 8px 10px; font-size: 13px; white-space: normal; overflow-wrap: anywhere; text-align: center; text-transform: capitalize; }
         .day-detail-split { gap: 6px; min-width: 76px; padding: 0 14px; white-space: nowrap; }
         .day-detail-split > svg:not(.auto-squircle-svg) { flex: none; width: 15.3px; height: 15.3px; }
-        /* Scale only visible plates/artwork; preserve the 44px touch targets. */
-        .day-detail-actions .day-detail-tab > .auto-squircle-svg { transform: scale(0.85); transform-origin: center; }
         .day-detail-actions .day-detail-help { width: 44px !important; height: 44px !important; min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 0 !important; background: transparent !important; color: var(--accent-soft) !important; }
         .day-detail-help svg { flex: none; width: 34.51px; height: 34.51px; }
         .day-activity-row { cursor: default; }
@@ -1203,7 +1201,7 @@
         .day-activity-list > .day-activity-row:last-child::before { bottom: 50%; }
         .day-activity-open { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; background: transparent; cursor: pointer; z-index: 1; }
         .day-activity-open:focus-visible { outline: none; filter: brightness(1.22); }
-        .day-activity-copy { flex: 1; pointer-events: none; }
+        .day-activity-copy { flex: 1; min-width: 0; pointer-events: none; }
         .day-activity-name { overflow-wrap: anywhere; }
         .day-activity-node { pointer-events: none; }
         .day-activity-detail-row { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; align-items: center; }
@@ -1289,27 +1287,35 @@
         .rt-day-editor-choice-check { flex: 0 0 auto; color: var(--accent-soft); }
 
         .exercise-picker-toolbar {
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 2;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            min-height: 56px;
+            gap: 8px;
+            min-height: 48px;
             margin-bottom: 12px;
+            background: var(--bg-page);
         }
         .btn.exercise-picker-create-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex: 0 1 168px;
-            width: 168px;
-            max-width: calc(100% - 56px);
-            min-height: 56px;
+            flex: 0 1 auto;
+            width: auto;
+            min-width: 0;
+            min-height: 48px;
+            padding: 6px 12px;
+            gap: 8px;
             margin: 0;
             border: 0;
             background: var(--accent);
             color: var(--text-bright);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.15;
         }
+        .exercise-picker-create-button .add-activity-icon-pair { flex: none; }
         .btn.exercise-picker-create-button:active { background: var(--accent); }
         .exercise-picker-search-toggle,
         .exercise-picker-search-close {
@@ -1327,6 +1333,8 @@
             -webkit-appearance: none;
             appearance: none;
         }
+        .exercise-picker-search-toggle { flex-basis: 44px; width: 44px; margin-left: auto; }
+        .exercise-picker-toolbar.is-searching > button { visibility: hidden; }
         .exercise-picker-search-toggle:active,
         .exercise-picker-search-close:active { transform: scale(0.94); }
         .exercise-picker-search-toggle:focus-visible,
@@ -1344,7 +1352,7 @@
         .exercise-picker-search-overlay .search-input {
             flex: 1;
             min-width: 0;
-            height: 52px;
+            height: 44px;
             margin: 0;
             border: 0;
             border-radius: 18px;
@@ -1730,6 +1738,7 @@
         }
         .family-variants-list { display: flex; flex-direction: column; gap: 10px; }
         .exercise-picker-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+        .exercise-picker-actions .assign-split-button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 
         /* The approved card recipe uses a stable accent wash, without tremor. */
         .exercise-group-expanded { position: relative; isolation: isolate; }
@@ -1875,12 +1884,17 @@
             color: var(--accent-soft); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
         }
         .weight-entry-mode { animation: timer-screen-enter 200ms cubic-bezier(0.25, 0.1, 0.25, 1); }
-        .weight-entry-label { display: block; color: var(--text-bright); font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+        .weight-entry-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px; width: min(100%, 368px); }
+        .weight-entry-label { color: var(--text-bright); font-size: 13px; font-weight: 600; }
+        .weight-fine-toggle { min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: var(--surface); color: var(--accent-soft); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .weight-fine-toggle[aria-pressed="true"] { background: var(--accent); color: white; }
+        .weight-fine-toggle:focus-visible { outline: none; background: var(--accent-deep); color: white; }
+        .weight-fine-toggle:active { transform: scale(.95); }
         /* Clarity Rings own the adjustment outlines; the organic Clarity
            Squircle frames the value. Transparent hosts keep other plates out. */
         .weight-entry-stepper {
-            display: grid; grid-template-columns: repeat(2, minmax(40px, 1fr)) minmax(72px, 1.9fr) repeat(3, minmax(40px, 1fr));
-            align-items: center; gap: clamp(5px, 1.5vw, 10px); width: min(100%, 368px); margin: 12px 0 18px;
+            display: grid; grid-template-columns: repeat(2, minmax(44px, 1fr)) minmax(0, 1.75fr) repeat(3, minmax(44px, 1fr));
+            align-items: center; gap: 4px clamp(4px, 1.2vw, 8px); width: min(100%, 368px); margin: 12px 0;
         }
         .weight-ring-step, .weight-ring-value {
             position: relative; min-width: 0; min-height: 44px; padding: 0;
@@ -1912,6 +1926,8 @@
         .weight-ring-value input::-webkit-inner-spin-button { appearance: none; }
         .weight-ring-unit { position: relative; flex-shrink: 0; color: var(--text-body); font-size: 11px; font-weight: 600; }
         @media (max-width: 350px) {
+            .weight-entry-stepper { grid-template-columns: repeat(2, minmax(44px, 1fr)) minmax(0, 1.75fr) repeat(2, minmax(44px, 1fr)); }
+            .weight-ring-confirm { grid-area: 2 / 5; }
             .weight-ring-value input { transform: translateY(-5px); }
             .weight-ring-unit { position: absolute; left: 0; bottom: 8px; width: 100%; text-align: center; font-size: 9px; line-height: 1; pointer-events: none; }
         }
@@ -1919,10 +1935,17 @@
         .weight-equation strong { color: var(--text-bright); font-size: 17px; }
         .weight-use-button.btn { display: inline-flex; align-items: center; justify-content: center; width: auto; min-height: 48px; margin: 14px 0 0; padding: 0 20px; font-size: 14px; }
         .weight-entry-hint { color: var(--text-faint); font-size: 12px; line-height: 1.5; margin-top: 8px; }
-        .weight-picker-content .weight-presets-heading { margin-top: 16px; max-width: 320px; }
+        .weight-picker-content .weight-presets-heading { margin-top: 16px; }
         .weight-picker-content .weight-presets-toggle { min-width: 44px; }
-        .weight-picker-content .weight-grid { max-width: 320px; gap: 6px; }
-        .weight-picker-content .weight-btn { min-height: 50px; padding: 10px 4px; }
+        .weight-picker-content .weight-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+        .weight-picker-content .weight-btn { min-width: 0; min-height: 58px; padding: 10px 4px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+        .weight-picker-content .weight-btn[data-likelihood="possible"] { --svg-plate-fill: color-mix(in srgb, var(--accent) 54%, var(--bg-page)); }
+        .weight-picker-content .weight-btn[data-likelihood="likely"] { --svg-plate-fill: color-mix(in srgb, var(--accent) 84%, var(--bg-page)); font-weight: 800; }
+        .weight-picker-content .weight-btn:focus-visible, .weight-picker-content .weight-btn:active { outline: none; --svg-plate-fill: var(--accent); }
+        .weight-grip-trigger { min-width: 44px; flex: 0 1 auto; text-align: left; overflow-wrap: anywhere; }
+        .weight-grip-trigger:focus-visible { outline: none; background: var(--accent-deep); }
+        .grip-options button:focus-visible, .grip-sheet-done:focus-visible { outline: none; background: var(--accent-deep) !important; color: white !important; }
+        .grip-sheet-done.btn { width: auto; margin: 8px 0 0; }
         .weight-equipment-menu {
             position: fixed; z-index: 12000; max-height: calc(100dvh - 24px); overflow-y: auto;
             padding: 6px; border-radius: 14px; background: var(--surface);
@@ -1936,7 +1959,6 @@
             background: transparent; color: var(--text-body); font: inherit; font-size: 14px; text-align: left; cursor: pointer;
         }
         .weight-equipment-menu button[aria-checked="true"], .weight-equipment-menu button[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 18%, var(--surface)); color: var(--text-bright); }
-        .weight-equipment-menu button[aria-checked="true"]::before { content: ''; position: absolute; left: 2px; top: 12px; bottom: 12px; width: 2px; background: var(--accent-soft); }
         .weight-bar-options { margin-top: 6px; padding-top: 6px; border-top: 1px solid color-mix(in srgb, var(--accent) 18%, var(--surface)); }
         .weight-bar-input { display: block; padding: 8px 12px; color: var(--text-faint); font-size: 12px; }
         .weight-bar-input input { display: block; width: 100%; min-height: 44px; margin-top: 6px; padding: 8px 10px; border: 0; border-radius: 8px; background: var(--bg-page); color: var(--text-bright); font: inherit; font-size: 16px; }
@@ -2162,6 +2184,18 @@
         .form-input::placeholder {
             color: var(--text-placeholder);
         }
+
+        .category-edit-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+        .category-edit-controls.is-renaming { width: 100%; grid-template-columns: minmax(0, 1fr) 44px 44px; }
+        .category-add-row { margin-bottom: 16px; }
+        .category-edit-controls .form-input { min-width: 0; min-height: 44px; }
+        .category-edit-controls .btn { width: auto; margin: 0; }
+        .category-edit-item { display: grid; grid-template-columns: minmax(0, 1fr) 44px 44px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--surface-edge); }
+        .category-edit-item > .is-renaming { grid-column: 1 / -1; }
+        .category-edit-name { color: var(--text-body); overflow-wrap: anywhere; }
+        .category-edit-action { display: grid; place-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent-soft); font-size: 16px; cursor: pointer; }
+        .category-edit-action.is-danger { color: var(--danger); }
+        .category-edit-action:focus-visible, .category-edit-controls .btn:focus-visible { outline: none; background: var(--accent-deep); }
 
         /* Hide number input spinners */
         input[type=number]::-webkit-inner-spin-button,
@@ -2880,14 +2914,40 @@
         .rt-row-action.is-danger { color: var(--danger); }
 
 
-        /* Picker: one scrolling split row and an explicit creation action. */
-        .exercise-picker-content .category-tabs { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; gap: 6px; padding-bottom: 6px; margin-bottom: 12px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-behavior: auto; }
-        .exercise-picker-content .category-tabs:focus-visible { outline: none; background-color: color-mix(in srgb, var(--accent) 5%, transparent); }
-        .exercise-picker-content .category-tab { min-height: 44px; padding: 6px 10px; border: 0; }
-        .exercise-picker-toolbar { min-height: 44px; margin-bottom: 8px; }
-        .btn.exercise-picker-create-button { flex: 0 1 auto; width: auto; min-height: 48px; padding: 0 14px; gap: 10px; background: var(--accent); color: var(--text-bright); font-size: 13px; font-weight: 600; white-space: nowrap; }
-        .exercise-picker-create-button .add-activity-icon-pair { flex: none; }
-        .exercise-picker-search-overlay .search-input { height: 44px; }
+        .activity-split-trigger { flex: 0 0 auto; display: grid; place-items: center; min-width: 44px; min-height: 48px; padding: 6px 10px; border: 0; border-radius: 12px; background: var(--surface); color: var(--accent-soft); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+        .activity-split-trigger > span { max-width: min(23vw, 108px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-transform: capitalize; }
+        @media (max-width: 380px) {
+            .btn.exercise-picker-create-button { gap: 6px; padding-inline: 9px; }
+            .exercise-picker-create-button .add-activity-icon-pair { gap: 4px; }
+            .exercise-picker-create-button .add-activity-icon-pair svg { width: 18px; height: 18px; }
+        }
+        .activity-split-modal {
+            position: fixed; inset: 0; margin: auto; box-sizing: border-box;
+            width: min(398px, calc(100% - 24px)); height: fit-content; max-height: calc(100dvh - 24px);
+            padding: 0; border: 0; border-radius: 18px; overflow: auto; overscroll-behavior: contain;
+            background: var(--bg-page); color: var(--text-body); box-shadow: 0 22px 60px rgba(12, 6, 10, .45);
+            opacity: 0; transform: translateY(8px) scale(.96);
+            transition: opacity .14s cubic-bezier(.4, 0, 1, 1), transform .14s cubic-bezier(.4, 0, 1, 1);
+        }
+        .activity-split-modal[data-visible] { opacity: 1; transform: none; transition-duration: .25s; transition-timing-function: cubic-bezier(.25, .1, .25, 1); }
+        .activity-split-modal[data-closing] { transform: translateY(4px) scale(.98); }
+        .activity-split-modal::backdrop { background: rgba(13, 6, 10, .45); opacity: 0; transition: opacity .14s cubic-bezier(.4, 0, 1, 1); }
+        .activity-split-modal[data-visible]::backdrop { opacity: 1; transition-duration: .25s; transition-timing-function: cubic-bezier(.25, .1, .25, 1); }
+        .activity-split-body { padding: 10px 16px 16px; }
+        .activity-split-header { display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; align-items: center; gap: 4px; margin-bottom: 8px; }
+        .activity-split-header h2 { font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+        .activity-split-edit { min-height: 44px; padding: 0 8px; border: 0; border-radius: 10px; background: transparent; color: var(--accent-soft); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .activity-split-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+        .activity-split-grid .category-tab { min-width: 0; min-height: 44px; padding: 6px 4px; border: 0; border-radius: 10px; background: var(--surface); color: var(--text-body); white-space: normal; overflow-wrap: anywhere; text-transform: capitalize; }
+        .activity-split-grid .category-tab > span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; line-height: 1.2; }
+        .activity-split-grid .category-tab.active { background: var(--accent); color: white; }
+        .activity-split-trigger:focus-visible, .activity-split-header button:focus-visible, .activity-split-grid .category-tab:focus-visible { outline: none; background: color-mix(in srgb, var(--accent) 78%, var(--text-bright)); color: white; }
+        .activity-split-trigger:active, .activity-split-grid .category-tab:active { transform: scale(.95); }
+        @media (prefers-reduced-motion: reduce) {
+            .activity-split-modal, .activity-split-modal[data-closing], .activity-split-modal[data-visible] { transform: none; transition: none; }
+            .activity-split-modal::backdrop, .activity-split-modal[data-visible]::backdrop { transition: none; }
+            .activity-split-trigger:active, .activity-split-grid .category-tab:active, .weight-fine-toggle:active { transform: none; }
+        }
         .rep-last-session { margin: 4px 0 12px; }
         .rep-last-session .section-title { margin-bottom: 2px; }
         .custom-reps-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; }
@@ -4907,14 +4967,14 @@ const formatGripLabel = set => {
   if (set.gripWidth) parts.push(set.gripWidth === 'v-grip' ? 'V-bar' : set.gripWidth.charAt(0).toUpperCase() + set.gripWidth.slice(1));
   return parts.join(' · ');
 };
-const getGripSelectionForDate = async (exerciseId, date) => {
-  const daySets = await dbOps.sets.getByDate(date);
-  const lastGripSet = daySets
-    .filter(set => set.exerciseId === exerciseId && (set.gripType || set.gripWidth))
-    .sort((a, b) => (b.setOrder || 0) - (a.setOrder || 0))[0];
-  return lastGripSet ? {
+const getLastGripSelection = async (exerciseId, date) => {
+  const sets = await dbOps.sets.getByExerciseId(exerciseId);
+  const lastGripSet = sets.filter(set => set.date <= date && !isNeutralAnchorSet(set) && !isPresenceOnlySet(set))
+    .sort(compareRecentSets)[0];
+  return lastGripSet && (lastGripSet.gripType || lastGripSet.gripWidth) ? {
     gripType: lastGripSet.gripType || null,
-    gripWidth: lastGripSet.gripWidth || null
+    gripWidth: lastGripSet.gripWidth || null,
+    date: lastGripSet.date
   } : null;
 };
 const FIELD_NOTES = {
@@ -4944,7 +5004,7 @@ const FIELD_NOTES = {
   gripTracking: {
     eyebrow: 'Field Note',
     title: 'What does grip tracking do?',
-    body: ['When this is on, the first set screen can show optional grip choices for that activity. Once you pick one for that activity on that day, the app silently reuses it for later sets instead of asking again.', 'This is best for movements where hand position materially changes the feel of the exercise, like pulldowns, rows, curls, carries, or hanging work.']
+    body: ['When grip tracking is on, the next set starts with the grip from the last set you logged for that activity. Tap the grip to change it or tap the selected options to clear it.', 'This is best for movements where hand position materially changes the feel of the exercise, like pulldowns, rows, curls, carries, or hanging work.']
   }
 };
 const getFieldNote = noteId => noteId ? FIELD_NOTES[noteId] || null : null;
@@ -5525,6 +5585,7 @@ const EditCategoriesModal = ({
   onSave,
   onCancel
 }) => {
+  const h = React.createElement;
   const [cats, setCats] = useState([...categories]);
   const [newCat, setNewCat] = useState('');
   const [renamingCat, setRenamingCat] = useState(null);
@@ -5591,130 +5652,27 @@ const EditCategoriesModal = ({
       }
     }
   };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "modal-overlay",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "modal",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", _extends({
-    className: "modal-header"
-  }, makeSwipeDownHandlers(onCancel)), /*#__PURE__*/React.createElement("h2", null, "Edit Categories"), /*#__PURE__*/React.createElement("button", {
-    className: "close-btn",
-    "aria-label": "Close",
-    onClick: onCancel
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 20
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-content"
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '8px',
-      marginBottom: '16px'
-    }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    placeholder: "New category name",
-    value: newCat,
-    onChange: e => setNewCat(e.target.value),
-    onKeyDown: e => e.key === 'Enter' && addCategory(),
-    style: {
-      flex: 1
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: addCategory,
-    style: {
-      width: 'auto',
-      padding: '12px 16px'
-    }
-  }, "Add")), cats.map(cat => /*#__PURE__*/React.createElement("div", {
-    key: cat,
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '10px 0',
-      borderBottom: '1px solid var(--surface-edge)'
-    }
-  }, renamingCat === cat ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '6px',
-      flex: 1,
-      alignItems: 'center'
-    }
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    className: "form-input",
-    value: renameValue,
-    onChange: e => setRenameValue(e.target.value),
-    onKeyDown: e => e.key === 'Enter' && confirmRename(),
-    autoFocus: true,
-    style: {
-      flex: 1,
-      padding: '6px 10px',
-      fontSize: '13px'
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    onClick: confirmRename,
-    style: {
-      background: 'none',
-      border: 'none',
-      color: 'var(--accent)',
-      cursor: 'pointer',
-      padding: '4px 8px'
-    }
-  }, /*#__PURE__*/React.createElement(IconCheck, {
-    size: 14
-  })), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setRenamingCat(null),
-    style: {
-      background: 'none',
-      border: 'none',
-      color: 'var(--text-faint)',
-      cursor: 'pointer',
-      padding: '4px 8px'
-    }
-  }, /*#__PURE__*/React.createElement(IconX, {
-    size: 14
-  }))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-    style: {
-      color: 'var(--text-body)',
-      flex: 1
-    }
-  }, cat), /*#__PURE__*/React.createElement("button", {
-    onClick: () => startRename(cat),
-    style: {
-      background: 'none',
-      border: 'none',
-      color: 'color-mix(in srgb, var(--accent-soft) 40%, transparent)',
-      cursor: 'pointer',
-      padding: '4px 8px'
-    }
-  }, /*#__PURE__*/React.createElement(IconEdit2, {
-    size: 14
-  })), /*#__PURE__*/React.createElement("button", {
-    onClick: () => removeCategory(cat),
-    style: {
-      background: 'none',
-      border: 'none',
-      color: 'rgba(255, 100, 100, 0.4)',
-      fontSize: '18px',
-      cursor: 'pointer',
-      padding: '4px 8px'
-    }
-  }, "x"))))), /*#__PURE__*/React.createElement("div", {
-    className: "modal-footer"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "btn btn-secondary",
-    onClick: onCancel
-  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
-    className: "btn",
-    onClick: () => onSave(cats)
-  }, "Save"))));
+  return h('div', { className: 'modal-overlay', onClick: onCancel },
+    h('div', { className: 'modal', onClick: event => event.stopPropagation() },
+      h('div', { className: 'modal-header', ...makeSwipeDownHandlers(onCancel) },
+        h('h2', null, 'Edit Categories'),
+        h('button', { type: 'button', className: 'close-btn', 'aria-label': 'Close', onClick: onCancel }, h(IconX, { size: 20 }))),
+      h('div', { className: 'modal-content' },
+        h('form', { className: 'category-edit-controls category-add-row', onSubmit: event => { event.preventDefault(); addCategory(); } },
+          h('input', { type: 'text', className: 'form-input', 'aria-label': 'New category name', placeholder: 'New category name', value: newCat, onChange: event => setNewCat(event.target.value) }),
+          h('button', { type: 'submit', className: 'btn' }, 'Add')),
+        cats.map(cat => h('div', { key: cat, className: 'category-edit-item' }, renamingCat === cat
+          ? h('form', { className: 'category-edit-controls is-renaming', onSubmit: event => { event.preventDefault(); confirmRename(); } },
+            h('input', { type: 'text', className: 'form-input', 'aria-label': `Rename ${cat}`, value: renameValue, onChange: event => setRenameValue(event.target.value), autoFocus: true }),
+            h('button', { type: 'submit', className: 'category-edit-action', 'aria-label': 'Save category name' }, h(IconCheck, { size: 16 })),
+            h('button', { type: 'button', className: 'category-edit-action', 'aria-label': 'Cancel rename', onClick: () => setRenamingCat(null) }, h(IconX, { size: 16 })))
+          : h(React.Fragment, null,
+            h('span', { className: 'category-edit-name' }, cat),
+            h('button', { type: 'button', className: 'category-edit-action', 'aria-label': `Rename ${cat}`, onClick: () => startRename(cat) }, h(IconEdit2, { size: 16 })),
+            h('button', { type: 'button', className: 'category-edit-action is-danger', 'aria-label': `Remove ${cat}`, onClick: () => removeCategory(cat) }, h(IconX, { size: 16 })))))),
+      h('div', { className: 'modal-footer' },
+        h('button', { type: 'button', className: 'btn btn-secondary', onClick: onCancel }, 'Cancel'),
+        h('button', { type: 'button', className: 'btn', onClick: () => onSave(cats) }, 'Save'))));
 };
 
 // Activity discovery is deliberately local/offline, but it should still feel
@@ -5945,6 +5903,58 @@ const ActivitySearchSuggestions = ({ inputRef, options, query, totalMatches, act
   ), document.body);
 };
 
+const ActivitySplitModal = ({ categories, category, onSelect, onEdit, onClose }) => {
+  const h = React.createElement;
+  const dialogRef = useRef(null);
+  const closing = useRef(false);
+  React.useLayoutEffect(() => {
+    const dialog = dialogRef.current;
+    dialog.showModal();
+    // Establish the starting style while the dialog is in the top layer.
+    dialog.getBoundingClientRect();
+    dialog.setAttribute('data-visible', '');
+    dialog.querySelector('.category-tab.active')?.focus({ preventScroll: true });
+    return () => { if (dialog.open) dialog.close(); };
+  }, []);
+  const dismiss = afterClose => {
+    if (closing.current) return false;
+    closing.current = true;
+    const dialog = dialogRef.current;
+    dialog.setAttribute('data-closing', '');
+    dialog.removeAttribute('data-visible');
+    const finish = () => {
+      if (!dialog.open) return;
+      dialog.close();
+      onClose();
+      afterClose?.();
+    };
+    const animations = dialog.getAnimations();
+    if (animations.length) Promise.allSettled(animations.map(animation => animation.finished)).then(finish);
+    else finish();
+    return true;
+  };
+  return h('dialog', {
+    ref: dialogRef,
+    id: 'activity-split-modal',
+    className: 'activity-split-modal',
+    'aria-labelledby': 'activity-split-title',
+    onCancel: event => { event.preventDefault(); dismiss(); },
+    onClick: event => { if (event.target === event.currentTarget) dismiss(); }
+  }, h('div', { className: 'activity-split-body' },
+    h('div', { className: 'activity-split-header' },
+      h('h2', { id: 'activity-split-title' }, 'Activity splits'),
+      h('button', { type: 'button', className: 'activity-split-edit', onClick: () => dismiss(onEdit) }, 'Edit splits'),
+      h('button', { type: 'button', className: 'close-btn', 'aria-label': 'Close activity splits', onClick: () => dismiss() }, h(IconX, { size: 20 }))),
+    h('div', { className: 'activity-split-grid' }, ['all', ...categories].map(cat => h('button', {
+      key: cat,
+      type: 'button',
+      className: `category-tab${category === cat ? ' active' : ''}`,
+      'aria-pressed': category === cat,
+      title: cat === 'all' ? undefined : cat,
+      onClick: () => { if (dismiss()) onSelect(cat); }
+    }, h('span', null, cat === 'all' ? 'All splits' : cat))))));
+};
+
 const ExercisePickerModal = ({
   onSelect,
   onCreateNew,
@@ -5962,16 +5972,9 @@ const ExercisePickerModal = ({
   const searchInputRef = useRef(null);
   const [suggestionsDismissed, setSuggestionsDismissed] = useState(savedContext?.suggestionsDismissed || false);
   const [suggestionIndex, setSuggestionIndex] = useState(-1);
-  const splitScrollRef = useRef(savedContext?.splitScrollLeft || 0);
   const [category, setCategory] = useState(savedContext?.category || defaultCategory || 'all');
-  const splitRailRef = useRef(null);
-  React.useLayoutEffect(() => {
-    const rail = splitRailRef.current, selected = rail?.querySelector('.category-tab.active');
-    if (!selected) return;
-    const viewport = rail.getBoundingClientRect(), item = selected.getBoundingClientRect();
-    if (item.left < viewport.left) rail.scrollLeft -= viewport.left - item.left;
-    else if (item.right > viewport.right) rail.scrollLeft += item.right - viewport.right;
-  }, [category]);
+  const [showSplitModal, setShowSplitModal] = useState(false);
+  const splitTriggerRef = useRef(null);
   const [exercises, setExercises] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [usageByExerciseId, setUsageByExerciseId] = useState({});
@@ -5982,7 +5985,7 @@ const ExercisePickerModal = ({
   const [selectedFamilyId, setSelectedFamilyId] = useState(savedContext?.selectedFamilyId || null);
   const pickerContentRef = useRef(null);
   useEffect(() => {
-    contextRef.current = { date: selectedDate, search, isSearchOpen, suggestionsDismissed, category, selectedFamilyId, splitScrollLeft: splitScrollRef.current, scrollTop: contextRef.current?.scrollTop || 0 };
+    contextRef.current = { date: selectedDate, search, isSearchOpen, suggestionsDismissed, category, selectedFamilyId, scrollTop: contextRef.current?.scrollTop || 0 };
   }, [selectedDate, search, isSearchOpen, suggestionsDismissed, category, selectedFamilyId]);
   useEffect(() => {
     if (!isLoadingExercises && pickerContentRef.current) pickerContentRef.current.scrollTop = savedContext?.scrollTop || 0;
@@ -6077,7 +6080,12 @@ const ExercisePickerModal = ({
       }
     })();
   }, [categories]);
-  const allCategories = ['all', ...sortedCategories];
+  const selectedSplitLabel = category === 'all' ? 'All splits' : category;
+  const selectSplit = cat => {
+    setCategory(cat);
+    setSelectedFamilyId(null);
+    if (pickerContentRef.current) pickerContentRef.current.scrollTop = 0;
+  };
   const getActivityName = ex => String(ex?.name || ex?.exerciseName || '');
   const closeActivitySearch = () => {
     setIsSearchOpen(false);
@@ -6085,7 +6093,6 @@ const ExercisePickerModal = ({
     setSelectedFamilyId(null);
     setSuggestionsDismissed(false);
     setSuggestionIndex(-1);
-    requestAnimationFrame(() => { if (splitRailRef.current) splitRailRef.current.scrollLeft = splitScrollRef.current; });
   };
   const familyMap = {};
   exercises.forEach(ex => {
@@ -6202,6 +6209,7 @@ const ExercisePickerModal = ({
     }, React.createElement("path", { d: "M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5" }), React.createElement("path", { d: "M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5" }))) : null;
     const assignSplitButton = !pairingSource && queryText && category !== 'all' && activitySplits.length === 0 ? /*#__PURE__*/React.createElement("button", {
       type: "button",
+      className: 'assign-split-button',
       "aria-label": `Add ${getActivityName(ex)} to ${splitDisplayName}`,
       onTouchStart: event => event.stopPropagation(),
       onClick: event => {
@@ -6218,7 +6226,6 @@ const ExercisePickerModal = ({
         color: 'var(--accent-soft)',
         fontSize: '11px',
         fontWeight: '700',
-        whiteSpace: 'nowrap',
         cursor: 'pointer',
         WebkitAppearance: 'none',
         flexShrink: 0
@@ -6378,7 +6385,7 @@ const ExercisePickerModal = ({
     ref: pickerContentRef,
     onScroll: event => { if (contextRef.current) contextRef.current.scrollTop = event.currentTarget.scrollTop; }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "exercise-picker-toolbar"
+    className: 'exercise-picker-toolbar' + (isSearchOpen ? ' is-searching' : '')
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "btn btn-secondary exercise-picker-create-button",
@@ -6387,7 +6394,11 @@ const ExercisePickerModal = ({
   }, /*#__PURE__*/React.createElement("span", {
     className: "add-activity-icon-pair",
     "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement(IconActivityPlus, { size: 22 }), /*#__PURE__*/React.createElement(IconStretching, { size: 26 })), React.createElement("span", null, "Create activity")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(IconActivityPlus, { size: 22 }), /*#__PURE__*/React.createElement(IconStretching, { size: 26 })), React.createElement("span", null, "Create activity")), React.createElement('button', {
+    ref: splitTriggerRef, type: 'button', className: 'activity-split-trigger', 'aria-label': `Choose activity split, ${selectedSplitLabel}`,
+    'aria-haspopup': 'dialog', 'aria-expanded': showSplitModal, 'aria-controls': showSplitModal ? 'activity-split-modal' : undefined,
+    onClick: () => setShowSplitModal(true)
+  }, React.createElement('span', null, selectedSplitLabel)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "exercise-picker-search-toggle",
     "aria-label": "Search activities",
@@ -6395,7 +6406,6 @@ const ExercisePickerModal = ({
     onClick: () => {
       if (isSearchOpen) closeActivitySearch();
       else {
-        splitScrollRef.current = splitRailRef.current?.scrollLeft || 0;
         setSelectedFamilyId(null);
         setSuggestionsDismissed(false);
         setSuggestionIndex(-1);
@@ -6438,28 +6448,10 @@ const ExercisePickerModal = ({
   }, /*#__PURE__*/React.createElement(IconX, { size: 20 })))), suggestionsOpen && React.createElement(ActivitySearchSuggestions, {
     inputRef: searchInputRef, options: suggestionOptions, query: queryText, totalMatches: filtered.length, activeIndex: suggestionIndex,
     onChoose: chooseSuggestion, onViewAll: () => { setSuggestionsDismissed(true); setSuggestionIndex(-1); }, onDismiss: () => setSuggestionsDismissed(true)
-  }), !suggestionsOpen && mergePrompt, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    className: "category-tabs",
-    ref: splitRailRef,
-    role: "region",
-    "aria-label": "Activity splits",
-    inert: suggestionsOpen ? '' : undefined,
-    style: { visibility: suggestionsOpen ? 'hidden' : undefined },
-    onScroll: event => { if (!isSearchOpen) { splitScrollRef.current = event.currentTarget.scrollLeft; if (contextRef.current) contextRef.current.splitScrollLeft = splitScrollRef.current; } },
-    tabIndex: 0
-  }, allCategories.map(cat => /*#__PURE__*/React.createElement("button", {
-    key: cat,
-    className: `category-tab ${category === cat ? 'active' : ''}`,
-    onClick: () => setCategory(cat)
-  }, cat === 'all' ? 'All' : cat)), /*#__PURE__*/React.createElement("button", {
-    className: "category-tab",
-    style: {
-      backgroundColor: 'rgba(180, 80, 50, 0.3)',
-      borderColor: 'rgba(180, 80, 50, 0.5)',
-      color: '#d4845a'
-    },
-    onClick: () => setShowEditCategories(true)
-  }, "Edit"))), deleteConfirm && React.createElement(ActivityDeleteDialog, { key: deleteConfirm.id, exercise: deleteConfirm, onCancel: () => setDeleteConfirm(null), onDeleted: id => { setExercises(prev => prev.filter(ex => ex.id !== id)); setDeleteConfirm(null); } }), pairingSource && /*#__PURE__*/React.createElement("div", {
+  }), !suggestionsOpen && mergePrompt, showSplitModal && React.createElement(ActivitySplitModal, {
+    categories: sortedCategories, category, onSelect: selectSplit, onEdit: () => setShowEditCategories(true),
+    onClose: () => { setShowSplitModal(false); splitTriggerRef.current?.focus({ preventScroll: true }); }
+  }), deleteConfirm && React.createElement(ActivityDeleteDialog, { key: deleteConfirm.id, exercise: deleteConfirm, onCancel: () => setDeleteConfirm(null), onDeleted: id => { setExercises(prev => prev.filter(ex => ex.id !== id)); setDeleteConfirm(null); } }), pairingSource && /*#__PURE__*/React.createElement("div", {
     style: {
       padding: '14px 16px',
       marginBottom: '12px',
@@ -8455,7 +8447,79 @@ const WeightEquipmentMenu = ({ anchor, mode, onMode, barKind, onBarKind, customB
       h('button', { type: 'button', className: 'weight-menu-done', onClick: () => onClose(true) }, 'Done')
     )), document.body);
 };
-const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWeight, initialSelection = null, setNumber, unit = 'lbs', gripTrackingEnabled = false, initialGrip = null, gripLockedForDay = false, onGripChange, gripReason, onDisableGrip }) => {
+const roundLoad = value => Math.round(Number(value) * 100) / 100;
+const compareRecentSets = (a, b) => b.date.localeCompare(a.date) || (b.setOrder || 0) - (a.setOrder || 0) || (b.createdAt || 0) - (a.createdAt || 0);
+const quickWeightCount = 12;
+
+// History arrives newest-first. One vote per workout keeps long workouts from
+// drowning out the usual load for this position in the set sequence.
+const buildWeightPresets = (sets, date, setNumber, common) => {
+  const workouts = new Map();
+  for (const { date: setDate, value } of sets) {
+    if (!workouts.has(setDate)) workouts.set(setDate, []);
+    workouts.get(setDate).push(value);
+  }
+  for (const loads of workouts.values()) loads.reverse();
+  const position = Math.max(0, (setNumber || 1) - 1);
+  const precedingWeight = workouts.get(date)?.[position - 1];
+  const recentWorkouts = [...workouts.entries()]
+    .filter(([setDate, loads]) => setDate < date && loads.some(value => value != null))
+    .slice(0, 10).map(([, loads]) => loads);
+  const votes = new Map();
+  let voteTotal = 0;
+  recentWorkouts.forEach((loads, index) => {
+    const observed = loads[position];
+    if (observed == null) return;
+    const previous = loads[position - 1];
+    const adapted = precedingWeight != null && previous != null && previous !== precedingWeight;
+    const value = adapted ? roundLoad(precedingWeight + observed - previous) : observed;
+    if (value < 0) return;
+    const weight = .85 ** index * (adapted ? .65 : 1);
+    voteTotal += weight;
+    const vote = votes.get(value) || { weight: 0, count: 0, direct: 0 };
+    vote.weight += weight;
+    vote.count++;
+    if (!adapted) vote.direct++;
+    votes.set(value, vote);
+  });
+  const ranked = [...votes].sort((a, b) => b[1].weight - a[1].weight);
+  const likelihoods = new Map(ranked.map(([value, vote]) => {
+    const share = vote.weight / voteTotal;
+    const likely = vote.count >= 4 && vote.direct >= 2 && share >= .67;
+    const possible = vote.count >= 2 && share >= .25;
+    return [value, likely ? 'likely' : possible ? 'possible' : undefined];
+  }));
+
+  const recentLoads = [...(workouts.get(date) || []).slice(0, position), ...recentWorkouts.flat()].filter(value => value != null);
+  const range = [...new Set(recentLoads)].sort((a, b) => a - b);
+  const gaps = range.slice(1).map((value, index) => roundLoad(value - range[index]));
+  const changes = recentWorkouts.flatMap(loads => loads.slice(1).flatMap((value, index) => {
+    const prior = loads[index];
+    return prior != null && value != null && prior !== value ? [roundLoad(value - prior)] : [];
+  }));
+  const samePosition = recentWorkouts.map(loads => loads[position]).filter(value => value != null);
+  const workoutChanges = samePosition.slice(0, -1).map((value, index) => roundLoad(value - samePosition[index + 1]));
+  const repeatedStep = deltas => {
+    const counts = new Map();
+    for (const delta of deltas) if (delta > 0) counts.set(delta, (counts.get(delta) || 0) + 1);
+    return [...counts].filter(([, count]) => count >= 2).sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]?.[0];
+  };
+  const spacing = repeatedStep(gaps);
+  const stepUp = repeatedStep(changes) ?? repeatedStep(workoutChanges);
+  const stepDown = repeatedStep(changes.map(change => -change)) ?? repeatedStep(workoutChanges.map(change => -change));
+  const up = stepUp ?? spacing ?? stepDown;
+  const down = stepDown ?? spacing ?? stepUp;
+  const edges = [down && roundLoad(range[0] - down), up && roundLoad(range.at(-1) + up)].filter(value => Number.isFinite(value) && value >= 0);
+  const recent = [...new Set(sets.map(set => set.value).filter(value => value != null))];
+  const predicted = ranked.filter(([, vote]) => vote.count >= 2).map(([value]) => value);
+  const anchor = precedingWeight ?? predicted[0] ?? recent[0];
+  const nearby = anchor == null ? common : [...common].sort((a, b) => Math.abs(a - anchor) - Math.abs(b - anchor));
+  const quick = [...new Set([...predicted.slice(0, 4), ...recent.slice(0, 5), ...edges, ...recent, ...nearby])].slice(0, quickWeightCount).sort((a, b) => a - b);
+  const more = [...new Set([...predicted, ...recent, ...common])].filter(value => !quick.includes(value)).sort((a, b) => a - b);
+  return { quick, more, likelihoods };
+};
+
+const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWeight, initialSelection = null, setNumber, unit = 'lbs', gripTrackingEnabled = false, initialGrip = null, onGripChange, gripReason, onDisableGrip }) => {
   const h = React.createElement;
   const [mode, setMode] = useState(['barbell', 'bar-custom'].includes(exercise.weightMeaning) ? 'bar' : exercise.weightMeaning === 'per-side' ? 'per-side' : 'total');
   const [barKind, setBarKind] = useState(barTypeFromExercise(exercise) || 'barbell');
@@ -8470,13 +8534,13 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
   const [bandedCustomName, setBandedCustomName] = useState('');
   const [showAllWeightPresets, setShowAllWeightPresets] = useState(false);
   const [showEquipment, setShowEquipment] = useState(false);
+  const [fineStepEnabled, setFineStepEnabled] = useState(false);
   const equipmentRef = useRef(null);
   const [openSheet, setOpenSheet] = useState(null);
   const isBarExercise = mode === 'bar';
   const barWeight = barKind === 'barbell' ? unit === 'kg' ? 20 : 45 : barKind === 'ez' ? unit === 'kg' ? 9.1 : 20 : Math.max(0, Number(customBarWeight) || 0);
   const barName = barKind === 'ez' ? 'EZ bar' : barKind === 'barbell' ? 'Barbell' : 'Custom bar';
   const weightMeaning = isBarExercise ? barKind === 'barbell' ? 'barbell' : 'bar-custom' : mode;
-  const roundLoad = value => Math.round(Number(value) * 100) / 100;
   const plateOnlyWeight = roundLoad(sideWeight * 2);
   const weight = isBarExercise ? roundLoad(barWeight + plateOnlyWeight) : mode === 'per-side' ? handWeight : fixedWeight;
   const stepperValue = isBarExercise ? sideWeight : weight;
@@ -8484,6 +8548,13 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
     const next = roundLoad(Math.max(0, Number(value) || 0));
     if (isBarExercise) setSideWeight(next); else if (mode === 'per-side') setHandWeight(next); else setFixedWeight(next);
   };
+  const smallStep = unit === 'lbs' && fineStepEnabled ? .5 : 1;
+  const stepUnit = `${unit}${isBarExercise ? ' per side' : mode === 'per-side' ? ' each' : ''}`;
+  const renderWeightStep = amount => h('button', {
+    type: 'button', className: 'weight-ring-step', disabled: !ready,
+    'aria-label': `${amount < 0 ? 'Subtract' : 'Add'} ${Math.abs(amount)} ${stepUnit}`,
+    onClick: () => applyStepperValue(stepperValue + amount)
+  }, h(IconClarityRing, { size: '100%' }), h('span', null, amount < 0 ? `−${Math.abs(amount)}` : `+${amount}`));
   const closeEquipment = (restoreFocus = true) => { setShowEquipment(false); if (restoreFocus) equipmentRef.current?.focus(); };
   const changeMode = next => { setMode(next); setShowAllWeightPresets(false); };
   useEffect(() => {
@@ -8491,8 +8562,9 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
     (async () => {
       const [fullEx, sets] = await Promise.all([dbOps.exercises.get(exercise.id), dbOps.sets.getByExerciseId(exercise.id)]);
       if (cancelled) return;
-      const measured = sets.filter(set => !isPresenceOnlySet(set) && set.weight != null && set.weightType === unit && set.date <= selectedDate).sort((a, b) => b.date.localeCompare(a.date) || (b.setOrder || 0) - (a.setOrder || 0));
-      setHistory(measured);
+      const logged = sets.filter(set => !isPresenceOnlySet(set) && !isNeutralAnchorSet(set) && set.date <= selectedDate).sort(compareRecentSets);
+      const measured = logged.filter(set => set.weight != null && set.weightType === unit && Number.isFinite(Number(set.weight)));
+      setHistory(logged);
       const prior = initialSelection?.weightType === unit ? initialSelection : measured[0];
       const barSet = measured.find(set => barLoadForSet(set));
       const fixedSet = measured.find(set => (set.weightMeaning || 'total') === 'total');
@@ -8521,14 +8593,27 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
       setReady(true);
     })().catch(error => { console.error('Unable to load weight history', error); if (!cancelled) setReady(true); });
     return () => { cancelled = true; };
-  }, [exercise.id, unit]);
-  useEffect(() => { updateSvgCornerPlates(); }, [ready, mode, showAllWeightPresets]);
-  const matchingHistory = history.filter(set => isBarExercise ? !!barLoadForSet(set) : (set.weightMeaning || 'total') === mode);
+  }, [exercise.id, unit, selectedDate]);
+  useEffect(() => { updateSvgCornerPlates(); }, [ready, mode, showAllWeightPresets, barWeight]);
+  const matchingHistory = history.filter(set => set.weightType === unit && set.weight != null && (isBarExercise ? !!barLoadForSet(set) : (set.weightMeaning || 'total') === mode));
   const lastMeasured = matchingHistory[0];
-  const common = isBarExercise ? unit === 'kg' ? [0, 2.5, 5, 7.5, 10, 15, 20, 25, 30, 40, 50] : [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 90] : unit === 'kg' ? [2.5, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100] : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 90, 100, 120, 135, 150, 180, 200, 225];
-  const recent = [...new Set(matchingHistory.map(set => isBarExercise ? roundLoad(barLoadForSet(set).added / 2) : set.weight))].slice(0, 5);
-  const options = [...recent, ...common.filter(value => !recent.includes(value))];
-  const visibleOptions = showAllWeightPresets ? options : options.slice(0, 10);
+  const { quick, more, likelihoods } = React.useMemo(() => {
+    const common = isBarExercise ? unit === 'kg' ? [0, 2.5, 5, 7.5, 10, 15, 20, 25, 30, 40, 50] : [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 75, 90] : unit === 'kg' ? [2.5, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100] : [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 90, 100, 120, 135, 150, 180, 200, 225];
+    const presetHistory = history.map(set => {
+      let value = null;
+      if (set.weightType === unit && set.weight != null) {
+        if (isBarExercise) {
+          const load = barLoadForSet(set);
+          if (load?.bar === barWeight) value = roundLoad(load.added / 2);
+        } else if ((set.weightMeaning || 'total') === mode) {
+          value = Number(set.weight);
+        }
+      }
+      return { date: set.date, value: Number.isFinite(value) && value >= 0 ? value : null };
+    });
+    return buildWeightPresets(presetHistory, selectedDate, setNumber, common);
+  }, [history, unit, mode, barWeight, selectedDate, setNumber]);
+  const visibleOptions = showAllWeightPresets ? [...quick, ...more] : quick;
   const selectMeasuredWeight = value => {
     if (!ready || isBarExercise && barWeight <= 0) return;
     onSelectWeight({ weight: value, weightType: unit, weightMeaning, ...(isBarExercise ? { barWeightAtLog: barWeight, barNameAtLog: barName } : {}) });
@@ -8711,29 +8796,38 @@ const WeightPickerModal = ({ exercise, onSelectWeight, selectedDate, previousWei
         h('div', { className: 'picker-chip-row weight-equipment-row' },
           h(PickerChip, { icon: h(IconDumbbell, { size: 32 }), iconOwnsSurface: true, compact: true, label: 'Load', isSet: false, ariaLabel: 'Change how this set is loaded', onClick: () => setOpenSheet('load') }),
           h('button', { type: 'button', ref: equipmentRef, className: 'weight-equipment-trigger', 'aria-label': 'Equipment for this set', 'aria-haspopup': 'menu', 'aria-expanded': showEquipment, 'aria-controls': showEquipment ? 'weight-equipment-menu' : undefined, onClick: () => setShowEquipment(value => !value), onKeyDown: event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); setShowEquipment(true); } } }, isBarExercise ? 'Bar + plates' : mode === 'per-side' ? 'Per hand' : 'Fixed weight', h('span', { 'aria-hidden': true, style: { display: 'inline-block', transform: showEquipment ? 'rotate(180deg)' : 'none', transition: 'transform 200ms cubic-bezier(0.25, 0.1, 0.25, 1)' } }, '⌄')),
-          gripTrackingEnabled && h(PickerChip, { icon: h(IconHandPlacement, { size: 32 }), iconOwnsSurface: true, compact: true, label: 'Grip', isSet: !!formatGripLabel(initialGrip), ariaLabel: formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip', onClick: () => setOpenSheet('grip') })
+          gripTrackingEnabled && h('button', { type: 'button', className: 'weight-equipment-trigger weight-grip-trigger', 'aria-label': formatGripLabel(initialGrip) ? `Grip: ${formatGripLabel(initialGrip)}. Tap to change.` : 'Set grip', 'aria-haspopup': 'dialog', onClick: () => setOpenSheet('grip') }, formatGripLabel(initialGrip) || 'Grip')
         ),
         h('div', { key: mode, className: 'weight-entry-mode' },
-          h('label', { className: 'weight-entry-label', htmlFor: 'set-weight-input' }, isBarExercise ? `Plates on each side (${unit})` : mode === 'per-side' ? `Weight in each hand (${unit})` : `Total weight (${unit})`),
-          h('div', { className: 'weight-entry-stepper' },
-            [-5, -1].map(amount => h('button', { key: amount, className: 'weight-ring-step', type: 'button', 'aria-label': `Subtract ${Math.abs(amount)} ${unit}${isBarExercise ? ' per side' : ''}`, onClick: () => applyStepperValue(stepperValue + amount) }, h(IconClarityRing, { size: '100%' }), h('span', null, amount))),
+          h('div', { className: 'weight-entry-heading' },
+            h('label', { className: 'weight-entry-label', htmlFor: 'set-weight-input' }, isBarExercise ? `Plates on each side (${unit})` : mode === 'per-side' ? `Weight in each hand (${unit})` : `Total weight (${unit})`),
+            unit === 'lbs' && h('button', { type: 'button', className: 'weight-fine-toggle', 'aria-label': 'Fine adjustment, half-pound steps', 'aria-pressed': fineStepEnabled, 'aria-controls': 'weight-entry-stepper', onClick: () => setFineStepEnabled(value => !value) }, 'Fine · 0.5 lb')),
+          h('div', { id: 'weight-entry-stepper', className: 'weight-entry-stepper' },
+            renderWeightStep(-5), renderWeightStep(-smallStep),
             h('label', { className: 'weight-ring-value', htmlFor: 'set-weight-input' },
               h(IconClaritySquircle),
               h('input', { id: 'set-weight-input', type: 'number', inputMode: 'decimal', min: '0', step: '0.1', value: stepperValue === 0 ? '0' : stepperValue, style: { width: `${Math.max(1, String(stepperValue).length)}ch` }, onFocus: event => event.target.select(), onChange: event => applyStepperValue(event.target.value), disabled: !ready }),
               h('span', { className: 'weight-ring-unit', 'aria-hidden': true }, unit)
             ),
-            [1, 5].map(amount => h('button', { key: amount, className: 'weight-ring-step', type: 'button', 'aria-label': `Add ${amount} ${unit}${isBarExercise ? ' per side' : ''}`, onClick: () => applyStepperValue(stepperValue + amount) }, h(IconClarityRing, { size: '100%' }), h('span', null, `+${amount}`))),
+            renderWeightStep(smallStep), renderWeightStep(5),
             h('button', { type: 'button', className: 'weight-ring-step weight-ring-confirm', disabled: !ready || isBarExercise && barWeight <= 0, 'aria-label': `Use ${weight} ${unit}${isBarExercise ? ' total' : mode === 'per-side' ? ' each' : ''}`, onClick: () => selectMeasuredWeight(weight) }, h(IconClarityRing, { size: '100%' }), h(IconCheck, { size: 22 }))
           ),
           isBarExercise && h('div', { className: 'weight-equation', 'aria-live': 'polite' }, h('span', null, `${barWeight} ${unit} ${barName.toLowerCase()} + ${sideWeight} ${unit} × 2`), h('strong', null, `= ${weight} ${unit} total`)),
           isBarExercise && barWeight <= 0 && h('div', { className: 'weight-entry-hint', role: 'status' }, 'Choose the bar’s weight in the equipment menu.'),
           lastMeasured && h('div', { className: 'weight-entry-hint' }, `Last ${formatRecordedWeight(lastMeasured)} · ${lastMeasured.date === selectedDate ? 'Today' : formatDateShort(lastMeasured.date)}`),
-          h('div', { className: 'weight-presets-heading' }, h('div', { className: 'section-title' }, isBarExercise ? 'Per side' : mode === 'per-side' ? 'Per hand' : 'Weights'), options.length > 10 && h('button', { type: 'button', className: 'weight-presets-toggle', 'aria-expanded': showAllWeightPresets, onClick: () => setShowAllWeightPresets(value => !value) }, showAllWeightPresets ? 'Fewer' : 'More')),
-          h('div', { id: 'weight-preset-options', className: `weight-grid${showAllWeightPresets ? '' : ' is-quick'}` }, visibleOptions.map(value => h('button', { type: 'button', key: value, className: 'weight-btn', 'aria-label': isBarExercise ? `Use ${value} ${unit} per side, ${roundLoad(barWeight + value * 2)} ${unit} total` : `Use preset ${value} ${unit}${mode === 'per-side' ? ' each' : ''}`, disabled: !ready || isBarExercise && barWeight <= 0, onClick: () => selectMeasuredWeight(isBarExercise ? roundLoad(barWeight + value * 2) : value) }, value)))
+          h('div', { className: 'weight-presets-heading' }, h('div', { className: 'section-title' }, isBarExercise ? 'Per side' : mode === 'per-side' ? 'Per hand' : 'Weights'), more.length > 0 && h('button', { type: 'button', className: 'weight-presets-toggle', 'aria-expanded': showAllWeightPresets, 'aria-controls': 'weight-preset-options', onClick: () => setShowAllWeightPresets(value => !value) }, showAllWeightPresets ? 'Fewer' : 'More')),
+          h('div', { id: 'weight-preset-options', className: `weight-grid${showAllWeightPresets ? '' : ' is-quick'}` }, visibleOptions.map(value => {
+            const total = isBarExercise ? roundLoad(barWeight + value * 2) : value;
+            const likelihood = likelihoods.get(value);
+            const label = isBarExercise ? `Use ${value} ${unit} per side, ${total} ${unit} total` : `Use preset ${value} ${unit}${mode === 'per-side' ? ' each' : ''}`;
+            return h('button', { type: 'button', key: value, className: 'weight-btn', 'data-likelihood': likelihood, 'aria-label': likelihood ? `${label}. ${likelihood === 'likely' ? 'Often logged for this set' : 'Possible based on past sets'}` : label, disabled: !ready || isBarExercise && barWeight <= 0, onClick: () => selectMeasuredWeight(total) }, value);
+          }))
         )
       ),
       openSheet === 'load' && h(PickerSheet, { title: 'Load', onClose: () => setOpenSheet(null) }, loadSheetContent),
-      openSheet === 'grip' && gripTrackingEnabled && h(PickerSheet, { title: 'Grip', onClose: () => setOpenSheet(null) }, h(GripInlineSelector, { embedded: true, initialGrip, onChange: onGripChange, gripReason, onDisableGrip: () => { setOpenSheet(null); if (onDisableGrip) onDisableGrip(); } }))
+      openSheet === 'grip' && gripTrackingEnabled && h(PickerSheet, { title: 'Grip', onClose: () => setOpenSheet(null) },
+        h(GripInlineSelector, { embedded: true, initialGrip, onChange: onGripChange, gripReason, onDisableGrip: () => { setOpenSheet(null); if (onDisableGrip) onDisableGrip(); } }),
+        h('button', { type: 'button', className: 'btn btn-secondary grip-sheet-done', onClick: () => setOpenSheet(null) }, 'Done'))
     ),
     showEquipment && h(WeightEquipmentMenu, { anchor: equipmentRef, mode, onMode: changeMode, barKind, onBarKind: setBarKind, customBarWeight, onCustomBarWeight: setCustomBarWeight, unit, onClose: closeEquipment })
   );
@@ -11593,7 +11687,7 @@ const resolveSplitDate = async (date, categories) => {
   const overrides = rec && (hasOwn(rec, 'split') || !rec.routineId || (stored && stored.mode !== 'lineup'));
   const assignment = overrides ? rec : (date >= getTodayString() ? await dbOps.week.get(parseLocalDate(date).getDay()) : null);
   // A record's own split wins over any checklist routine stored beside it.
-  const view = assignment === rec && hasOwn(rec, 'split') ? { split: rec.split } : assignment;
+  const view = rec && assignment === rec && hasOwn(rec, 'split') ? { split: rec.split } : assignment;
   const base = view === rec ? stored : (view?.routineId ? await dbOps.routines.get(view.routineId) : null);
   const routine = assignmentRoutine(view, base);
   return routine && routine.mode !== 'lineup' && validRoutine(routine, categories) ? routine : null;
@@ -13245,7 +13339,7 @@ const DayDetailModal = ({
     className: 'day-detail-control day-detail-tab' + (activeTab === 'activities' ? ' is-active' : ''),
     "aria-pressed": activeTab === 'activities',
     onClick: () => setActiveTab('activities')
-  }, dayLabel, " Day Activities"), dayLabel && /*#__PURE__*/React.createElement("button", {
+  }, React.createElement("span", null, dayLabel, " Day Activities")), dayLabel && /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: 'day-detail-control day-detail-tab day-detail-split' + (activeTab === 'split' ? ' is-active' : ''),
     "data-tour": "splits",
@@ -15009,26 +15103,14 @@ const GripInlineSelector = ({
   // selector drops its own box and heading rather than nesting a second one.
   embedded = false
 }) => {
-  const [gripType, setGripType] = useState(initialGrip?.gripType || null);
-  const [gripWidth, setGripWidth] = useState(initialGrip?.gripWidth || null);
+  const { gripType = null, gripWidth = null } = initialGrip || {};
   const typeOptions = ['pronated', 'supinated', 'neutral'];
   const widthOptions = ['close', 'standard', 'wide', 'v-grip'];
-  useEffect(() => {
-    setGripType(initialGrip?.gripType || null);
-    setGripWidth(initialGrip?.gripWidth || null);
-  }, [initialGrip?.gripType, initialGrip?.gripWidth]);
-  useEffect(() => {
-    if (onChange) {
-      onChange({
-        gripType,
-        gripWidth
-      });
-    }
-  }, [gripType, gripWidth, onChange]);
   const toggleStyle = active => ({
+    minHeight: '44px',
     padding: '8px 10px',
     borderRadius: '8px',
-    border: '1px solid color-mix(in srgb, var(--accent) 22%, transparent)',
+    border: '0',
     background: active ? 'color-mix(in srgb, var(--accent) 20%, transparent)' : 'color-mix(in srgb, var(--accent) 5%, transparent)',
     color: active ? 'var(--text-body)' : 'var(--text-faint)',
     fontSize: '11px',
@@ -15037,6 +15119,7 @@ const GripInlineSelector = ({
     WebkitAppearance: 'none'
   });
   return /*#__PURE__*/React.createElement("div", {
+    className: 'grip-options',
     style: embedded ? {
       marginBottom: '4px'
     } : {
@@ -15075,10 +15158,10 @@ const GripInlineSelector = ({
     onClick: onDisableGrip,
     "aria-label": "Stop asking about grip for this activity",
     style: {
-      minHeight: '32px',
+      minHeight: '44px',
       padding: '0 12px',
       borderRadius: '20px',
-      border: '1px solid color-mix(in srgb, var(--accent) 24%, transparent)',
+      border: '0',
       background: 'color-mix(in srgb, var(--accent) 6%, transparent)',
       color: 'var(--accent-soft)',
       fontSize: '11px',
@@ -15097,7 +15180,9 @@ const GripInlineSelector = ({
     }
   }, typeOptions.map(opt => /*#__PURE__*/React.createElement("button", {
     key: opt,
-    onClick: () => setGripType(gripType === opt ? null : opt),
+    type: 'button',
+    'aria-pressed': gripType === opt,
+    onClick: () => onChange?.({ gripType: gripType === opt ? null : opt, gripWidth }),
     style: toggleStyle(gripType === opt)
   }, opt.charAt(0).toUpperCase() + opt.slice(1)))), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -15107,7 +15192,9 @@ const GripInlineSelector = ({
     }
   }, widthOptions.map(opt => /*#__PURE__*/React.createElement("button", {
     key: opt,
-    onClick: () => setGripWidth(gripWidth === opt ? null : opt),
+    type: 'button',
+    'aria-pressed': gripWidth === opt,
+    onClick: () => onChange?.({ gripType, gripWidth: gripWidth === opt ? null : opt }),
     style: toggleStyle(gripWidth === opt)
   }, opt === 'v-grip' ? 'V-bar' : opt.charAt(0).toUpperCase() + opt.slice(1)))));
 };
@@ -15906,17 +15993,12 @@ function App() {
     return withNormalizedExerciseFields(await dbOps.exercises.get(exerciseLike.id) || exerciseLike);
   }, []);
   const primeGripSelection = useCallback(async exerciseLike => {
-    const dayGrip = await getGripSelectionForDate(exerciseLike.id, currentDate);
-    setSelectedGrip(dayGrip);
-    setGripLockedForDay(!!dayGrip);
-    return dayGrip;
+    const lastGrip = shouldOfferGripTracking(exerciseLike) ? await getLastGripSelection(exerciseLike.id, currentDate) : null;
+    setSelectedGrip(lastGrip);
+    setGripLockedForDay(lastGrip?.date === currentDate);
+    return lastGrip;
   }, [currentDate]);
-  const resolveGripForSave = useCallback(async exerciseId => {
-    if (selectedGrip && (selectedGrip.gripType || selectedGrip.gripWidth)) {
-      return selectedGrip;
-    }
-    return await getGripSelectionForDate(exerciseId, currentDate);
-  }, [currentDate, selectedGrip]);
+  const resolveGripForSave = () => shouldOfferGripTracking(selectedExercise) && (selectedGrip?.gripType || selectedGrip?.gripWidth) ? selectedGrip : null;
   const [renameConfirmData, setRenameConfirmData] = useState(null);
   const [pairingExerciseId, setPairingExerciseId] = useState(null); // exerciseId currently pairing
   const touchRef = useRef(null);
@@ -16462,7 +16544,7 @@ function App() {
         weightMeaning: wmPrefill,
         createdAt: Date.now()
       };
-      const resolvedGripPrefill = await resolveGripForSave(selectedExercise.id);
+      const resolvedGripPrefill = resolveGripForSave();
       if (resolvedGripPrefill?.gripType) set.gripType = resolvedGripPrefill.gripType;
       if (resolvedGripPrefill?.gripWidth) set.gripWidth = resolvedGripPrefill.gripWidth;
 
@@ -16538,7 +16620,7 @@ function App() {
       weightMeaning,
       createdAt: Date.now()
     };
-    const resolvedGripReps = await resolveGripForSave(selectedExercise.id);
+    const resolvedGripReps = resolveGripForSave();
     if (resolvedGripReps?.gripType) set.gripType = resolvedGripReps.gripType;
     if (resolvedGripReps?.gripWidth) set.gripWidth = resolvedGripReps.gripWidth;
 
@@ -16628,7 +16710,7 @@ function App() {
       weightMeaning: weightMeaningDur,
       createdAt: Date.now()
     };
-    const resolvedGripDuration = await resolveGripForSave(selectedExercise.id);
+    const resolvedGripDuration = resolveGripForSave();
     if (resolvedGripDuration?.gripType) set.gripType = resolvedGripDuration.gripType;
     if (resolvedGripDuration?.gripWidth) set.gripWidth = resolvedGripDuration.gripWidth;
 
@@ -17974,8 +18056,7 @@ function App() {
     unit: unit,
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise),
     initialGrip: selectedGrip,
-    gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip),
+    onGripChange: setSelectedGrip,
     gripReason: gripTrackingDecisionFor(selectedExercise).reason,
     onDisableGrip: disableGripForSelectedExercise
   }), modal === 'repPicker' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(RepPickerModal, {
@@ -17993,7 +18074,7 @@ function App() {
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip),
+    onGripChange: setSelectedGrip,
     gripReason: gripTrackingDecisionFor(selectedExercise).reason,
     onDisableGrip: disableGripForSelectedExercise
   }), modal === 'timedDuration' && selectedExercise && selectedWeight && /*#__PURE__*/React.createElement(TimedDurationModal, {
@@ -18013,7 +18094,7 @@ function App() {
     gripTrackingEnabled: shouldOfferGripTracking(selectedExercise) && (selectedExercise.weightDefault === 'bodyweight' || selectedExercise.weightDefault === 'none'),
     initialGrip: selectedGrip,
     gripLockedForDay: gripLockedForDay,
-    onGripChange: grip => setSelectedGrip(grip),
+    onGripChange: setSelectedGrip,
     gripReason: gripTrackingDecisionFor(selectedExercise).reason,
     onDisableGrip: disableGripForSelectedExercise,
     onLogPresence: isNeutralExercise(selectedExercise) ? undefined : handleLogPresence,
@@ -18200,7 +18281,7 @@ function App() {
       marginBottom: '18px',
       lineHeight: '1.5'
     }
-  }, "When enabled, the first set screen shows optional grip choices until you pick one for that activity that day."), /*#__PURE__*/React.createElement("div", {
+  }, "When enabled, each set starts with the grip from the last set you logged for this activity. You can change it while logging."), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: '11px',
       color: 'var(--text-faint)',
